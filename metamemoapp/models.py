@@ -2,6 +2,20 @@ from django.db import models
 
 # Create your models here.
 
+"""
+Aqui você define os modelos de dados, tem uma penca de classes disponíveis para os tipos de dados mais comuns.
+Acho que ainda precisa um pente fino e pensar melhor a relação entre MetaMemo e MemoSource.
+
+Hoje eles são basicamente objetos-que-poderiam-ser-strings, mas a ideia é avançar para que isso sirva para gerenciar os
+metamemos, coletores e cronjobs.
+
+Depois de modificar o modelo você precisa rodar:
+python manage.py makemigrations -> para criar um script de migração dos dados no DB
+python mangage.py migrate -> para efetuar as migrações
+
+Obviamente a ideia é fechar o modelo de dados antes de começar a popular o banco definitivamente.
+"""
+
 class MetaMemo(models.Model):
     name = models.CharField(max_length=200)
 
@@ -23,8 +37,8 @@ class MemoItem(models.Model):
     source = models.ForeignKey(MemoSource, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.TextField()
-    extraction_date = models.DateField()
-    content_date = models.DateField()
+    extraction_date = models.DateTimeField(null=True)
+    content_date = models.DateTimeField(null=True)
     url = models.URLField()
     likes = models.IntegerField()
     interactions = models.IntegerField()
