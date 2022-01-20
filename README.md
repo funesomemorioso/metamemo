@@ -6,7 +6,7 @@
 
 ## Como usar
 
-Pra criar o banco de dados:
+Para criar o banco de dados:
 
 > python manage.py makemigrations
 > python manage.py migrate
