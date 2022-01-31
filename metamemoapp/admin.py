@@ -15,6 +15,8 @@ Vale ler a documentação.
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
     list_display = ('title', 'author','content_date', 'source', 'likes')
+    list_filter = ('source__name', 'author__name')
+    search_fields = ('content',)
 
 admin.site.register(MetaMemo)
 admin.site.register(MemoItem, MemoItemAdmin)
