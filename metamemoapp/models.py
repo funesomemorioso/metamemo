@@ -24,6 +24,9 @@ class MetaMemo(models.Model):
 
 class MemoSource(models.Model):
     name = models.CharField(max_length=200)
+    url = models.URLField()
+    command = models.CharField(max_length=500)
+    command_args = models.CharField(max_length=500)
 
     def __str__(self):
         return(self.name)
