@@ -16,15 +16,25 @@ python mangage.py migrate -> para efetuar as migrações
 Obviamente a ideia é fechar o modelo de dados antes de começar a popular o banco definitivamente.
 """
 
-class MetaMemo(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return(self.name)
-
 class MemoSource(models.Model):
     name = models.CharField(max_length=200)
     
+    def __str__(self):
+        return(self.name)
+
+class MetaScraper(models.Model):
+    source = models.ForeignKey(MemoSource, on_delete=models.CASCADE)
+    url = models.URLField()
+    command = models.CharField(max_length=200)
+    command_args = models.CharField(max_length=500)
+
+    def __str__(self):
+        return(self.source.name)
+
+class MetaMemo(models.Model):
+    name = models.CharField(max_length=200)
+    scraper = models.ManyToManyField(MetaScraper)
+
     def __str__(self):
         return(self.name)
 
