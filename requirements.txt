@@ -1,2 +1,11 @@
-decouple
+django
+python-decouple
+ffmpeg-python
+youtube-dl
 
+google-cloud-speech
+google-cloud-language
+google-cloud-storage
+pydub
+
+facebook_scraper
