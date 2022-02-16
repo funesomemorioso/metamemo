@@ -47,7 +47,7 @@ class Command(BaseCommand):
         
         if not cookies_file or not os.path.isfile(cookies_file):
             print("Facebook Cookie File not found!")
-            raise
+            raise 
         input_posts = facebook_scraper.get_posts(username, pages=pages, options={'posts_per_page':ppp, "allow_extra_requests": False}, cookies=cookies_file)
         
         """
@@ -82,6 +82,6 @@ class Command(BaseCommand):
 
             #Cria um metaitem com status INITIAL caso existam vídeos        
                 if i['video']:
-                    post.medias.create(original_url=i['video'], original_id=['video_id'], status='INITIAL')
+                    post.medias.create(original_url=f"http://facebook.com/{i['video_id']}", original_id=i['video_id'], status='INITIAL')
 
         
