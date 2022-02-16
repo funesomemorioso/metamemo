@@ -31,12 +31,16 @@ class Command(BaseCommand):
         memo_author = MetaMemo.objects.get_or_create(name=author)
         memo_source = MemoSource.objects.get_or_create(name='Facebook')
         
-        if not clear:
-            memo_itens = MemoItem.objects.filter(author__name=author, source__name='Facebook').values_list('original_id', flat=True)
-        else:
+    
+        memo_itens = MemoItem.objects.filter(author__name=author, source__name='Facebook').values_list('original_id', flat=True)
+        
+        #Esvazia lista de ids caso passe a flag --clear;
+        #TODO: Excluir os posts em caso de clear. Não fiz ainda para manter os posts p/ debug.
+        if clear:
             memo_itens = []
 
 
+        #Leva as configurações para o settings.py (que herdam do .env)
         cookies_file = getattr(settings, "FACEBOOK_COOKIES", None)
         pages = getattr(settings, "FACEBOOK_PAGES", 4)
         ppp = getattr(settings, "FACEBOOK_PPP", 10)
@@ -75,7 +79,8 @@ class Command(BaseCommand):
                 post.original_id = i['post_id']
                 post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
                 post.save()
-                
+
+            #Cria um metaitem com status INITIAL caso existam vídeos        
                 if i['video']:
                     post.medias.create(original_url=i['video'], original_id=['video_id'], status='INITIAL')
 
