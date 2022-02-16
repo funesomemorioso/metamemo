@@ -64,6 +64,8 @@ class MemoMedia(models.Model):
         img_temp.flush()
         filename = self.original_id + filename_ext
         result = self.media.save(filename, File(img_temp))
+        self.status = 'DOWNLOADED'
+        self.save()
         img_temp.close()
         return result
 
