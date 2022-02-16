@@ -2,6 +2,7 @@ from django.db import models
 from django.core.files.base import File
 import urllib.request
 import tempfile, mimetypes
+import youtube_dl
 
 # Create your models here.
 
@@ -54,21 +55,27 @@ class MemoMedia(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     transcription = models.TextField(blank=True)
     media = models.FileField(upload_to='media', blank=True) #Add directory by account
+    mimetype = models.CharField(max_length=20, blank=True)
 
     def download_media(self):
-        img_temp = tempfile.NamedTemporaryFile(delete=True)
-        req = urllib.request.Request(self.original_url)
-        with urllib.request.urlopen(req) as response:
-            img_temp.write(response.read())
-            filename_ext = mimetypes.guess_extension(response.info().get_content_type())
-        img_temp.flush()
-        filename = self.original_id + filename_ext
-        result = self.media.save(filename, File(img_temp))
-        self.status = 'DOWNLOADED'
-        self.save()
-        img_temp.close()
-        return result
+        with tempfile.TemporaryDirectory() as tempdirname:
+            
+            ydl_opts = {
+                'outtmpl': f'{tempdirname}/{self.original_id}.%(ext)s',
+                'merge_output_format': 'mp4',
+                'progress_hooks':[]
+            }
 
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([self.original_url])
+        
+            with open(f'{tempdirname}/{self.original_id}.mp4', 'rb') as tmpfile:
+                media_file = File(tmpfile)
+                result = self.media.save(f"{self.original_id}.mp4", media_file)
+                self.status = 'DOWNLOADED'
+                #self.mimetype = mimetype
+                self.save()
+        return True
 
 
 class MemoItem(models.Model):
