@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.files.base import File
 import urllib.request
-import tempfile
+import tempfile, mimetypes
 
 # Create your models here.
 
@@ -49,25 +49,21 @@ class MemoMedia(models.Model):
         ('READY', 'Ready'),
     )
 
-    original_url = models.URLField()
+    original_url = models.URLField(max_length=500)
     original_id = models.CharField(max_length=500)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    transcription = models.TextField()
+    transcription = models.TextField(blank=True)
     media = models.FileField(upload_to='media', blank=True) #Add directory by account
 
     def download_media(self):
         img_temp = tempfile.NamedTemporaryFile(delete=True)
-        req = urllib.request.Request(
-            self.original_url, data=None,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
-            }
-        )
+        req = urllib.request.Request(self.original_url)
         with urllib.request.urlopen(req) as response:
             img_temp.write(response.read())
+            filename_ext = mimetypes.guess_extension(response.info().get_content_type())
         img_temp.flush()
-        filename = self.original_id + "." + self.original_url.split(".")[-1]
-        result = obj.image.save(filename, File(img_temp))
+        filename = self.original_id + filename_ext
+        result = self.media.save(filename, File(img_temp))
         img_temp.close()
         return result
 

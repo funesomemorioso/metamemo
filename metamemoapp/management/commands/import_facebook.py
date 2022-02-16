@@ -48,7 +48,7 @@ class Command(BaseCommand):
         if not cookies_file or not os.path.isfile(cookies_file):
             print("Facebook Cookie File not found!")
             raise
-        input_posts = facebook_scraper.get_posts(username, pages=pages, options={'posts_per_page':ppp}, cookies=cookies_file)
+        input_posts = facebook_scraper.get_posts(username, pages=pages, options={'posts_per_page':ppp, "allow_extra_requests": False}, cookies=cookies_file)
         
         """
         Aqui estou usando o MemoItem() para instancear um objeto que defini lá no models.
