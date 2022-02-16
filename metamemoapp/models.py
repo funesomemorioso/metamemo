@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.files.base import File
+import urllib.request
+import tempfile
 
 # Create your models here.
 
@@ -39,7 +42,35 @@ class MetaMemo(models.Model):
         return(self.name)
 
 class MemoMedia(models.Model):
-    url = models.URLField()
+    STATUS_CHOICES = (
+        ('INITIAL', 'Initial'),
+        ('DOWNLOADED', 'Downloaded'),
+        ('TRANSCRIBED', 'Transcribed'),
+        ('READY', 'Ready'),
+    )
+
+    original_url = models.URLField()
+    original_id = models.CharField(max_length=500)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    transcription = models.TextField()
+    media = models.FileField(upload_to='media', blank=True) #Add directory by account
+
+    def download_media(self):
+        img_temp = tempfile.NamedTemporaryFile(delete=True)
+        req = urllib.request.Request(
+            self.original_url, data=None,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+            }
+        )
+        with urllib.request.urlopen(req) as response:
+            img_temp.write(response.read())
+        img_temp.flush()
+        filename = self.original_id + "." + self.original_url.split(".")[-1]
+        result = obj.image.save(filename, File(img_temp))
+        img_temp.close()
+        return result
+
 
 
 class MemoItem(models.Model):
@@ -54,6 +85,7 @@ class MemoItem(models.Model):
     interactions = models.IntegerField()
     raw = models.JSONField(blank=True, null=True)
     medias = models.ManyToManyField(MemoMedia, blank=True, null=True)
+    original_id = models.CharField(max_length=500)
 
     def __str__(self):
         return(self.title)
