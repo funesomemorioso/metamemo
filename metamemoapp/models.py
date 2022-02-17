@@ -77,6 +77,9 @@ class MemoMedia(models.Model):
                 self.save()
         return True
 
+    def __str__(self):
+        return self.original_id
+
 
 class MemoItem(models.Model):
     author = models.ForeignKey(MetaMemo, on_delete=models.CASCADE)
