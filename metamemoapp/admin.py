@@ -4,7 +4,8 @@ import shlex
 # Register your models here.
 from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MetaScraper
 
-from metamemoapp.utils import google_transcribe
+from metamemoapp.tasks import transcribe_async
+
 """
 Esse é o principal motivo pelo qual eu quis vir pro django.
 Com poucas linhas a gente tem uma interface administrativa robusta e customizável.
@@ -28,14 +29,13 @@ def download_media(modeladmin, request, queryset):
 
 download_media.short_description = 'Download Media'
 
-
 def transcribe_media(modeladmin, request, queryset):
     for i in queryset.all():
         if i.status == 'DOWNLOADED':
-            i.transcription = google_transcribe(i.media.path)
-            i.save()
+            transcribe_async.delay(i.pk)
 
 transcribe_media.short_description = 'Transcribe Media'
+
 
 
 class MemoMediaAdmin(admin.ModelAdmin):

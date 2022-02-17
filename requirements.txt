@@ -9,3 +9,6 @@ google-cloud-storage
 pydub
 
 facebook_scraper
+
+celery
+django-celery-results

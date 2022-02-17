@@ -1,6 +1,5 @@
 from django.conf import settings
 
-
 import io, os, wave
 from google.cloud import speech
 from google.cloud import storage
