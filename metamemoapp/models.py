@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.files.base import File
+from django.core.management import call_command
+
 import urllib.request
 import tempfile, mimetypes
 import youtube_dl
@@ -26,19 +28,17 @@ class MemoSource(models.Model):
     def __str__(self):
         return(self.name)
 
-class MetaScraper(models.Model):
-    source = models.ForeignKey(MemoSource, on_delete=models.CASCADE)
-    url = models.URLField()
-    command = models.CharField(max_length=200)
-    command_args = models.CharField(max_length=500)
-
-    def __str__(self):
-        return(self.source.name)
-
 class MetaMemo(models.Model):
     name = models.CharField(max_length=200)
-    scraper = models.ManyToManyField(MetaScraper)
+    facebook_handle = models.CharField(max_length=200, blank=True)
+    instagram_handle = models.CharField(max_length=200, blank=True)
+    twitter_handle = models.CharField(max_length=200, blank=True)
+    youtube_handle = models.CharField(max_length=200, blank=True)
 
+    def get_facebook(self):
+        if self.facebook_handle:
+            call_command('import_facebook', username=self.facebook_handle, author=self.name)
+    
     def __str__(self):
         return(self.name)
 
@@ -91,6 +91,7 @@ class MemoItem(models.Model):
     url = models.URLField()
     likes = models.IntegerField()
     interactions = models.IntegerField()
+    shares = models.IntegerField()
     raw = models.JSONField(blank=True, null=True)
     medias = models.ManyToManyField(MemoMedia, blank=True, null=True)
     original_id = models.CharField(max_length=500)
