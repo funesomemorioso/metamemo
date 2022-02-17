@@ -75,6 +75,7 @@ class Command(BaseCommand):
                 post.content_date = i['time']
                 post.url = i['post_url']
                 post.likes = i['likes']
+                post.shares = i['shares']
                 post.interactions = i['comments']
                 post.original_id = i['post_id']
                 post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
