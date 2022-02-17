@@ -1,8 +1,11 @@
 from django.contrib import admin
-from django.core.management import call_command
+from django.contrib import messages
+from django.utils.html import format_html
+
+
 import shlex
 # Register your models here.
-from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MetaScraper
+from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia
 
 from metamemoapp.tasks import transcribe_async
 
@@ -15,11 +18,6 @@ Tem outros parametros para configurar filtros, facets e coisas mais.
 Vale ler a documentação.
 """
 
-def run_scraper(modeladmin, request, queryset):
-        for scraper in queryset:
-            call_command(scraper.command, *shlex.split(scraper.command_args))
-
-run_scraper.short_description = 'Run scraper'
 
 #Action para baixar as midias. TODO: Precisa jogar o job prum Celery da vida.
 def download_media(modeladmin, request, queryset):
@@ -30,10 +28,9 @@ def download_media(modeladmin, request, queryset):
 download_media.short_description = 'Download Media'
 
 def transcribe_media(modeladmin, request, queryset):
-    for i in queryset.all():
-        if i.status == 'DOWNLOADED':
-            transcribe_async.delay(i.pk)
-
+    for i in queryset.filter(status='DOWNLOADED'):
+        transcribe_async.delay(i.pk)
+        messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Media'
 
 
@@ -43,21 +40,18 @@ class MemoMediaAdmin(admin.ModelAdmin):
     list_display = ('original_url', 'status')
     actions = [download_media, transcribe_media]
 
+@admin.display(description='Link')
+def link_to_memoitem(obj):
+    return format_html(f'<a href="{obj.url}" target="_blank">🔗</a>')
+
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
-    list_display = ('title', 'author','content_date', 'source', 'likes')
+    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', link_to_memoitem)
     list_filter = ('source__name', 'author__name')
     search_fields = ('content',)
 
-# TODO: Trocar para um sistema de agendamento de tarefas
-
-class MetaScraperAdmin(admin.ModelAdmin):
-    model = MetaScraper
-    list_display = ('source', 'url', 'command')
-    actions = [run_scraper,]
     
 admin.site.register(MetaMemo)
-admin.site.register(MetaScraper, MetaScraperAdmin)
 admin.site.register(MemoItem, MemoItemAdmin)
 admin.site.register(MemoSource)
 admin.site.register(MemoMedia, MemoMediaAdmin)
