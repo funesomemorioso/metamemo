@@ -6,6 +6,7 @@ from google.cloud import storage
 from pydub import AudioSegment
 import mimetypes
 import io
+import yake
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None)
 METAMEMO_DEFAULT_LANGUAGE = getattr(settings, "METAMEMO_DEFAULT_LANGUAGE", "pt-BR")
@@ -69,3 +70,11 @@ def google_transcribe(audio_file_name, bucket_name='metamemo'):
     delete_blob(bucket_name, destination_blob_name)
     return transcript
 
+
+def generate_keyword(text):
+    max_ngram_size = 1
+
+    kw_extractor = yake.KeywordExtractor(lan=METAMEMO_DEFAULT_LANGUAGE, n=max_ngram_size)
+
+    keywords = kw_extractor.extract_keywords(text)
+    return keywords

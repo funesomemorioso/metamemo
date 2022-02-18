@@ -20,6 +20,14 @@ python mangage.py migrate -> para efetuar as migrações
 Obviamente a ideia é fechar o modelo de dados antes de começar a popular o banco definitivamente.
 """
 
+
+class MemoKeyWord(models.Model):
+    word = models.CharField(max_length=200)
+    important = models.BooleanField(null=True)
+
+    def __str__(self):
+        return(self.word)
+
 class MemoSource(models.Model):
     name = models.CharField(max_length=200)
     
@@ -79,7 +87,7 @@ class MemoItem(models.Model):
     raw = models.JSONField(blank=True, null=True)
     medias = models.ManyToManyField(MemoMedia, blank=True, null=True)
     original_id = models.CharField(max_length=500)
+    keyword = models.ManyToManyField(MemoKeyWord, blank=True, null=True)
 
     def __str__(self):
         return(self.title)
-

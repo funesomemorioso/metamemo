@@ -5,10 +5,10 @@ from django.utils.html import format_html
 
 import shlex
 # Register your models here.
-from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia
+from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MemoKeyWord
 
 from metamemoapp.tasks import transcribe_async, download_async
-
+from metamemoapp.utils import generate_keyword
 """
 Esse é o principal motivo pelo qual eu quis vir pro django.
 Com poucas linhas a gente tem uma interface administrativa robusta e customizável.
@@ -38,24 +38,43 @@ def transcribe_media(modeladmin, request, queryset):
 transcribe_media.short_description = 'Transcribe Video Media'
 
 
+def save_keywords(modeladmin, request, queryset):
+    for i in queryset:
+        text = i.content
+        for m in i.medias.all():
+            if m.transcription:
+                text += m.transcription
+        keywords = generate_keyword(text)
+        for word,rank in keywords:
+            w =  MemoKeyWord.objects.get_or_create(word=word)
+            i.keyword.add(w[0])
+
 
 class MemoMediaAdmin(admin.ModelAdmin):
     model = MemoMedia
     list_display = ('original_url', 'status', 'mediatype')
     actions = [download_media, transcribe_media]
+    list_filter = ('mediatype', 'status')
+
 
 @admin.display(description='Link')
 def link_to_memoitem(obj):
     return format_html(f'<a href="{obj.url}" target="_blank">🔗</a>')
 
+@admin.display(description='Keywords')
+def get_keywords(obj):
+    return ", ".join([p.word for p in obj.keyword.all()])
+
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
-    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', link_to_memoitem)
+    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', link_to_memoitem, get_keywords)
     list_filter = ('source__name', 'author__name')
     search_fields = ('content',)
+    actions = [save_keywords]
 
     
 admin.site.register(MetaMemo)
 admin.site.register(MemoItem, MemoItemAdmin)
 admin.site.register(MemoSource)
 admin.site.register(MemoMedia, MemoMediaAdmin)
+admin.site.register(MemoKeyWord)

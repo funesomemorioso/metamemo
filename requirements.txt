@@ -12,3 +12,6 @@ facebook_scraper
 
 celery
 django-celery-results
+
+
+yake
