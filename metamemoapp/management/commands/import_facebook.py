@@ -4,7 +4,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from django.utils import timezone
 from metamemoapp.models import MetaMemo, MemoItem, MemoSource
-import json, pprint, os
+import json, pprint, os, datetime
 import facebook_scraper
 
 """
@@ -71,7 +71,7 @@ class Command(BaseCommand):
                 else:
                     post.title = "" #FIX
                 post.content = i['post_text']
-                post.extraction_date = '2022-01-20 00:00:00' #FIX
+                post.extraction_date = datetime.datetime.now()
                 post.content_date = i['time']
                 post.url = i['post_url']
                 post.likes = i['likes']
