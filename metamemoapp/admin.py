@@ -7,7 +7,7 @@ import shlex
 # Register your models here.
 from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia
 
-from metamemoapp.tasks import transcribe_async
+from metamemoapp.tasks import transcribe_async, download_async
 
 """
 Esse é o principal motivo pelo qual eu quis vir pro django.
@@ -23,13 +23,18 @@ Vale ler a documentação.
 def download_media(modeladmin, request, queryset):
     for i in queryset.all():
         if i.status == 'INITIAL':
-            i.download_media()
+            download_async.delay(i.pk)
+            i.status == 'QUEUED'
+            i.save()
+            messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
 download_media.short_description = 'Download Media'
 
 def transcribe_media(modeladmin, request, queryset):
     for i in queryset.filter(status='DOWNLOADED'):
         transcribe_async.delay(i.pk)
+        i.status == 'QUEUED'
+        i.save()
         messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Media'
 
