@@ -7,6 +7,8 @@ from metamemoapp.models import MetaMemo, MemoItem, MemoSource
 import json, pprint, os, datetime
 import urllib
 
+from metamemoapp.tasks import download_img_async
+
 class Command(BaseCommand):
     help = 'Importa de um arquivo de facebook/instagram via Crowdtangle'
 
@@ -88,7 +90,13 @@ class Command(BaseCommand):
 
                 #Cria um metaitem com status INITIAL caso existam vídeos
                     if i['platform'] == 'Facebook' and i['type'] in ['live_video_complete', 'native_video']:
-                        post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL')
+                        post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
                     elif i['platform'] == 'Instagram' and i['type'] == 'video':
-                        post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL')
+                        post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                    
+                    for m in i['media']:
+                        if m['type'] == 'photo':
+                            p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='IMAGE')
+                            download_img_async(p.pk, m['url'])
+
         

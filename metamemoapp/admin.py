@@ -42,7 +42,7 @@ transcribe_media.short_description = 'Transcribe Media'
 
 class MemoMediaAdmin(admin.ModelAdmin):
     model = MemoMedia
-    list_display = ('original_url', 'status')
+    list_display = ('original_url', 'status', 'mediatype')
     actions = [download_media, transcribe_media]
 
 @admin.display(description='Link')

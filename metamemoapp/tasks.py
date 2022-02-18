@@ -4,7 +4,7 @@ from metamemoapp.models import MemoMedia
 
 from django.core.files.base import File
 import tempfile, mimetypes
-import youtube_dl
+import youtube_dl, urllib, os
 
 @shared_task
 def transcribe_async(pk):
@@ -36,3 +36,13 @@ def download_async(pk):
             #self.mimetype = mimetype
             i.save()
     return True
+
+
+@shared_task
+def download_img_async(pk, url):
+    result = urllib.request.urlopen(url)
+    i = MemoMedia.objects.get(pk=pk)
+    filename = os.path.basename(url)
+    i.media.save(f'{i.original_id}_{filename}', File(result))
+    i.status = 'DOWNLOADED'
+    i.save()
