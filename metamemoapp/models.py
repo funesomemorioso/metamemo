@@ -49,12 +49,17 @@ class MemoMedia(models.Model):
         ('QUEUED', 'Queued')
     )
 
+    MEDIATYPE_CHOICES = (
+        ('VIDEO', 'Video'),
+        ('IMAGE', 'Image'),
+    )
+
     original_url = models.URLField(max_length=500)
     original_id = models.CharField(max_length=500)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     transcription = models.TextField(blank=True)
     media = models.FileField(upload_to='metamemo', blank=True) #Add directory by account
-    mimetype = models.CharField(max_length=20, blank=True)
+    mediatype = models.CharField(max_length=20, blank=True, choices=MEDIATYPE_CHOICES)
 
     def __str__(self):
         return self.original_id
