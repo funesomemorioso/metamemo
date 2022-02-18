@@ -70,7 +70,7 @@ class MemoItem(models.Model):
     url = models.URLField()
     likes = models.IntegerField()
     interactions = models.IntegerField()
-    shares = models.IntegerField()
+    shares = models.IntegerField(null=True)
     raw = models.JSONField(blank=True, null=True)
     medias = models.ManyToManyField(MemoMedia, blank=True, null=True)
     original_id = models.CharField(max_length=500)
