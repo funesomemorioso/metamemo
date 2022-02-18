@@ -33,7 +33,6 @@ def download_async(pk):
             media_file = File(tmpfile)
             result = i.media.save(f"{i.original_id}.mp4", media_file)
             i.status = 'DOWNLOADED'
-            #self.mimetype = mimetype
             i.save()
     return True
 
