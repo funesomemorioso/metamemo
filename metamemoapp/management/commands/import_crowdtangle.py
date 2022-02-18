@@ -48,10 +48,9 @@ class Command(BaseCommand):
         response = urllib.request.urlopen(url)
         input_posts = json.load(response)
 
-        pprint.pprint(input_posts)
         if input_posts['status'] == 200:
             for i in input_posts['result']['posts']:
-                post_id = int(i['id'].split('|')[1])
+                post_id = i['id'].split('|')[1]
                 if post_id in memo_itens:
                     print("Done!")
                     break
