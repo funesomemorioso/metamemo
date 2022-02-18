@@ -24,7 +24,7 @@ def download_media(modeladmin, request, queryset):
     for i in queryset.all():
         if i.status == 'INITIAL':
             download_async.delay(i.pk)
-            i.status == 'QUEUED'
+            i.status = 'QUEUED'
             i.save()
             messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
@@ -33,7 +33,7 @@ download_media.short_description = 'Download Media'
 def transcribe_media(modeladmin, request, queryset):
     for i in queryset.filter(status='DOWNLOADED'):
         transcribe_async.delay(i.pk)
-        i.status == 'QUEUED'
+        i.status = 'QUEUED'
         i.save()
         messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Media'
