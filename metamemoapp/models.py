@@ -91,3 +91,12 @@ class MemoItem(models.Model):
 
     def __str__(self):
         return(self.title)
+
+
+class MemoContext(models.Model):
+    context = models.TextField(blank=True)
+    start_date = models.DateTimeField(null=True)
+    end_date = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return(self.context)
