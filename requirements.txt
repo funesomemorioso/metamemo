@@ -15,3 +15,5 @@ django-celery-results
 
 
 yake
+
+lxml

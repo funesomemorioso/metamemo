@@ -100,3 +100,16 @@ class MemoContext(models.Model):
 
     def __str__(self):
         return(self.context)
+
+
+class MemoNews(models.Model):
+    title = models.CharField(max_length=200)
+    url = models.URLField()
+    text = models.TextField(blank=True)
+    content_date = models.DateTimeField(null=True)
+    source = models.CharField(max_length=200)
+    metamemo = models.ForeignKey(MetaMemo, on_delete=models.CASCADE, null=True)
+
+
+    def __str__(self):
+        return(f'{self.title} - {self.source}')

@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 import shlex
 # Register your models here.
-from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MemoKeyWord, MemoContext
+from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MemoKeyWord, MemoContext, MemoNews
 
 from metamemoapp.tasks import transcribe_async, download_async
 from metamemoapp.utils import generate_keyword
@@ -79,9 +79,15 @@ class MemoContextAdmin(admin.ModelAdmin):
     model = MemoContext
     list_display = ('context','start_date','end_date', itens_in_context)
 
+
+class MemoNewsAdmin(admin.ModelAdmin):
+    model = MemoNews
+    list_display = ('title', 'source', 'content_date', link_to_memoitem)
+
 admin.site.register(MetaMemo)
 admin.site.register(MemoItem, MemoItemAdmin)
 admin.site.register(MemoSource)
 admin.site.register(MemoMedia, MemoMediaAdmin)
 admin.site.register(MemoKeyWord)
 admin.site.register(MemoContext, MemoContextAdmin)
+admin.site.register(MemoNews, MemoNewsAdmin)
