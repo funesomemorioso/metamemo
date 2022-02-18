@@ -8,24 +8,25 @@ import json, pprint, os, datetime
 import urllib
 
 class Command(BaseCommand):
-    help = 'Importa de um arquivo de facebook via Crowdtangle'
+    help = 'Importa de um arquivo de facebook/instagram via Crowdtangle'
 
     def add_arguments(self, parser):
-        parser.add_argument('-u', '--username', type=str, help='Facebook Username')
+        parser.add_argument('-u', '--username', type=str, help='Account Username')
         parser.add_argument('-a', '--author', type=str, help='MetaMemo Author Name')
         parser.add_argument('-c', '--clear', action='store_true')
+        parser.add_argument('-s', '--source', type=str, help='Source')
 
 
     def handle(self, *args, **kwargs):
         username = kwargs['username']
         author = kwargs['author']
         clear = kwargs['clear']
+        source = kwargs['source']
         
         memo_author = MetaMemo.objects.get_or_create(name=author)
-        memo_source = MemoSource.objects.get_or_create(name='Facebook')
+        memo_source = MemoSource.objects.get_or_create(name=source)
         
-    
-        memo_itens = MemoItem.objects.filter(author__name=author, source__name='Facebook').values_list('original_id', flat=True)
+        memo_itens = MemoItem.objects.filter(author__name=author, source__name=source).values_list('original_id', flat=True)
         
         #Esvazia lista de ids caso passe a flag --clear;
         #TODO: Excluir os posts em caso de clear. Não fiz ainda para manter os posts p/ debug.
@@ -34,7 +35,10 @@ class Command(BaseCommand):
 
 
         #Leva as configurações para o settings.py (que herdam do .env)
-        apikey = getattr(settings, 'CROWDTANGLE_API_KEY', None)
+        if source=='Facebook':
+            apikey = getattr(settings, 'CROWDTANGLE_INSTAGRAM_API_KEY', None)
+        elif source=='Instagram':
+            apikey = getattr(settings, 'CROWDTANGLE_FACEBOOK_API_KEY', None)
         pages = getattr(settings, 'CROWDTANGLE_POSTS_COUNT', 10)
         interval = urllib.parse.quote_plus(getattr(settings, 'CROWDTANGLE_POSTS_INTERVAL', '90 DAY'))
         
