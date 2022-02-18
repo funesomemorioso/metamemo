@@ -36,18 +36,17 @@ class Command(BaseCommand):
 
         #Leva as configurações para o settings.py (que herdam do .env)
         if source=='Facebook':
-            apikey = getattr(settings, 'CROWDTANGLE_INSTAGRAM_API_KEY', None)
-        elif source=='Instagram':
             apikey = getattr(settings, 'CROWDTANGLE_FACEBOOK_API_KEY', None)
+        elif source=='Instagram':
+            apikey = getattr(settings, 'CROWDTANGLE_INSTAGRAM_API_KEY', None)
         pages = getattr(settings, 'CROWDTANGLE_POSTS_COUNT', 10)
         interval = urllib.parse.quote_plus(getattr(settings, 'CROWDTANGLE_POSTS_INTERVAL', '90 DAY'))
         
         url = f'https://api.crowdtangle.com/posts?token={apikey}&accounts={username}&sortBy=date&timeframe={interval}'
-        
         response = urllib.request.urlopen(url)
         input_posts = json.load(response)
 
-        
+        pprint.pprint(input_posts)
         if input_posts['status'] == 200:
             for i in input_posts['result']['posts']:
                 post_id = int(i['id'].split('|')[1])
@@ -58,24 +57,38 @@ class Command(BaseCommand):
                     post = MemoItem()
                     post.author = memo_author[0]
                     post.source = memo_source[0]
-                    if i['message']:
-                        post.title = i['message'][0:139].replace('\n',' ')
-                    else:
-                        post.title = "" #FIX
-                    post.content = i['message']
-                    post.extraction_date = datetime.datetime.now()
-                    post.content_date = i['date']
-                    post.url = i['postUrl']
-                    post.likes = i['statistics']['actual']['likeCount']
-                    post.shares = i['statistics']['actual']['shareCount']
-                    post.interactions = i['statistics']['actual']['commentCount']
+                    
+                    if i['platform'] == 'Facebook':
+                        if i['message']:
+                            post.title = i['message'][0:139].replace('\n',' ')
+                        else:
+                            post.title = "" #FIX
+                        post.content = i['message']
+                        post.extraction_date = datetime.datetime.now()
+                        post.content_date = i['date']
+                        post.url = i['postUrl']
+                        post.likes = i['statistics']['actual']['likeCount']
+                        post.shares = i['statistics']['actual']['shareCount']
+                        post.interactions = i['statistics']['actual']['commentCount']
+                    elif i['platform'] == 'Instagram':
+                        if i['description']:
+                            post.title = i['description'][0:139].replace('\n',' ')
+                        else:
+                            post.title = "" #FIX
+                        post.content = i['description']
+                        post.extraction_date = datetime.datetime.now()
+                        post.content_date = i['date']
+                        post.url = i['postUrl']
+                        post.likes = i['statistics']['actual']['favoriteCount']
+                        post.interactions = i['statistics']['actual']['commentCount']
+                    
                     post.original_id = post_id
                     post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
-                    print(post)
                     post.save()
 
                 #Cria um metaitem com status INITIAL caso existam vídeos
-                    if i['type'] in ['live_video_complete', 'native_video']:
+                    if i['platform'] == 'Facebook' and i['type'] in ['live_video_complete', 'native_video']:
                         post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL')
-
+                    elif i['platform'] == 'Instagram' and i['type'] == 'video':
+                        post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL')
         
