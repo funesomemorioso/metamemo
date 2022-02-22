@@ -65,9 +65,18 @@
 
                 {% for i in memoitem_list %}
                 <div>
+                    <div>
                     <span class='btn btn-info'>{{i.content_date|date:"d/m/y"}}</span>
                     <span class='btn btn-danger'>{{i.source}}</span>
                     <span class='btn btn-info'>{{i.author}}</span>
+                </div>
+                    {% if i.getImage %}
+                        {%if i.getImage.media %}
+                        <p><br />
+                            <img style='width:300px' src='{{i.getImage.media.url}}' />
+                        </p>
+                        {% endif %}
+                    {% endif %}
                     <p><br />{{i.title}}</p>
                     <ul>
                         <li>

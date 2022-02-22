@@ -94,6 +94,9 @@ class MemoItem(models.Model):
     def __str__(self):
         return(self.title)
 
+    def getImage(self):
+        return self.medias.filter(mediatype='IMAGE').first()
+
 
 class MemoContext(models.Model):
     context = models.TextField(blank=True)
