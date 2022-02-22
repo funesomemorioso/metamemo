@@ -18,6 +18,7 @@ class Command(BaseCommand):
         parser.add_argument('-c', '--clear', action='store_true')
         parser.add_argument('-s', '--source', type=str, help='Source')
         parser.add_argument('-d', '--debug', action='store_true')
+        parser.add_argument('-i', '--image', action='store_true')
 
 
     def handle(self, *args, **kwargs):
@@ -26,6 +27,7 @@ class Command(BaseCommand):
         self.clear = kwargs['clear']
         self.source = kwargs['source']
         self.debug = kwargs['debug']
+        self.img_download = kwargs['image']
         
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
         self.memo_source = MemoSource.objects.get_or_create(name=self.source)
@@ -116,7 +118,8 @@ class Command(BaseCommand):
                         for m in i['media']:
                             if m['type'] == 'photo':
                                 p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='IMAGE')
-                                download_img_async(p.pk, m['url'])
+                                if self.img_download:
+                                    download_img_async(p.pk, m['url'])
 
         
         if'nextPage' in input_posts['result']['pagination']:
