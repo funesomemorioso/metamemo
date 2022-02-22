@@ -66,7 +66,7 @@ class MemoMedia(models.Model):
     original_id = models.CharField(max_length=500)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     transcription = models.TextField(blank=True)
-    media = models.FileField(upload_to='metamemo', blank=True) #Add directory by account
+    media = models.FileField(upload_to='media', blank=True) #Add directory by account
     mediatype = models.CharField(max_length=20, blank=True, choices=MEDIATYPE_CHOICES)
 
     def __str__(self):
