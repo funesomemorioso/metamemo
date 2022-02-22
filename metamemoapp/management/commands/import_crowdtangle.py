@@ -17,54 +17,70 @@ class Command(BaseCommand):
         parser.add_argument('-a', '--author', type=str, help='MetaMemo Author Name')
         parser.add_argument('-c', '--clear', action='store_true')
         parser.add_argument('-s', '--source', type=str, help='Source')
+        parser.add_argument('-d', '--debug', action='store_true')
 
 
     def handle(self, *args, **kwargs):
-        username = kwargs['username']
-        author = kwargs['author']
-        clear = kwargs['clear']
-        source = kwargs['source']
+        self.username = kwargs['username']
+        self.author = kwargs['author']
+        self.clear = kwargs['clear']
+        self.source = kwargs['source']
+        self.debug = kwargs['debug']
         
-        memo_author = MetaMemo.objects.get_or_create(name=author)
-        memo_source = MemoSource.objects.get_or_create(name=source)
+        self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
+        self.memo_source = MemoSource.objects.get_or_create(name=self.source)
         
-        memo_itens = MemoItem.objects.filter(author__name=author, source__name=source).values_list('original_id', flat=True)
+        self.memo_itens = MemoItem.objects.filter(author__name=self.author, source__name=self.source).values_list('original_id', flat=True)
         
         #Esvazia lista de ids caso passe a flag --clear;
         #TODO: Excluir os posts em caso de clear. Não fiz ainda para manter os posts p/ debug.
-        if clear:
-            memo_itens = []
+        if self.clear:
+            self.memo_itens = []
 
 
         #Leva as configurações para o settings.py (que herdam do .env)
-        if source=='Facebook':
+        if self.source=='Facebook':
             apikey = getattr(settings, 'CROWDTANGLE_FACEBOOK_API_KEY', None)
-        elif source=='Instagram':
+        elif self.source=='Instagram':
             apikey = getattr(settings, 'CROWDTANGLE_INSTAGRAM_API_KEY', None)
-        pages = getattr(settings, 'CROWDTANGLE_POSTS_COUNT', 10)
+        pages = getattr(settings, 'CROWDTANGLE_POSTS_COUNT', 100)
         interval = urllib.parse.quote_plus(getattr(settings, 'CROWDTANGLE_POSTS_INTERVAL', '90 DAY'))
         
-        url = f'https://api.crowdtangle.com/posts?token={apikey}&accounts={username}&sortBy=date&timeframe={interval}'
+        
+        url = f'https://api.crowdtangle.com/posts?token={apikey}&accounts={self.username}&sortBy=date&timeframe={interval}&count={pages}'
+        self.parseUrl(url)
+
+    def parseUrl(self, url):
+        if self.debug:
+            print(f'Acessing {url}')
         response = urllib.request.urlopen(url)
         input_posts = json.load(response)
 
         if input_posts['status'] == 200:
             for i in input_posts['result']['posts']:
                 post_id = i['id'].split('|')[1]
-                if post_id in memo_itens:
-                    print("Done!")
-                    break
+                if post_id in self.memo_itens:
+                    if self.clear:
+                        print("Done!")
+                        break
+                    else:
+                        if self.debug:
+                            print(f"{post_id} already in base")
+                        pass
                 else:
+                    if self.debug:
+                        print(f"Saving {post_id}")
                     post = MemoItem()
-                    post.author = memo_author[0]
-                    post.source = memo_source[0]
+                    post.author = self.memo_author[0]
+                    post.source = self.memo_source[0]
                     
                     if i['platform'] == 'Facebook':
-                        if i['message']:
+                        if 'message' in i:
                             post.title = i['message'][0:139].replace('\n',' ')
+                            post.content = i['message']
                         else:
                             post.title = "" #FIX
-                        post.content = i['message']
+                            post.content = ""
                         post.extraction_date = datetime.datetime.now()
                         post.content_date = i['date']
                         post.url = i['postUrl']
@@ -93,9 +109,12 @@ class Command(BaseCommand):
                     elif i['platform'] == 'Instagram' and i['type'] == 'video':
                         post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
                     
-                    for m in i['media']:
-                        if m['type'] == 'photo':
-                            p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='IMAGE')
-                            download_img_async(p.pk, m['url'])
+                    if 'media' in i:
+                        for m in i['media']:
+                            if m['type'] == 'photo':
+                                p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='IMAGE')
+                                download_img_async(p.pk, m['url'])
 
         
+        if'nextPage' in input_posts['result']['pagination']:
+            self.parseUrl(input_posts['result']['pagination']['nextPage'])
