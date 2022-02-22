@@ -71,7 +71,7 @@ def get_keywords(obj):
 
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
-    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', link_to_memoitem, get_keywords)
+    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, link_to_memoitem)
     list_filter = ('source__name', 'author__name')
     search_fields = ('content',)
     actions = [save_keywords]
