@@ -62,7 +62,12 @@ def link_to_memoitem(obj):
 
 @admin.display(description='Keywords')
 def get_keywords(obj):
-    return ", ".join([p.word for p in obj.keyword.all()])
+    if obj.keyword.all():
+        return ", ".join([p.word for p in obj.keyword.all()])
+    else:
+        v = obj.medias.filter(mediatype='VIDEO').first()
+        if v:
+            return v.status
 
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
