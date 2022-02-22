@@ -8,14 +8,15 @@ import youtube_dl, urllib, os
 
 @shared_task
 def transcribe_async(pk):
-    print(pk)
     i = MemoMedia.objects.get(pk=pk)
     try:
         i.transcription = google_transcribe(i.media.path)
         i.status = 'TRANSCRIBED'
+        i.save()
     except:
         i.status = 'FAILED_TRANSCRIBE'
-    i.save()
+        i.save()
+        raise Exception()
 
 @shared_task
 def download_async(pk):
@@ -36,16 +37,23 @@ def download_async(pk):
                 media_file = File(tmpfile)
                 result = i.media.save(f"{i.original_id}.mp4", media_file)
                 i.status = 'DOWNLOADED'
+                i.save()
     except:
         i.status = 'FAILED_DOWNLOAD'
-    i.save()
+        i.save()
+        raise Exception()
+
 
 
 @shared_task
 def download_img_async(pk, url):
     result = urllib.request.urlopen(url)
     i = MemoMedia.objects.get(pk=pk)
-    filename = os.path.basename(url)
-    i.media.save(f'{i.original_id}_{filename}', File(result))
-    i.status = 'DOWNLOADED'
-    i.save()
+    try:
+        filename = os.path.basename(url)
+        i.media.save(f'{i.original_id}_{filename}', File(result))
+        i.status = 'DOWNLOADED'
+        i.save()
+    except:
+        i.status = 'FAILED_DONWLOAD'
+        i.save()
