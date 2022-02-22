@@ -91,7 +91,7 @@ class Command(BaseCommand):
                         post.interactions = i['statistics']['actual']['commentCount']
                     elif i['platform'] == 'Instagram':
                         if i['description']:
-                            post.title = i['message'].replace('\n',' ').encode('unicode_escape')[0:139]
+                            post.title = i['description'].replace('\n',' ').encode('unicode_escape')[0:139]
                         else:
                             post.title = "" #FIX
                         post.content = i['description'].encode('unicode_escape')
