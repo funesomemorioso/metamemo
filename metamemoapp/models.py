@@ -52,9 +52,10 @@ class MemoMedia(models.Model):
     STATUS_CHOICES = (
         ('INITIAL', 'Initial'),
         ('DOWNLOADED', 'Downloaded'),
-        ('TRANSCRIBED', 'Transcribed'),
-        ('READY', 'Ready'),
-        ('QUEUED', 'Queued')
+        ('TRANSCRIBING', 'Transcribing'),
+        ('DOWNLOADING', 'Downloading'),
+        ('FAILED_DOWNLOAD', 'Download Failed'),
+        ('FAILED_TRANSCRIBE', 'Transcribe Failed')
     )
 
     MEDIATYPE_CHOICES = (
