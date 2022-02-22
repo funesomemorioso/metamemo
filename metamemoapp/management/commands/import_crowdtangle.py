@@ -79,7 +79,7 @@ class Command(BaseCommand):
                     if i['platform'] == 'Facebook':
                         if 'message' in i:
                             post.content = i['message'].encode('unicode_escape')
-                            post.title = post.content[0:139].replace('\n',' ')
+                            post.title = i['message'].replace('\n',' ').encode('unicode_escape')[0:139]
                         else:
                             post.title = "" #FIX
                             post.content = ""
@@ -91,10 +91,10 @@ class Command(BaseCommand):
                         post.interactions = i['statistics']['actual']['commentCount']
                     elif i['platform'] == 'Instagram':
                         if i['description']:
-                            post.title = i['description'][0:139].replace('\n',' ')
+                            post.title = i['message'].replace('\n',' ').encode('unicode_escape')[0:139]
                         else:
                             post.title = "" #FIX
-                        post.content = i['description']
+                        post.content = i['description'].encode('unicode_escape')
                         post.extraction_date = datetime.datetime.now()
                         post.content_date = i['date']
                         post.url = i['postUrl']
