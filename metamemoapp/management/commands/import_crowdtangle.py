@@ -105,7 +105,10 @@ class Command(BaseCommand):
 
                 #Cria um metaitem com status INITIAL caso existam vídeos
                     if i['platform'] == 'Facebook' and i['type'] in ['live_video_complete', 'native_video']:
-                        post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                        if 'link' in i:
+                            post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                        else:
+                            post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
                     elif i['platform'] == 'Instagram' and i['type'] == 'video':
                         post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
                     
