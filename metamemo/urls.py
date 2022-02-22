@@ -18,7 +18,11 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
+from metamemoapp import views
+
 
 urlpatterns = [
+    path('list/<int:year>/<int:month>/<int:day>', views.list),
+    path('list/', views.list),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

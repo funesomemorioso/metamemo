@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Metamemo</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Metamemo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+     <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Metamemo  - {{date|date:"d/m/y"}}</h1>
+            <hr class="my-4">
+        </div>
+    </div>
+    
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Itens</h2>
+
+                {% for i in memoitem_list %}
+                <div>
+                    <span class='btn btn-info'>{{i.content_date|date:"d/m/y"}}</span>
+                    <span class='btn btn-danger'>{{i.source}}</span>
+                    <p><br />{{i.title}}</p>
+                    <ul>
+                        <li>
+                            Likes: {{i.likes}}
+                        </li>
+                        <li>
+                            Comments: {{i.interactions}}
+                        </li>
+                    </ul>
+                    
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-sm-6">
+                <h2>Contexto</h2>
+
+                {% for c in memocontext_list %}
+                    <span class="btn btn-info">{{c.start_date|date:"d/m/y"}}</span> <span class="btn btn-info">{{c.end_date|date:"d/m/y"}}</span>
+                    <p><b>{{c.context}}</b></p>
+                {% endfor %}
+
+                <h2>Notícias</h2>
+
+                {% for n in memonews_list %}
+                    <span class="btn btn-info">{{n.content_date|date:"d/m/y"}}</span>
+                    <p><a href="{{n.url}}" target="_blank">{{n.title}}</a> - {{n.source}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
