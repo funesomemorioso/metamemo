@@ -90,11 +90,16 @@ class Command(BaseCommand):
                         post.shares = i['statistics']['actual']['shareCount']
                         post.interactions = i['statistics']['actual']['commentCount']
                     elif i['platform'] == 'Instagram':
-                        if i['description']:
+                        if 'description' in i:
                             post.title = i['description'].replace('\n',' ').encode('unicode_escape')[0:139]
+                            post.content = i['description'].encode('unicode_escape')
+                        elif 'imageText' in i:
+                            post.title = i['imageText'].replace('\n',' ').encode('unicode_escape')[0:139]
+                            post.content = i['imageText'].encode('unicode_escape')
                         else:
-                            post.title = "" #FIX
-                        post.content = i['description'].encode('unicode_escape')
+                            post.title = ''
+                            post.content = ''
+                        
                         post.extraction_date = datetime.datetime.now()
                         post.content_date = i['date']
                         post.url = i['postUrl']
