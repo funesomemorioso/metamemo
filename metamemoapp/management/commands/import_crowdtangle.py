@@ -78,8 +78,8 @@ class Command(BaseCommand):
                     
                     if i['platform'] == 'Facebook':
                         if 'message' in i:
-                            post.title = i['message'][0:139].encode('unicode_escape').replace('\n',' ')
                             post.content = i['message'].encode('unicode_escape')
+                            post.title = post.content[0:139].replace('\n',' ')
                         else:
                             post.title = "" #FIX
                             post.content = ""
