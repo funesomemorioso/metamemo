@@ -22,7 +22,7 @@ from metamemoapp import views
 
 
 urlpatterns = [
-    path('list/<int:year>/<int:month>/<int:day>', views.list),
+    path('list/<int:year>/<int:month>/<int:day>', views.list, name='list'),
     path('list/', views.list),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

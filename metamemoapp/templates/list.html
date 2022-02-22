@@ -1,4 +1,5 @@
 {% load static %}
+{% load metamemoapp_extras %}
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -41,9 +42,18 @@
 
      <div class="container">
         <div class="jumbotron">
-            <h1 class="display-4">Metamemo  - {{date|date:"d/m/y"}}</h1>
+            <h1 class="display-4">Metamemo  - {{date|date:'d/m/y'}}</h1>
             <hr class="my-4">
+            {% with yst=date|addDays:-1 %}
+                <a class="btn btn-primary" href="{% url 'list' year=yst.year month=yst.month day=yst.day %}"">{{yst|date:'d/m/y'}}</a>
+            {% endwith %}
+            
+            {% with tmr=date|addDays:1 %}
+                <a class="btn btn-primary" style="float:right" href="{% url 'list' year=tmr.year month=tmr.month day=tmr.day %}"">{{tmr|date:'d/m/y'}}</a>
+            {% endwith %}
+            
         </div>
+        
     </div>
     
 
