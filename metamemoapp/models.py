@@ -51,10 +51,11 @@ class MetaMemo(models.Model):
 class MemoMedia(models.Model):
     STATUS_CHOICES = (
         ('INITIAL', 'Initial'),
-        ('DOWNLOADED', 'Downloaded'),
-        ('TRANSCRIBING', 'Transcribing'),
         ('DOWNLOADING', 'Downloading'),
+        ('DOWNLOADED', 'Downloaded'),
         ('FAILED_DOWNLOAD', 'Download Failed'),
+        ('TRANSCRIBING', 'Transcribing'),
+        ('TRANSCRIBED', 'Transcribed'),
         ('FAILED_TRANSCRIBE', 'Transcribe Failed')
     )
 
