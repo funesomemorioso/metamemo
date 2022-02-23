@@ -10,6 +10,8 @@ from textwrap import shorten
 
 from metamemoapp.tasks import download_img_async
 
+TITLE_MAX_CHAR = 300
+
 class Command(BaseCommand):
     help = 'Importa de um arquivo de facebook/instagram via Crowdtangle'
 
@@ -80,7 +82,7 @@ class Command(BaseCommand):
                     if i['platform'] == 'Facebook':
                         if 'message' in i:
                             post.content = i['message']
-                            post.title = shorten(i['message'].replace('\n',' '), CROWDTANGLE_MAX_CHAR)
+                            post.title = shorten(i['message'].replace('\n',' '), TITLE_MAX_CHAR)
                         else:
                             post.title = "" #FIX
                             post.content = ""
@@ -92,10 +94,10 @@ class Command(BaseCommand):
                         post.interactions = i['statistics']['actual']['commentCount']
                     elif i['platform'] == 'Instagram':
                         if 'description' in i:
-                            post.title = shorten(i['description'].replace('\n',' '), CROWDTANGLE_MAX_CHAR)
+                            post.title = shorten(i['description'].replace('\n',' '), TITLE_MAX_CHAR)
                             post.content = i['description']
                         elif 'imageText' in i:
-                            post.title = shorten(i['imageText'].replace('\n',' '), CROWDTANGLE_MAX_CHAR)
+                            post.title = shorten(i['imageText'].replace('\n',' '), TITLE_MAX_CHAR)
                             post.content = i['imageText']
                         else:
                             post.title = ''
