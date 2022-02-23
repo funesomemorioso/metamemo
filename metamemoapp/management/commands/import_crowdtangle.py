@@ -6,6 +6,7 @@ from django.utils import timezone
 from metamemoapp.models import MetaMemo, MemoItem, MemoSource
 import json, pprint, os, datetime
 import urllib
+from textwrap import shorten
 
 from metamemoapp.tasks import download_img_async
 
@@ -78,8 +79,8 @@ class Command(BaseCommand):
                     
                     if i['platform'] == 'Facebook':
                         if 'message' in i:
-                            post.content = i['message'].encode('unicode_escape')
-                            post.title = i['message'].replace('\n',' ').encode('unicode_escape')[0:139]
+                            post.content = i['message']
+                            post.title = shorten(i['message'].replace('\n',' '), CROWDTANGLE_MAX_CHAR)
                         else:
                             post.title = "" #FIX
                             post.content = ""
@@ -91,11 +92,11 @@ class Command(BaseCommand):
                         post.interactions = i['statistics']['actual']['commentCount']
                     elif i['platform'] == 'Instagram':
                         if 'description' in i:
-                            post.title = i['description'].replace('\n',' ').encode('unicode_escape')[0:139]
-                            post.content = i['description'].encode('unicode_escape')
+                            post.title = shorten(i['description'].replace('\n',' '), CROWDTANGLE_MAX_CHAR)
+                            post.content = i['description']
                         elif 'imageText' in i:
-                            post.title = i['imageText'].replace('\n',' ').encode('unicode_escape')[0:139]
-                            post.content = i['imageText'].encode('unicode_escape')
+                            post.title = shorten(i['imageText'].replace('\n',' '), CROWDTANGLE_MAX_CHAR)
+                            post.content = i['imageText']
                         else:
                             post.title = ''
                             post.content = ''
