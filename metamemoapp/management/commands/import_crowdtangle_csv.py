@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 pass
 
         print(f"Creating {len(post_objects)} records...")
-        posts_created = MemoItem.objects.bulk_create(post_objects)
+        posts_created = MemoItem.objects.bulk_create(post_objects, batch_size=100)
         print("Creating media records...")
         for poid in posts_created:
             post = MemoItem.objects.get(original_id=poid.original_id)
