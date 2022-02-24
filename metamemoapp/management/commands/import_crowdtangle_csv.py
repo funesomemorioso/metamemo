@@ -36,7 +36,10 @@ class Command(BaseCommand):
 
         post_objects = []
         for p in posts:
-            post_id = p['url'].split('/')[-1]
+            if 'facebook_d' in p:
+                post_id = p['url'].split('/')[-1]
+            elif 'photo' in p:
+                post_id = p['url'][:-1].split('/')[-1] #hackish para pegar id do post
             if post_id in self.memo_itens:
                 if self.debug:
                     print("Post already in database")
@@ -45,7 +48,7 @@ class Command(BaseCommand):
             post.original_id = post_id
             if 'facebook_id' in p:
                 post.source = MemoSource.objects.get_or_create(name='Facebook')[0]
-                post.author = MetaMemo.objects.get_or_create(name=p['page_name'])[0]
+                post.author = MetaMemo.objects.get_or_create(facebook_handle=p['user_name'], defaults={'name':p['page_name']})[0]
                 post.content = p['message']
                 post.title = shorten(p['message'].replace('\n',' '), TITLE_MAX_CHAR)
                 post.extraction_date = datetime.datetime.now()
@@ -56,8 +59,18 @@ class Command(BaseCommand):
                 post.interactions = int(p['comments'])
                 post.raw = json.dumps(p, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
                 post_objects.append(post)
-            elif 'instagram_id' in p:
-                pass
+            elif 'photo' in p:
+                post.source = MemoSource.objects.get_or_create(name='Instagram')[0]
+                post.author = MetaMemo.objects.get_or_create(instagram_handle=p['user_name'], defaults={'name':p['account']})[0]
+                post.content = p['description']
+                post.title = shorten(p['description'].replace('\n',' '), TITLE_MAX_CHAR)
+                post.extraction_date = datetime.datetime.now()
+                post.content_date = p['post_created'].replace("EST","").replace("EDT","").strip()
+                post.url = p['url']
+                post.likes = int(p['likes'])
+                post.interactions = int(p['comments'])
+                post.raw = json.dumps(p, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
+                post_objects.append(post)
 
         print(f"Creating {len(post_objects)} records...")
         posts_created = MemoItem.objects.bulk_create(post_objects, batch_size=100)
@@ -70,6 +83,7 @@ class Command(BaseCommand):
                     post.medias.get_or_create(original_url=p['link'], original_id=post.original_id, mediatype='VIDEO', defaults={'status':'INITIAL'})
                 else:
                     post.medias.get_or_create(original_url=p['postUrl'], original_id=post.original_id, mediatype='VIDEO', defaults={'status':'INITIAL'})
+            elif 'photo' in p:
+                post.medias.get_or_create(original_url=p['photo'], original_id=post.original_id, mediatype='IMAGE', defaults={'status':'INITIAL'})
             elif p['type'] == 'Photo':
-                    post.medias.get_or_create(original_url=p['link'], original_id=post.original_id, mediatype='IMAGE', defaults={'status':'INITIAL'})
-            
+                post.medias.get_or_create(original_url=p['link'], original_id=post.original_id, mediatype='IMAGE', defaults={'status':'INITIAL'})
