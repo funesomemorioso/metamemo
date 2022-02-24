@@ -1,3 +1,5 @@
+wheel
+
 django
 python-decouple
 ffmpeg-python
