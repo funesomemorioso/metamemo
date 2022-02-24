@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 post.interactions = int(p['comments'])
                 post.raw = json.dumps(p, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
                 post_objects.append(post)
-            elif 'photo' in p:
+            elif 'photo' in p and p['url']:
                 post.source = MemoSource.objects.get_or_create(name='Instagram')[0]
                 post.author = MetaMemo.objects.get_or_create(instagram_handle=p['user_name'], defaults={'name':p['account']})[0]
                 post.content = p['description']
