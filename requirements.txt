@@ -17,3 +17,5 @@ django-celery-results
 yake
 
 lxml
+
+django-import-export

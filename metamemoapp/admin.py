@@ -2,6 +2,9 @@ from django.contrib import admin
 from django.contrib import messages
 from django.utils.html import format_html
 
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
 
 import shlex
 # Register your models here.
@@ -83,8 +86,14 @@ class MemoItemAdmin(admin.ModelAdmin):
 def itens_in_context(obj):
     return(MemoItem.objects.filter(content_date__gte=obj.start_date, content_date__lte=obj.end_date).count())
 
-class MemoContextAdmin(admin.ModelAdmin):
+
+class MemoContextResource(resources.ModelResource):
+    class Meta:
+        model = MemoContext
+
+class MemoContextAdmin(ImportExportModelAdmin):
     model = MemoContext
+    resource_class = MemoContextResource
     filter_horizontal = ('keyword',)
     list_display = ('context','start_date','end_date', link_to_memoitem, itens_in_context,)
 
