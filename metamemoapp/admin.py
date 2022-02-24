@@ -58,7 +58,10 @@ class MemoMediaAdmin(admin.ModelAdmin):
 
 @admin.display(description='Link')
 def link_to_memoitem(obj):
-    return format_html(f'<a href="{obj.url}" target="_blank">🔗</a>')
+    slug = '🔗'
+    if isinstance(obj, MemoContext):
+        slug = obj.source
+    return format_html(f'<a href="{obj.url}" target="_blank">{slug}</a>')
 
 @admin.display(description='Keywords')
 def get_keywords(obj):
@@ -82,7 +85,8 @@ def itens_in_context(obj):
 
 class MemoContextAdmin(admin.ModelAdmin):
     model = MemoContext
-    list_display = ('context','start_date','end_date', itens_in_context)
+    filter_horizontal = ('keyword',)
+    list_display = ('context','start_date','end_date', link_to_memoitem, itens_in_context,)
 
 
 class MemoNewsAdmin(admin.ModelAdmin):
