@@ -84,7 +84,8 @@ class MemoItemAdmin(admin.ModelAdmin):
 
 @admin.display(description="Posts")
 def itens_in_context(obj):
-    return(MemoItem.objects.filter(content_date__gte=obj.start_date, content_date__lte=obj.end_date).count())
+    if obj.start_date and obj.end_date:
+        return(MemoItem.objects.filter(content_date__gte=obj.start_date, content_date__lte=obj.end_date).count())
 
 
 class MemoContextResource(resources.ModelResource):
