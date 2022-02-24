@@ -2,9 +2,9 @@ from django.contrib import admin
 from django.contrib import messages
 from django.utils.html import format_html
 
-from import_export import resources
+from import_export import resources,fields
 from import_export.admin import ImportExportModelAdmin
-
+from import_export.widgets import ManyToManyWidget
 
 import shlex
 # Register your models here.
@@ -89,8 +89,14 @@ def itens_in_context(obj):
 
 
 class MemoContextResource(resources.ModelResource):
+    keyword=fields.Field(attribute='keyword', widget=ManyToManyWidget(MemoKeyWord, field='word'), column_name='keyword')
+    
     class Meta:
         model = MemoContext
+        fields = ('context', 'start_date', 'end_date', 'url', 'source', 'keyword')
+        exclude = ('id',)
+        import_id_fields = ('url','context')
+        export_order = fields
 
 class MemoContextAdmin(ImportExportModelAdmin):
     model = MemoContext
