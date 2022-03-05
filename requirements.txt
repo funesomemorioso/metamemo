@@ -22,3 +22,6 @@ yake
 lxml
 
 django-import-export
+
+django-storages
+boto3
