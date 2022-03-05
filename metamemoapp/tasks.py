@@ -19,29 +19,30 @@ def transcribe_async(pk):
         raise Exception()
 
 @shared_task
-def download_async(pk):
-    i = MemoMedia.objects.get(pk=pk)
-    try:
-        with tempfile.TemporaryDirectory() as tempdirname:
-            
-            ydl_opts = {
-                'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
-                'merge_output_format': 'mp4',
-                'progress_hooks':[]
-            }
+def download_async(url, mediatype):
+    if mediatype=='VIDEO':
+        i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
+        try:
+            with tempfile.TemporaryDirectory() as tempdirname:
+                
+                ydl_opts = {
+                    'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
+                    'merge_output_format': 'mp4',
+                    'progress_hooks':[]
+                }
 
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([i.original_url])
-        
-            with open(f'{tempdirname}/{i.original_id}.mp4', 'rb') as tmpfile:
-                media_file = File(tmpfile)
-                result = i.media.save(f"{i.original_id}.mp4", media_file)
-                i.status = 'DOWNLOADED'
-                i.save()
-    except:
-        i.status = 'FAILED_DOWNLOAD'
-        i.save()
-        raise Exception()
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([i.original_url])
+            
+                with open(f'{tempdirname}/{i.original_id}.mp4', 'rb') as tmpfile:
+                    media_file = File(tmpfile)
+                    result = i.media.save(f"{i.original_id}.mp4", media_file)
+                    i.status = 'DOWNLOADED'
+                    i.save()
+        except:
+            i.status = 'FAILED_DOWNLOAD'
+            i.save()
+            raise Exception()
 
 
 
