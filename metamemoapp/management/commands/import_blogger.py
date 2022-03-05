@@ -40,9 +40,6 @@ class Command(BaseCommand):
         
         url = f'https://www.googleapis.com/blogger/v3/blogs/byurl?url={self.url}&key={self.apikey}'
 
-        #url = f'https://www.googleapis.com/blogger/v3/blogs/'5199825393127499442/posts?key=AIzaSyAbHnIrSgZ9s-CqCKH_ERPJa8sW3IbDhok&maxResults=500&maxResults=500
-
-        #url = f'https://api.crowdtangle.com/posts?token={apikey}&accounts={self.username}&sortBy=date&timeframe={interval}&count={pages}'
         self.parseUrl(url)
 
     def parseUrl(self, url):
