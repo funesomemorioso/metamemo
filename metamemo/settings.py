@@ -145,6 +145,13 @@ STATIC_ROOT = '/home/markun/devel/metamemo/metamemo/static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# DJANGO STORAGES
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', default='')
+AWS_S3_ACCESS_KEY_ID = config('AWS_S3_ACCESS_KEY_ID', default='')
+AWS_S3_SECRET_ACCESS_KEY = config('AWS_S3_SECRET_ACCESS_KEY', default='')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='')
+
 #CELERY SETTINGS
 
 CELERY_RESULT_BACKEND = 'django-db'
