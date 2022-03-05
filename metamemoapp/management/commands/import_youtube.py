@@ -40,10 +40,9 @@ class Command(BaseCommand):
         
         self.base_url = f'https://www.googleapis.com/youtube/v3/search?channelId={self.channel}&type=video&key={self.apikey}&maxResults=50&part=id'
 
-        #url = f'https://www.googleapis.com/blogger/v3/blogs/'5199825393127499442/posts?key=AIzaSyAbHnIrSgZ9s-CqCKH_ERPJa8sW3IbDhok&maxResults=500&maxResults=500
-
-        #url = f'https://api.crowdtangle.com/posts?token={apikey}&accounts={self.username}&sortBy=date&timeframe={interval}&count={pages}'
         self.parseUrl(self.base_url)
+
+        
 
     def parseUrl(self, url):
         response = urllib.request.urlopen(url)
@@ -71,7 +70,6 @@ class Command(BaseCommand):
                 if post_id in self.memo_itens:
                     if self.debug:
                         print(f"{post_id} already in base")
-                        continue
                 else:
                     if self.debug:
                         print(f"Saving {post_id}")
@@ -79,17 +77,18 @@ class Command(BaseCommand):
                     post.author = self.memo_author[0]
                     post.source = self.memo_source[0]
                     
-                post.content = i['snippet']['description']
-                post.title = i['snippet']['title']
-                post.extraction_date = datetime.datetime.now()
-                post.content_date = i['snippet']['publishedAt']
-                post.url = f'https://www.youtube.com/watch?v={i["id"]}'
-                post.likes = i['statistics']['likeCount']
-                post.shares = 0
-                post.interactions = i['statistics']['commentCount']
-                post.original_id = post_id
-                post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
-                post.save()
+                    post.content = i['snippet']['description']
+                    post.title = i['snippet']['title']
+                    post.extraction_date = datetime.datetime.now()
+                    post.content_date = i['snippet']['publishedAt']
+                    post.url = f'https://www.youtube.com/watch?v={i["id"]}'
+                    post.likes = i['statistics']['likeCount']
+                    post.shares = 0
+                    post.interactions = i['statistics']['commentCount']
+                    post.original_id = post_id
+                    post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
+                    post.save()
+                    post.medias.create(original_url=post.url, original_id=post_id, status='INITIAL', mediatype='VIDEO')
         
         if 'nextPageToken' in posts_search:
             self.parseUrl(self.base_url+f'&pageToken={posts_search["nextPageToken"]}')
