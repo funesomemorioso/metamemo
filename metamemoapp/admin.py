@@ -27,7 +27,7 @@ def download_media(modeladmin, request, queryset):
     for i in queryset.filter(status='INITIAL', mediatype='VIDEO'):
         i.status = 'DOWNLOADING'
         i.save()
-        download_async.delay(url=i.original_url, mediatype='VIDEO')
+        download_async.apply_async(args=[i.original_url, 'VIDEO'], kwargs={'kwarg1': 'url', 'kwarg2': 'mediatype'})
         messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
 download_media.short_description = 'Download Video Media'
