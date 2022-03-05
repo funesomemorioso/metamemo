@@ -25,18 +25,18 @@ Vale ler a documentação.
 #Action para baixar as midias. TODO: Precisa jogar o job prum Celery da vida.
 def download_media(modeladmin, request, queryset):
     for i in queryset.filter(status='INITIAL', mediatype='VIDEO'):
-        download_async.delay(pk=i.pk)
         i.status = 'DOWNLOADING'
         i.save()
+        download_async.delay(pk=i.pk)
         messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
 download_media.short_description = 'Download Video Media'
 
 def transcribe_media(modeladmin, request, queryset):
     for i in queryset.filter(status='DOWNLOADED', mediatype='VIDEO'):
-        transcribe_async.delay(pk=i.pk)
         i.status = 'TRANSCRIBING'
         i.save()
+        transcribe_async.delay(pk=i.pk)
         messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Video Media'
 
