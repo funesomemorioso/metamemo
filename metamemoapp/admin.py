@@ -36,7 +36,7 @@ def transcribe_media(modeladmin, request, queryset):
     for i in queryset.filter(status='DOWNLOADED', mediatype='VIDEO'):
         i.status = 'TRANSCRIBING'
         i.save()
-        transcribe_async.delay(pk=i.pk)
+        transcribe_async.delay.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
         messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Video Media'
 
