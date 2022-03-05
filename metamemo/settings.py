@@ -82,8 +82,15 @@ WSGI_APPLICATION = 'metamemo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASS'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+        'OPTIONS': {
+            'charset': 'utf8mb4'
+        }
     }
 }
 
@@ -146,14 +153,14 @@ CELERY_RESULT_BACKEND = 'django-db'
 #METAMEMO SETTINGS
 
 METAMEMO_LANGUAGE = 'pt-BR'
-FACEBOOK_COOKIES=config('FACEBOOK_COOKIES')
-FACEBOOK_PAGES = config('FACEBOOK_PAGES', cast=int)
-FACEBOOK_PPP = config('FACEBOOK_PPP', cast=int)
+FACEBOOK_COOKIES=config('FACEBOOK_COOKIES', default='')
+FACEBOOK_PAGES = config('FACEBOOK_PAGES', default=0, cast=int)
+FACEBOOK_PPP = config('FACEBOOK_PPP', default=0, cast=int)
 
 
-GOOGLE_APPLICATION_CREDENTIALS=config('GOOGLE_APPLICATION_CREDENTIALS')
+GOOGLE_APPLICATION_CREDENTIALS=config('GOOGLE_APPLICATION_CREDENTIALS', default='')
 GOOGLE_BLOGGER_CREDENTIALS=config('GOOGLE_BLOGGER_CREDENTIALS', default='')
 GOOGLE_YOUTUBE_CREDENTIALS=config('GOOGLE_YOUTUBE_CREDENTIALS', default='')
 
-CROWDTANGLE_FACEBOOK_API_KEY=config('CROWDTANGLE_FACEBOOK_API_KEY')
-CROWDTANGLE_INSTAGRAM_API_KEY=config('CROWDTANGLE_INSTAGRAM_API_KEY')
+CROWDTANGLE_FACEBOOK_API_KEY=config('CROWDTANGLE_FACEBOOK_API_KEY', default='')
+CROWDTANGLE_INSTAGRAM_API_KEY=config('CROWDTANGLE_INSTAGRAM_API_KEY', default='')
