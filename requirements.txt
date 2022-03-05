@@ -1,6 +1,7 @@
 wheel
 
 django
+mysqlclient
 python-decouple
 ffmpeg-python
 youtube-dl
