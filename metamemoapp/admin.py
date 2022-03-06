@@ -22,22 +22,38 @@ Vale ler a documentação.
 """
 
 
-#Action para baixar as midias. TODO: Precisa jogar o job prum Celery da vida.
+#Action para baixar as midias.
 def download_media(modeladmin, request, queryset):
-    for i in queryset.filter(status='INITIAL', mediatype='VIDEO'):
-        i.status = 'DOWNLOADING'
-        i.save()
-        download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
-        messages.add_message(request, messages.SUCCESS, 'Download job started.')
+    if queryset.model is MemoMedia:
+        for i in queryset.filter(mediatype='VIDEO'):
+            i.status = 'DOWNLOADING'
+            i.save()
+            download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
+            messages.add_message(request, messages.SUCCESS, 'Download job started.')
+    elif queryset.model is MemoItem:
+        for i in queryset.filter(medias__mediatype='VIDEO'):
+            for v in i.medias.filter(mediatype='VIDEO'):
+                v.status = 'DOWNLOADING'
+                v.save()
+                download_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'})
+                messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
 download_media.short_description = 'Download Video Media'
 
 def transcribe_media(modeladmin, request, queryset):
-    for i in queryset.filter(status='DOWNLOADED', mediatype='VIDEO'):
-        i.status = 'TRANSCRIBING'
-        i.save()
-        transcribe_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
-        messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
+    if queryset.model is MemoMedia:
+        for i in queryset.filter(status='DOWNLOADED', mediatype='VIDEO'):
+            i.status = 'TRANSCRIBING'
+            i.save()
+            transcribe_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
+            messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
+    elif queryset.model is MemoItem:
+        for i in queryset.filter(medias__status='DOWNLOADED', medias__mediatype='VIDEO'):
+            for v in i.medias.filter(mediatype='VIDEO'):
+                v.status = 'TRANSCRIBING'
+                v.save()
+                transcribe_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'})
+                messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Video Media'
 
 
@@ -71,16 +87,20 @@ def get_keywords(obj):
     if obj.keyword.all():
         return ", ".join([p.word for p in obj.keyword.all()])
     else:
-        v = obj.medias.filter(mediatype='VIDEO').first()
-        if v:
-            return v.status
+        return ""
+
+@admin.display(description='Status')
+def video_status(obj):
+    v = obj.medias.filter(mediatype='VIDEO')
+    if v:
+        return v.first().status
 
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
-    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, link_to_memoitem)
+    list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, video_status, link_to_memoitem)
     list_filter = ('source__name', 'author__name')
     search_fields = ('content',)
-    actions = [save_keywords]
+    actions = [download_media, transcribe_media, save_keywords]
 
 @admin.display(description="Posts")
 def itens_in_context(obj):
