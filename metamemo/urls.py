@@ -22,6 +22,7 @@ from metamemoapp import views
 
 
 urlpatterns = [
+    path('', views.index),
     path('list/<int:year>/<int:month>/<int:day>', views.list, name='list'),
     path('list/', views.list),
     path('admin/', admin.site.urls),

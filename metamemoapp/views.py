@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from metamemoapp.models import MemoItem, MemoContext, MemoNews
+from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews
 from datetime import datetime
 # Create your views here.
 def index(request):
-    return render(request, 'index.html', {})
+    metamemo_list = MetaMemo.objects.all()
+    return render(request, 'index.html', {'metamemo_list': metamemo_list})
 
 
 def list(request, day=datetime.now().day, month=datetime.now().month, year=datetime.now().year):
