@@ -11,8 +11,8 @@ import yake
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None)
 METAMEMO_DEFAULT_LANGUAGE = getattr(settings, "METAMEMO_DEFAULT_LANGUAGE", "pt-BR")
 
-def convert_to_wav(audio_file_name):
-    sound = AudioSegment.from_file(audio_file_name)
+def convert_to_wav(audio_file):
+    sound = AudioSegment.from_file(audio_file)
     buf = io.BytesIO()
 
     if sound.channels > 1:
@@ -38,14 +38,14 @@ def delete_blob(bucket_name, blob_name):
 
     blob.delete()
 
-def google_transcribe(audio_file_name, bucket_name='metamemo'):
+def google_transcribe(video, bucket_name='metamemo'):
     
-    wav_file, frame_rate = convert_to_wav(audio_file_name)
+    wav_file, frame_rate = convert_to_wav(video)
         
     # The name of the audio file to transcribe
         
     bucket_name = 'metamemo'
-    destination_blob_name = os.path.basename(audio_file_name)
+    destination_blob_name = video.file.name
     
     upload_blob(bucket_name, wav_file, destination_blob_name)
     

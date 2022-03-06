@@ -10,7 +10,7 @@ import youtube_dl, urllib, os
 def transcribe_async(url, mediatype):
     i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
     try:
-        i.transcription = google_transcribe(i.media.path)
+        i.transcription = google_transcribe(i.media)
         i.status = 'TRANSCRIBED'
         i.save()
     except:
