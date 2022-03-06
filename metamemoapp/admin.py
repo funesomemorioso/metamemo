@@ -12,6 +12,8 @@ from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MemoKe
 
 from metamemoapp.tasks import transcribe_async, download_async
 from metamemoapp.utils import generate_keyword
+
+
 """
 Esse é o principal motivo pelo qual eu quis vir pro django.
 Com poucas linhas a gente tem uma interface administrativa robusta e customizável.
