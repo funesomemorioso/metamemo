@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from celery import shared_task, chain
+from celery_progress.backend import ProgressRecorder
 from metamemoapp.utils import google_transcribe
 from metamemoapp.models import MemoMedia
 
@@ -78,10 +79,19 @@ def transcribe_async(url, mediatype):
         i.save()
         raise Exception()
 
-@shared_task
-def download_async(url, mediatype):
+
+@shared_task(bind=True)
+def download_async(self, url, mediatype):
+    progress_recorder = ProgressRecorder(self)
+    
     if mediatype=='VIDEO':
         i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
+    
+        def progress_hook(info):
+            state, meta = progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
+            i.progress=meta['percent']
+            i.save()
+
         item = i.memoitem_set.first()
         try:
             with tempfile.TemporaryDirectory() as tempdirname:
@@ -89,7 +99,7 @@ def download_async(url, mediatype):
                 ydl_opts = {
                     'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
                     'merge_output_format': 'mp4',
-                    'progress_hooks':[]
+                    'progress_hooks':[progress_hook]
                 }
 
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:

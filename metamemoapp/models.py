@@ -70,6 +70,7 @@ class MemoMedia(models.Model):
     transcription = models.TextField(blank=True)
     media = models.FileField(upload_to='media', blank=True) #Add directory by account
     mediatype = models.CharField(max_length=20, blank=True, choices=MEDIATYPE_CHOICES)
+    progress = models.FloatField(default=0)
 
     def __str__(self):
         return self.original_id

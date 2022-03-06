@@ -95,8 +95,10 @@ def get_keywords(obj):
 def video_status(obj):
     v = obj.medias.filter(mediatype='VIDEO')
     if v:
+        if v.first().status == 'DOWNLOADING':
+            return f'{v.first().status} ({v.first().progress})'
         return v.first().status
-
+        
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
     list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, video_status, link_to_memoitem)
