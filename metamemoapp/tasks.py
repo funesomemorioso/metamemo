@@ -22,6 +22,7 @@ def transcribe_async(url, mediatype):
 def download_async(url, mediatype):
     if mediatype=='VIDEO':
         i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
+        item = i.memoitem_set.first()
         try:
             with tempfile.TemporaryDirectory() as tempdirname:
                 
@@ -36,7 +37,7 @@ def download_async(url, mediatype):
             
                 with open(f'{tempdirname}/{i.original_id}.mp4', 'rb') as tmpfile:
                     media_file = File(tmpfile)
-                    result = i.media.save(f"{i.original_id}.mp4", media_file)
+                    result = i.media.save(f"{item.source.name.lower()}_{i.original_id}.mp4", media_file)
                     i.status = 'DOWNLOADED'
                     i.save()
         except:
