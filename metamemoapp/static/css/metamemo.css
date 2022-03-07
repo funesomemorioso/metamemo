@@ -100,6 +100,12 @@ header nav a:first-child{
 	margin: 0px auto 6px auto;
 }
 
+.home-card-busque svg{
+	min-width: 38px;
+	min-height: 38px;
+	margin-left: 12px;
+}
+
 .home-card-busque .card-body h3{
 	font-size: 25px;
 }
