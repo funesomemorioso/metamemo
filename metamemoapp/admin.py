@@ -86,19 +86,19 @@ def link_to_memoitem(obj):
 
 @admin.display(description='Keywords')
 def get_keywords(obj):
-    if obj.keyword.all():
+    if obj.keyword:
         return ", ".join([p.word for p in obj.keyword.all()])
     else:
         return ""
 
 @admin.display(description='Status')
 def video_status(obj):
-    v = obj.medias.filter(mediatype='VIDEO')
-    if v:
-        if v.first().status == 'DOWNLOADING':
-            return f'{v.first().status} ({v.first().progress})'
-        return v.first().status
-        
+    for v in obj.medias.all():
+        if v.mediatype=='VIDEO':
+            if v.status == 'DOWNLOADING':
+                return f'{v.status} ({v.progress})'
+            return v.status
+    
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
     list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, video_status, link_to_memoitem)
@@ -106,6 +106,12 @@ class MemoItemAdmin(admin.ModelAdmin):
     search_fields = ('content',)
     actions = [download_media, transcribe_media, save_keywords]
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('medias').prefetch_related('keyword')
+
+    
+    
 @admin.display(description="Posts")
 def itens_in_context(obj):
     if obj.start_date and obj.end_date:
