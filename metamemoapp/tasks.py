@@ -119,6 +119,7 @@ def download_async(self, url, mediatype):
                     result = i.media.save(f'{item.source.name.lower()}_{i.original_id}.{ext}', media_file)
                     i.status = 'DOWNLOADED'
                     i.save()
+                    return i.media.url
         except:
             i.status = 'FAILED_DOWNLOAD'
             i.save()
