@@ -127,7 +127,7 @@ def download_async(self, url, mediatype):
                     i.status = 'DOWNLOADED'
                     i.save()
                     for v in videos[1:]: #adiciona media nos outros memomedia
-                        v.media.add(media)
+                        v.media = i.media
                         v.status = 'DOWNLOADED'
                         v.save()
 
