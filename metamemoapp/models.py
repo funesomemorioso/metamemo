@@ -80,7 +80,7 @@ class MemoItem(models.Model):
     author = models.ForeignKey(MetaMemo, on_delete=models.CASCADE)
     source = models.ForeignKey(MemoSource, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
-    content = models.TextField()
+    content = models.TextField(blank=True)
     extraction_date = models.DateTimeField(null=True)
     content_date = models.DateTimeField(null=True)
     url = models.URLField()
