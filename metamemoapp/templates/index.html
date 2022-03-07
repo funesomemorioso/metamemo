@@ -25,16 +25,17 @@
         <a class="py-2 d-none d-md-inline-block" href="#">Contato</a>
       </nav>
     </header>
-    <div class="container">
-        
-        
-      <div class="row">
-        <div class="col-6">
-          <form action="list/" method="post">
-            {% csrf_token %}
-            <div class="card card-default">
+    <div class="container-fluid home-top">
+      <div class="container">
+        <div class="home-top-bg"></div>
+      <form action="list/" method="post">
+      {% csrf_token %}
+        <div class="row">
+
+          <div class="col-6">
+            <div class="card card-default home-card-busque">
               <div class="panel-heading">
-                <h2>Encontre um metamemo</h2>
+                <h2>Busque um <strong>metamemo</stro></h2>
               </div>
               <div class="card-body bg-light">
                 <h3>Selecione uma ou mais redes</h3>
@@ -54,7 +55,7 @@
               </div>
 
               <div class="card card-body bg-light">
-                Selecione um período
+                <h3>*Selecione um período</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="selectDateStart" class="form-label">Início</label>
@@ -71,22 +72,15 @@
                 </div>
               </div>
             </div>
-          </form>
+          </div>
+          <div class="col-6">
+            
+          </div>
+        </form>    
         </div>
-
-
-
-
-
-
-
-        <div class="col-6">
-          <h1 class="h-a-metamemo">
-            A MetaMemo é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca) a
-          </h1>
-        </div>
-
       </div>
+      
+      
     </div>
 
     
