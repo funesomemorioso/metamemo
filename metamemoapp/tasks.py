@@ -94,7 +94,7 @@ def download_async(self, url, mediatype):
     if mediatype=='VIDEO':
         videos = MemoMedia.objects.filter(original_url=url, mediatype=mediatype)
     
-        i = videos[:1]
+        i = videos.first()
 
         def progress_hook(info):
             if 'downloaded_bytes' in info:
