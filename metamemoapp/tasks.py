@@ -90,9 +90,10 @@ def download_async(self, url, mediatype):
         i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
     
         def progress_hook(info):
-            state, meta = progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
-            i.progress=meta['percent']
-            i.save()
+            if 'downloaded_bytes' in info:
+                state, meta = progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
+                i.progress=meta['percent']
+                i.save()
 
         item = i.memoitem_set.first()
         try:
