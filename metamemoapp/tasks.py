@@ -97,19 +97,26 @@ def download_async(self, url, mediatype):
         item = i.memoitem_set.first()
         try:
             with tempfile.TemporaryDirectory() as tempdirname:
-                
+
                 ydl_opts = {
                     'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
-                    'merge_output_format': 'webm',
-                    'progress_hooks':[progress_hook]
+                    'progress_hooks':[progress_hook],
+                    'format':'bestvideo+bestaudio'
                 }
+
+                ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
+                #ydl_opts['merge_output_format']=ext
 
                 with YoutubeDL(ydl_opts) as ydl:
                     ydl.download([i.original_url])
-            
-                with open(f'{tempdirname}/{i.original_id}.webm', 'rb') as tmpfile:
+
+                filename = f'{tempdirname}/{i.original_id}.{ext}'
+                if not os.path.isfile(filename):
+                    filename = f'{tempdirname}/{i.original_id}.mkv' #hackish para mkv
+                
+                with open(filename, 'rb') as tmpfile:
                     media_file = File(tmpfile)
-                    result = i.media.save(f"{item.source.name.lower()}_{i.original_id}.webm", media_file)
+                    result = i.media.save(f'{item.source.name.lower()}_{i.original_id}.{ext}', media_file)
                     i.status = 'DOWNLOADED'
                     i.save()
         except:
