@@ -102,7 +102,7 @@ def video_status(obj):
 class MemoItemAdmin(admin.ModelAdmin):
     model = MemoItem
     list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, video_status, link_to_memoitem)
-    list_filter = ('source__name', 'author__name')
+    list_filter = ('source__name', 'author__name', 'medias__status')
     search_fields = ('content',)
     actions = [download_media, transcribe_media, save_keywords]
 
