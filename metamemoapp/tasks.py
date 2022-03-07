@@ -7,13 +7,15 @@ from metamemoapp.models import MemoMedia
 
 from django.core.files.base import File
 import tempfile, mimetypes
-import youtube_dl, urllib, os
+import urllib, os
+
 
 from pydub import AudioSegment
 import io, os, wave, time
 
 from google.cloud import storage
 from google.cloud import speech
+from yt_dlp import YoutubeDL
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None)
@@ -98,16 +100,16 @@ def download_async(self, url, mediatype):
                 
                 ydl_opts = {
                     'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
-                    'merge_output_format': 'mp4',
+                    'merge_output_format': 'webm',
                     'progress_hooks':[progress_hook]
                 }
 
-                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                with YoutubeDL(ydl_opts) as ydl:
                     ydl.download([i.original_url])
             
-                with open(f'{tempdirname}/{i.original_id}.mp4', 'rb') as tmpfile:
+                with open(f'{tempdirname}/{i.original_id}.webm', 'rb') as tmpfile:
                     media_file = File(tmpfile)
-                    result = i.media.save(f"{item.source.name.lower()}_{i.original_id}.mp4", media_file)
+                    result = i.media.save(f"{item.source.name.lower()}_{i.original_id}.webm", media_file)
                     i.status = 'DOWNLOADED'
                     i.save()
         except:

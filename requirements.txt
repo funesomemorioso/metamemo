@@ -4,7 +4,7 @@ django
 mysqlclient
 python-decouple
 ffmpeg-python
-youtube-dl
+yt-dlp
 
 google-cloud-speech
 google-cloud-language
