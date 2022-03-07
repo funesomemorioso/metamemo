@@ -106,6 +106,7 @@ class MemoItemAdmin(admin.ModelAdmin):
     raw_id_fields = ('medias',)
     search_fields = ('content',)
     filter_horizontal = ('keyword',)
+    readonly_fields = ('raw',)
     actions = [download_media, transcribe_media, save_keywords]
 
     def get_queryset(self, request):
