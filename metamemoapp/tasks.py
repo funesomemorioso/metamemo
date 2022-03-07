@@ -101,7 +101,7 @@ def download_async(self, url, mediatype):
                 ydl_opts = {
                     'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
                     'progress_hooks':[progress_hook],
-                    'format':'bestvideo+bestaudio'
+                    'format':'bestvideo+bestaudio/webm/mp4'
                 }
 
                 ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
