@@ -28,12 +28,14 @@ def convert_to_wave_async(media):
 
     if sound.channels > 1:
         sound = sound.set_channels(1)
+    
+    sound = sound.set_sample_width(2)
     sound.export(buf, format="wav")
     return buf, sound.frame_rate
 
 @shared_task
-def upload_to_google_async(url):
-    media = MemoMedia.objects.filter(original_url=url, mediatype='VIDEO').first().media
+def upload_to_google_async(result):
+    media = MemoMedia.objects.filter(original_url=result['original_url'], mediatype='VIDEO').first().media
     buf, frame_rate = convert_to_wave_async(media)
     
     storage_client = storage.Client()
@@ -41,40 +43,42 @@ def upload_to_google_async(url):
     blob = bucket.blob(media.file.name)
 
     blob.upload_from_file(buf)
-    return {'gcs_uri' : 'gs://metamemo/' + media.file.name, 'frame_rate' : frame_rate}
+    result['gcs_uri'] = 'gs://metamemo/' + media.file.name
+    result['frame_rate'] = frame_rate
+    return result
 
 @shared_task
-def get_transcription_async(operation):
-    transcript = ''
-    response = operation.result(timeout=10000)
-    for r in response.results:
-        transcript += r.alternatives[0].transcript
-
-    #delete blob
-    return transcript
-
-
-@shared_task
-def transcribe_on_google_async(info):
+def transcribe_on_google_async(result):
     client = speech.SpeechClient()
-    audio = speech.RecognitionAudio(uri=info['gcs_uri'])
+    audio = speech.RecognitionAudio(uri=result['gcs_uri'])
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=info['frame_rate'],
+        sample_rate_hertz=result['frame_rate'],
         language_code=METAMEMO_DEFAULT_LANGUAGE)
 
     # Detects speech in the audio file
     operation = client.long_running_recognize(request={"config":config, "audio":audio})
-    transcript = get_transcription_async(operation)
-    return transcript
-    
+    result['transcript'] = ''
+    response = operation.result(timeout=10000)
+    for r in response.results:
+        result['transcript'] += r.alternatives[0].transcript
+
+    return result
+
+@shared_task
+def save_transcription_async(result):
+    i = MemoMedia.objects.filter(original_url=result['original_url'], mediatype='VIDEO').first()
+    i.transcription = result['transcript']
+    i.status = 'TRANSCRIBED'
+    i.save()
+
 @shared_task
 def transcribe_async(url, mediatype):
     i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
     try:
-        i.transcription = (upload_to_google_async.s() | transcribe_on_google_async.s()).delay(i.original_url)
-        i.status = 'TRANSCRIBED'
+        t = (upload_to_google_async.s() | transcribe_on_google_async.s() | save_transcription_async.s()).delay({'original_url' : url})
+        i.status = 'TRANSCRIBING'
         i.save()
     except:
         i.status = 'FAILED_TRANSCRIBE'
