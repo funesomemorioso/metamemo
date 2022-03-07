@@ -68,10 +68,11 @@ def transcribe_on_google_async(result):
 
 @shared_task
 def save_transcription_async(result):
-    i = MemoMedia.objects.filter(original_url=result['original_url'], mediatype='VIDEO').first()
-    i.transcription = result['transcript']
-    i.status = 'TRANSCRIBED'
-    i.save()
+    videos = MemoMedia.objects.filter(original_url=result['original_url'], mediatype='VIDEO')
+    for i in videos:
+        i.transcription = result['transcript']
+        i.status = 'TRANSCRIBED'
+        i.save()
 
 @shared_task
 def transcribe_async(url, mediatype):
@@ -91,15 +92,16 @@ def download_async(self, url, mediatype):
     progress_recorder = ProgressRecorder(self)
     
     if mediatype=='VIDEO':
-        i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
+        videos = MemoMedia.objects.filter(original_url=url, mediatype=mediatype)
     
+        i = videos[:1]
+
         def progress_hook(info):
             if 'downloaded_bytes' in info:
                 state, meta = progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
                 i.progress=meta['percent']
                 i.save()
 
-        item = i.memoitem_set.first()
         try:
             with tempfile.TemporaryDirectory() as tempdirname:
 
@@ -121,10 +123,17 @@ def download_async(self, url, mediatype):
                 
                 with open(filename, 'rb') as tmpfile:
                     media_file = File(tmpfile)
-                    result = i.media.save(f'{item.source.name.lower()}_{i.original_id}.{ext}', media_file)
+                    media = i.media.save(f'{i.memoitem_set.first().source.name.lower()}_{i.original_id}.{ext}', media_file)
                     i.status = 'DOWNLOADED'
                     i.save()
-                    return i.media.url
+                    for v in videos[1:]: #adiciona media nos outros memomedia
+                        v.media.add(media)
+                        v.status = 'DOWNLOADED'
+                        v.save()
+
+            
+            return i.media.url
+            
         except:
             i.status = 'FAILED_DOWNLOAD'
             i.save()
