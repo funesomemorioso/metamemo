@@ -1,4 +1,5 @@
 {% load static %}
+{% load metamemoapp_extras %}
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -29,7 +30,8 @@
         
       <div class="row">
         <div class="col-6">
-          <form action="/list/" method="post">
+          <form action="list/" method="post">
+            {% csrf_token %}
             <div class="card card-default">
               <div class="panel-heading">
                 <h2>Encontre um metamemo</h2>
