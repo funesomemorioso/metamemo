@@ -27,18 +27,20 @@ Vale ler a documentação.
 #Action para baixar as midias.
 def download_media(modeladmin, request, queryset):
     if queryset.model is MemoMedia:
-        for i in queryset.filter(mediatype='VIDEO'):
-            i.status = 'DOWNLOADING'
-            i.save()
-            download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
-            messages.add_message(request, messages.SUCCESS, 'Download job started.')
-    elif queryset.model is MemoItem:
-        for i in queryset.filter(medias__mediatype='VIDEO'):
-            for v in i.medias.filter(mediatype='VIDEO'):
-                v.status = 'DOWNLOADING'
-                v.save()
-                download_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'})
+        for i in queryset:
+            if i.mediatype == 'VIDEO':
+                i.status = 'DOWNLOADING'
+                i.save()
+                download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
                 messages.add_message(request, messages.SUCCESS, 'Download job started.')
+    elif queryset.model is MemoItem:
+        for i in queryset:
+            for v in i.medias:
+                if v.mediatype == 'VIDEO':
+                    v.status = 'DOWNLOADING'
+                    v.save()
+                    download_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'})
+                    messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
 download_media.short_description = 'Download Video Media'
 
