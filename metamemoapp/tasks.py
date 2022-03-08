@@ -95,7 +95,13 @@ def download_async(self, url, mediatype):
         videos = MemoMedia.objects.filter(original_url=url, mediatype=mediatype)
     
         i = videos.first()
-
+        
+        memoitem = i.memoitem_set.first()
+        if memoitem:
+            source = memoitem.source.name.upper()
+        else:
+            source = 'NOCOOKIE'
+            
         def progress_hook(info):
             if 'downloaded_bytes' in info:
                 state, meta = progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
@@ -108,7 +114,8 @@ def download_async(self, url, mediatype):
                 ydl_opts = {
                     'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
                     'progress_hooks':[progress_hook],
-                    'format':'bestvideo+bestaudio/webm/mp4'
+                    'format':'bestvideo+bestaudio/webm/mp4',
+                    'cookiefile':getattr(settings, f'{source}_COOKIES', None)
                 }
 
                 ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
