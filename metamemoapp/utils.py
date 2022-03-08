@@ -78,3 +78,14 @@ def generate_keyword(text):
 
     keywords = kw_extractor.extract_keywords(text)
     return keywords
+
+#Action para baixar as midias.
+def bulk_download_media(queryset):
+    from metamemoapp.tasks import download_async
+    for i in queryset:
+        if i.mediatype == 'VIDEO':
+            i.status = 'DOWNLOADING'
+            i.save()
+            download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
+            print(f'Downloading {i.original_url}')
+                
