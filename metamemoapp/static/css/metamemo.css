@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;700&family=Mulish:wght@300;400;600&display=swap');
-
 *{
-	
     /*font-family: 'Mulish', sans-serif;*/
-    font-family: sans-serif, 'Fira Sans';
+    font-family: 'Fira Sans',  sans-serif !important; 
 }
 
 .pages, .home{
@@ -15,6 +12,7 @@ header{
 	background-color: #F4F4F4;
 	height: 88px;
 }
+
 nav{
 
 }
@@ -91,13 +89,19 @@ header nav a:first-child{
 	border-radius: 8px;
 	margin-top: 81px;
 	margin-bottom: 81px;
+	padding: 20px;
+}
+
+.home-card-busque .card-heading{
+	max-width: 100%;
+	font-family: 'Fira Sans' !important; 
 }
 
 .home-card-busque .card-body{
 	background-color: #F4F5F4 !important;
 	border-radius: 8px;
-	max-width: 527px;
-	margin: 0px auto 6px auto;
+	width: 100%;
+	margin-bottom: 6px;
 }
 
 .home-card-busque svg{
@@ -114,8 +118,11 @@ header nav a:first-child{
 	font-size: 14px;
 }
 
-.home-card-busque h2, .home-card-busque h2 strong{
-	margin-top: 60px;
+.home-card-busque h2{
+	margin-top: 40px;
+	margin-bottom: 40px;
+	padding-bottom: 20px;
+	border-bottom: solid 1px #000000;
 	font-size: 45px !important;
 	font-style: normal;
 	font-weight: 400;
@@ -125,9 +132,44 @@ header nav a:first-child{
 
 }
 
+.btn-check-metamemo{
+	font-size: 14px;
+	margin: 8px;
+}
+
+
+.btn-ver-arquivo{
+	height: 57px;
+	width: 100%;
+	border-radius: 8px;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 22px;
+	letter-spacing: 0.10000000149011612px;
+	text-align: center;
+	background-color: #EF5DA8;
+	margin-top: 43px;
+
+}
 
 .home-card-busque h2 strong{
 	font-weight: bolder;
 
 }
 
+.home-h-a-metamemo{
+	color: #ffffff;
+	margin-top: 225px;	
+	font-family: Fira Sans;
+	font-size: 36px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 39px;
+	letter-spacing: 0.10000000149011612px;
+	text-align: left;
+}
+
+.home-h-a-metamemo strong{
+	font-weight: 700;
+}

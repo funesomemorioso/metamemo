@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews
 from datetime import datetime
@@ -6,11 +7,23 @@ def index(request):
     metamemo_list = MetaMemo.objects.all()
     return render(request, 'index.html', {'metamemo_list': metamemo_list})
 
-
 def list(request, day=datetime.now().day, month=datetime.now().month, year=datetime.now().year):
-    d = datetime(year, month,day)
-    memoitem_list = MemoItem.objects.filter(content_date__day=day,content_date__month=month,content_date__year=year)
-    memocontext_list = MemoContext.objects.filter(start_date__day__lte=day,start_date__month__lte=month,start_date__year__lte=year, end_date__day__gte=day,end_date__month__gte=month,end_date__year__gte=year)
-    memonews_list = MemoNews.objects.filter(content_date__day=day,content_date__month=month,content_date__year=year)
+ 
+    social_list =  request.POST.getlist('social_list')
+    metamemo_selected_list =  request.POST.getlist('metamemo_selected_list')
+    
+    memoitem_list = MemoItem.objects.filter(author__name__in=metamemo_selected_list)[:20]
 
-    return render(request, 'list.html', {'date':d, 'memoitem_list': memoitem_list, 'memocontext_list': memocontext_list, 'memonews_list':memonews_list})
+    
+    start_date  = request.POST["start_date"]
+    end_date = request.POST["end_date"]
+    data = {
+        'metamemo_selected_list' : metamemo_selected_list,
+        'social_list' : social_list,
+        'start_date' : start_date,
+        'end_date' : end_date,
+        'memoitem_list' : memoitem_list
+    }
+
+
+    return render(request, 'list.html', {'data':data})
