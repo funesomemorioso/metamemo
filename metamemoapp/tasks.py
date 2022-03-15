@@ -99,6 +99,8 @@ def download_async(self, url, mediatype):
         memoitem = i.memoitem_set.first()
         if memoitem:
             source = memoitem.source.name.upper()
+        elif i.source:
+            source = i.source
         else:
             source = 'NOCOOKIE'
             
@@ -115,7 +117,7 @@ def download_async(self, url, mediatype):
                     'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
                     'progress_hooks':[progress_hook],
                     'format':'bestvideo+bestaudio/webm/mp4',
-                    'cookiefile':getattr(settings, f'{source}_COOKIES', None)
+                    'cookiefile':getattr(settings, f'{source.upper()}_COOKIES', None)
                 }
 
                 ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
@@ -130,7 +132,7 @@ def download_async(self, url, mediatype):
                 
                 with open(filename, 'rb') as tmpfile:
                     media_file = File(tmpfile)
-                    media = i.media.save(f'{i.memoitem_set.first().source.name.lower()}_{i.original_id}.{ext}', media_file)
+                    media = i.media.save(f'{source.lower()}_{i.original_id}.{ext}', media_file)
                     i.status = 'DOWNLOADED'
                     i.save()
                     for v in videos[1:]: #adiciona media nos outros memomedia

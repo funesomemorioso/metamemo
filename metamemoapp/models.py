@@ -30,6 +30,7 @@ class MemoKeyWord(models.Model):
 
 class MemoSource(models.Model):
     name = models.CharField(max_length=200)
+    cookie = models.FileField(upload_to='source', blank=True, null=True) #Add directory by account
     
     def __str__(self):
         return(self.name)
@@ -71,6 +72,7 @@ class MemoMedia(models.Model):
     media = models.FileField(upload_to='media', blank=True) #Add directory by account
     mediatype = models.CharField(max_length=20, blank=True, choices=MEDIATYPE_CHOICES)
     progress = models.FloatField(default=0)
+    source = models.ForeignKey(MemoSource, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.original_id

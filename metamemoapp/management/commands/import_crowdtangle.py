@@ -8,7 +8,7 @@ import json, pprint, os, datetime
 import urllib
 from textwrap import shorten
 
-from metamemoapp.tasks import download_img_async
+from metamemoapp.tasks import download_img_async, download_async
 
 TITLE_MAX_CHAR = 300
 
@@ -22,6 +22,7 @@ class Command(BaseCommand):
         parser.add_argument('-s', '--source', type=str, help='Source')
         parser.add_argument('-d', '--debug', action='store_true')
         parser.add_argument('-i', '--image', action='store_true')
+        parser.add_argument('-m', '--media', action='store_true')
 
 
     def handle(self, *args, **kwargs):
@@ -30,7 +31,8 @@ class Command(BaseCommand):
         self.clear = kwargs['clear']
         self.source = kwargs['source']
         self.debug = kwargs['debug']
-        self.img_download = kwargs['image']
+        self.image_download = kwargs['image']
+        self.video_download = kwargs['media']
         
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
         self.memo_source = MemoSource.objects.get_or_create(name=self.source)
@@ -49,7 +51,7 @@ class Command(BaseCommand):
         elif self.source=='Instagram':
             apikey = getattr(settings, 'CROWDTANGLE_INSTAGRAM_API_KEY', None)
         pages = getattr(settings, 'CROWDTANGLE_POSTS_COUNT', 100)
-        interval = urllib.parse.quote_plus(getattr(settings, 'CROWDTANGLE_POSTS_INTERVAL', '90 DAY'))
+        interval = urllib.parse.quote_plus(getattr(settings, 'CROWDTANGLE_POSTS_INTERVAL', '5 DAY'))
         
         
         url = f'https://api.crowdtangle.com/posts?token={apikey}&accounts={self.username}&sortBy=date&timeframe={interval}&count={pages}'
@@ -114,20 +116,27 @@ class Command(BaseCommand):
                     post.save()
 
                 #Cria um metaitem com status INITIAL caso existam vídeos
+                    p = None
                     if i['platform'] == 'Facebook' and i['type'] in ['live_video_complete', 'native_video']:
                         if 'link' in i:
-                            post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                            p = post.medias.create(original_url=i['link'], original_id=post_id, status='INITIAL', mediatype='VIDEO', source=self.memo_source[0])
                         else:
-                            post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                            p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO', source=self.memo_source[0])
                     elif i['platform'] == 'Instagram' and i['type'] == 'video':
-                        post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                        p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='VIDEO', source=self.memo_source[0])
                     
+                    if p and self.video_download:
+                        p.status = 'DOWNLOADING'
+                        p.save()
+                        post.save()
+                        download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+                        
                     if 'media' in i:
                         for m in i['media']:
                             if m['type'] == 'photo':
                                 p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='IMAGE')
-                                if self.img_download:
-                                    download_img_async(p.pk, m['url'])
+                                if self.image_download:
+                                    download_img_async.apply_async(kwargs={'url' : m['url'], 'pk' : p.pk})
 
         
         if'nextPage' in input_posts['result']['pagination']:
