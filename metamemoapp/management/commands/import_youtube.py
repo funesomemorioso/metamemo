@@ -22,6 +22,7 @@ class Command(BaseCommand):
         parser.add_argument('-d', '--debug', action='store_true')
         parser.add_argument('-i', '--image', action='store_true')
         parser.add_argument('-m', '--media', action='store_true')
+        parser.add_argument('-t', '--time', type=int, default=0, help='Time in days')
 
 
     def handle(self, *args, **kwargs):
@@ -30,6 +31,7 @@ class Command(BaseCommand):
         self.debug = kwargs['debug']
         self.img_download = kwargs['image']
         self.video_download = kwargs['media']
+        self.days = kwargs['time']
 
         self.source = 'Youtube'
         
@@ -44,6 +46,9 @@ class Command(BaseCommand):
         
         self.base_url = f'https://www.googleapis.com/youtube/v3/search?channelId={self.channel}&type=video&key={self.apikey}&maxResults=50&part=id'
 
+        if self.days:
+            timeAgo = (datetime.datetime.now()-datetime.timedelta(self.days)).strftime("%Y-%m-%dT00:00:00Z")
+            self.base_url += f'&publishedAfter={timeAgo}'
         self.parseUrl(self.base_url)
 
         
