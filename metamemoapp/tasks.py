@@ -16,6 +16,7 @@ import io, os, wave, time
 from google.cloud import storage
 from google.cloud import speech
 from yt_dlp import YoutubeDL
+from youtube_dl import YoutubeDL as AltYoutubeDL
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None)
@@ -120,11 +121,16 @@ def download_async(self, url, mediatype):
                     'cookiefile':getattr(settings, f'{source.upper()}_COOKIES', None)
                 }
 
-                ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
-                #ydl_opts['merge_output_format']=ext
-
-                with YoutubeDL(ydl_opts) as ydl:
-                    ydl.download([i.original_url])
+                try:
+                    ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
+                
+                    with YoutubeDL(ydl_opts) as ydl:
+                        ydl.download([i.original_url])
+                except:
+                    ext = AltYoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
+                
+                    with AltYoutubeDL(ydl_opts) as ydl:
+                        ydl.download([i.original_url])
 
                 filename = f'{tempdirname}/{i.original_id}.{ext}'
                 if not os.path.isfile(filename):
