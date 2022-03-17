@@ -8,7 +8,7 @@ import json, pprint, os, datetime
 import urllib
 from textwrap import shorten
 
-from metamemoapp.tasks import download_img_async
+from metamemoapp.tasks import download_img_async, download_async
 from requests.exceptions import HTTPError
 
 TITLE_MAX_CHAR = 300
@@ -21,6 +21,7 @@ class Command(BaseCommand):
         parser.add_argument('-a', '--author', type=str, help='MetaMemo Author Name')
         parser.add_argument('-d', '--debug', action='store_true')
         parser.add_argument('-i', '--image', action='store_true')
+        parser.add_argument('-m', '--media', action='store_true')
 
 
     def handle(self, *args, **kwargs):
@@ -28,6 +29,8 @@ class Command(BaseCommand):
         self.author = kwargs['author']
         self.debug = kwargs['debug']
         self.img_download = kwargs['image']
+        self.video_download = kwargs['media']
+
         self.source = 'Youtube'
         
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
@@ -90,7 +93,13 @@ class Command(BaseCommand):
                         post.original_id = post_id
                         post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
                         post.save()
-                        post.medias.create(original_url=post.url, original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                        p = post.medias.create(original_url=post.url, original_id=post_id, status='INITIAL', mediatype='VIDEO')
         
+                    if p and self.video_download:
+                        p.status = 'DOWNLOADING'
+                        p.save()
+                        post.save()
+                        download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+
         if 'nextPageToken' in posts_search:
             self.parseUrl(self.base_url+f'&pageToken={posts_search["nextPageToken"]}')
