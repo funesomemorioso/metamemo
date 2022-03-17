@@ -90,73 +90,53 @@ def transcribe_async(url, mediatype):
 
 @shared_task(bind=True)
 def download_async(self, url, mediatype):
-    progress_recorder = ProgressRecorder(self)
+    self.url = url
+    self.videos = MemoMedia.objects.filter(original_url=url, mediatype='VIDEO')
+    self.first =  self.videos.first()
+    self.progress_recorder = ProgressRecorder(self)
+
+    def progress_hook(info):
+        if 'downloaded_bytes' in info:
+            state, meta = self.progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
+            self.first.progress=meta['percent']
+            self.first.save()
     
-    if mediatype=='VIDEO':
-        videos = MemoMedia.objects.filter(original_url=url, mediatype=mediatype)
-    
-        i = videos.first()
-        
-        memoitem = i.memoitem_set.first()
-        if memoitem:
-            source = memoitem.source.name.upper()
-        elif i.source:
-            source = i.source
-        else:
-            source = 'NOCOOKIE'
-            
-        def progress_hook(info):
-            if 'downloaded_bytes' in info:
-                state, meta = progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
-                i.progress=meta['percent']
-                i.save()
+    def get_filename(tempdirname):
+        for ext in ['mp4', 'webm', 'mkv']:
+            filename = f'{tempdirname}/{self.first.original_id}.{ext}'
+            if os.path.isfile(filename):
+                return filename, ext
+
+    with tempfile.TemporaryDirectory() as tempdirname:
+
+        ydl_opts = {
+            'outtmpl': f'{tempdirname}/{self.first.original_id}.%(ext)s',
+            'progress_hooks':[progress_hook],
+            'format':'bestvideo+bestaudio/webm/mp4',
+        }
 
         try:
-            with tempfile.TemporaryDirectory() as tempdirname:
-
-                ydl_opts = {
-                    'outtmpl': f'{tempdirname}/{i.original_id}.%(ext)s',
-                    'progress_hooks':[progress_hook],
-                    'format':'bestvideo+bestaudio/webm/mp4',
-                    'cookiefile':getattr(settings, f'{source.upper()}_COOKIES', None)
-                }
-
-                try:
-                    info = YoutubeDL(ydl_opts).extract_info(i.original_url, download=False)
-                    with YoutubeDL(ydl_opts) as ydl:
-                        ydl.download([i.original_url])
-                except:#try with other download method
-                    info = OriginalYoutubeDL(ydl_opts).extract_info(i.original_url, download=False)
-                    with OriginalYoutubeDL(ydl_opts) as oydl:
-                        oydl.download([i.original_url])
-
-                if 'ext' in info:
-                    ext = info['ext']
-                elif '_type' in info and info['_type'] == 'playlist':
-                    ext = info['entries'][0]['ext']
-     
-                filename = f'{tempdirname}/{i.original_id}.{ext}'
-                if not os.path.isfile(filename):
-                    filename = f'{tempdirname}/{i.original_id}.mkv' #hackish para mkv
-                
-                with open(filename, 'rb') as tmpfile:
-                    media_file = File(tmpfile)
-                    media = i.media.save(f'{source.lower()}_{i.original_id}.{ext}', media_file)
-                    i.status = 'DOWNLOADED'
-                    i.save()
-                    for v in videos[1:]: #adiciona media nos outros memomedia
-                        v.media = i.media
-                        v.status = 'DOWNLOADED'
-                        v.save()
-
-            
-            return i.media.url
-            
+            YoutubeDL(ydl_opts).download([self.url])
         except:
-            i.status = 'FAILED_DOWNLOAD'
-            i.save()
-            raise Exception()
+            try:
+                OriginalYoutubeDL(ydl_opts).download([self.url])
+            except:
+                self.first.status = 'FAILED_DOWNLOAD'
+                self.first.save()
+                raise Exception()
 
+        filename, ext = get_filename(tempdirname)
+
+        with open(filename, 'rb') as tmpfile:
+            self.first.media.save(f'{self.first.original_id}.{ext}', File(tmpfile))
+            self.first.status = 'DOWNLOADED'
+            self.first.save()
+            for v in self.videos[1:]: #adiciona media nos outros memomedia
+                v.media = self.first.media
+                v.status = 'DOWNLOADED'
+                v.save()
+
+        return self.first.media.url
 
 
 @shared_task
