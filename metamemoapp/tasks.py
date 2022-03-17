@@ -121,17 +121,14 @@ def download_async(self, url, mediatype):
                     'cookiefile':getattr(settings, f'{source.upper()}_COOKIES', None)
                 }
 
-                try:
-                    ext = YoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
-                
-                    with YoutubeDL(ydl_opts) as ydl:
-                        ydl.download([i.original_url])
-                except:
-                    ext = AltYoutubeDL(ydl_opts).extract_info(i.original_url)['ext']
-                
-                    with AltYoutubeDL(ydl_opts) as ydl:
-                        ydl.download([i.original_url])
-
+                info = YoutubeDL(ydl_opts).extract_info(i.original_url, download=False)
+                if 'ext' in info:
+                    ext = info['ext']
+                elif '_type' in info and info['_type'] == 'playlist':
+                    ext = info['entries'][0]['ext']
+                with YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([i.original_url])
+     
                 filename = f'{tempdirname}/{i.original_id}.{ext}'
                 if not os.path.isfile(filename):
                     filename = f'{tempdirname}/{i.original_id}.mkv' #hackish para mkv
