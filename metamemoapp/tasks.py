@@ -123,7 +123,7 @@ def download_async(self, url, mediatype):
 
                 try:
                     info = YoutubeDL(ydl_opts).extract_info(i.original_url, download=False)
-                   with YoutubeDL(ydl_opts) as ydl:
+                    with YoutubeDL(ydl_opts) as ydl:
                         ydl.download([i.original_url])
                 except:#try with other download method
                     info = OriginalYoutubeDL(ydl_opts).extract_info(i.original_url, download=False)
