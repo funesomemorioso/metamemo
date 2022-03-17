@@ -7,3 +7,7 @@ register = template.Library()
 def addDays(d, days):
    newDate = d + timedelta(days=days)
    return newDate
+
+@register.filter
+def getImages(mememoitem):
+   return mememoitem.getImage()

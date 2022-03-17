@@ -1,298 +1,254 @@
+{% extends 'base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% load metamemoapp_extras %}
+{% block title %}Metamemo - Resultado da busca{% endblock %}
+{% block page_class %}list{% endblock %}
+{% block content %}
+<div class="container">
+  
 
-    
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/metamemo.css' %}">
-
-    <title>Metamemo</title>
-  </head>
-  <body class="pages list">
-    <header class="site-header sticky-top align-middle">
-      <nav class=" container d-flex flex-column flex-md-row justify-content-between">
-        <a>
-          <img src="{% static 'imgs/metamemo.png' %}" class="img-metamemo-logo">
-        </a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Quem Somos</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Linha do Tempo</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Metodologia</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Enterprise</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Contato</a>
-      </nav>
-    </header>
-    <div class="container">
+  <div class="row">
+    <div class="col-10 offset-1">
       <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item" aria-current="page">Bucas</li>
+          <li class="breadcrumb-item" aria-current="page">Buscas</li>
           <li class="breadcrumb-item active" aria-current="page">Resultados Metamemos</li>
         </ol>
       </nav>
     </div>
-    <div class="container">
-      
-      <!-- Filters START -->
+  </div>
+  
+</div>
+<div class="container">
+  
+  <!-- Filters START -->
 
-      <div class="row">
-        <div class="col-2">
-          <select class="form-select select-filtro" aria-label="Default select example">
-            <option selected>Filtros</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="col-2">
-          <select class="form-select select-filtro" aria-label="Default select example">
-            <option selected>Data Inicio</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="col-2">
-          <select class="form-select select-filtro" aria-label="Default select example">
-            <option selected>Data Fim</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <select class="form-select select-filtro" aria-label="Default select example">
-            <option selected>Mais recentes</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
+  <div class="row">
+    <div class="col-1 offset-1">
+      <span class="s-filter">Filtros</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+        <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+      </svg>
+    </div>
+    <div class="col-4 g-0">
+      <div class="input-wrapper">
+        <input type="date" class="form-control select-filtro start_date" id="start_date" name="end_date" placeholder="Mon 02/02"  min="24-01-2000" max="21-01-2050">
       </div>
+      <div class="input-wrapper">
+        <input type="date" class="form-control select-filtro end_date" id="end_date" name="end_date" placeholder="dd/mm/aaaa"  min="24-01-2000" max="21-01-2050">
+      </div>
+    </div>
+    <div class="col-4 g-0">
+      <select class="form-select select-filtro  select-filtro-order" aria-label="Default select example">
+        <option selected>Mais recentes</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+    </div>
+  </div>
 
-      <!-- Filters END -->
+  <!-- Filters END -->
 
-      <!-- Social Media Icons START -->
+  <!-- Social Media Icons START -->
+  <div class="row">
+    <div class="col-10 offset-1 g-0">        
+      {% include 'social_checks.html'%}
+    </div>
+  </div>
+  <!-- Social Media Icons END -->
+
+  <!-- Selected Search START -->
+  <div class="row">
+    <div class="col-10 offset-1 div-selected-metamemos">
+      {% for metamemo in data.metamemo_selected_list %}
+      <!-- TO DO: acertar a PK -->
+      <input type="checkbox" class="btn-check btn-check-metamemo" id="check_{{pk}}" name="metamemo_selected_list" value="{{metamemo}}" autocomplete="off" >
+      <label class="btn btn-white btn-outline-secondary btn-sm" for="check_{{pk}}">{{metamemo}} <i class="fa fa-xmark"></i></span></label>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- Selected Search START -->
+
+  <!-- Search box START -->
+  <div class="row">
+    
+    <div class="col-10 offset-1">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control input_search_terms" id="input_search_terms" placeholder="Procure por termos específicos. Ex. Amazônia" class="input_search_terms" name="input_search_terms" id="input_search_terms">
+          <label for="input_search_terms">Procure por termos específicos. Ex. Amazônia </label>
+        </div>
+    </div>
+  
+  </div>
+  <!-- Search box END -->
+
+  <!-- Results START -->
+  
+  
+
+
+
+  <div class="row">
+    
+    <!-- MEMOITEMS RESULTS START -->
+    <div class="col-6 list-div-results">
+        
+      
       <div class="row">
         
-        <div class="col-12">
-            
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-              <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
-              <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
-              <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/>
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-              <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
-            </svg>
-
+        <div class="offset-1 col-5" style="padding-left: 0px">
+          <p class="p-resultados-pencontrados">Resultados encontrados: 5</p>
         </div>
-      </div>
-
-      <!-- Social Media Icons END -->
-
-      <!-- Selected Search START -->
-      <div class="row">
-        
-        <div class="col-12">
-            <button type="button" class="btn btn-light">Bozo</button>
-            <button type="button" class="btn btn-light">Bozo junior</button>
-        </div>
-      
-      </div>
-      <!-- Selected Search START -->
-
-      <!-- Search box START -->
-      <div class="row">
-        
-        <div class="col-12">
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" placeholder="Procure por termos específicos. Ex. Amazônia">
-              <label for="floatingInput">Procure por termos específicos. Ex. Amazônia </label>
-            </div>
-        </div>
-      
-      </div>
-      <!-- Search box END -->
-
-      <!-- Results START -->
-      
-      
-
-
-
-      <div class="row">
-        
-        <!-- SOCIAL MEDIA RESULTS START -->
         <div class="col-6">
-            
-          
-          <div class="row">
-            
-            <div class="col-12">
-                <button type="button" class="btn btn-light">Download dos dados</button>
-            </div>
-          
-          </div>
-
-          {% for i in memoitem_list %}
-
-          <div class="row">
-            
-            <div class="col-12">
-                
-
-              <div class="card" style="min-width: 370px;">
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
-                    <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
-                    <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
-                  </svg>
-                  15/11/2021
-                </div>
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
-                
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#110022" class="bi bi-facebook" viewBox="0 0 16 16">
-                  <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-                </svg> 10.380.361 likes na página
-                
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">
-                      - ALCÂNTARA / MARANHÃO: O desenvolvimento de tecnologias espaciais projeta o Brasil no cenário mundial, fomenta maior participação no processo decisório internacional e assegura nossa proteção, além de desenvolvimento na área da ciência brasileira e empregos no setor. @govbr https://t.co/WZdUeFe2TV
+          <button type="button" class="btn btn-light btn-download-dados btn-sm"><img src="{% static 'imgs/download.svg' %}" class="thumb" /> Download dos dados</button>
+        </div>
+      
+      </div>
+      
+      <div class="row">
+        <div class="col-10">
+          <ul class="list-ul-memoitems">
+            {% for memoitem in data.memoitem_list %}
+            <li>
+              <div class="list-div-memoitem-imgdate">
+                  <img src="{% static 'imgs/pixel.jpg' %}" class="thumb">
+                  <div class="align-middle"><img src="{% static 'imgs/calendar_w.svg' %}"> <span>{{memoitem.content_date|date:'d/m/Y'}}</span></div>
+              </div>
+              <div class="list-div-memoitem-content">
+                <div><img src="{% static 'imgs/fb_off.svg' %}"> <b>{{memoitem.likes}}</b> curtidas na página</div>
+                <div><a href="/integra/{{memoitem.pk}}">{{memoitem.title}}</a></div>
+                <div class="div-likes-comments">
+                  <p>
+                    <img src="{% static 'imgs/like.svg' %}">
+                    {{memoitem.likes}}
                   </p>
-
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
-                    <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
-                  </svg>
-                  1548
-
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-quote-fill" viewBox="0 0 16 16">
-                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm7.194 2.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 4C4.776 4 4 4.746 4 5.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 7.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 4c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
-                  </svg>
-                  99
-                  
+                  <p>
+                    <img src="{% static 'imgs/like.svg' %}">
+                    {{memoitem.interactions}}
+                  </p>
                 </div>
               </div>
-            </div>
-          
-          </div>
-
-          {% endfor %}
-
-            
-
-        </div>
-
-
-
-
-        <!-- SOCIAL MEDIA RESULTS END -->
-
-
-        <!-- CONTEXT START -->
-        <div class="col-6">
-          
-        <! -- CARROSEL START -->
-        {% for c in memocontext_list %} 
-        <div class="row">
-          
-            <div class="col-12">
-                <h3>Contexto Histórico do Periodo [Carrocel]</h3>
-            </div>
-            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-              <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-              </div>
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="..." class="d-block w-100" alt="...">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <img src="..." class="d-block w-100" alt="...">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                  </div>
-                  
-                  </div>
-                   <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                      <h5>Third slide label</h5>
-                      <p>Some representative placeholder content for the third slide.</p>
-                    </div>
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-            </div> 
-        
-          </div>
-        {% endfor %}
-
-
-        </div>
-        <! -- CARROSEL END -->
-
-          <div class="row">
               
-              <div class="col-12">
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
-                    <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
-                    <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
-                  </svg>
-                  15/11/2021
-                </div>
-                <p class="">
-                    <a href="">Amazônia não pega fogo', diz Bolsonaro em Dubai; comitiva vende um Brasil distante da realidade</a>
-                    <br>
-                    [<img src="" alt="terra logo img">]
-                </p>
-              </div>
-
-          </div>
-            
-
+              
+            </li>
+            {% endfor %}
+          </ul>
         </div>
-
-        <!-- CONTEXT END -->
-      
       </div>
-      <!-- Results END -->
+      {% for memoitem in data.memoitem_list %}
+      <!-- <div class="row">
+        
+        <div class="col-4 offset-1" style="background-color: aqua;">
+          {{memoitem|getImages}}
+          {{memoitem.raw}}
+        </div>
+        <div class="col-6" style="background-color: blue">
+          <p><img src="{% static 'imgs/fb_off.svg' %}"> {{memoitem.likes}} curtidas na página</p>
+          <p>{{memoitem.content}}</p>
+          <p>{{memoitem.shares}}</p>
+        </div>
+      </div> -->
+
+      <!-- <div class="row">
+        
+        <div class="col-12">
+          
+
+          <div class="card" style="min-width: 370px;">
+            <div>
+              source: {{memoitem.source.name}}
+              15/11/2021
+            </div>
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#110022" class="bi bi-facebook" viewBox="0 0 16 16">
+              <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+            </svg> 10.380.361 likes na página
+            
+            <div class="card-body">
+              <h5 class="card-title">{{memoitem.title}}</h5>
+              <p class="card-text">
+                  {{memoitem.content}}
+              </p>
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
+              </svg>
+              1548
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-quote-fill" viewBox="0 0 16 16">
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm7.194 2.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 4C4.776 4 4 4.746 4 5.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 7.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 4c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
+              </svg>
+              99
+              
+            </div>
+          </div>
+        </div>
+      
+      </div> -->
+
+      {% endfor %}
+
+        
 
     </div>
 
-    
+    <!-- MEMOITEMS RESULTS END -->
 
-    <!-- Optional JavaScript; choose one of the two! -->
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!-- CONTEXT RESULT START -->
+    <div div class="col-6">
+  
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    -->
-  </body>
-</html>
+      <div class="row">
+          
+          <div class="col-12">
+            
+            {% for c in data.memocontext_list %}
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
+                <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
+              </svg>
+              15/11/2021
+            </div>
+            
+            <p class="">
+                <a href="">Amazônia não pega fogo', diz Bolsonaro em Dubai; comitiva vende um Brasil distante da realidade</a>
+                <br>
+                [<img src="" alt="terra logo img">]
+            </p>
+            {% endfor %}
+
+            {% for n in data.memonews_list %}
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
+                <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
+              </svg>
+              15/11/2021
+            </div>
+            
+            <p class="">
+                <a href="">Amazônia não pega fogo', diz Bolsonaro em Dubai; comitiva vende um Brasil distante da realidade</a>
+                <br>
+                [<img src="" alt="terra logo img">]
+            </p>
+            {% endfor %}
+
+
+          </div>
+
+      </div>
+        
+
+    </div>
+
+    <!-- CONTEXT END -->
+  
+  </div>
+  <!-- Results END -->
+
+</div>
+{% endblock %}
