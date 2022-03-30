@@ -28,7 +28,7 @@ class Command(BaseCommand):
         parser.add_argument('-u', '--username', type=str, help='Telegram Username')
         parser.add_argument('-a', '--author', type=str, help='MetaMemo Author Name')
         parser.add_argument('-m', '--media', action='store_true')
-        parser.add_argument('-l', '--limit', type=int, default=None, help='Post limits.')
+        parser.add_argument('-l', '--limit', type=int, default=50, help='Post limits.')
 
 
     def handle(self, *args, **kwargs):
