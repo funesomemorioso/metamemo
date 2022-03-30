@@ -26,3 +26,5 @@ django-import-export
 
 django-storages
 boto3
+
+tweepy
