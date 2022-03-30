@@ -82,14 +82,11 @@ class Command(BaseCommand):
                 print(post)
                 await self.savePost(post)
 
-            #Cria um metaitem com status INITIAL caso existam vídeos        
                 if i.video:
-                    print(f'Downloading... {post.original_id}')
                     media = io.BytesIO()
                     await i.download_media(media)
                     await self.saveMedia(post, media, 'VIDEO')
                 elif i.photo:
-                    print(f'Downloading... {post.original_id}')
                     media = io.BytesIO()
                     await i.download_media(file=media)
                     await self.saveMedia(post, media, 'IMAGE')
@@ -101,7 +98,11 @@ class Command(BaseCommand):
 
     @sync_to_async
     def saveMedia(self, post, media, mediatype):
-        print("Saving...")
+        ext = {
+            'IMAGE' : 'jpg',
+            'VIDEO' : 'mp4'
+        }
+
         post_id = post.original_id.split('_')[1]
-        p = post.medias.create(original_url=f'https://t.me/{self.username}/{post_id}', original_id=post.original_id, status='DOWNLOADED', mediatype=mediatype)
+        p = post.medias.create(original_url=f'https://t.me/{self.username}/{post_id}.{ext[mediatype]}', original_id=post.original_id, status='DOWNLOADED', mediatype=mediatype)
         p.media.save(f'{self.username}_{post_id}', File(media))
