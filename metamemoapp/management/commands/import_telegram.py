@@ -104,5 +104,5 @@ class Command(BaseCommand):
         }
 
         post_id = post.original_id.split('_')[1]
-        p = post.medias.create(original_url=f'https://t.me/{self.username}/{post_id}.{ext[mediatype]}', original_id=post.original_id, status='DOWNLOADED', mediatype=mediatype)
-        p.media.save(f'{self.username}_{post_id}', File(media))
+        p = post.medias.create(original_url=f'https://t.me/{self.username}/{post_id}', original_id=post.original_id, status='DOWNLOADED', mediatype=mediatype)
+        p.media.save(f'{self.username}_{post_id}.{ext[mediatype]}', File(media))
