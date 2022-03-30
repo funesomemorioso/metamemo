@@ -28,3 +28,7 @@ django-storages
 boto3
 
 tweepy
+
+telethon
+cryptg
+aiohttp
