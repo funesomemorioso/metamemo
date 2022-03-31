@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.utils.html import format_html
+from django.db.models import Count
 
 from import_export import resources,fields
 from import_export.admin import ImportExportModelAdmin
@@ -144,10 +145,26 @@ class MemoNewsAdmin(admin.ModelAdmin):
     model = MemoNews
     list_display = ('title', 'source', 'content_date', link_to_memoitem)
 
+
+class MemoKeyWordAdmin(admin.ModelAdmin):
+    model = MemoKeyWord
+    list_display = ('word', 'word_count')
+
+    def word_count(self, obj):
+        return obj.word_count
+    
+    word_count.admin_order_field = 'word_count'
+
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(word_count=Count("memoitem"))
+        return queryset
+
 admin.site.register(MetaMemo)
 admin.site.register(MemoItem, MemoItemAdmin)
 admin.site.register(MemoSource)
 admin.site.register(MemoMedia, MemoMediaAdmin)
-admin.site.register(MemoKeyWord)
+admin.site.register(MemoKeyWord, MemoKeyWordAdmin)
 admin.site.register(MemoContext, MemoContextAdmin)
 admin.site.register(MemoNews, MemoNewsAdmin)
