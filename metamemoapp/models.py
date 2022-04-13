@@ -35,8 +35,19 @@ class MemoSource(models.Model):
     def __str__(self):
         return(self.name)
 
+    def ico(self):
+        icons = {
+            'Facebook' : 'face',
+            'Youtube' : 'youtube1',
+            'Twitter' : 'twitter1',
+            'Instagram' : 'instagram1'
+        }
+        if self.name in icons:
+            return(icons[self.name])
+
 class MetaMemo(models.Model):
     name = models.CharField(max_length=200)
+    picture = models.ImageField(upload_to='memo', blank=True, null=True)
     facebook_handle = models.CharField(max_length=200, blank=True)
     instagram_handle = models.CharField(max_length=200, blank=True)
     twitter_handle = models.CharField(max_length=200, blank=True)

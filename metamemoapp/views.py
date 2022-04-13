@@ -1,7 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews
+from metamemoapp.filters import MemoItemFilter, MemoNewsFilter
+from django.core.paginator import Paginator
+
 from datetime import datetime, timedelta
+from collections import Counter
+
 # Create your views here.
 def index(request):
     metamemo_list = MetaMemo.objects.all()
@@ -10,49 +15,31 @@ def index(request):
     }
     return render(request, 'index.html', {'metamemo_list': metamemo_list, 'data': data})
 
-def list(request, day=datetime.now().day, month=datetime.now().month, year=datetime.now().year):
-    
-    #ToDo: incluir data default 
-    social_list =  request.POST.getlist('social_list')
-    metamemo_selected_list =  request.POST.getlist('metamemo_selected_list')
-    
-    
-    
-    
-    start_date  = request.POST["start_date"]
-    end_date = request.POST["end_date"]
+def list(request):
 
-    date_start_obj = datetime.strptime(start_date, '%Y-%m-%d')
-    date_end_obj = datetime.strptime(end_date, '%Y-%m-%d')
+    #author=request.GET['author']
 
-    day_s = date_start_obj.day
-    month_s = date_start_obj.month
-    year_s = date_start_obj.year
+    memofilter = MemoItemFilter(request.GET, queryset=MemoItem.objects.all().order_by('content_date'))
+    newsfilter = MemoNewsFilter(request.GET, queryset=MemoNews.objects.all().order_by('content_date'))
+    memoitem = Paginator(memofilter.qs, 25)
+    memonews = Paginator(newsfilter.qs, 3)
+    print(memofilter.get_filters()['date__end'])
 
-    day_e = date_end_obj.day
-    month_e = date_end_obj.month
-    year_e = date_end_obj.year
+    #Hackish
+    tags = {}
+    tags_raw = memofilter.qs.values_list('keyword__word', flat=True)
+    tags = Counter(tags_raw)
+    tags[None]=0
     
-    
-    
-
-    memoitem_list = MemoItem.objects.filter(author__name__in=metamemo_selected_list, content_date__range=[start_date, end_date])[:20]
-    memocontext_list = MemoContext.objects.filter(start_date__range=[start_date, end_date])
-    memonews_list = MemoNews.objects.filter(content_date__range=[start_date, end_date])
-
-
     data = {
-        'metamemo_selected_list' : metamemo_selected_list,
-        'memocontext_list' : memocontext_list,
-        'memonews_list' : memonews_list,
-        'social_list' : social_list,
-        'start_date' : start_date,
-        'end_date' : end_date,
-        'memoitem_list' : memoitem_list
+        'memofilter' : memofilter,
+        'metamemo' : MetaMemo.objects.all(),
+        'memoitem' : memoitem.page(1),
+        'memonews' : memonews.page(1),
+        'tags' : tags.most_common(10)
     }
     
-
-    return render(request, 'list.html', {'data':data})
+    return render(request, 'list.html', {'data' : data})
 
 def integra(request, item_id):
     
