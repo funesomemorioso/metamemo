@@ -86,8 +86,9 @@ class MemoMedia(models.Model):
     source = models.ForeignKey(MemoSource, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.original_id
+        return(self.original_id)
 
+    
 
 class MemoItem(models.Model):
     author = models.ForeignKey(MetaMemo, on_delete=models.CASCADE)
@@ -101,9 +102,9 @@ class MemoItem(models.Model):
     interactions = models.IntegerField()
     shares = models.IntegerField(null=True)
     raw = models.JSONField(blank=True, null=True)
-    medias = models.ManyToManyField(MemoMedia, blank=True, null=True)
+    medias = models.ManyToManyField(MemoMedia, blank=True)
     original_id = models.CharField(max_length=500)
-    keyword = models.ManyToManyField(MemoKeyWord, blank=True, null=True)
+    keyword = models.ManyToManyField(MemoKeyWord, blank=True)
 
     def __str__(self):
         return(self.title)
@@ -118,7 +119,7 @@ class MemoContext(models.Model):
     end_date = models.DateTimeField(null=True)
     url = models.URLField(blank=True, null=True)
     source = models.CharField(max_length=500, blank=True, null=True)
-    keyword = models.ManyToManyField(MemoKeyWord, blank=True, null=True)
+    keyword = models.ManyToManyField(MemoKeyWord, blank=True)
 
 
     def __str__(self):
@@ -133,6 +134,29 @@ class MemoNews(models.Model):
     source = models.CharField(max_length=200)
     metamemo = models.ForeignKey(MetaMemo, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return(f'{self.title} - {self.source}')
+
+
+class NewsSource(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='news', blank=True)
+
+    def __str__(self):
+        return(name)
+
+class NewsItem(models.Model):
+    title = models.CharField(max_length=200)
+    url = models.URLField()
+    text = models.TextField(blank=True)
+    content_date = models.DateTimeField(null=True)
+    source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)
+    metamemo = models.ForeignKey(MetaMemo, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return(f'{self.title} - {self.source}')
+
+class NewsCover(models.Model):
+    content_date = models.DateTimeField(null=True)
+    cover = models.ImageField(upload_to='cover', blank=True)
+    source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)
