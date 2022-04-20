@@ -8,9 +8,9 @@
                 <h3>Contextos Históricos</h3>
                 <p>{{context.context}}</p>
                 <div class="center-align">
-                    <img class="materialboxed" src="https://picsum.photos/77/135?33">
-                    <img class="materialboxed" src="https://picsum.photos/77/135?22">
-                    <img class="materialboxed" src="https://picsum.photos/77/135?111">
+                    {% for cover in data.newscovers %}
+                        <img class="materialboxed" src="{{cover.media.url}}">                
+                    {% endfor %}
                 </div>
                 <div class="metablue-text center-align"><small>clique para ampliar</small></div>
             </li>

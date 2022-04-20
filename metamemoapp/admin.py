@@ -9,8 +9,8 @@ from import_export.widgets import ManyToManyWidget
 
 import shlex
 # Register your models here.
-from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MemoKeyWord, MemoContext, MemoNews
-
+from metamemoapp.models import MetaMemo, MemoItem, MemoSource, MemoMedia, MemoKeyWord, MemoContext, NewsItem
+from metamemoapp.models import NewsCover, NewsSource
 from metamemoapp.tasks import transcribe_async, download_async
 from metamemoapp.utils import generate_keyword
 
@@ -141,8 +141,8 @@ class MemoContextAdmin(ImportExportModelAdmin):
     list_display = ('context','start_date','end_date', link_to_memoitem, itens_in_context,)
 
 
-class MemoNewsAdmin(admin.ModelAdmin):
-    model = MemoNews
+class NewsItemAdmin(admin.ModelAdmin):
+    model = NewsItem
     list_display = ('title', 'source', 'content_date', link_to_memoitem)
 
 
@@ -167,4 +167,7 @@ admin.site.register(MemoSource)
 admin.site.register(MemoMedia, MemoMediaAdmin)
 admin.site.register(MemoKeyWord, MemoKeyWordAdmin)
 admin.site.register(MemoContext, MemoContextAdmin)
-admin.site.register(MemoNews, MemoNewsAdmin)
+
+admin.site.register(NewsItem, NewsItemAdmin)
+admin.site.register(NewsSource)
+admin.site.register(NewsCover)

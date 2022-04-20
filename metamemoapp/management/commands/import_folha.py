@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from django.utils import timezone
-from metamemoapp.models import MetaMemo, MemoNews
+from metamemoapp.models import MetaMemo, NewsItem, NewsSource
 import datetime, re
 from lxml import html
 from urllib import request, parse
@@ -19,7 +19,8 @@ class Command(BaseCommand):
     site = 'jornal'
 
     def scrapeFolha(self, keyword):
-        all_news = MemoNews.objects.filter(source='Folha de São Paulo', metamemo=self.metamemo[0]).values_list('url', flat=True)
+        all_news = NewsItem.objects.filter(source=self.source, metamemo=self.metamemo[0]).values_list('url', flat=True)
+        
         keyword = parse.quote(keyword)
         soap = request.urlopen(f'https://search.folha.uol.com.br/?q={keyword}&site={self.site}&sr={self.sr}')
         soap = soap.read()
@@ -27,14 +28,14 @@ class Command(BaseCommand):
         for n in soap.xpath("//li[contains(@class,'c-headline')]"):
             try:
                 
-                news = MemoNews()
+                news = NewsItem()
                 news.title = n.xpath(".//h2[contains(@class,'c-headline__title')]")[0].text.strip()
                 news.text = n.xpath(".//p[contains(@class, 'c-headline__standfirst')]")[0].text_content().strip()
                 news.url = n.xpath(".//div[contains(@class, 'c-headline__content')]/a")[0].get("href")
                 dt = n.xpath(".//time")[0].text_content().strip().replace('º','')
                 news.content_date = parseDate(dt)
                 news.metamemo = self.metamemo[0]
-                news.source = "Folha de São Paulo"
+                news.source = self.source
                 if news.url in all_news:
                     print("News already in DB")
                     self.sr = self.max_result
@@ -54,6 +55,8 @@ class Command(BaseCommand):
         keyword = kwargs['keyword']
         self.author = kwargs['author']
         self.metamemo = MetaMemo.objects.get_or_create(name=self.author)
+        self.source = NewsSource.objects.get_or_create(name="Folha de São Paulo")[0]
+        
 
         while self.sr < self.max_result:
             print("Starting from..." + str(self.sr))

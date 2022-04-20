@@ -13,7 +13,7 @@ def parseDate(content_date):
     return f'{c[3]}-{mes[c[2]]}-{c[1]} {c[4]}:{c[5]}:00'
 
 class Command(BaseCommand):
-    help = 'Importa Notícias da Folha de São Paulo'
+    help = 'Importa Notícias do G1'
     max_result = 10000
     sr = 1
     site = 'jornal'

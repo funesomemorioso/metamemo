@@ -143,7 +143,7 @@ class NewsSource(models.Model):
     image = models.ImageField(upload_to='news', blank=True)
 
     def __str__(self):
-        return(name)
+        return(self.name)
 
 class NewsItem(models.Model):
     title = models.CharField(max_length=200)
@@ -158,5 +158,5 @@ class NewsItem(models.Model):
 
 class NewsCover(models.Model):
     content_date = models.DateTimeField(null=True)
-    cover = models.ImageField(upload_to='cover', blank=True)
+    media = models.ImageField(upload_to='cover', blank=True)
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)

@@ -10,7 +10,11 @@
             <b><i class="icon-calendar font25 valign-middle"></i> <i>{{news.content_date|date:"d/m/Y"}}</i></b>
         </div>
         <p><a href="{{news.url}}" target="_blank">{{news.title}}</a></p>
-        <img src="https://picsum.photos/59/41?sss">
+        {% if news.source.image %}
+            <img src="{{news.source.image.url}}">
+        {% else %}
+            <img src="https://picsum.photos/59/41?sss">
+        {% endif %}
     </div>
     {% endfor %}
 </div>

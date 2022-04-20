@@ -418,6 +418,11 @@ nav ul a:hover {
 	padding-bottom: 27px;
 	border-bottom: 1px solid #F4F5F4;
 }
+
+.resultado-news-lista img {
+	width:51px;
+}
+
 .blog h1{ margin: 0 0 1.50rem 0; }
 .blog .parallax-container, .blog .parallax-container > div {
 	height: 360px;

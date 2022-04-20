@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews
+from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews, NewsCover, NewsItem
 from metamemoapp.filters import MemoItemFilter, MemoNewsFilter
 from django.core.paginator import Paginator
 
@@ -28,13 +28,14 @@ def search(request, year=None, month=None, day=None):
     memoqs = MemoItem.objects.filter(content_date__gte=date, content_date__lte=end_date).order_by('content_date')
     memofilter = MemoItemFilter(request.GET, queryset=memoqs)
 
-    newsqs = MemoNews.objects.filter(content_date__gte=date, content_date__lte=end_date).order_by('content_date')
+    newsqs = NewsItem.objects.filter(content_date__gte=date, content_date__lte=end_date).order_by('content_date')
     newsfilter = MemoNewsFilter(request.GET, queryset=newsqs)
     
     memoitem = Paginator(memofilter.qs, 50)
     memonews = Paginator(newsfilter.qs, 50)
-    memocontext = MemoContext.objects.filter(start_date__lte=date, end_date__gte=date).order_by('start_date')
 
+    memocontext = MemoContext.objects.filter(start_date__lte=date, end_date__gte=date).order_by('start_date')
+    newscover = NewsCover.objects.filter(content_date__gte=date, content_date__lte=end_date)
 
     #Hackish
     tags = {}
@@ -48,6 +49,7 @@ def search(request, year=None, month=None, day=None):
         'memocontext' : memocontext,
         'memoitem' : memoitem.page(1),
         'memonews' : memonews.page(1),
+        'newscovers' : newscover,
         'tags' : tags.most_common(10),
         'date' : date
     }
