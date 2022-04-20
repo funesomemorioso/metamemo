@@ -14,17 +14,19 @@ def parseDate(content_date):
 
 class Command(BaseCommand):
     help = 'Importa Notícias da Folha de São Paulo'
-    max_result = 10000
+    max_result = 1000
     sr = 1
     site = 'jornal'
 
     def scrapeFolha(self, keyword):
+        all_news = MemoNews.objects.filter(source='Folha de São Paulo', metamemo=self.metamemo[0]).values_list('url', flat=True)
         keyword = parse.quote(keyword)
         soap = request.urlopen(f'https://search.folha.uol.com.br/?q={keyword}&site={self.site}&sr={self.sr}')
         soap = soap.read()
         soap = html.fromstring(soap)
         for n in soap.xpath("//li[contains(@class,'c-headline')]"):
             try:
+                
                 news = MemoNews()
                 news.title = n.xpath(".//h2[contains(@class,'c-headline__title')]")[0].text.strip()
                 news.text = n.xpath(".//p[contains(@class, 'c-headline__standfirst')]")[0].text_content().strip()
@@ -33,7 +35,12 @@ class Command(BaseCommand):
                 news.content_date = parseDate(dt)
                 news.metamemo = self.metamemo[0]
                 news.source = "Folha de São Paulo"
-                news.save()
+                if news.url in all_news:
+                    print("News already in DB")
+                    self.sr = self.max_result
+                    break
+                else:
+                    news.save()
                 self.sr += 1
             except:
                 print(dt)
