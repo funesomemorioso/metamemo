@@ -8,22 +8,33 @@ from datetime import datetime, timedelta
 from collections import Counter
 
 # Create your views here.
-def index(request):
-    metamemo_list = MetaMemo.objects.all()
-    data = {
-        'social_list' : {},
-    }
-    return render(request, 'index.html', {'metamemo_list': metamemo_list, 'data': data})
+def home(request):
+    metamemo = MetaMemo.objects.all()
+    tags = MemoItem.objects.all().values_list('keyword__word', flat=True)
+    tags = Counter(tags)
+    tags[None] = 0
 
-def list(request):
+    return render(request, 'home.html', {'metamemo' : metamemo, 'tags' : tags.most_common(15)})
 
-    #author=request.GET['author']
+def search(request, year=None, month=None, day=None):
+    if not year:
+        year = datetime.now().year
+        month = datetime.now().month
+        day = datetime.now().day
 
-    memofilter = MemoItemFilter(request.GET, queryset=MemoItem.objects.all().order_by('content_date'))
-    newsfilter = MemoNewsFilter(request.GET, queryset=MemoNews.objects.all().order_by('content_date'))
-    memoitem = Paginator(memofilter.qs, 25)
-    memonews = Paginator(newsfilter.qs, 3)
-    print(memofilter.get_filters()['date__end'])
+    date = datetime(year, month, day)
+    end_date = date+timedelta(1)
+    
+    memoqs = MemoItem.objects.filter(content_date__gte=date, content_date__lte=end_date).order_by('content_date')
+    memofilter = MemoItemFilter(request.GET, queryset=memoqs)
+
+    newsqs = MemoNews.objects.filter(content_date__gte=date, content_date__lte=end_date).order_by('content_date')
+    newsfilter = MemoNewsFilter(request.GET, queryset=newsqs)
+    
+    memoitem = Paginator(memofilter.qs, 50)
+    memonews = Paginator(newsfilter.qs, 50)
+    memocontext = MemoContext.objects.filter(start_date__lte=date, end_date__gte=date).order_by('start_date')
+
 
     #Hackish
     tags = {}
@@ -34,20 +45,15 @@ def list(request):
     data = {
         'memofilter' : memofilter,
         'metamemo' : MetaMemo.objects.all(),
+        'memocontext' : memocontext,
         'memoitem' : memoitem.page(1),
         'memonews' : memonews.page(1),
-        'tags' : tags.most_common(10)
+        'tags' : tags.most_common(10),
+        'date' : date
     }
     
-    return render(request, 'list.html', {'data' : data})
+    return render(request, 'search.html', {'data' : data})
 
-def integra(request, item_id):
-    
+def memoitem(request, item_id):
     memoitem = MemoItem.objects.get(pk=item_id)
-    print(str(memoitem))
-    data = {
-        'social_list' : {},
-        'memoitem': memoitem,   
-        'item_id': item_id
-    }
-    return render(request, 'integra.html', {'data': data})
+    return render(request, 'memoitem.html', {'memoitem': memoitem})

@@ -32,3 +32,6 @@ tweepy
 telethon
 cryptg
 aiohttp
+
+django-markdown
+django-filter

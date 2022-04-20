@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block title %}Metamemo - Resultado da busca{% endblock %}
+{% block page_class %}list{% endblock %}
+
+{% block content %}
+
+<section class="container">
+	<div class="container">
+		<div class="breadcrumb">
+			<a href="#">Home</a> &gt; 
+			<a href="#">Busca</a> &gt; 
+			<a href="#">Resultados Metamemos</a>  
+		</div>
+		
+		{% include 'list/form.html' %}
+		
+	</div>
+</section>
+<section class="resultado-busca">
+	<div class="row">
+		<div class="col s12 m6 metablue resultado-social">
+			<div class="hal-container right">
+				<div class="row">
+					<div class="col s12 m6 white-text">
+						<b>Itens encontrados:</b> {{data.memoitem.count}}
+					</div>
+					<div class="col s12 m6 right-align">
+						<a href="#" class="btn"><i class="icon-download3 left"></i> Download dos dados</a>
+					</div>
+				</div>
+				
+				<!-- MetaItem -->
+				{% for item in data.memoitem %}
+				<div class="row">
+					<div class="card horizontal scale-transition" data-source="{{item.source.name}}" data-author="{{item.author.name}}">
+						<div class="card-image">
+							{% if item.author.picture %}
+								<img src="{{item.author.picture.url}}">
+							{% else %}
+								<img src="https://picsum.photos/228/265">
+							{% endif %}
+							<div class="card-caption white-text">								
+								<i class="icon-calendar font25 valign-middle"></i> <i>{{item.content_date|date:"d/m/Y"}}</i>
+							</div>
+						</div>
+						<div class="card-stacked">
+							<div class="card-content">
+								<p>
+									<a href="{{item.url}}" target="_blank"><span class="icon-{{item.source.ico}} font35 valign-middle">
+										<span class="path1"></span><span class="path2"></span></span></a>
+								</p>
+								<p>{{item.content|striptags}} 
+									[<a href="{% url 'memoitem' item.pk %}">+</a>]
+								</p>
+							</div>
+							<div class="card-action">
+								<div class="center-align">
+									<span class="icon-thumb-up font16 valign-middle">
+										<span class="path1"></span><span class="path2"></span>
+									</span>
+									<br /><small><b>{{item.likes}}</b></small>
+								</div>
+								<div class="center-align">
+									<span class="icon-comment font16 valign-middle">
+										<span class="path1"></span><span class="path2"></span><span class="path3"></span>
+									</span>
+									<br />
+									<small><b>{{item.interactions}}</b></small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				<!-- MetaItem -->
+
+			</div>
+		</div>
+		<div class="col s12 m6 metapink resultado-slider">
+			{% include 'list/list_context.html' %}
+		</div>
+		<div class="col s12 m6 white resultado-news">
+					{% include 'list/list_news.html' %}
+		</div>
+	</div>
+</section>
+
+{% block debug %}
+<!--	<div>
+		<h2>Debug Filter</h2>
+		<form method="get">
+			{{ data.memofilter.form.as_p }}
+			<input type="submit" />
+		</form>
+	</div>-->
+{% endblock debug %}
+
+{% endblock content %}

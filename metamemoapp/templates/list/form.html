@@ -1,0 +1,56 @@
+{% load metamemoapp_extras %}
+
+<form class="filters row" method="get">
+    <div class="col s12 m6">
+        <div class="col s6 m2 minheight50  valign-wrapper">Filtros</div>
+        <div class="col s6 m2 minheight50  valign-wrapper center-align"><i class="icon-filter"></i></div>
+        <div class="col s12 m8 no-padding">
+            {% with y=data.date|addDays:-1 %}
+                <a href="{% url 'search' y.year y.month y.day %}" class="nav-arrow nav-left"><i class="icon-arrow-left1"></i></a>
+            {% endwith %}
+            <label class="ipt-outline-date"><input id="id_date_start" name="date" type="text" value="{{data.date|date:'d M y'}}" class="browser-default"></label> 
+            <!-- <label class="ipt-outline-date"><input id="id_date_end" name="date__end" type="text" value="{{data.memofilter.form.date__end.value}}" class="browser-default"></label> -->
+            {% with t=data.date|addDays:1 %}
+                <a href="{% url 'search' t.year t.month t.day %}" class="nav-arrow nav-right"><i class="icon-arrow-right1"></i></a>
+            {% endwith %}
+        </div>
+    </div>
+    <div class="col s12 m6 right-align">
+        <label class="ipt-outline-select">
+            <select name="order" class="browser-default">
+                <option value="asc">Mais Recentes</option>
+                <option value="desc">Mais Antigos</option>
+            </select>
+        </label>
+    </div>
+    <div class="col s12 social-icons">
+        <a href="#" data-source="Facebook" ><span class="icon-face"><span class="path1"></span><span class="path2"></span></span></a>
+        <a href="#" data-source="Twitter"><span class="icon-twitter1"><span class="path1"></span><span class="path2"></span></span></a>
+        <a href="#" data-source="Youtube"><span class="icon-youtube1"><span class="path1"></span><span class="path2"></span></span></a>
+        <a href="#" data-source="Instagram"><span class="icon-instagram1"><span class="path1"></span><span class="path2"></span></span></a>
+        <a href="#" data-source="Blog"><span class="icon-blog1"><span class="path1"></span><span class="path2"></span></span></a>
+    </div>
+    <div class="col s12">
+        {% for memo in data.metamemo %}
+         <div class="chip">{{memo.name}}</div>
+         {% endfor %}
+    </div>
+    <div class="col s12">
+        <label class="ipt-search">
+            <input id="id_content" name="content" type="search" class="browser-default" placeholder="Procure por termos específicos. Ex. Amazônia" value={{data.memofilter.form.content.value}}>
+        </label>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <b>MetaTags</b> mais frequentes do arquivo
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            {% for tag in data.tags %}
+            <span class="chip">{{tag.0}}</span>
+            {% endfor %}
+            
+        </div>
+    </div>
+</form>

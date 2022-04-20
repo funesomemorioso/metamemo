@@ -31,4 +31,20 @@ $(document).ready(function(){
     });
     
     $('.materialboxed').materialbox();
+
+
+    $('.filters .chip').click(function(event) {
+        $(`.card[data-author="${event.currentTarget.textContent}"]`).each(function (i, chip) {
+            chip.classList.toggle("hide");
+        });
+        event.currentTarget.classList.toggle("transparent");
+    })
+
+    $('.social-icons a').click(function(event) {
+        var source = event.currentTarget.getAttribute('data-source');
+        $(`.card[data-source="${source}"]`).each(function (i, chip) {
+            chip.classList.toggle("hide");
+        });
+        event.currentTarget.classList.toggle("transparent");
+    });
 });

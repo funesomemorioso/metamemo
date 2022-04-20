@@ -22,10 +22,12 @@ from metamemoapp import views
 
 
 urlpatterns = [
-    path('', views.index),
-    path('list/', views.list),
-    path('integra/<int:item_id>', views.integra),
+    path('', views.home, name='home'),
+    path('search/', views.search, name='search'),
+    path('search/<int:year>/<int:month>/<int:day>', views.search, name='search'),
+    path('memoitem/<int:item_id>', views.memoitem, name='memoitem'),
     path('admin/', admin.site.urls),
     path('celery-progress/', include('celery_progress.urls')),
     path('__debug__', include('debug_toolbar.urls')),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

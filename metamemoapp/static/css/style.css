@@ -499,3 +499,8 @@ footer{
 	.blog .carousel .carousel-item { visibility: initial; position: initial !important; }
 
 }
+
+
+/* Extra */
+.hide { display:none !important }
+.transparent { opacity:0.5 !important }

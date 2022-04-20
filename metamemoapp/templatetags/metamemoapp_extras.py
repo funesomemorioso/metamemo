@@ -3,9 +3,9 @@ from datetime import timedelta
 
 register = template.Library()
 
-@register.filter(name='addDays')
+@register.filter
 def addDays(d, days):
-   newDate = d + timedelta(days=days)
+   newDate = d + timedelta(days=int(days))
    return newDate
 
 @register.filter

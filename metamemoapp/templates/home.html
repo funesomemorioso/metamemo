@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block title %}Metamemo - Resultado da busca{% endblock %}
+{% block page_class %}list{% endblock %}
+
+{% block content %}
+
+<section class="destaque metablue back-malha">
+	<div class="container">
+		<div class="row valign-wrapper">
+			<form action="{% url 'search' %}" method="get" class="destaque-box radius8 col s12 m6 white">
+				<div>
+					<h1>Busque um <b>metamemo</b></h1>
+				</div>
+				<div class="row no-margin-sides">
+					<div class="col s12 grey lighten-4 radius8">
+						<h3>Selecione uma ou mais redes</h3>
+						<div>
+                            <a href="#"><span class="icon-face grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#"><span class="icon-twitter1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#"><span class="icon-youtube1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#"><span class="icon-instagram1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#"><span class="icon-blog1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="row no-margin-sides">
+					<div class="col s12 grey lighten-4 radius8">
+						<h3>Selecione um ou mais METAmemos</h3>
+						<div>
+                            {% for memo in metamemo %}
+                                <span name="author__name" class="chip">{{memo.name}}</span>
+                            {% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="row no-margin-sides">
+					<div class="col s12 grey lighten-4 radius8">
+						<h3>*Selecione um período</h3>
+						<div>
+							<div class="col s6 m4">
+								<b>Inicio</b><br />
+								<label class="ipt-outline-date no-margin">
+                                    <input type="text" name="date__start" value="2021-02-02" class="browser-default"></label> 
+							</div>
+							<div class="col s6 m4">
+								<b>Fim</b><br />
+								<label class="ipt-outline-date no-margin">
+                                    <input type="text" name="date__end" value="2021-02-40" class="browser-default"></label> 
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<button type="submit" class="metapink white-text radius8 font18 block-me btn">Ver Arquivos</button>
+				</div>
+			</form>
+			<div class="col s12 offset-m1 m5 white-text font35 destaque-texto">
+				<p>A <b>MetaMemo</b> é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca) </p>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="back-metaondas"></div>
+<section class="sobre">
+	<div class="container">
+		<div class="row grey lighten-4">
+			<div class="col s12 offset-m1 m4 metaroxo-text">
+				<h2 class="metaroxo-text">O que é o MetaMemo</h2>
+				<p>A MetaMemo é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa nas mais populares plataformas de redes sociais da internet: Facebook, Twitter, Instagram e Youtube. O objetivo é preservar e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.</p>
+				<p>Um metamemo é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.</p>
+				<a href="" class="btn metapink white-text">Saiba mais</a>
+			</div>
+			<div class="col s12 m6 offset-m1 no-padding"><img src="https://picsum.photos/570/539" width="100%"></div>
+		</div>
+	</div>
+</section>
+<section class="timeline">
+	<h2 class="metaroxo-text center-align">Linha do Tempo</h2>
+	<div class="row valign-wrapper">
+		<div class="col s12 m8">
+			<img src="img-timeline.png?sdsd" width="100%" alt="">
+		</div>
+		<div class="col s12 m4 ">
+			<a href="#" class="btn metapink white-text">Acesse aqui</a>
+		</div>
+
+	</div>
+
+</section>
+<section class="sobre no-padding-bottom">
+	<div class="container">
+		<div class="row grey lighten-4 valign-wrapper">
+			<div class="col s12 m6 no-padding"><img src="https://picsum.photos/570/493?sdsd" width="100%"></div>
+			<div class="col s12 offset-m1 m5 metaroxo-text">
+				<h2 class="metaroxo-text">Metamix</h2>
+				<p>Um metamemo é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.</p>			
+				<a href="#" class="btn metapink white-text">Acesse aqui</a>
+			</div>
+		</div>
+		<div class="row grey lighten-4 valign-wrapper align-stretch">
+			<div class="col s12 offset-m1 m4 metaroxo-text minheight439 valign-wrapper">
+				<div>
+					<h2 class="metaroxo-text">MetaTags</h2>
+					<p>Esses são os assuntos mais acessados entre os metamemos, confira:</p>					
+				</div>
+			</div>
+			<div class="col s12 m6 offset-m1 metapink no-padding center-align valign-wrapper minheight439">
+				<div class="container">
+                    {% for tag in tags %}
+                        <span class="chip">{{tag.0}}</span>
+                    {% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row metablue valign-wrapper no-margin">
+		<div class="col s12 m6 no-padding"><img src="https://picsum.photos/705/493?sdsd" width="100%"></div>
+		<div class="col s12 offset-m1 m5 white-text">
+			<div class="col s12 m10">
+				<h2 class="white-text">Colabore!</h2>
+				<p>A plataforma MetaMemo é aberta, e você pode colaborar conosco</p>			
+				<p><a href="#" class="btn metapink white-text">Acesse aqui</a></p>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

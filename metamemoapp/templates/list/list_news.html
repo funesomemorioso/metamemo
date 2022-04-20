@@ -1,0 +1,17 @@
+<div class="hal-container left">
+    <div class="row">
+        <div class="purple-text text-darken-4">
+            <b>Notícias encontradas:</b> {{ data.memonews.count }}
+        </div>
+    </div>
+    {% for news in data.memonews %}
+    <div class="row resultado-news-lista">
+        <div class="metablue-text">
+            <b><i class="icon-calendar font25 valign-middle"></i> <i>{{news.content_date|date:"d/m/Y"}}</i></b>
+        </div>
+        <p><a href="{{news.url}}" target="_blank">{{news.title}}</a></p>
+        <img src="https://picsum.photos/59/41?sss">
+    </div>
+    {% endfor %}
+</div>
+

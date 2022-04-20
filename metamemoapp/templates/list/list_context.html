@@ -1,0 +1,20 @@
+<div class="hal-container left">
+    <div class="slider">
+        <span class="nav-arrow nav-left"><i class="icon-arrow-left1"></i></span>
+        <span class="nav-arrow nav-right"><i class="icon-arrow-right1"></i></span>
+        <ul class="slides metapink white-text center-align">
+            {% for context in data.memocontext %}
+            <li>
+                <h3>Contextos Históricos</h3>
+                <p>{{context.context}}</p>
+                <div class="center-align">
+                    <img class="materialboxed" src="https://picsum.photos/77/135?33">
+                    <img class="materialboxed" src="https://picsum.photos/77/135?22">
+                    <img class="materialboxed" src="https://picsum.photos/77/135?111">
+                </div>
+                <div class="metablue-text center-align"><small>clique para ampliar</small></div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
