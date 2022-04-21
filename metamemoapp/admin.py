@@ -102,7 +102,7 @@ def video_status(obj):
                 return f'{v.status} ({v.progress})'
             return v.status
     
-class MemoItemAdmin(admin.ModelAdmin):
+class MemoItemAdmin(ImportExportModelAdmin):
     model = MemoItem
     list_display = ('title', 'author','content_date', 'source', 'likes', 'interactions', 'shares', get_keywords, video_status, link_to_memoitem)
     list_filter = ('source__name', 'author__name', 'medias__status', 'medias__mediatype')
@@ -160,6 +160,16 @@ class MemoKeyWordAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         queryset = queryset.annotate(word_count=Count("memoitem"))
         return queryset
+
+
+
+#Resources
+
+class MemoItemResource(resources.ModelResource):
+    class Meta:
+        model = MemoItem
+        fields = ('original_id', 'content_date', 'author__name', 'source__name', 'title', 'content', 'likes', 'interactions', 'shares', 'url')
+
 
 admin.site.register(MetaMemo)
 admin.site.register(MemoItem, MemoItemAdmin)
