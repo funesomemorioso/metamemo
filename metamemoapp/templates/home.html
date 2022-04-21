@@ -9,53 +9,52 @@
 <section class="destaque metablue back-malha">
 	<div class="container">
 		<div class="row valign-wrapper">
-			<form action="{% url 'search' %}" method="get" class="destaque-box radius8 col s12 m6 white">
+			<div class="destaque-box radius8 col s12 m6 white">
 				<div>
 					<h1>Busque um <b>metamemo</b></h1>
 				</div>
 				<div class="row no-margin-sides">
 					<div class="col s12 grey lighten-4 radius8">
-						<h3>Selecione uma ou mais redes</h3>
-						<div>
-                            <a href="#"><span class="icon-face grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
-							<a href="#"><span class="icon-twitter1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
-							<a href="#"><span class="icon-youtube1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
-							<a href="#"><span class="icon-instagram1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
-							<a href="#"><span class="icon-blog1 grayscale font35"><span class="path1"></span><span class="path2"></span></span></a>
+						<h3>Redes sociais selecionadas</h3>
+						<div class='social-icons'>
+                            <a href="#" data-source="Facebook" ><span class="icon-face font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#" data-source="Twitter"><span class="icon-twitter1 font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#" data-source="Youtube"><span class="icon-youtube1 font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#" data-source="Instagram"><span class="icon-instagram1 font35"><span class="path1"></span><span class="path2"></span></span></a>
+							<a href="#" data-source="Blog"><span class="icon-blog1 font35"><span class="path1"></span><span class="path2"></span></span></a>
 						</div>
 					</div>
 				</div>
 				<div class="row no-margin-sides">
 					<div class="col s12 grey lighten-4 radius8">
-						<h3>Selecione um ou mais METAmemos</h3>
-						<div>
+						<h3>METAmemos selecionados</h3>
+						<div class='filters'>
                             {% for memo in metamemo %}
-                                <span name="author__name" class="chip">{{memo.name}}</span>
+                                <span name="author" class="chip">{{memo.name}}</span>
                             {% endfor %}
 						</div>
 					</div>
 				</div>
 				<div class="row no-margin-sides">
 					<div class="col s12 grey lighten-4 radius8">
-						<h3>*Selecione um período</h3>
+						<h3>Selecione um dia</h3>
 						<div>
 							<div class="col s6 m4">
-								<b>Inicio</b><br />
 								<label class="ipt-outline-date no-margin">
-                                    <input type="text" name="date__start" value="2021-02-02" class="browser-default"></label> 
+                                    <input id="date" type="text" name="date__start" value="2021-02-02" class="browser-default"></label> 
 							</div>
-							<div class="col s6 m4">
+							<!-- <div class="col s6 m4">
 								<b>Fim</b><br />
 								<label class="ipt-outline-date no-margin">
                                     <input type="text" name="date__end" value="2021-02-40" class="browser-default"></label> 
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
 				<div>
-					<button type="submit" class="metapink white-text radius8 font18 block-me btn">Ver Arquivos</button>
+					<button class="metapink white-text radius8 font18 block-me btn">Consultar</button>
 				</div>
-			</form>
+			</div>
 			<div class="col s12 offset-m1 m5 white-text font35 destaque-texto">
 				<p>A <b>MetaMemo</b> é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca) </p>
 			</div>

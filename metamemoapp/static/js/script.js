@@ -47,4 +47,46 @@ $(document).ready(function(){
         });
         event.currentTarget.classList.toggle("transparent");
     });
+
+    $('.destaque-box button').click(function(event) {
+        var metamemos = []
+        $('.destaque-box .filters span:not(.transparent)').each(function (i, chip) {
+            metamemos.push(chip.textContent);
+        })
+
+        var redes = []
+        $('.social-icons a:not(.transparent)').each(function (i, chip) {
+            redes.push(chip.getAttribute('data-source'));
+        });
+        
+        var d = new Date($("#date")[0].getAttribute('value'))
+        var qs = $.param({"authors":metamemos.toString(), "sources":redes.toString()})
+        
+        window.location = `/search/${d.getUTCFullYear()}/${d.getUTCMonth()}/${d.getUTCDay()}?${qs}`
+    });
+
+
+    //hackish
+    if ($("body").hasClass("page-list")) {
+        const queryString = window.location.search;
+        var p = new URLSearchParams(queryString);
+        var authors = p.get("authors").split(",");
+        var redes = p.get("sources").split(",");
+
+        $('.social-icons a').each(function (i, rede) {
+            var source = rede.getAttribute('data-source');
+            if (!redes.includes(source)) {
+                rede.click();
+            }
+        });
+        
+
+        $('.filters .chip').each(function (i, chip) {
+            var source = chip.textContent;
+            if (!authors.includes(source)) {
+                chip.click();
+            }
+        });
+
+    }
 });
