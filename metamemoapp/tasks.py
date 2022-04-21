@@ -80,7 +80,7 @@ def transcribe_async(url, mediatype):
     i = MemoMedia.objects.filter(original_url=url, mediatype=mediatype).first()
     try:
         t = chain(upload_to_google_async.s().set(queue = 'transcribe') | transcribe_on_google_async.s().set(queue = 'transcribe') | save_transcription_async.s().set(queue='transcribe'))
-        t.delay({'original_url' : url}
+        t.delay({'original_url' : url})
         i.status = 'TRANSCRIBING'
         i.save(update_fields=['status',])
     except:
