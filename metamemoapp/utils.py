@@ -79,6 +79,18 @@ def generate_keyword(text):
     keywords = kw_extractor.extract_keywords(text)
     return keywords
 
+def save_keywords_qs(queryset):
+    for i in queryset:
+        text = i.content
+        for m in i.medias.all():
+            if m.transcription:
+                text += m.transcription
+        keywords = generate_keyword(text)
+        for word,rank in keywords:
+            w =  MemoKeyWord.objects.get_or_create(word=word)
+            i.keyword.add(w[0])
+
+
 #Action para baixar as midias.
 def bulk_download_media(queryset):
     from metamemoapp.tasks import download_async
