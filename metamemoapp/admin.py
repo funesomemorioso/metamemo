@@ -166,9 +166,43 @@ class MemoKeyWordAdmin(admin.ModelAdmin):
 #Resources
 
 class MemoItemResource(resources.ModelResource):
+    video_status = fields.Field()
+    video_url = fields.Field()
+    image_status = fields.Field()
+    image_url = fields.Field()
+    
     class Meta:
         model = MemoItem
-        fields = ('original_id', 'content_date', 'author__name', 'source__name', 'title', 'content', 'likes', 'interactions', 'shares', 'url')
+        fields = ('original_id', 'content_date', 'author__name', 'source__name', 'title', 'content', 'likes', 'interactions', 'shares', 'url', 'medias__media')
+
+    
+    def dehydrate_video_status(self, item):
+        status, url = self._get_status(item, 'VIDEO')
+        return(status)
+    
+    def dehydrate_video_url(self, item):
+        status, url = self._get_status(item, 'VIDEO')
+        return(url)
+
+    def dehydrate_image_status(self, item):
+        status, url = self._get_status(item, 'IMAGE')
+        return(status)
+    
+    def dehydrate_image_url(self, item):
+        status, url = self._get_status(item, 'IMAGE')
+        return(url)
+
+    
+    def _get_status(self, item, mediatype):
+        media = item.medias.filter(mediatype=mediatype)
+        if media:
+            if media.first().media:
+                status = ("downloaded", media.first().media.url)
+            else:
+                status = ("not_downloaded", "")
+        else:
+            status = ("no_media", "")
+        return(status)
 
 
 admin.site.register(MetaMemo)
