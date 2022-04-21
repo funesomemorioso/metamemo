@@ -73,7 +73,7 @@ def save_transcription_async(result):
     for i in videos:
         i.transcription = result['transcript']
         i.status = 'TRANSCRIBED'
-        i.save()
+        i.save(update_fields=['status','transcription'])
 
 @shared_task
 def transcribe_async(url, mediatype):
@@ -81,10 +81,10 @@ def transcribe_async(url, mediatype):
     try:
         t = (upload_to_google_async.s() | transcribe_on_google_async.s() | save_transcription_async.s()).delay({'original_url' : url})
         i.status = 'TRANSCRIBING'
-        i.save()
+        i.save(update_fields=['status',])
     except:
         i.status = 'FAILED_TRANSCRIBE'
-        i.save()
+        i.save(update_fields=['status',])
         raise Exception()
 
 
@@ -122,7 +122,7 @@ def download_async(self, url, mediatype):
                 OriginalYoutubeDL(ydl_opts).download([self.url])
             except:
                 self.first.status = 'FAILED_DOWNLOAD'
-                self.first.save()
+                self.first.save(update_fields=['status',])
                 raise Exception()
 
         filename, ext = get_filename(tempdirname)
@@ -134,7 +134,7 @@ def download_async(self, url, mediatype):
             for v in self.videos[1:]: #adiciona media nos outros memomedia
                 v.media = self.first.media
                 v.status = 'DOWNLOADED'
-                v.save()
+                v.save(update_fields=['status', 'media'])
 
         return self.first.media.url
 
@@ -147,7 +147,7 @@ def download_img_async(pk, url):
         filename = os.path.basename(url)
         i.media.save(f'{i.original_id}_{filename}', File(result))
         i.status = 'DOWNLOADED'
-        i.save()
+        i.save(update_fields=['status', 'media'])
     except:
         i.status = 'FAILED_DONWLOAD'
-        i.save()
+        i.save(update_fields=['status',])
