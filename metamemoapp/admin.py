@@ -50,14 +50,14 @@ def transcribe_media(modeladmin, request, queryset):
         for i in queryset.filter(status='DOWNLOADED', mediatype='VIDEO'):
             i.status = 'TRANSCRIBING'
             i.save()
-            transcribe_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
+            transcribe_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'}, queue="transcribe")
             messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
     elif queryset.model is MemoItem:
         for i in queryset.filter(medias__status='DOWNLOADED', medias__mediatype='VIDEO'):
             for v in i.medias.filter(mediatype='VIDEO'):
                 v.status = 'TRANSCRIBING'
                 v.save()
-                transcribe_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'})
+                transcribe_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'}, queue="transcribe")
                 messages.add_message(request, messages.SUCCESS, 'Transcription job started.')
 transcribe_media.short_description = 'Transcribe Video Media'
 
