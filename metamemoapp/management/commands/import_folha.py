@@ -14,7 +14,7 @@ def parseDate(content_date):
 
 class Command(BaseCommand):
     help = 'Importa Notícias da Folha de São Paulo'
-    max_result = 1000
+    max_result = 10000
     sr = 1
     site = 'jornal'
 
@@ -38,8 +38,9 @@ class Command(BaseCommand):
                 news.source = self.source
                 if news.url in all_news:
                     print("News already in DB")
-                    self.sr = self.max_result
-                    break
+                    if self.update:
+                        self.sr = self.max_result
+                        break
                 else:
                     news.save()
                 self.sr += 1
@@ -49,6 +50,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('-k', '--keyword', type=str, help='Palavra-chave')
         parser.add_argument('-a', '--author', type=str, help='MetaMemo Author Name')
+        parser.add_argument('-u', '--update', action='store_true')
 
 
     def handle(self, *args, **kwargs):
@@ -56,7 +58,7 @@ class Command(BaseCommand):
         self.author = kwargs['author']
         self.metamemo = MetaMemo.objects.get_or_create(name=self.author)
         self.source = NewsSource.objects.get_or_create(name="Folha de São Paulo")[0]
-        
+        self.update = kwargs['update']
 
         while self.sr < self.max_result:
             print("Starting from..." + str(self.sr))
