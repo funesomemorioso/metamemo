@@ -20,7 +20,7 @@ class Command(BaseCommand):
         
         self.medias = MemoMedia.objects.filter(media='').exclude(status='DOWNLOADING')
         if not self.retry:
-            self.medias = self.medias.exclude(status='DOWNLOAD FAILED')
+            self.medias = self.medias.exclude(status='FAILED_DOWNLOAD')
         if self.type:
             self.medias = self.medias.filter(mediatype=self.type)
         
