@@ -10,14 +10,17 @@ class Command(BaseCommand):
         parser.add_argument('-n', '--number', type=int, help='How many to download?')
         parser.add_argument('-t', '--type', type=str, help='Which types?')
         parser.add_argument('-f', '--fake', action='store_true')
-        
+        parser.add_argument('-r', '--retry', action='store_true')
 
     def handle(self, *args, **kwargs):
         self.count = kwargs['number']
         self.type = kwargs['type']
         self.fake = kwargs['fake']
+        self.retry = kwargs['retry']
         
         self.medias = MemoMedia.objects.filter(media='').exclude(status='DOWNLOADING')
+        if not self.retry:
+            self.medias = self.medias.exclude(status='DOWNLOAD FAILED')
         if self.type:
             self.medias = self.medias.filter(mediatype=self.type)
         
