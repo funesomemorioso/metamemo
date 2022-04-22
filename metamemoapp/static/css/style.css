@@ -61,7 +61,13 @@
 	color: #000;
 }
 .card .card-content p:first-child{ margin: 0; }
-.card .card-image img{ border-radius: 4px !important; }
+.card .card-image img{ 
+	border-radius: 4px !important; 
+	width:200px;
+	height:100%;
+	object-fit:cover;
+
+}
 .card .card-image .card-caption {
 	position: absolute;
 	bottom: 16px; left: 20px;

@@ -9,8 +9,8 @@
 <section class="container">
 	<div class="container">
 		<div class="breadcrumb">
-			<a href="#">Home</a> &gt; 
-			<a href="#">Busca</a> &gt; 
+			<a href="{% url 'home' %}">Home</a> &gt; 
+			<a href="{% url 'search' %}">Busca</a> &gt; 
 			<a href="#">Resultados Metamemos</a>  
 		</div>
 		
@@ -36,8 +36,8 @@
 				<div class="row">
 					<div class="card horizontal scale-transition" data-source="{{item.source.name}}" data-author="{{item.author.name}}">
 						<div class="card-image">
-							{% if item.author.picture %}
-								<img src="{{item.author.picture.url}}">
+							{% if item.getImageUrl %}
+								<img src="{{item.getImageUrl}}">
 							{% else %}
 								<img src="https://picsum.photos/228/265">
 							{% endif %}

@@ -109,9 +109,13 @@ class MemoItem(models.Model):
     def __str__(self):
         return(self.title)
 
-    def getImage(self):
-        return self.medias.filter(mediatype='IMAGE').first()
-
+    def getImageUrl(self):
+        img = self.medias.filter(mediatype='IMAGE').exclude(media=None)
+        if img and img.first().media:
+            return img.first().media.url
+        elif self.author.picture:
+            return self.author.picture.url
+        return None
 
 class MemoContext(models.Model):
     context = models.TextField(blank=True)
