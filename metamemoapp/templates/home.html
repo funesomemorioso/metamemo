@@ -15,6 +15,23 @@
 				</div>
 				<div class="row no-margin-sides">
 					<div class="col s12 grey lighten-4 radius8">
+						<h3>Escolha uma data</h3>
+						<div>
+							<div class="col s6 m4">
+									<input id="date" type="text" name="date__start" class="datepicker">
+									<input id="date-hidden" type="hidden" />
+							</div>
+							<!-- <div class="col s6 m4">
+								<b>Fim</b><br />
+								<label class="ipt-outline-date no-margin">
+                                    <input type="text" name="date__end" value="2021-02-40" class="browser-default"></label> 
+							</div> -->
+						</div>
+					</div>
+				</div>
+				
+				<div class="row no-margin-sides">
+					<div class="col s12 grey lighten-4 radius8">
 						<h3>Redes sociais selecionadas</h3>
 						<div class='social-icons'>
                             <a href="#" data-source="Facebook" ><span class="icon-face font35"><span class="path1"></span><span class="path2"></span></span></a>
@@ -32,22 +49,6 @@
                             {% for memo in metamemo %}
                                 <span name="author" class="chip">{{memo.name}}</span>
                             {% endfor %}
-						</div>
-					</div>
-				</div>
-				<div class="row no-margin-sides">
-					<div class="col s12 grey lighten-4 radius8">
-						<h3>Escolha uma data</h3>
-						<div>
-							<div class="col s6 m4">
-									<input id="date" type="text" name="date__start" class="datepicker">
-									<input id="date-hidden" type="hidden" />
-							</div>
-							<!-- <div class="col s6 m4">
-								<b>Fim</b><br />
-								<label class="ipt-outline-date no-margin">
-                                    <input type="text" name="date__end" value="2021-02-40" class="browser-default"></label> 
-							</div> -->
 						</div>
 					</div>
 				</div>

@@ -66,8 +66,13 @@ $(document).ready(function(){
     });
 
     //Datepicker
-
+    var yesterday = new Date()
+    yesterday.setDate(yesterday.getDate()-1);
+    $("#date-hidden")[0].value = yesterday.toISOString();
     $('.datepicker').datepicker({
+        yearRange: [2008,2022],
+        defaultDate: yesterday,
+        setDefaultDate: true,
         i18n: {
             today: 'Hoje',
             clear: 'Limpar',
