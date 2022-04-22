@@ -59,11 +59,33 @@ $(document).ready(function(){
             redes.push(chip.getAttribute('data-source'));
         });
         
-        var d = new Date($("#date")[0].getAttribute('value'))
+        var d = new Date($("#date-hidden")[0].value)
         var qs = $.param({"authors":metamemos.toString(), "sources":redes.toString()})
         
         window.location = `/search/${d.getUTCFullYear()}/${d.getUTCMonth()}/${d.getUTCDay()}?${qs}`
     });
+
+    //Datepicker
+
+    $('.datepicker').datepicker({
+        i18n: {
+            today: 'Hoje',
+            clear: 'Limpar',
+            done: 'Ok',
+            nextMonth: 'Próximo mês',
+            previousMonth: 'Mês anterior',
+            weekdaysAbbrev: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+            weekdays: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+        },
+        onSelect: function (d) {
+            $("#date-hidden")[0].value = d.toISOString();
+        }
+
+    });
+
 
 
     //hackish
