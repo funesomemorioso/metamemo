@@ -56,7 +56,7 @@
 				</div>
 			</div>
 			<div class="col s12 offset-m1 m5 white-text font35 destaque-texto">
-				<p>A <b>MetaMemo</b> é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca) </p>
+				<p><b>MetaMemo</b> é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca) </p>
 			</div>
 		</div>
 	</div>
@@ -67,15 +67,15 @@
 		<div class="row grey lighten-4">
 			<div class="col s12 offset-m1 m4 metaroxo-text">
 				<h2 class="metaroxo-text">O que é o MetaMemo</h2>
-				<p>A MetaMemo é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa nas mais populares plataformas de redes sociais da internet: Facebook, Twitter, Instagram e Youtube. O objetivo é preservar e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.</p>
+				<p>MetaMemo é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa nas mais populares plataformas de redes sociais da internet. O objetivo é preservar e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.</p>
 				<p>Um metamemo é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.</p>
-				<a href="" class="btn metapink white-text">Saiba mais</a>
+				<a href="{% url 'content' 'metamemo' %}" class="btn metapink white-text">Saiba mais</a>
 			</div>
-			<div class="col s12 m6 offset-m1 no-padding"><img src="https://picsum.photos/570/539" width="100%"></div>
+			<div class="col s12 m6 offset-m1 no-padding"><img src="{% static 'imgs/stock/home_metamemo.png' %}" width="100%"></div>
 		</div>
 	</div>
 </section>
-<section class="timeline">
+<!-- <section class="timeline">
 	<h2 class="metaroxo-text center-align">Linha do Tempo</h2>
 	<div class="row valign-wrapper">
 		<div class="col s12 m8">
@@ -88,21 +88,22 @@
 	</div>
 
 </section>
+-->
 <section class="sobre no-padding-bottom">
 	<div class="container">
 		<div class="row grey lighten-4 valign-wrapper">
-			<div class="col s12 m6 no-padding"><img src="https://picsum.photos/570/493?sdsd" width="100%"></div>
+			<div class="col s12 m6 no-padding"><img src="{% static 'imgs/stock/home_metamix.png' %}" width="100%"></div>
 			<div class="col s12 offset-m1 m5 metaroxo-text">
 				<h2 class="metaroxo-text">Metamix</h2>
-				<p>Um metamemo é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.</p>			
-				<a href="#" class="btn metapink white-text">Acesse aqui</a>
+				<p>Nosso blog com a documentação do projeto:</p>			
+				<a href="{% url 'blog' %}" class="btn metapink white-text">Acesse aqui</a>
 			</div>
 		</div>
 		<div class="row grey lighten-4 valign-wrapper align-stretch">
 			<div class="col s12 offset-m1 m4 metaroxo-text minheight439 valign-wrapper">
 				<div>
 					<h2 class="metaroxo-text">MetaTags</h2>
-					<p>Esses são os assuntos mais acessados entre os metamemos, confira:</p>					
+					<p>Este são os assuntos mais acessados entre os metamemos:</p>					
 				</div>
 			</div>
 			<div class="col s12 m6 offset-m1 metapink no-padding center-align valign-wrapper minheight439">
@@ -115,12 +116,12 @@
 		</div>
 	</div>
 	<div class="row metablue valign-wrapper no-margin">
-		<div class="col s12 m6 no-padding"><img src="https://picsum.photos/705/493?sdsd" width="100%"></div>
+		<div class="col s12 m6 no-padding"><img src="{% static 'imgs/stock/home_colabore.png' %}" width="100%"></div>
 		<div class="col s12 offset-m1 m5 white-text">
 			<div class="col s12 m10">
 				<h2 class="white-text">Colabore!</h2>
-				<p>A plataforma MetaMemo é aberta, e você pode colaborar conosco</p>			
-				<p><a href="#" class="btn metapink white-text">Acesse aqui</a></p>
+				<p>A plataforma Metamemo é aberta. Colabore conosco: </p>			
+				<p><a href="{% url 'content' 'colabore' %}" class="btn metapink white-text">Acesse aqui</a></p>
 			</div>
 		</div>
 	</div>
