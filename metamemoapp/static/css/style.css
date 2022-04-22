@@ -374,8 +374,6 @@ nav ul a:hover {
 
 
 .resultado-busca{
-	max-height: 1090px;
-    overflow-y: scroll;
 	letter-spacing: 0.2px;
 }
 .resultado-social, .resultado-news{
