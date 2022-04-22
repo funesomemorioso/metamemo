@@ -21,11 +21,6 @@
 									<input id="date" type="text" name="date__start" class="datepicker">
 									<input id="date-hidden" type="hidden" />
 							</div>
-							<!-- <div class="col s6 m4">
-								<b>Fim</b><br />
-								<label class="ipt-outline-date no-margin">
-                                    <input type="text" name="date__end" value="2021-02-40" class="browser-default"></label> 
-							</div> -->
 						</div>
 					</div>
 				</div>
@@ -45,7 +40,7 @@
 				<div class="row no-margin-sides">
 					<div class="col s12 grey lighten-4 radius8">
 						<h3>METAmemos selecionados</h3>
-						<div class='filters'>
+						<div class='filters metamemo_filter'>
                             {% for memo in metamemo %}
                                 <span name="author" class="chip">{{memo.name}}</span>
                             {% endfor %}
@@ -53,7 +48,7 @@
 					</div>
 				</div>
 				<div>
-					<button class="metapink white-text radius8 font18 block-me btn">Consultar</button>
+					<button class="metapink white-text radius8 font18 block-me btn button">Consultar</button>
 				</div>
 			</div>
 			<div class="col s12 offset-m1 m5 white-text font35 destaque-texto">

@@ -48,9 +48,9 @@ $(document).ready(function(){
         event.currentTarget.classList.toggle("transparent");
     });
 
-    $('.destaque-box button').click(function(event) {
+    $('.button').click(function(event) {
         var metamemos = []
-        $('.destaque-box .filters span:not(.transparent)').each(function (i, chip) {
+        $('.metamemo_filter span:not(.transparent)').each(function (i, chip) {
             metamemos.push(chip.textContent);
         })
 
@@ -59,19 +59,29 @@ $(document).ready(function(){
             redes.push(chip.getAttribute('data-source'));
         });
         
-        var d = new Date($("#date-hidden")[0].value)
+        var d = new Date($("#date-hidden")[0].value);
+        console.log(d.getUTCMonth());
+        console.log(d);
         var qs = $.param({"authors":metamemos.toString(), "sources":redes.toString()})
         
-        window.location = `/search/${d.getUTCFullYear()}/${d.getUTCMonth()}/${d.getUTCDay()}?${qs}`
+        window.location = `/search/${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getDate()}?${qs}`
     });
 
     //Datepicker
-    var yesterday = new Date()
-    yesterday.setDate(yesterday.getDate()-1);
-    $("#date-hidden")[0].value = yesterday.toISOString();
+    var picker_date = new Date()
+    picker_date.setDate(picker_date.getDate()-1);
+    
+    if ($("body").hasClass("search")) {
+        picker_date = new Date($("#date-hidden")[0].value)
+        picker_date.setMinutes(picker_date.getMinutes() + picker_date.getTimezoneOffset());
+    }
+    else {
+        $("#date-hidden")[0].value = picker_date.toISOString();
+    }
+    
     $('.datepicker').datepicker({
         yearRange: [2008,2022],
-        defaultDate: yesterday,
+        defaultDate: picker_date,
         setDefaultDate: true,
         i18n: {
             today: 'Hoje',
@@ -94,7 +104,7 @@ $(document).ready(function(){
 
 
     //hackish
-    if ($("body").hasClass("page-list")) {
+    if ($("body").hasClass("search")) {
         const queryString = window.location.search;
         var p = new URLSearchParams(queryString);
         var authors = p.get("authors").split(",");
