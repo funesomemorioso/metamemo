@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block title %}Metamemo - {{post.title}}{% endblock %}
+{% block page_class %}list{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+    <h3>Metamix</h3>
+    <div class="row">
+        <div class="col s12 m8">
+            <h2>{{post.title}}</h2>
+            <b>{{post.updated_on}}</b>
+
+            {{post.content|safe}}
+
+            <a href="{% url 'blog' post.slug %}" class='align-right'>Ler mais</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

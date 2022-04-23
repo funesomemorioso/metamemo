@@ -19,18 +19,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from metamemoapp import views
+from blog import views as blogviews
 
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('content/<str:page>', views.content, name='content'),
-    path('blog/', views.blog, name='blog'),
-    path('blog/<str:post>', views.blog, name='blog'),
+    path('blog/', blogviews.blog, name='blog'),
+    path('blog/<str:post>', blogviews.blog, name='blog'),
     path('search/', views.search, name='search'),
     path('search/<int:year>/<int:month>/<int:day>', views.search, name='search'),
     path('memoitem/<int:item_id>', views.memoitem, name='memoitem'),
     path('admin/', admin.site.urls),
     path('celery-progress/', include('celery_progress.urls')),
     path('__debug__', include('debug_toolbar.urls')),
-    
+    path('summernote/', include('django_summernote.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
