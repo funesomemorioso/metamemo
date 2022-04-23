@@ -67,9 +67,9 @@ class Command(BaseCommand):
         if 'media' in input_posts.includes:
             for m in input_posts.includes['media']:
                 if m['type'] == 'video':
-                    tweet_media[m['media_key']] = 'VIDEO'
+                    tweet_media[m['media_key']] = {'mediatype': 'VIDEO', 'url' : m['url']}
                 elif m['type'] == 'photo':
-                    tweet_media[m['media_key']] = 'IMAGE'
+                    tweet_media[m['media_key']] = {'mediatype': 'IMAGE', 'url' : m['url']}
                 else:
                     pass
 
@@ -94,16 +94,21 @@ class Command(BaseCommand):
                 post.raw = json.dumps(dict(i), sort_keys=True, indent=1, cls=DjangoJSONEncoder)
                 post.save()
 
-            #Cria um metaitem com status INITIAL caso existam vídeos        
                 if i.attachments:
                     for m in i.attachments['media_keys']:
-                        print(m)
-                        p = post.medias.create(original_url=f'https://twitter.com/{self.user.data.username}/status/{i.id}', original_id=m, status='INITIAL', mediatype=tweet_media[m])
-                        if p.mediatype=='VIDEO' and self.video_download:
-                            p.status = 'DOWNLOADING'
+                        media = tweet_media[m]
+                        if media['mediatype']=='VIDEO':
+                            p = post.medias.create(original_url=f'https://twitter.com/{self.user.data.username}/status/{i.id}', original_id=m, status='INITIAL', mediatype='VIDEO')
+                            if self.video_download:
+                                p.status = 'DOWNLOADING'
+                                p.save()
+                                post.save()
+                                download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+                        elif media['mediatype']=='IMAGE':
+                            p = post.medias.create(original_url=media['url'], original_id=m, status='INITIAL', mediatype='IMAGE')
                             p.save()
                             post.save()
-                            download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+                            download_img_async.apply_async(kwargs={'url' : media['url'], 'pk' : p.pk}, queue='fastlane')
 
 
         if 'next_token' in input_posts.meta and not self.finished:
