@@ -43,7 +43,7 @@
 				<!-- MetaItem -->
 				{% for item in data.memoitem %}
 				<div class="row">
-					<div class="card horizontal scale-transition" data-source="{{item.source.name}}" data-author="{{item.author.name}}">
+					<div class="card horizontal scale-transition hide" data-source="{{item.source.name}}" data-author="{{item.author.name}}">
 						<div class="card-image">
 							{% if item.getImageUrl %}
 								<img src="{{item.getImageUrl}}">
