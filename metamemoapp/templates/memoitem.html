@@ -27,7 +27,7 @@
 			</p>
 		</div>
 		<div class="row memoitem-media">
-			{% with memoitem.medias.all.first as m %}
+			{% for m in memoitem.medias.all %}
 			{% if m.media %}
 				{% if m.mediatype == "IMAGE" %}
 					<img src="{{m.media.url}}" />
@@ -37,9 +37,15 @@
 					</video>
 				{% endif %}
 			{% else %}
-				<i>Media ainda não baixada.</i>
+				{% if m.status != 'DOWNLOADING' %}
+					<i>{{m.mediatype}} ainda não baixada.<br />
+					<span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
+				
+				{% else %}
+					<i>{{m.mediatype}} na fila de download.</i>
+				{% endif %}
 			{% endif %}
-			{% endwith %}
+			{% endfor %}
 		</div>
 
 		<div class="row">

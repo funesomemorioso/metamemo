@@ -74,7 +74,7 @@ $(document).ready(function(){
         picker_date = new Date($("#date-hidden")[0].value)
         picker_date.setMinutes(picker_date.getMinutes() + picker_date.getTimezoneOffset());
     }
-    else {
+    else if ($("#date-hidden").length) {
         $("#date-hidden")[0].value = picker_date.toISOString();
     }
     
@@ -125,4 +125,13 @@ $(document).ready(function(){
         });
 
     }
+
+    //Baixa midia
+    $("#get_media").click(function (event) {
+        var url = event.currentTarget.getAttribute('href');
+        $.ajax(url);
+       $("#get_media").parent()[0].textContent = 'baixando...'
+    });
+
+
 });

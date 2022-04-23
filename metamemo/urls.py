@@ -30,6 +30,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('search/<int:year>/<int:month>/<int:day>', views.search, name='search'),
     path('memoitem/<int:item_id>', views.memoitem, name='memoitem'),
+    path('memoitem/<int:item_id>/get_media', views.get_media, name='get_media'),
     path('admin/', admin.site.urls),
     path('celery-progress/', include('celery_progress.urls')),
     path('__debug__', include('debug_toolbar.urls')),

@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews, NewsCover, NewsItem
 from metamemoapp.filters import MemoItemFilter, MemoNewsFilter
@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 from datetime import datetime, timedelta
 from collections import Counter
-
+from metamemoapp.tasks import download_async,download_img_async
 # Create your views here.
 def home(request):
     metamemo = MetaMemo.objects.all()
@@ -60,6 +60,23 @@ def memoitem(request, item_id):
     memoitem = MemoItem.objects.get(pk=item_id)
     return render(request, 'memoitem.html', {'memoitem': memoitem})
 
+def get_media(request, item_id):
+    memoitem = MemoItem.objects.get(pk=item_id)
+
+    response = {
+        'medias' : [],
+    }
+    for p in memoitem.medias.all():
+            if p.mediatype == 'VIDEO' and p.status in ['INITIAL', 'FAILED_DOWNLOAD']:
+                p.status = 'DOWNLOADING'
+                p.save(update_fields=['status',])
+                download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'}, queue='fastlane')
+            elif p.mediatype=='IMAGE' and p.status in ['INITIAL', 'FAILED_DOWNLOAD']:
+                p.status = 'DOWNLOADING'
+                p.save(update_fields=['status',])
+                download_img_async.apply_async(kwargs={'url' : p.original_url, 'pk' : p.pk}, queue='fastlane')
+            response['medias'].append({'mediatype' : p.mediatype, 'original_url' : p.original_url, 'status' : p.status})
+    return JsonResponse(response, status=200)
 
 def content(request, page):
     return render(request, f'content/{page}.html')
