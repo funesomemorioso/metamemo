@@ -513,3 +513,7 @@ footer{
 /* Extra */
 .hide-source, .hide-author { display:none !important }
 .transparent { opacity:0.5 !important }
+
+.memoitem .memoitem-media img, .memoitem .memoitem-media video {
+	max-width:100%;
+}
