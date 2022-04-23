@@ -40,7 +40,8 @@ class MemoSource(models.Model):
             'Facebook' : 'face',
             'Youtube' : 'youtube1',
             'Twitter' : 'twitter1',
-            'Instagram' : 'instagram1'
+            'Instagram' : 'instagram1',
+            'Telegram' : 'telegram',
         }
         if self.name in icons:
             return(icons[self.name])
