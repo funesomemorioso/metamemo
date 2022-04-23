@@ -60,12 +60,6 @@ def memoitem(request, item_id):
     memoitem = MemoItem.objects.get(pk=item_id)
     return render(request, 'memoitem.html', {'memoitem': memoitem})
 
-def blog(request, post=None):
-    if post:
-        return render(request, 'post.html', {'post': post })
-    else:
-        posts = []
-        return render(request, 'blog.html', {'posts' : posts})
 
 def content(request, page):
-    return render(request, page+".html")
+    return render(request, f'content/{page}.html')
