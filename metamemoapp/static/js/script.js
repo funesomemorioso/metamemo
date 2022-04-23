@@ -36,7 +36,7 @@ $(document).ready(function(){
     //Form de busca
     $('.metasearch #authors .author').click(function(event) {
         $(`.card[data-author="${event.currentTarget.textContent}"]`).each(function (i, chip) {
-            chip.classList.toggle("hide");
+            chip.classList.toggle("hide-author");
         });
         event.currentTarget.classList.toggle("transparent");
     })
@@ -44,7 +44,7 @@ $(document).ready(function(){
     $('.metasearch #sources .source').click(function(event) {
         var source = event.currentTarget.getAttribute('data-source');
         $(`.card[data-source="${source}"]`).each(function (i, chip) {
-            chip.classList.toggle("hide");
+            chip.classList.toggle("hide-source");
         });
         event.currentTarget.classList.toggle("transparent");
     });

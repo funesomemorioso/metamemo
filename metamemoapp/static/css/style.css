@@ -511,5 +511,5 @@ footer{
 
 
 /* Extra */
-.hide { display:none !important }
+.hide-source, .hide-author { display:none !important }
 .transparent { opacity:0.5 !important }
