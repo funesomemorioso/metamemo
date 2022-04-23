@@ -32,15 +32,16 @@ $(document).ready(function(){
     
     $('.materialboxed').materialbox();
 
-
-    $('.filters .chip').click(function(event) {
+    
+    //Form de busca
+    $('.metasearch #authors .author').click(function(event) {
         $(`.card[data-author="${event.currentTarget.textContent}"]`).each(function (i, chip) {
             chip.classList.toggle("hide");
         });
         event.currentTarget.classList.toggle("transparent");
     })
 
-    $('.social-icons a').click(function(event) {
+    $('.metasearch #sources .source').click(function(event) {
         var source = event.currentTarget.getAttribute('data-source');
         $(`.card[data-source="${source}"]`).each(function (i, chip) {
             chip.classList.toggle("hide");
@@ -50,21 +51,19 @@ $(document).ready(function(){
 
     $('.button').click(function(event) {
         var metamemos = []
-        $('.metamemo_filter span:not(.transparent)').each(function (i, chip) {
-            metamemos.push(chip.textContent);
+        $('.metasearch #authors .author:not(.transparent)').each(function (i, chip) {
+            metamemos.push(chip.getAttribute('data-author'));
         })
-
+        
         var redes = []
-        $('.social-icons a:not(.transparent)').each(function (i, chip) {
+        $('.metasearch #sources .source:not(.transparent)').each(function (i, chip) {
             redes.push(chip.getAttribute('data-source'));
         });
+        var data = new Date($("#date-hidden")[0].value);
         
-        var d = new Date($("#date-hidden")[0].value);
-        console.log(d.getUTCMonth());
-        console.log(d);
         var qs = $.param({"authors":metamemos.toString(), "sources":redes.toString()})
         
-        window.location = `/search/${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getDate()}?${qs}`
+        window.location = `/search/${data.getUTCFullYear()}/${data.getUTCMonth()+1}/${data.getDate()}?${qs}`
     });
 
     //Datepicker
@@ -103,24 +102,24 @@ $(document).ready(function(){
 
 
 
-    //hackish
+    //Carrega filtros
     if ($("body").hasClass("search")) {
         const queryString = window.location.search;
         var p = new URLSearchParams(queryString);
         var authors = p.get("authors").split(",");
         var redes = p.get("sources").split(",");
 
-        $('.social-icons a').each(function (i, rede) {
+        $('.metasearch #sources .source').each(function (i, rede) {
             var source = rede.getAttribute('data-source');
-            if (!redes.includes(source)) {
+            if (redes.includes(source)) {
                 rede.click();
             }
         });
         
 
-        $('.filters .chip').each(function (i, chip) {
-            var source = chip.textContent;
-            if (!authors.includes(source)) {
+        $('.metasearch #authors .author').each(function (i, chip) {
+            var source = chip.getAttribute('data-author');
+            if (authors.includes(source)) {
                 chip.click();
             }
         });
