@@ -26,12 +26,14 @@ class Command(BaseCommand):
         parser.add_argument('-u', '--username', type=str, help='Twitter Username')
         parser.add_argument('-a', '--author', type=str, help='MetaMemo Author Name')
         parser.add_argument('-m', '--media', action='store_true')
-
+        parser.add_argument('-r', '--refresh', action='store_true')
 
     def handle(self, *args, **kwargs):
         self.username = kwargs['username']
         self.author = kwargs['author']
         self.video_download = kwargs['media']
+        self.update = kwargs['refresh']
+        self.finished = False
 
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
         self.memo_source = MemoSource.objects.get_or_create(name='Twitter')
@@ -72,11 +74,11 @@ class Command(BaseCommand):
                     pass
 
         for i in input_posts.data:
-            if i.id in self.memo_itens:
-                print("Done!")
-                break
+            if str(i.id) in self.memo_itens:
+                if not self.update:
+                    self.finished = True
+                    break
             else:
-                pprint.pprint(i, indent=3)
                 post = MemoItem()
                 post.author = self.memo_author[0]
                 post.source = self.memo_source[0]
@@ -104,5 +106,5 @@ class Command(BaseCommand):
                             download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
 
 
-                if 'next_token' in input_posts.meta:
-                    self.getTweets(paginationToken=input_posts.meta['next_token'])
+        if 'next_token' in input_posts.meta and not self.finished:
+            self.getTweets(paginationToken=input_posts.meta['next_token'])
