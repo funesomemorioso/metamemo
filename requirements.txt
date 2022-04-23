@@ -33,5 +33,5 @@ telethon
 cryptg
 aiohttp
 
-django-markdown
 django-filter
+django-summernote
