@@ -50,38 +50,42 @@ $(document).ready(function(){
     });
 
     $('.button').click(function(event) {
-        var metamemos = []
+        var authors = [];
+        
         $('.metasearch #authors .author:not(.transparent)').each(function (i, chip) {
-            metamemos.push(chip.getAttribute('data-author'));
+            authors.push(chip.getAttribute('data-author'));
         })
         
-        var redes = []
+        var sources = [];
         $('.metasearch #sources .source:not(.transparent)').each(function (i, chip) {
-            redes.push(chip.getAttribute('data-source'));
+            sources.push(chip.getAttribute('data-source'));
         });
-        var data = new Date($("#date-hidden")[0].value);
         
-        var qs = $.param({"authors":metamemos.toString(), "sources":redes.toString()})
+        var qs = {
+            'author' : authors,
+            'source' : sources
+        }
+
+        var sd =  new Date(M.Datepicker.getInstance($("#start_date")).date);
+        var ed = new Date(M.Datepicker.getInstance($("#end_date")).date);
+
+        console.log(sd);
+        if (start_date) {
+            qs['start_date'] = `${sd.getUTCFullYear()}-${sd.getUTCMonth()+1}-${sd.getDate()}`
+        }
+        if (end_date) {
+            qs['end_date'] = `${ed.getUTCFullYear()}-${ed.getUTCMonth()+1}-${ed.getDate()}`
+        }
         
-        window.location = `/search/${data.getUTCFullYear()}/${data.getUTCMonth()+1}/${data.getDate()}?${qs}`
+        qs = $.param(qs, true);
+
+        
+        window.location = `/lista/?${qs}`
     });
 
     //Datepicker
-    var picker_date = new Date()
-    picker_date.setDate(picker_date.getDate()-1);
-    
-    if ($("body").hasClass("search")) {
-        picker_date = new Date($("#date-hidden")[0].value)
-        picker_date.setMinutes(picker_date.getMinutes() + picker_date.getTimezoneOffset());
-    }
-    else if ($("#date-hidden").length) {
-        $("#date-hidden")[0].value = picker_date.toISOString();
-    }
-    
     $('.datepicker').datepicker({
         yearRange: [2008,2022],
-        defaultDate: picker_date,
-        setDefaultDate: true,
         i18n: {
             today: 'Hoje',
             clear: 'Limpar',
@@ -93,11 +97,7 @@ $(document).ready(function(){
             weekdays: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
             monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-        },
-        onSelect: function (d) {
-            $("#date-hidden")[0].value = d.toISOString();
         }
-
     });
 
 
@@ -106,8 +106,18 @@ $(document).ready(function(){
     if ($("body").hasClass("search")) {
         const queryString = window.location.search;
         var p = new URLSearchParams(queryString);
-        var authors = p.get("authors").split(",");
-        var redes = p.get("sources").split(",");
+        var authors = p.getAll("author");
+        var redes = p.getAll("source");
+
+        //set date
+        var start_date = M.Datepicker.getInstance($(".metasearch #start_date"))
+        var end_date = M.Datepicker.getInstance($(".metasearch #end_date"))
+        
+        start_date.setDate(p.get("start_date"));
+        start_date._finishSelection();
+
+        end_date.setDate(p.get("end_date"));
+        end_date._finishSelection();
 
         $('.metasearch #sources .source').each(function (i, rede) {
             var source = rede.getAttribute('data-source');

@@ -16,6 +16,29 @@ def home(request):
 
     return render(request, 'home.html', {'metamemo' : metamemo, 'tags' : tags.most_common(15)})
 
+def lista(request):
+    memoqs = MemoItem.objects.all().order_by('-content_date')
+    memofilter = MemoItemFilter(request.GET, queryset=memoqs.prefetch_related('author'))
+
+    memoitem = Paginator(memofilter.qs, 50)
+    date = datetime.now()
+    #Hackish
+    tags = {}
+    tags_raw = memofilter.qs.values_list('keyword__word', flat=True)
+    tags = Counter(tags_raw)
+    tags[None]=0
+    
+    data = {
+        'memofilter' : memofilter,
+        'metamemo' : MetaMemo.objects.values_list('name', flat=True),
+        'memoitem' : memoitem.page(1),
+        'tags' : tags.most_common(10),
+        'date' : date
+    }
+    
+    return render(request, 'advsearch.html', {'data' : data})
+
+
 def search(request, year=None, month=None, day=None):
     if not year:
         year = datetime.now().year
