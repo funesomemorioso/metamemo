@@ -60,12 +60,12 @@
 							<td><a href="">Post original</a></td>
 							<td>
 								{% for media in item.medias.all %}
-									{% if media.mediatype == 'VIDEO' and media.media %}
-										<a href="{{media.media}}" class='icon icon-file-play'></a>
-									{% elif media.mediatype == 'IMAGE' and media.media %}
-										<a href="{{media.media}}" class='icon icon-file-picture'></a>
-									{% else %}
-										<a href="" title="Media por baixar..." class='icon-download'></i>
+									{% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
+										<a href="{{media.media.url}}" class='icon icon-file-play'></a>
+									{% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
+										<a href="{{media.media.url}}" class='icon icon-file-picture'></a>
+									{% elif media.media %}
+										<span href="{% url 'get_media' media.pk %}" id="get_media" title="Media por baixar..." class='icon icon-download pointer'></span>
 									{% endif %}
 								{% endfor %}
 							</td>

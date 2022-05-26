@@ -509,7 +509,9 @@ footer{
 
 }
 
-
+.pointer {
+	cursor: pointer;
+}
 .icon {
 	font-size: 2em !important;
 }
