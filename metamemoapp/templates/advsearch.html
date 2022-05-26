@@ -57,7 +57,7 @@
 							<td>{{item.content_date|date:"d/m/Y"}}</td>
 							<td>{{item.content_date|date:"H:i"}}</td>
 							<td>{{item.author.name}}</td>
-							<td><a href="">Post original</a></td>
+							<td><a href="{{item.url}}" target="_blank">Post original</a></td>
 							<td>
 								{% for media in item.medias.all %}
 									{% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
