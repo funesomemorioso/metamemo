@@ -64,7 +64,7 @@
 										<a href="{{media.media.url}}" class='icon icon-file-play'></a>
 									{% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
 										<a href="{{media.media.url}}" class='icon icon-file-picture'></a>
-									{% elif media.media %}
+									{% else %}
 										<span href="{% url 'get_media' media.pk %}" id="get_media" title="Media por baixar..." class='icon icon-download pointer'></span>
 									{% endif %}
 								{% endfor %}
