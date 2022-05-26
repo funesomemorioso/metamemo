@@ -23,7 +23,13 @@
 		<div class="col s12 resultado-social">
 			<div class="container">
 				<div class="row">
-					<div class="col s12">
+					<div class="col s4">
+
+					</div>
+					<div class="col s4">
+
+					</div>
+					<div class="col s4 right-align">
 						<a href="{% static 'data/database.csv' %}" target="_blank" class="btn"><i class="icon-download3 left"></i> Download dos dados</a>
 					</div>
 				</div>
@@ -45,17 +51,23 @@
 					<tbody>
 						{% for item in data.memoitem %}
 						<tr>
-							<td><a href="{% url 'memoitem' item.pk %}">[o]</a></td>
+							<td><a class='icon icon-eye' href="{% url 'memoitem' item.pk %}"></a></td>
 							<td>{{item.title}}</td>
-							<td>{{item.memosource}}</td>
+							<td><i class='icon icon-{{item.source.ico}}'><span class="path1"></span><span class="path2"></span></i></td>
 							<td>{{item.content_date|date:"d/m/Y"}}</td>
 							<td>{{item.content_date|date:"H:i"}}</td>
 							<td>{{item.author.name}}</td>
 							<td><a href="">Post original</a></td>
 							<td>
-								{% if item.media %}
-									[video]
-								{% endif %}
+								{% for media in item.medias.all %}
+									{% if media.mediatype == 'VIDEO' and media.media %}
+										<a href="{{media.media}}" class='icon icon-file-play'></a>
+									{% elif media.mediatype == 'IMAGE' and media.media %}
+										<a href="{{media.media}}" class='icon icon-file-picture'></a>
+									{% else %}
+										<a href="" title="Media por baixar..." class='icon-download'></i>
+									{% endif %}
+								{% endfor %}
 							</td>
 						</tr>
 						{% endfor %}
@@ -63,6 +75,27 @@
 				</table>
 				<!-- MetaItem -->
 			</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col s12 center-align'>
+			<div class="pagination">
+				<span class="step-links">
+					{% if data.memoitem.has_previous %}
+						<a href="?{% url_replace page=1 %}">&laquo; first</a>
+						<a href="?{% url_replace page=data.memoitem.previous_page_number %}">previous</a>
+					{% endif %}
+			
+					<span class="current">
+						Page {{ data.memoitem.number }} of {{ data.memoitem.paginator.num_pages }}.
+					</span>
+			
+					{% if data.memoitem.has_next %}
+						<a href="?{% url_replace page=data.memoitem.next_page_number %}">next</a>
+						<a href="?{% url_replace page=data.memoitem.paginator.num_pages %}">last &raquo;</a>
+					{% endif %}
+				</span>
 			</div>
 		</div>
 	</div>

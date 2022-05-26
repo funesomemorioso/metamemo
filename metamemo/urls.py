@@ -27,6 +27,7 @@ urlpatterns = [
     path('content/<str:page>', views.content, name='content'),
     path('blog/', blogviews.blog, name='blog'),
     path('blog/<str:post>', blogviews.blog, name='blog'),
+    path('lista/', views.lista, name='lista'),
     path('search/', views.search, name='search'),
     path('search/<int:year>/<int:month>/<int:day>', views.search, name='search'),
     path('memoitem/<int:item_id>', views.memoitem, name='memoitem'),

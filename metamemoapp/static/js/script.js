@@ -69,16 +69,13 @@ $(document).ready(function(){
         var sd =  new Date(M.Datepicker.getInstance($("#start_date")).date);
         var ed = new Date(M.Datepicker.getInstance($("#end_date")).date);
 
-        console.log(sd);
-        if (start_date) {
+        if (sd) {
             qs['start_date'] = `${sd.getUTCFullYear()}-${sd.getUTCMonth()+1}-${sd.getDate()}`
         }
-        if (end_date) {
+        if (ed) {
             qs['end_date'] = `${ed.getUTCFullYear()}-${ed.getUTCMonth()+1}-${ed.getDate()}`
         }
-        
         qs = $.param(qs, true);
-
         
         window.location = `/lista/?${qs}`
     });

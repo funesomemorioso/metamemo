@@ -16,11 +16,13 @@
 				<div class="row no-margin-sides">
 					<div class="col s12 grey lighten-4 radius8">
 						<h3>Escolha uma data</h3>
-						<div>
-							<div class="col s6 m4">
-									<input id="date" type="text" class="datepicker">
-									<input id="date-hidden" type="hidden" />
-							</div>
+						<<div class="col s4">
+							<input id="start_date" class="datepicker" type="text" />
+							<input id="start-date-hidden" value="{{data.date|date:'Y-m-d'}}" type="hidden" />
+						</div>
+						<div class="col s4">
+							<input id="end_date" class="datepicker" type="text" />
+							<input id="end-date-hidden" value="{{data.date|date:'Y-m-d'}}" type="hidden" />
 						</div>
 					</div>
 				</div>

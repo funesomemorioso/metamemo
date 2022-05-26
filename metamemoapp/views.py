@@ -3,6 +3,8 @@ from django.shortcuts import render
 from metamemoapp.models import MetaMemo, MemoItem, MemoContext, MemoNews, NewsCover, NewsItem
 from metamemoapp.filters import MemoItemFilter, MemoNewsFilter
 from django.core.paginator import Paginator
+from django.db.models import Count
+
 
 from datetime import datetime, timedelta
 from collections import Counter
@@ -17,11 +19,11 @@ def home(request):
     return render(request, 'home.html', {'metamemo' : metamemo, 'tags' : tags.most_common(15)})
 
 def lista(request):
+    page_nm = request.GET.get('page', 1)
     memoqs = MemoItem.objects.all().order_by('-content_date')
-    memofilter = MemoItemFilter(request.GET, queryset=memoqs.prefetch_related('author'))
+    memofilter = MemoItemFilter(request.GET, queryset=memoqs.select_related('author', 'source').prefetch_related('medias'))
 
-    memoitem = Paginator(memofilter.qs, 50)
-    date = datetime.now()
+    memoitem = Paginator(memofilter.qs.annotate(Count('source__name')), 50)
     #Hackish
     tags = {}
     tags_raw = memofilter.qs.values_list('keyword__word', flat=True)
@@ -31,9 +33,8 @@ def lista(request):
     data = {
         'memofilter' : memofilter,
         'metamemo' : MetaMemo.objects.values_list('name', flat=True),
-        'memoitem' : memoitem.page(1),
+        'memoitem' : memoitem.page(page_nm),
         'tags' : tags.most_common(10),
-        'date' : date
     }
     
     return render(request, 'advsearch.html', {'data' : data})

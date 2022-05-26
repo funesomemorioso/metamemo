@@ -1,5 +1,6 @@
 from django import template
 from datetime import timedelta
+from urllib.parse import urlencode
 
 register = template.Library()
 
@@ -11,3 +12,9 @@ def addDays(d, days):
 @register.filter
 def getImages(mememoitem):
    return mememoitem.getImage()
+
+@register.simple_tag(takes_context=True)
+def url_replace(context, **kwargs):
+    query = context['request'].GET.copy()
+    query.update(kwargs)
+    return query.urlencode()
