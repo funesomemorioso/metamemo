@@ -63,7 +63,8 @@ $(document).ready(function(){
         
         var qs = {
             'author' : authors,
-            'source' : sources
+            'source' : sources,
+            'content' : $("#id_content").val()
         }
 
         var sd =  new Date(M.Datepicker.getInstance($("#start_date")).date);
@@ -106,6 +107,7 @@ $(document).ready(function(){
         var authors = p.getAll("author");
         var redes = p.getAll("source");
 
+        $("#id_content").val(p.get("content"));
         //set date
         var start_date = M.Datepicker.getInstance($(".metasearch #start_date"))
         var end_date = M.Datepicker.getInstance($(".metasearch #end_date"))
