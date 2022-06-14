@@ -14,7 +14,7 @@
             <link rel="stylesheet" href="{% static 'css/style.css' %}">
         </head>
     {% endblock %}
-    <body class="pages page-{% block page_class %}{% endblock %}">
+    <body class="pages page-{% spaceless %}{% block page_class %}{% endblock %}{% endspaceless %}">
         {% block header %}
             <nav>
                 <div class="container">
