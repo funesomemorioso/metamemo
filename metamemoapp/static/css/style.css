@@ -4,6 +4,8 @@
 /*Cores*/
 .metablue{ background-color: #3478B7 !important; }
 .metablue-text{ color: #3478B7 !important; }
+.metagreen{ background-color: #1B975B !important; }
+.metagreen-text{color: #1B975B !important; }
 .metapink{ background-color: #EF5DA8 !important; }
 .metapink-text{ color: #EF5DA8 !important; }
 .metaroxo{ background-color: #462F87 !important; }
@@ -155,6 +157,13 @@ h1{
 	align-items: center;
 	letter-spacing: 0.1px;
 }
+.destaque-box h1 {
+	padding-left: .25rem;
+}
+.destaque-box > .row {
+	padding: 1rem;
+	margin-bottom: .75rem;
+}
 
 .sobre .col {
     line-height: 0;
@@ -282,10 +291,10 @@ nav ul a:hover {
     background-color: #F4F4F4;
 }
 
-.home section{
+.page-home section{
 	padding: 81px 0 117px 0;
 }
-.home h2{
+.page-home h2{
 	font-style: normal;
 	font-weight: 700;
 	font-size: 38px;
@@ -293,7 +302,7 @@ nav ul a:hover {
 	align-items: center;
 	letter-spacing: 0.1px;
 }
-.home .btn{
+.page-home .btn{
 	display: inline-block;
 	height: initial !important ;
 	border: 0;
@@ -486,7 +495,7 @@ footer{
 @media only screen and (max-width: 601px){
 	.row.valign-wrapper { flex-wrap: wrap; }
 	.col.s12{ margin-top: 10px; margin-bottom: 10px; }
-	.home section{ padding: 40px 0 ;}
+	.page-home section{ padding: 40px 0 ;}
 	.filters [type="search"] {
 		padding: 24px 28px;
     	font-size: 12px;
