@@ -3,112 +3,129 @@
 {% load metamemoapp_extras %}
 {% block title %}Metamemo - Resultado da busca{% endblock %}
 {% block page_class %}list search{% endblock %}
-
 {% block content %}
-
-<section class="container">
-	<div class="container">
-		<div class="breadcrumb">
-			<a href="{% url 'home' %}">Home</a> &gt; 
-			<a href="{% url 'search' %}">Busca</a> &gt; 
-			<a href="#">Resultados Metamemos</a>  
-		</div>
-		
-		{% include 'list/advform.html' %}
-		
-	</div>
-</section>
-<section class="resultado-busca">
-	<div class="row">
-		<div class="col s12 resultado-social">
-			<div class="container">
-				<div class="row">
-					<div class="col s4">
-
-					</div>
-					<div class="col s4">
-
-					</div>
-					<div class="col s4 right-align">
-						<a href="{% static 'data/database.csv' %}" target="_blank" class="btn"><i class="icon-download3 left"></i> Download dos dados</a>
-					</div>
-				</div>
-				<div class="row">
-				<!-- MetaItem -->
-				<table class="striped">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Título</th>
-							<th>Rede</th>
-							<th>Data</th>
-							<th>Hora</th>
-							<th>Metamemo</th>
-							<th>Url</th>
-							<th>Mídia</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for item in data.memoitem %}
-						<tr>
-							<td><a class='icon icon-eye' href="{% url 'memoitem' item.pk %}"></a></td>
-							<td>{{item.title}}</td>
-							<td><i class='icon icon-{{item.source.ico}}'><span class="path1"></span><span class="path2"></span></i></td>
-							<td>{{item.content_date|date:"d/m/Y"}}</td>
-							<td>{{item.content_date|date:"H:i"}}</td>
-							<td>{{item.author.name}}</td>
-							<td><a href="{{item.url}}" target="_blank">Post original</a></td>
-							<td>
-								{% for media in item.medias.all %}
-									{% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
-										<a href="{{media.media.url}}" class='icon icon-file-play'></a>
-									{% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
-										<a href="{{media.media.url}}" class='icon icon-file-picture'></a>
-									{% else %}
-										<span href="{% url 'get_media' item.pk %}" id="get_media" title="Media por baixar..." class='icon icon-download pointer'></span>
-									{% endif %}
-								{% endfor %}
-							</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				<!-- MetaItem -->
-			</div>
-			</div>
-		</div>
-	</div>
-	<div class='row'>
-		<div class='col s12 center-align'>
-			<div class="pagination">
-				<span class="step-links">
-					{% if data.memoitem.has_previous %}
-						<a href="?{% url_replace page=1 %}">&laquo; first</a>
-						<a href="?{% url_replace page=data.memoitem.previous_page_number %}">previous</a>
-					{% endif %}
-			
-					<span class="current">
-						Page {{ data.memoitem.number }} of {{ data.memoitem.paginator.num_pages }}.
-					</span>
-			
-					{% if data.memoitem.has_next %}
-						<a href="?{% url_replace page=data.memoitem.next_page_number %}">next</a>
-						<a href="?{% url_replace page=data.memoitem.paginator.num_pages %}">last &raquo;</a>
-					{% endif %}
-				</span>
-			</div>
-		</div>
-	</div>
-</section>
-
-{% block debug %}
-<!--	<div>
+    <section class="container">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'home' %}">Home</a> &gt;
+                <a href="{% url 'search' %}">Busca</a> &gt;
+                <a href="#">Resultados Metamemos</a>
+            </div>
+            {% include 'list/advform.html' %}
+        </div>
+    </section>
+    <section class="resultado-busca">
+        <div class="row">
+            <div class="col s12 resultado-social">
+                <div class="container">
+                    <div class="row valign-wrapper">
+                        {# dates #}
+                        <div class="col s12 m2">
+                            <div class="input-field">
+                                <input id="startdate" value="{{ data.dates.0 }}" type="text" />
+                                <label class="active" for="startdate">Inicio</label>
+                            </div>
+                            <div class="input-field">
+                                <input id="enddate" value="{{ data.dates.1 }}" type="text" />
+                                <label class="active" for="enddate">Fim</label>
+                            </div>
+                        </div>
+                        {# count #}
+                        <div class="col s12 m4">
+                            <div class="results-total">
+                                <p>{{ data.results_total }} arquivos encontrados</p>
+                            </div>
+                        </div>
+                        {# sources #}
+                        <div class="col s12 m4">
+                            {% for source, total in data.sources_total.items %}<p>{{ source }}: {{ total }}</p>{% endfor %}
+                        </div>
+                        {# download #}
+                        <div class="col s12 m2 right-align">
+                            <a href="{% static 'data/database.csv' %}" target="_blank" class="btn"><i class="icon-download3 left"></i> Download dos dados</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- MetaItem -->
+                        <table class="striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Título</th>
+                                    <th>Rede</th>
+                                    <th>Data</th>
+                                    <th>Hora</th>
+                                    <th>Metamemo</th>
+                                    <th>Url</th>
+                                    <th>Mídia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in data.memoitem %}
+                                    <tr>
+                                        <td>
+                                            <a class='icon icon-eye' href="{% url 'memoitem' item.pk %}"></a>
+                                        </td>
+                                        <td>{{ item.title }}</td>
+                                        <td>
+                                            <i class='icon icon-{{ item.source.ico }}'><span class="path1"></span><span class="path2"></span></i>
+                                        </td>
+                                        <td>{{ item.content_date|date:"d/m/Y" }}</td>
+                                        <td>{{ item.content_date|date:"H:i" }}</td>
+                                        <td>{{ item.author.name }}</td>
+                                        <td>
+                                            <a href="{{ item.url }}" target="_blank">Post original</a>
+                                        </td>
+                                        <td>
+                                            {% for media in item.medias.all %}
+                                                {% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
+                                                    <a href="{{ media.media.url }}" class='icon icon-file-play'></a>
+                                                {% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
+                                                    <a href="{{ media.media.url }}" class='icon icon-file-picture'></a>
+                                                {% else %}
+                                                    <span href="{% url 'get_media' item.pk %}"
+                                                          id="get_media"
+                                                          title="Media por baixar..."
+                                                          class='icon icon-download pointer'></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- MetaItem -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col s12 center-align'>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if data.memoitem.has_previous %}
+                            <a href="?{% url_replace page=1 %}">&laquo; first</a>
+                            <a href="?{% url_replace page=data.memoitem.previous_page_number %}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ data.memoitem.number }} of {{ data.memoitem.paginator.num_pages }}.
+                        </span>
+                        {% if data.memoitem.has_next %}
+                            <a href="?{% url_replace page=data.memoitem.next_page_number %}">next</a>
+                            <a href="?{% url_replace page=data.memoitem.paginator.num_pages %}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block debug %}
+        <!--	<div>
 		<h2>Debug Filter</h2>
 		<form method="get">
 			{{ data.memofilter.form.as_p }}
 			<input type="submit" />
 		</form>
 	</div>-->
-{% endblock debug %}
-
+    {% endblock debug %}
 {% endblock content %}
