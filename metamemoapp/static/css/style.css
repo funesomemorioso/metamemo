@@ -141,7 +141,7 @@ h1{
 	letter-spacing: 0.1px;
 	color: #000000;
 }
-.destaque-box button{ 
+.destaque-box button.metapink { 
 	height: 57px;
 	padding: 18px 0; 
 	font-weight: 700;
