@@ -269,6 +269,21 @@ small{
 	left: 24px; top: 39%;
 	font-size: 12px;
 }
+.datepicker{
+	margin-top: -1rem !important; 
+}
+.datepicker-label{
+	font-weight: bold;
+	font-size: 1rem;
+
+}
+.results-header{
+	border-top: 1px solid #80808094;
+	border-bottom: 1px solid #80808094;
+}
+.results-header .row{
+	margin-top: 20px;
+}
 
 nav{
 	height: auto;
