@@ -165,8 +165,23 @@ h1{
 	margin-bottom: .75rem;
 }
 
+.sobre .card-conteudo {
+	padding-bottom: 3.9rem;
+}
 .sobre .col {
     line-height: 0;
+}
+.sobre .row { display: flex; flex-wrap: wrap;}
+.sobre .card-conteudo {}
+.sobre .card-imagem {
+	overflow: hidden;
+}
+.sobre .card-imagem img {
+	display: block;
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	object-position: initial;
 }
 .sobre p{
 	margin: 40px 0;
