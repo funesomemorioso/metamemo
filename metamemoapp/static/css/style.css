@@ -577,6 +577,13 @@ footer{
 	    color: #462F87;
 }
 
+.search-results .result-item:nth-child(odd) {
+	background-color: #f2f2f280;
+}
+.search-results .result-item .icon-eye {
+	margin: 0 auto;
+}
+
 
 /* Ajustes mobile */
 @media only screen and (max-width: 601px){
