@@ -66,14 +66,16 @@ $(document).ready(function () {
             'content': $("#id_content").val()
         }
 
-        var sd = new Date(M.Datepicker.getInstance($("#start_date")).date);
-        var ed = new Date(M.Datepicker.getInstance($("#end_date")).date);
+        var sd = M.Datepicker.getInstance($("#start_date")).date;
+        var ed = M.Datepicker.getInstance($("#end_date")).date;
 
         if (sd) {
-            qs['start_date'] = `${sd.getUTCFullYear()}-${sd.getUTCMonth() + 1}-${sd.getDate()}`
+            let date = new Date(sd);
+            qs['start_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
         if (ed) {
-            qs['end_date'] = `${ed.getUTCFullYear()}-${ed.getUTCMonth() + 1}-${ed.getDate()}`
+            let date = new Date(ed);
+            qs['end_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
         qs = $.param(qs, true);
 
@@ -101,22 +103,26 @@ $(document).ready(function () {
 
     //Carrega filtros
     if ($("body").hasClass("search")) {
-        const queryString = window.location.search;
-        var p = new URLSearchParams(queryString);
-        var authors = p.getAll("author");
-        var redes = p.getAll("source");
+        var p = new URLSearchParams(window.location.search);
 
+        // what does this do?
         $("#id_content").val(p.get("content"));
+
         //set date
         var start_date = M.Datepicker.getInstance($(".metasearch #start_date"))
         var end_date = M.Datepicker.getInstance($(".metasearch #end_date"))
 
-        start_date.setDate(p.get("start_date"));
-        start_date._finishSelection();
+        if (p.get('start_date')) {
+            start_date.setDate(p.get("start_date"));
+            start_date._finishSelection();
+        }
+        if (p.get('end_date')) {
+            end_date.setDate(p.get("end_date"));
+            end_date._finishSelection();
+        }
 
-        end_date.setDate(p.get("end_date"));
-        end_date._finishSelection();
 
+        var redes = p.getAll("source");
         $('.metasearch #sources .source').each(function (i, rede) {
             var source = rede.getAttribute('data-source');
             if (redes.includes(source)) {
@@ -125,6 +131,7 @@ $(document).ready(function () {
         });
 
 
+        var authors = p.getAll("author");
         $('.metasearch #authors .author').each(function (i, chip) {
             var source = chip.getAttribute('data-author');
             if (authors.includes(source)) {
