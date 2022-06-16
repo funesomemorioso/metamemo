@@ -98,6 +98,8 @@
 .no-padding-bottom{ padding-bottom: 0 !important; } 
 .no-margin { margin: 0 !important; }
 .no-margin-sides { margin-left: 0 !important; margin-right: 0 !important; }
+.text-bold {font-weight: bold;}
+.flex{display:flex}
 
 /*fim Helpers*/
 
@@ -269,14 +271,6 @@ small{
 	left: 24px; top: 39%;
 	font-size: 12px;
 }
-.datepicker{
-	margin-top: -1rem !important; 
-}
-.datepicker-label{
-	font-weight: bold;
-	font-size: 1rem;
-
-}
 .results-header{
 	border-top: 1px solid #80808094;
 	border-bottom: 1px solid #80808094;
@@ -294,6 +288,9 @@ nav{
 }
 nav .row{
 	margin: 0;
+}
+.row .col .row{
+	margin-bottom: 0;
 }
 nav .col:first-child{
 	margin-left: 0 !important;
@@ -345,6 +342,19 @@ nav ul a:hover {
 	letter-spacing: 0.1px;
 	text-align: center;
 }
+.big-btn.btn{
+	display: inline-block;
+	height: initial !important;
+	border: 0;
+	font-family: 'Fira Sans';
+	padding: 18px 60px;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 22px;
+	line-height: 22px;
+	letter-spacing: 0.1px;
+	text-align: center;
+}
 .breadcrumb{
 	padding: 18px 0;
 	font-weight: 400;
@@ -367,6 +377,18 @@ nav ul a:hover {
 .filters .social-icons a{
 	text-decoration: none;
 }
+.resultado-social .col { 
+	padding-left: 0; 
+}
+.resultado-social .social-icons{
+	margin: 20px 0;
+	font-size: 39px;
+}
+.resultado-social .social-icons a{
+	text-decoration: none;
+}
+
+ 
 .chip{
 	background-color: #FFF;
 	border: 2px solid #E8EAEE;
@@ -411,10 +433,28 @@ nav ul a:hover {
 	color: #000;
 }
 
+#search-bar .col{
+	padding-right: 0;
+}
+
 
 .resultado-busca{
 	letter-spacing: 0.2px;
 }
+
+.resultado-busca .col span.source{
+	font-size: 39px;
+}
+.resultado-busca .col .metablue-text{
+	margin-top: -6px;
+}
+.resultado-busca .flex{
+	justify-content: center;
+}
+.resultado-busca .flex div{
+	margin: 0.3rem;
+}
+
 .resultado-social, .resultado-news{
 	padding: 16px 0 !important;
 }
