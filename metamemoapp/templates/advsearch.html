@@ -23,7 +23,7 @@
                         <div class="resultado-cabecalio row">
                             {# dates #}
                             <div class="col s12 m6 l3">
-                                <div class="row valign-wrapper no-ma" >
+                                <div class="row valign-wrapper no-ma">
                                     <div class="col input-field s6 m6">
                                         <input id="startdate" value="{{ data.dates.0 }}" type="text" />
                                         <label class="active" for="startdate">Inicio</label>
@@ -45,7 +45,7 @@
                                 {% for source, total in data.sources_total.items %}
                                     <div class="source-count">
                                         <span class="source" data-source="{{ source }}">
-                                            <span class="icon-{{ data.social_sources|get_item:source}}"><span class="path1"></span><span class="path2"></span></span>
+                                            <span class="icon-{{ data.social_sources|get_item:source }}"><span class="path1"></span><span class="path2"></span></span>
                                         </span>
                                         <div class="metablue-text center-align">{{ total }}</div>
                                     </div>
@@ -53,62 +53,14 @@
                             </div>
                             {# download #}
                             <div class="col s12 m6 l3 right-align">
-                                <a href="{% static 'data/database.csv' %}" target="_blank" class="btn metapink white-text"><i class="icon-download3 left"></i> Download dos dados</a>
+                                <a href="{% static 'data/database.csv' %}"
+                                   target="_blank"
+                                   class="btn metapink white-text"><i class="icon-download3 left"></i> Download dos dados</a>
                             </div>
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <!-- MetaItem -->
-                        <table class="striped">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Título</th>
-                                    <th>Rede</th>
-                                    <th>Data</th>
-                                    <th>Hora</th>
-                                    <th>Metamemo</th>
-                                    <th>Url</th>
-                                    <th>Mídia</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in data.memoitem %}
-                                    <tr>
-                                        <td>
-                                            <a class='icon icon-eye' href="{% url 'memoitem' item.pk %}"></a>
-                                        </td>
-                                        <td>{{ item.title }}</td>
-                                        <td>
-                                            <i class='icon icon-{{ item.source.ico }}'><span class="path1"></span><span class="path2"></span></i>
-                                        </td>
-                                        <td>{{ item.content_date|date:"d/m/Y" }}</td>
-                                        <td>{{ item.content_date|date:"H:i" }}</td>
-                                        <td>{{ item.author.name }}</td>
-                                        <td>
-                                            <a href="{{ item.url }}" target="_blank">Post original</a>
-                                        </td>
-                                        <td>
-                                            {% for media in item.medias.all %}
-                                                {% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
-                                                    <a href="{{ media.media.url }}" class='icon icon-file-play'></a>
-                                                {% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
-                                                    <a href="{{ media.media.url }}" class='icon icon-file-picture'></a>
-                                                {% else %}
-                                                    <span href="{% url 'get_media' item.pk %}"
-                                                          id="get_media"
-                                                          title="Media por baixar..."
-                                                          class='icon icon-download pointer'></span>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <!-- MetaItem -->
-                    </div>
+                    {% include 'results.html' %}
                 </div>
             </div>
         </div>
@@ -120,9 +72,7 @@
                             <a href="?{% url_replace page=1 %}">&laquo; first</a>
                             <a href="?{% url_replace page=data.memoitem.previous_page_number %}">previous</a>
                         {% endif %}
-                        <span class="current">
-                            Page {{ data.memoitem.number }} of {{ data.memoitem.paginator.num_pages }}.
-                        </span>
+                        <span class="current">Page {{ data.memoitem.number }} of {{ data.memoitem.paginator.num_pages }}.</span>
                         {% if data.memoitem.has_next %}
                             <a href="?{% url_replace page=data.memoitem.next_page_number %}">next</a>
                             <a href="?{% url_replace page=data.memoitem.paginator.num_pages %}">last &raquo;</a>
