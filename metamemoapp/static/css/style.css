@@ -387,9 +387,12 @@ nav ul a:hover {
 .resultado-social .social-icons a{
 	text-decoration: none;
 }
+.resultado-social hr{
+	margin-bottom: 1rem;
+}
 .resultado-cabecalio{
 	margin-bottom: 0;
-	margin-left: 1rem;
+	margin-left: 1rem !important;
 }
 .resultado-cabecalio .row{
 	margin-bottom: 0;
