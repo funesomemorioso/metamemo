@@ -87,7 +87,7 @@
 .minheight50 { min-height: 50px !important; }
 .font14{ font-size: 14px; }
 .font18{ font-size: 18px; }
-.font16{ font-size: 16px; }
+.font16{ font-size: 16px !important; }
 .font22{ font-size: 22px; line-height: 22px; }
 .font25{ font-size: 25px; }
 .font35{ font-size: 35px; }
@@ -315,6 +315,20 @@ nav ul a:hover {
     background-color: #F4F4F4;
 }
 
+.page-home .btn, .page-filters .btn, .page-colabore .btn ,.page-memoitem .btn{
+	display: inline-block;
+	height: initial !important ;
+	border: 0;
+	font-family: 'Fira Sans';
+	padding: 18px 60px;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 22px;
+	line-height: 22px;
+	letter-spacing: 0.1px;
+	text-align: center;
+}
+
 .page-home section{
 	padding: 81px 0 117px 0;
 }
@@ -524,6 +538,9 @@ nav ul a:hover {
 }
 
 /* memoitem */
+.memoitem-container{
+	margin-bottom: 2rem;
+}
 .metricas{
 	font-size: 1rem;
 	margin-bottom: 0rem;
@@ -597,6 +614,21 @@ div .metricas > div:last-child{
 }
 footer{
 	padding: 50px 0;
+}
+
+footer .btn {
+	font-style: normal !important;
+	padding: 14px 22px !important;
+	min-width: 185px !important;
+}
+
+footer h3 {
+	margin: 0;
+	font-style: normal;
+	font-weight: 800;
+	font-size: 25px;
+	line-height: 24px;
+	letter-spacing: 0.1px;
 }
 
 .search-results .result-item:nth-child(odd) {
