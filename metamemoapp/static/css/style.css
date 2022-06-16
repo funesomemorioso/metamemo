@@ -596,8 +596,7 @@ div .metricas > div:last-child{
     width: 14px;
 }
 footer{
-	padding: 24px 0;
-	    color: #462F87;
+	padding: 50px 0;
 }
 
 .search-results .result-item:nth-child(odd) {
