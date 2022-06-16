@@ -523,6 +523,29 @@ nav ul a:hover {
 	width:51px;
 }
 
+/* memoitem */
+.metricas{
+	font-size: 1rem;
+	margin-bottom: 0rem;
+}
+div .metricas > div:last-child{
+	margin-bottom: 1rem;
+}
+.metricas > div:first-child{
+	margin-bottom: 2rem;
+}
+.metricas-engajamento{
+	display: flex;
+}
+.metricas-engajamento > div{
+	margin-top: 0.6rem;
+	margin-right: 1rem;
+}
+.data-tempo b{
+	margin-right: 1rem;
+}
+/* fim memoitem */
+
 .blog h1{ margin: 0 0 1.50rem 0; }
 .blog .parallax-container, .blog .parallax-container > div {
 	height: 360px;
