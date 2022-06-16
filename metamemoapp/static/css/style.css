@@ -289,9 +289,6 @@ nav{
 nav .row{
 	margin: 0;
 }
-.row .col .row{
-	margin-bottom: 0;
-}
 nav .col:first-child{
 	margin-left: 0 !important;
 }
