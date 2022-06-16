@@ -1,5 +1,6 @@
 import django_filters
 from metamemoapp.models import MemoItem, MemoNews, MetaMemo, MemoSource
+from django.template.defaulttags import register
 
 class MemoItemFilter(django_filters.FilterSet):
     content = django_filters.CharFilter(field_name='content', lookup_expr='icontains') #speedup?
@@ -15,3 +16,7 @@ class MemoItemFilter(django_filters.FilterSet):
 
 class MemoNewsFilter(django_filters.FilterSet):
     author__name = django_filters.CharFilter(field_name='metamemo__name', lookup_expr='exact')
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
