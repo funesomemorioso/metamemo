@@ -377,6 +377,9 @@ nav ul a:hover {
 .resultado-social .col { 
 	padding-left: 0; 
 }
+.resultado-social .row .col .row .col:last-child{
+	padding-right: 0;
+}
 .resultado-social .social-icons{
 	margin: 20px 0;
 	font-size: 39px;
@@ -384,7 +387,19 @@ nav ul a:hover {
 .resultado-social .social-icons a{
 	text-decoration: none;
 }
-
+.resultado-cabecalio{
+	margin-bottom: 0;
+	margin-left: 1rem;
+}
+.resultado-cabecalio .row{
+	margin-bottom: 0;
+}
+.resultado-cabecalio > .col{
+	height: 6rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
  
 .chip{
 	background-color: #FFF;
@@ -448,10 +463,12 @@ nav ul a:hover {
 .resultado-busca .flex{
 	justify-content: center;
 }
-.resultado-busca .flex div{
+.resultado-busca .flex .source-count{
 	margin: 0.3rem;
 }
-
+.resultado-busca .source-count .div{
+	margin-bottom: -3px;
+}
 .resultado-social, .resultado-news{
 	padding: 16px 0 !important;
 }
