@@ -39,7 +39,6 @@ def lista(request):
         "Telegram": "telegram",
         "Blog": "blog1",
     }
-    page_nm = request.GET.get("page", 1)
     memoqs = MemoItem.objects.all().order_by("-content_date")
     memofilter = MemoItemFilter(
         request.GET,
@@ -54,30 +53,18 @@ def lista(request):
     }
 
     memoitem = Paginator(memofilter.qs.annotate(Count("source__name")), 50)
+    try:
+        page_nm = int(request.GET.get("page", 1))
+    except ValueError:
+        page_nm = 1
     last_page = memoitem.num_pages
-    this_page = memoitem.page(page_nm)
-    paginitro = []
-    
-    if (this_page.number == 1):
-        paginitro.append(("1","1",True,False))
-        if(last_page > 1):
-            paginitro.append(("2","2",False,False))
-            if(last_page>2):
-                paginitro.append(("3","3",False,False))
-            paginitro.append((">",str(this_page.next_page_number()),False,True))
-    elif (this_page.number == last_page):
-        paginitro.append(("<",str(this_page.previous_page_number()),False,True))
-        if (paginitro != 2):
-            paginitro.append((str(this_page.previous_page_number()-1),str(this_page.previous_page_number()-1),False,False))
-        paginitro.append((str(this_page.previous_page_number()),str(this_page.previous_page_number()-1),False,False))
-        paginitro.append((str(this_page.number),str(this_page.number),True,False))
+
+    if page_nm == 1:
+        pages = list(range(page_nm, min(last_page, page_nm + 3)))
+    elif page_nm == memoitem.num_pages:
+        pages = list(range(max(1, page_nm - 2), page_nm + 1))
     else:
-        paginitro.append(("<",str(this_page.previous_page_number()),False,True))
-        paginitro.append((str(this_page.previous_page_number()),str(this_page.previous_page_number()),False,False))
-        paginitro.append((str(this_page.number),str(this_page.number),True,False))
-        paginitro.append((str(this_page.previous_page_number()),str(this_page.next_page_number()),False,False))
-        paginitro.append((">",str(this_page.next_page_number()),False,True))
-        
+        pages = list(range(page_nm - 1, page_nm + 2))
 
     # Hackish
     tags = {}
@@ -92,7 +79,7 @@ def lista(request):
         "memofilter": memofilter,
         "metamemo": MetaMemo.objects.values_list("name", flat=True),
         "memoitem": memoitem.page(page_nm),
-        "paginator_list":paginitro,
+        "paginator_list": pages,
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
         "sources_total": sources_total,
