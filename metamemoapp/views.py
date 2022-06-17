@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from numpy import False_, append
 from metamemoapp.models import (
     MetaMemo,
     MemoItem,
@@ -51,6 +52,31 @@ def lista(request):
     }
 
     memoitem = Paginator(memofilter.qs.annotate(Count("source__name")), 50)
+    last_page = memoitem.num_pages
+    this_page = memoitem.page(page_nm)
+    paginitro = []
+    
+    if (this_page.number == 1):
+        paginitro.append(("1","1",True,False))
+        if(last_page > 1):
+            paginitro.append(("2","2",False,False))
+            if(last_page>2):
+                paginitro.append(("3","3",False,False))
+            paginitro.append((">",str(this_page.next_page_number()),False,True))
+    elif (this_page.number == last_page):
+        paginitro.append(("<",str(this_page.previous_page_number()),False,True))
+        if (paginitro != 2):
+            paginitro.append((str(this_page.previous_page_number()-1),str(this_page.previous_page_number()-1),False,False))
+        paginitro.append((str(this_page.previous_page_number()),str(this_page.previous_page_number()-1),False,False))
+        paginitro.append((str(this_page.number),str(this_page.number),True,False))
+    else:
+        paginitro.append(("<",str(this_page.previous_page_number()),False,True))
+        paginitro.append((str(this_page.previous_page_number()),str(this_page.previous_page_number()),False,False))
+        paginitro.append((str(this_page.number),str(this_page.number),True,False))
+        paginitro.append((str(this_page.previous_page_number()),str(this_page.next_page_number()),False,False))
+        paginitro.append((">",str(this_page.next_page_number()),False,True))
+        
+
     # Hackish
     tags = {}
     tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
@@ -64,6 +90,7 @@ def lista(request):
         "memofilter": memofilter,
         "metamemo": MetaMemo.objects.values_list("name", flat=True),
         "memoitem": memoitem.page(page_nm),
+        "paginator_list":paginitro,
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
         "sources_total": sources_total,
