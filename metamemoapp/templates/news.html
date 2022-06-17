@@ -1,0 +1,34 @@
+{% extends "results.html" %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block results_bar %}
+    {% include "list/news_header.html" %}
+{% endblock results_bar %}
+{% block results_header %}
+    <div class="col s8 offset-s1">Manchete</div>
+    <div class="col s1">Veículo</div>
+    <div class="col s1">Data</div>
+    <div class="col s1">Url</div>
+{% endblock results_header %}
+{% block results_content %}
+    {% static "imgs/noun-newspaper.png" as default_source_icon %}
+    {# eye icon#}
+    <div class="col s1 valign-wrapper">
+        <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
+    </div>
+    {# title#}
+    <div class="col s8 valign-wrapper">{{ item.title }}</div>
+    {# source icon#}
+    <div class="col s1 valign-wrapper">
+        <img width="50"
+             height="50px"
+             src="{{ data.sources|get_item:item.source.name|default_if_none:default_source_icon }}"
+             alt="icon for {{ source }}"/>
+    </div>
+    {# date #}
+    <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
+    {# url #}
+    <div class="col s1 valign-wrapper">
+        <a href="{{ item.url }}" target="_blank">Original</a>
+    </div>
+{% endblock results_content %}
