@@ -1,0 +1,18 @@
+{% load metamemoapp_extras %}
+<div class="row">
+    <div class="col s12 center-align">
+        <div class="pagination">
+            <span class="step-links">
+                {% if data.items.has_previous %}
+                    <a href="?{% url_replace page=1 %}">« first</a>
+                    <a href="?{% url_replace page=data.items.previous_page_number %}">previous</a>
+                {% endif %}
+                <span class="current">Page {{ data.items.number }} of {{ data.items.paginator.num_pages }}.</span>
+                {% if data.items.has_next %}
+                    <a href="?{% url_replace page=data.items.next_page_number %}">next</a>
+                    <a href="?{% url_replace page=data.items.paginator.num_pages %}">last »</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>

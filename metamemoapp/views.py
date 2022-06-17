@@ -78,15 +78,15 @@ def lista(request):
         "dates": dates,
         "memofilter": memofilter,
         "metamemo": MetaMemo.objects.values_list("name", flat=True),
-        "memoitem": memoitem.page(page_nm),
         "paginator_list": pages,
+        "items": memoitem.page(page_nm),
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
         "sources_total": sources_total,
         "tags": tags.most_common(10),
     }
 
-    return render(request, "advsearch.html", {"data": data})
+    return render(request, "files.html", {"data": data})
 
 
 def search(request, year=None, month=None, day=None):

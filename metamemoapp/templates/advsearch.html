@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'base.html' %}
 {% load metamemoapp_extras %}
 {% block title %}
     Metamemo - Resultado da busca
@@ -19,53 +18,10 @@
         </div>
     </section>
     <section class="resultado-busca">
-        <div class="row">
-            <div class="col s12 resultado-social">
-                <div class="container">
-                    <hr/>
-                    <div class="container">
-                        <div class="resultado-cabecalio row">
-                            {# dates #}
-                            <div class="col s12 m6 l3">
-                                <div class="row valign-wrapper no-ma">
-                                    <div class="col input-field s6 m6">
-                                        <input id="startdate" value="{{ data.dates.0 }}" type="text" />
-                                        <label class="active" for="startdate">Inicio</label>
-                                    </div>
-                                    <div class="col input-field s6 m6">
-                                        <input id="enddate" value="{{ data.dates.1 }}" type="text" />
-                                        <label class="active" for="enddate">Fim</label>
-                                    </div>
-                                </div>
-                            </div>
-                            {# count #}
-                            <div class="col s12 m6 l3">
-                                <div class="results-total">
-                                    <p class="metapink-text center-align text-bold">{{ data.results_total }} arquivos encontrados</p>
-                                </div>
-                            </div>
-                            {# sources #}
-                            <div class="col s12 m6 l3 flex">
-                                {% for source, total in data.sources_total.items %}
-                                    <div class="source-count">
-                                        <span class="source" data-source="{{ source }}">
-                                            <span class="icon-{{ data.social_sources|get_item:source }}"><span class="path1"></span><span class="path2"></span></span>
-                                        </span>
-                                        <div class="metablue-text center-align">{{ total }}</div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            {# download #}
-                            <div class="col s12 m6 l3 right-align">
-                                <a href="{% static 'data/database.csv' %}"
-                                   target="_blank"
-                                   class="btn metapink white-text"><i class="icon-download3 left"></i> Download dos dados</a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
-                    {% include 'results.html' %}
-                </div>
+        <div class="resultado-social">
+            <div class="container">
+                {% include 'list/files_header.html' %}
+                {% include 'list/files_content.html' %}
             </div>
         </div>
         <div class="row">
