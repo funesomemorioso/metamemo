@@ -7,17 +7,31 @@
     list search
 {% endblock page_class %}
 {% block content %}
-    <section class="container">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="{% url 'home' %}">Home</a> &gt;
-                <a href="{% url 'search' %}">Busca</a> &gt;
-                <a href="#">Resultados Metamemos</a>
-            </div>
-            {% include 'list/advform.html' %}
+    <section class="container na_regua">
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">Home</a> &gt;
+            <a href="{% url 'search' %}">Busca</a> &gt;
+            <a href="#">Resultados Metamemos</a>
         </div>
+        {% include 'list/advform.html' %}
     </section>
     <section class="resultado-busca">
+        <div class="resultado_tabs">
+            <div class="container na_regua">
+                <a class="resultado_tab">
+                    <div class="tab_txt"><span class="metablue-text font18 text-bold">Arquivos</span></div>
+                    <div class="tab_underline active"></div>
+                </a>
+                <a class="resultado_tab">
+                    <div class="tab_txt"><span class="metablue-text font18 text-bold">Notícias</span></div>
+                    <div class="tab_underline inactive"></div>
+                </a>
+                <a class="resultado_tab">
+                    <div class="tab_txt"><span class="metablue-text font18 text-bold">Contexto histórico</span></div>
+                    <div class="tab_underline inactive"></div>
+                </a>
+            </div>
+        </div>
         <div class="resultado-social">
             <div class="container">
                 {% block results_bar %}

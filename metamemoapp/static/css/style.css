@@ -19,6 +19,7 @@
 /*Helpers*/
 .container{ max-width: 1187px !important; width: 95%  !important; }
 .container > .container{ max-width: 970px !important; width: 80%  !important; }
+.na_regua{ max-width: 970px !important; width: 80%  !important;margin: 0 auto; }
 .mini-container { max-width: 568px !important; width: 95%  !important; margin: 0 auto; overflow: hidden; }
 .hal-container{ max-width: 593.5px !important; width: 95%  !important; }
 .hal-container.right{ padding-right: 48px; }
@@ -359,7 +360,7 @@ nav ul a:hover {
 	height: initial !important;
 	border: 0;
 	font-family: 'Fira Sans';
-	padding: 18px 60px;
+	padding: 18px 60px !important;
 	font-style: normal;
 	font-weight: 700;
 	font-size: 22px;
@@ -407,7 +408,6 @@ nav ul a:hover {
 }
 .resultado-cabecalio{
 	margin-bottom: 0;
-	margin-left: 1rem !important;
 }
 .resultado-cabecalio .row{
 	margin-bottom: 0;
@@ -419,6 +419,41 @@ nav ul a:hover {
 	justify-content: center;
 }
  
+.resultado_tabs{
+	width:100%;
+	border-top:1px solid #80808094;;
+	border-bottom:1px solid #80808094;;
+}
+.resultado_tabs .na_regua{
+	display: flex;
+}
+.resultado_tab{
+	flex-shrink: 3;
+	flex-grow: 0.4;
+	max-width: 13rem;
+	min-width: auto;
+}
+.tab_txt{
+	text-align: center;
+	margin-left: 1rem;
+	margin-right: 1rem;
+	margin-top: auto;
+	height: 3.9rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 0.45rem;
+}
+.tab_underline{
+	height:0.4rem;
+}
+.tab_underline.active{
+	background-color: #EF5DA8 ;
+}
+.tab_underline.inactive{
+	background-color: #ef5da800 ;
+}
+
 .chip{
 	background-color: #FFF;
 	border: 2px solid #E8EAEE;
