@@ -1,8 +1,12 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - Resultado da busca{% endblock %}
-{% block page_class %}list search{% endblock %}
+{% block title %}
+    Metamemo - Resultado da busca
+{% endblock title %}
+{% block page_class %}
+    list search
+{% endblock page_class %}
 {% block content %}
     <section class="container">
         <div class="container">
@@ -18,7 +22,7 @@
         <div class="row">
             <div class="col s12 resultado-social">
                 <div class="container">
-                    <hr>
+                    <hr/>
                     <div class="container">
                         <div class="resultado-cabecalio row">
                             {# dates #}
@@ -59,34 +63,31 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <hr/>
                     {% include 'results.html' %}
                 </div>
             </div>
         </div>
-        <div class='row'>
-            <div class='col s12 center-align'>
+        <div class="row">
+            <div class="col s12 center-align">
                 <div class="pagination">
                     <span class="step-links">
-                        {% for p_text,p_value,p_is_current,p_is_arrow in data.paginator_list %}
-                            {% if p_is_current %}
-                                <span class="btn metapink white-text font16">{{ p_text }}</span>
-                            {% else %}
-                                <a href="?{% url_replace page=p_value %}" class="btn white-text font16 {% if p_is_arrow %} metapink {% else %} metacinza {% endif %}">{{ p_text }}</a>
-                            {% endif %}
-                            
-                        {% endfor %}
-
-
-<!--                         {% if data.memoitem.has_previous %}
-                            <a href="?{% url_replace page=1 %}">&laquo; first</a>
-                            <a href="?{% url_replace page=data.memoitem.previous_page_number %}">previous</a>
+                        {% if data.memoitem.number != 1 %}
+                            <a href="?{% url_replacex page=1 %}"
+                               class="btn white-text font16 metapink">«</a>
                         {% endif %}
-                        <span class="current">Page {{ data.memoitem.number }} of {{ data.memoitem.paginator.num_pages }}.</span>
-                        {% if data.memoitem.has_next %}
-                            <a href="?{% url_replace page=data.memoitem.next_page_number %}">next</a>
-                            <a href="?{% url_replace page=data.memoitem.paginator.num_pages %}">last &raquo;</a>
-                        {% endif %} -->
+                        {% for page in data.paginator_list %}
+                            {% if page == data.memoitem.number %}
+                                <span class="btn metapink white-text font16">{{ page }}</span>
+                            {% else %}
+                                <a href="?{% url_replacex page=page %}"
+                                   class="btn white-text font16 metacinza">{{ page }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if data.memoitem.number != data.memoitem.paginator.num_pages %}
+                            <a href="?{% url_replacex page=data.memoitem.paginator.num_pages %}"
+                               class="btn white-text font16 metapink">»</a>
+                        {% endif %}
                     </span>
                 </div>
             </div>
