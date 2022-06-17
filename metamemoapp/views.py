@@ -6,6 +6,7 @@ from metamemoapp.models import (
     MemoItem,
     MemoContext,
     MemoNews,
+    NewsSource,
     NewsCover,
     NewsItem,
 )
@@ -30,6 +31,51 @@ def home(request):
     )
 
 
+def news(request):
+    newsqs = NewsItem.objects.all().order_by("-content_date")
+    newsfilter = MemoNewsFilter(request.GET, queryset=newsqs)
+
+    sources_total = {
+        source["source__name"]: source["total"]
+        for source in newsfilter.qs.values("source__name")
+        .annotate(total=Count("source__name"))
+        .order_by("total")
+    }
+
+    sources = {
+        source.name: source.image.url if source.image else None
+        for source in NewsSource.objects.all()
+    }
+
+    items = Paginator(newsfilter.qs, 50)
+
+    try:
+        page_nm = int(request.GET.get("page", 1))
+    except ValueError:
+        page_nm = 1
+    last_page = items.num_pages
+
+    if page_nm == 1:
+        pages = list(range(page_nm, min(last_page, page_nm + 3)))
+    elif page_nm == items.num_pages:
+        pages = list(range(max(1, page_nm - 2), page_nm + 1))
+    else:
+        pages = list(range(page_nm - 1, page_nm + 2))
+
+    dates = (request.GET.get("start_date"), request.GET.get("end_date"))
+
+    data = {
+        "dates": dates,
+        "paginator_list": pages,
+        "items": items.page(page_nm),
+        "results_total": len(newsfilter.qs),
+        "sources": sources,
+        "sources_total": sources_total,
+    }
+
+    return render(request, "news.html", {"data": data})
+
+
 def lista(request):
     social_sources = {
         "Facebook": "face",
@@ -52,16 +98,16 @@ def lista(request):
         .order_by("total")
     }
 
-    memoitem = Paginator(memofilter.qs.annotate(Count("source__name")), 50)
+    items = Paginator(memofilter.qs, 50)
     try:
         page_nm = int(request.GET.get("page", 1))
     except ValueError:
         page_nm = 1
-    last_page = memoitem.num_pages
+    last_page = items.num_pages
 
     if page_nm == 1:
         pages = list(range(page_nm, min(last_page, page_nm + 3)))
-    elif page_nm == memoitem.num_pages:
+    elif page_nm == items.num_pages:
         pages = list(range(max(1, page_nm - 2), page_nm + 1))
     else:
         pages = list(range(page_nm - 1, page_nm + 2))
@@ -76,10 +122,8 @@ def lista(request):
 
     data = {
         "dates": dates,
-        "memofilter": memofilter,
-        "metamemo": MetaMemo.objects.values_list("name", flat=True),
         "paginator_list": pages,
-        "items": memoitem.page(page_nm),
+        "items": items.page(page_nm),
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
         "sources_total": sources_total,
