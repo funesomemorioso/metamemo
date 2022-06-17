@@ -3,14 +3,21 @@
     <div class="col s12 center-align">
         <div class="pagination">
             <span class="step-links">
-                {% if data.items.has_previous %}
-                    <a href="?{% url_replace page=1 %}">« first</a>
-                    <a href="?{% url_replace page=data.items.previous_page_number %}">previous</a>
+                {% if data.items.number != 1 %}
+                    <a href="?{% url_replacex page=1 %}"
+                       class="btn white-text font16 metapink">«</a>
                 {% endif %}
-                <span class="current">Page {{ data.items.number }} of {{ data.items.paginator.num_pages }}.</span>
-                {% if data.items.has_next %}
-                    <a href="?{% url_replace page=data.items.next_page_number %}">next</a>
-                    <a href="?{% url_replace page=data.items.paginator.num_pages %}">last »</a>
+                {% for page in data.paginator_list %}
+                    {% if page == data.items.number %}
+                        <span class="btn metapink white-text font16">{{ page }}</span>
+                    {% else %}
+                        <a href="?{% url_replacex page=page %}"
+                           class="btn white-text font16 metacinza">{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if data.items.number != data.items.paginator.num_pages %}
+                    <a href="?{% url_replacex page=data.items.paginator.num_pages %}"
+                       class="btn white-text font16 metapink">»</a>
                 {% endif %}
             </span>
         </div>
