@@ -68,7 +68,17 @@
             <div class='col s12 center-align'>
                 <div class="pagination">
                     <span class="step-links">
-                        {% if data.memoitem.has_previous %}
+                        {% for p_text,p_value,p_is_current,p_is_arrow in data.paginator_list %}
+                            {% if p_is_current %}
+                                <span class="btn metapink white-text font16">{{ p_text }}</span>
+                            {% else %}
+                                <a href="?{% url_replace page=p_value %}" class="btn white-text font16 {% if p_is_arrow %} metapink {% else %} metacinza {% endif %}">{{ p_text }}</a>
+                            {% endif %}
+                            
+                        {% endfor %}
+
+
+<!--                         {% if data.memoitem.has_previous %}
                             <a href="?{% url_replace page=1 %}">&laquo; first</a>
                             <a href="?{% url_replace page=data.memoitem.previous_page_number %}">previous</a>
                         {% endif %}
@@ -76,7 +86,7 @@
                         {% if data.memoitem.has_next %}
                             <a href="?{% url_replace page=data.memoitem.next_page_number %}">next</a>
                             <a href="?{% url_replace page=data.memoitem.paginator.num_pages %}">last &raquo;</a>
-                        {% endif %}
+                        {% endif %} -->
                     </span>
                 </div>
             </div>
