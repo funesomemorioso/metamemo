@@ -1,53 +1,50 @@
-<div class="search-results">
-    <div class="results-header row flex">
-        <div class="col s5 offset-s1">Título</div>
-        <div class="col s1">Rede</div>
-        <div class="col s1">Data</div>
-        <div class="col s1">Hora</div>
-        <div class="col s1">Metamemo</div>
-        <div class="col s1">Url</div>
-        <div class="col s1">Mídia</div>
-    </div>
-    {# /.results-header #}
-    {% for item in data.memoitem %}
-        <div class="result-item row flex">
-            {# eye icon#}
-            <div class="col s1 valign-wrapper">
-                <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
+{% extends "base.html" %}
+{% load metamemoapp_extras %}
+{% block title %}
+    Metamemo - Resultado da busca
+{% endblock title %}
+{% block page_class %}
+    list search
+{% endblock page_class %}
+{% block content %}
+    <section class="container">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'home' %}">Home</a> &gt;
+                <a href="{% url 'search' %}">Busca</a> &gt;
+                <a href="#">Resultados Metamemos</a>
             </div>
-            {# title#}
-            <div class="col s5 valign-wrapper">{{ item.title }}</div>
-            {# source icon#}
-            <div class="col s1 valign-wrapper">
-                <i class='icon icon-{{ item.source.ico }}'><span class="path1"></span><span class="path2"></span></i>
-            </div>
-            {# date #}
-            <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
-            {# time #}
-            <div class="col s1 valign-wrapper">{{ item.content_date|date:"H:i" }}</div>
-            {# author #}
-            <div class="col s1 valign-wrapper">{{ item.author.name }}</div>
-            {# url #}
-            <div class="col s1 valign-wrapper">
-                <a href="{{ item.url }}" target="_blank">Post original</a>
-            </div>
-            {# media #}
-            <div class="col s1 valign-wrapper">
-                {% for media in item.medias.all %}
-                    {% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
-                        <a href="{{ media.media.url }}" class='icon icon-file-play'></a>
-                    {% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
-                        <a href="{{ media.media.url }}" class='icon icon-file-picture'></a>
-                    {% else %}
-                        <span href="{% url 'get_media' item.pk %}"
-                              id="get_media"
-                              title="Media por baixar..."
-                              class='icon icon-download pointer'></span>
-                    {% endif %}
-                {% endfor %}
+            {% include 'list/advform.html' %}
+        </div>
+    </section>
+    <section class="resultado-busca">
+        <div class="resultado-social">
+            <div class="container">
+                {% block results_bar %}
+                {% endblock results_bar %}
+                <div class="search-results">
+                    <div class="results-header row flex">
+                        {% block results_header %}
+                        {% endblock results_header %}
+                    </div>
+                    {% for item in data.items %}
+                        <div class="result-item row flex">
+                            {% block results_content %}
+                            {% endblock results_content %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        {# /.result-item #}
-    {% endfor %}
-</div>
-{# /.search-results #}
+        {% include 'list/paginator.html' %}
+    </section>
+    {% block debug %}
+        <!--	<div>
+		<h2>Debug Filter</h2>
+		<form method="get">
+			{{ data.memofilter.form.as_p }}
+			<input type="submit" />
+		</form>
+	</div>-->
+    {% endblock debug %}
+{% endblock content %}
