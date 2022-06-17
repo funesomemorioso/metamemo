@@ -46,9 +46,11 @@ def lista(request):
         queryset=memoqs.select_related("author", "source").prefetch_related("medias"),
     )
 
-    sources = request.GET.getlist("source") or social_sources
     sources_total = {
-        source: len(memofilter.qs.filter(source__name=source)) for source in sources
+        source["source__name"]: source["total"]
+        for source in memofilter.qs.values("source__name")
+        .annotate(total=Count("source__name"))
+        .order_by("total")
     }
 
     memoitem = Paginator(memofilter.qs.annotate(Count("source__name")), 50)
