@@ -1,6 +1,5 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from numpy import False_, append
 from metamemoapp.models import (
     MetaMemo,
     MemoItem,
@@ -15,7 +14,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from collections import Counter
 from metamemoapp.tasks import download_async, download_img_async
 
@@ -74,6 +73,55 @@ def news(request):
     }
 
     return render(request, "news.html", {"data": data})
+
+def parse_date(string):
+    try:
+        return date(*[int(piece) for piece in string.split('-')])
+    except ValueError:
+        return None
+
+def contexts(request):
+    dates = (request.GET.get("start_date"), request.GET.get("end_date"))
+    start_date, end_date = (parse_date(d) for d in dates)
+
+
+    memocontexts = MemoContext.objects.filter(
+        start_date__lte=start_date, end_date__gte=end_date
+    ).order_by("start_date")
+
+    newscovers = NewsCover.objects.filter(
+        content_date__gte=start_date, content_date__lte=end_date
+    )
+
+    items = Paginator(newscovers, 50)
+
+    try:
+        page_nm = int(request.GET.get("page", 1))
+    except ValueError:
+        page_nm = 1
+    last_page = items.num_pages
+
+    if page_nm == 1:
+        pages = list(range(page_nm, min(last_page, page_nm + 3)))
+    elif page_nm == items.num_pages:
+        pages = list(range(max(1, page_nm - 2), page_nm + 1))
+    else:
+        pages = list(range(page_nm - 1, page_nm + 2))
+
+    sources = {
+        source.name: source.image.url if source.image else None
+        for source in NewsSource.objects.all()
+    }
+
+    data = {
+        "sources": sources,
+        "dates": dates,
+        "paginator_list": pages,
+        "items": items.page(page_nm),
+        "results_total": len(newscovers),
+    }
+
+    return render(request, "contexts.html", {"data": data})
 
 
 def lista(request):
