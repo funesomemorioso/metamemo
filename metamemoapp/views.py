@@ -77,21 +77,20 @@ def news(request):
 def parse_date(string):
     try:
         return date(*[int(piece) for piece in string.split('-')])
-    except ValueError:
+    except (ValueError, AttributeError):
         return None
 
 def contexts(request):
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
     start_date, end_date = (parse_date(d) for d in dates)
 
+    filters = {}
+    if start_date:
+        filters['content_date__gte'] = start_date
+    if  end_date:
+        filters['content_date__lte'] = end_date
 
-    memocontexts = MemoContext.objects.filter(
-        start_date__lte=start_date, end_date__gte=end_date
-    ).order_by("start_date")
-
-    newscovers = NewsCover.objects.filter(
-        content_date__gte=start_date, content_date__lte=end_date
-    )
+    newscovers = NewsCover.objects.filter(**filters)
 
     items = Paginator(newscovers, 50)
 
