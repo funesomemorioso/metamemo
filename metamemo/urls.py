@@ -29,6 +29,7 @@ urlpatterns = [
     path("blog/<str:post>", blogviews.blog, name="blog"),
     path("lista/", views.lista, name="lista"),
     path("news/", views.news, name="news"),
+    path("contexts/", views.contexts, name="contexts"),
     path("search/", views.search, name="search"),
     path("search/<int:year>/<int:month>/<int:day>", views.search, name="search"),
     path("memoitem/<int:item_id>", views.memoitem, name="memoitem"),
