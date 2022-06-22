@@ -15,20 +15,26 @@
         </div>
         {% include 'list/advform.html' %}
     </section>
-    <section class="resultado-busca">
+    <section class="resultado-busca container">
         <div class="resultado_tabs">
             <div class="container na_regua">
                 <a class="resultado_tab" href="{% url 'lista' %}?{% url_replace %}">
-                    <div class="tab_txt"><span class="metablue-text font18 text-bold">Arquivos</span></div>
-                    <div class="tab_underline active"></div>
+                    <div class="tab_txt">
+                        <span class="metablue-text font18 text-bold">Arquivos</span>
+                    </div>
+                    <div class="tab_underline {% if data.path == 'lista' %}active{% endif %}"></div>
                 </a>
                 <a class="resultado_tab" href="{% url 'news' %}?{% url_replace %}">
-                    <div class="tab_txt"><span class="metablue-text font18 text-bold">Notícias</span></div>
-                    <div class="tab_underline inactive"></div>
+                    <div class="tab_txt">
+                        <span class="metablue-text font18 text-bold">Notícias</span>
+                    </div>
+                    <div class="tab_underline {% if data.path == 'news' %}active{% endif %}"></div>
                 </a>
                 <a class="resultado_tab" href="{% url 'contexts' %}?{% url_replace %}">
-                    <div class="tab_txt"><span class="metablue-text font18 text-bold">Contexto histórico</span></div>
-                    <div class="tab_underline inactive"></div>
+                    <div class="tab_txt">
+                        <span class="metablue-text font18 text-bold">Contexto histórico</span>
+                    </div>
+                    <div class="tab_underline {% if data.path == 'contexts' %}active{% endif %}"></div>
                 </a>
             </div>
         </div>

@@ -64,6 +64,7 @@ def news(request):
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
 
     data = {
+        "path": request.resolver_match.url_name,
         "dates": dates,
         "paginator_list": pages,
         "items": items.page(page_nm),
@@ -74,11 +75,13 @@ def news(request):
 
     return render(request, "news.html", {"data": data})
 
+
 def parse_date(string):
     try:
-        return date(*[int(piece) for piece in string.split('-')])
+        return date(*[int(piece) for piece in string.split("-")])
     except (ValueError, AttributeError):
         return None
+
 
 def contexts(request):
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
@@ -86,9 +89,9 @@ def contexts(request):
 
     filters = {}
     if start_date:
-        filters['content_date__gte'] = start_date
-    if  end_date:
-        filters['content_date__lte'] = end_date
+        filters["content_date__gte"] = start_date
+    if end_date:
+        filters["content_date__lte"] = end_date
 
     newscovers = NewsCover.objects.filter(**filters)
 
