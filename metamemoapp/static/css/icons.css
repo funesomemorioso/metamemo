@@ -13,7 +13,6 @@
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
-  speak: never;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;
@@ -24,10 +23,25 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-[class^="icon-"].grayscale .path1:before {
+[class^="icon-"].grayscale:not(:hover) .path1:before {
   color: #BFBFBF;
 }
 
+.icon-question-octagon:before {
+  content: "\eab1";
+}
+.icon-vector:before {
+  content: "\eafd";
+}
+.icon-braces:before {
+  content: "\eafe";
+}
+.icon-cloud-arrow-down:before {
+  content: "\eaff";
+}
+.icon-patch-question:before {
+  content: "\eb00";
+}
 .icon-comment .path1:before {
   content: "\eafa";
   color: rgb(59, 89, 152);
