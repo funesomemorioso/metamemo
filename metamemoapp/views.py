@@ -116,6 +116,7 @@ def contexts(request):
     }
 
     data = {
+        "path": request.resolver_match.url_name,
         "sources": sources,
         "dates": dates,
         "paginator_list": pages,
@@ -171,6 +172,7 @@ def lista(request):
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
 
     data = {
+        "path": request.resolver_match.url_name,
         "dates": dates,
         "paginator_list": pages,
         "items": items.page(page_nm),
