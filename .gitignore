@@ -3,3 +3,4 @@ migrations/
 __pycache__/
 *.pyc
 media/*
+metamemo-venv
