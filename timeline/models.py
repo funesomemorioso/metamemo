@@ -18,6 +18,9 @@ class Session(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
 
+    def __str__(self):
+        return(self.text)
+
 class Fact(models.Model):
     timeline = models.ForeignKey(Timeline, on_delete=models.CASCADE)
     text = models.TextField(blank=True)
