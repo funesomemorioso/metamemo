@@ -21,7 +21,6 @@ from django.conf.urls.static import static
 from metamemoapp import views
 from blog import views as blogviews
 
-
 urlpatterns = [
     path('', views.home, name='home'),
     path('content/<str:page>', views.content, name='content'),
@@ -36,4 +35,5 @@ urlpatterns = [
     path('celery-progress/', include('celery_progress.urls')),
     path('__debug__', include('debug_toolbar.urls')),
     path('summernote/', include('django_summernote.urls')),
+    path('timeline/', include('timeline.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
