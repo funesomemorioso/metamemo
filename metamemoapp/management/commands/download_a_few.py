@@ -21,7 +21,7 @@ class Command(BaseCommand):
         self.queue = kwargs['queue']
 
         if self.queue:
-            q = len(app.inspect().reserved()[self.queue])
+            q = len(app.control.inspect().reserved()[self.queue])
             if q==0:
                 return None
 
