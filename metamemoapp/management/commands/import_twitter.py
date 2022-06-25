@@ -103,12 +103,12 @@ class Command(BaseCommand):
                                 p.status = 'DOWNLOADING'
                                 p.save()
                                 post.save()
-                                download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+                                download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'}, queue="twitter")
                         elif media['mediatype']=='IMAGE':
                             p = post.medias.create(original_url=media['url'], original_id=m, status='INITIAL', mediatype='IMAGE')
                             p.save()
                             post.save()
-                            download_img_async.apply_async(kwargs={'url' : media['url'], 'pk' : p.pk}, queue='fastlane')
+                            download_img_async.apply_async(kwargs={'url' : media['url'], 'pk' : p.pk}, queue="twitter")
 
 
         if 'next_token' in input_posts.meta and not self.finished:

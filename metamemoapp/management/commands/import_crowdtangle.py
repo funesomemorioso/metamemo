@@ -129,14 +129,14 @@ class Command(BaseCommand):
                         p.status = 'DOWNLOADING'
                         p.save()
                         post.save()
-                        download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+                        download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'}, queue=i['platform'].lower())
                         
                     if 'media' in i:
                         for m in i['media']:
                             if m['type'] == 'photo':
                                 p = post.medias.create(original_url=i['postUrl'], original_id=post_id, status='INITIAL', mediatype='IMAGE')
                                 if self.image_download:
-                                    download_img_async.apply_async(kwargs={'url' : m['url'], 'pk' : p.pk})
+                                    download_img_async.apply_async(kwargs={'url' : m['url'], 'pk' : p.pk}, queue=i['platform'].lower())
 
         
         if'nextPage' in input_posts['result']['pagination']:

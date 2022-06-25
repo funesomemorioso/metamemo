@@ -104,7 +104,7 @@ class Command(BaseCommand):
                         p.status = 'DOWNLOADING'
                         p.save()
                         post.save()
-                        download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'})
+                        download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'}, queue="youtube")
 
         if 'nextPageToken' in posts_search:
             self.parseUrl(self.base_url+f'&pageToken={posts_search["nextPageToken"]}')

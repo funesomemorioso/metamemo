@@ -13,12 +13,17 @@ class Command(BaseCommand):
     help = 'Importa Capas do Estadão'
 
     def add_arguments(self, parser):
-        parser.add_argument('-d', '--days', type=int, help='Days')
+        parser.add_argument('-n', '--number', type=int, help='Number of Days')
+        parser.add_argument('-d', '--date', type=str, help='Date to search from')
 
     def handle(self, *args, **kwargs):
-        self.days = kwargs['days']
+        self.days = kwargs['number']
         self.veiculo = 'estadao'
-        self.actual_date = datetime.today()-timedelta(60)
+        if kwargs['date']:
+            self.actual_date = datetime.strptime(kwargs['date'],'%Y-%m-%d')
+        else:
+            self.actual_date = datetime.today()-timedelta(60)
+        print(self.actual_date)
         self.source = NewsSource.objects.get_or_create(name="Estado de São Paulo")[0]
         self.covers = NewsCover.objects.filter(source=self.source).values_list('media', flat=True)
         for i in range(self.days):

@@ -32,7 +32,7 @@ def download_media(modeladmin, request, queryset):
             if i.mediatype == 'VIDEO':
                 i.status = 'DOWNLOADING'
                 i.save()
-                download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'})
+                download_async.apply_async(kwargs={'url': i.original_url, 'mediatype': 'VIDEO'}, queue="fastlane")
                 messages.add_message(request, messages.SUCCESS, 'Download job started.')
     elif queryset.model is MemoItem:
         for i in queryset:
@@ -40,7 +40,7 @@ def download_media(modeladmin, request, queryset):
                 if v.mediatype == 'VIDEO':
                     v.status = 'DOWNLOADING'
                     v.save()
-                    download_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'})
+                    download_async.apply_async(kwargs={'url': v.original_url, 'mediatype': 'VIDEO'}, queue="fastlane")
                     messages.add_message(request, messages.SUCCESS, 'Download job started.')
 
 download_media.short_description = 'Download Video Media'
