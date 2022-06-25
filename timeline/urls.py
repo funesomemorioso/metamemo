@@ -3,6 +3,8 @@ from tastypie.api import Api
 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path, include
+
 
 from timeline.api.resources import FactResource, SessionResource, TimelineResource
 
@@ -12,5 +14,5 @@ api.register(SessionResource())
 api.register(TimelineResource())
 
 urlpatterns = [
-    url(r'^api/', include(api.urls)),
+    path('api/', include(api.urls)),
 ]
