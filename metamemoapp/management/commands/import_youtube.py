@@ -98,7 +98,7 @@ class Command(BaseCommand):
                         post.original_id = post_id
                         post.raw = json.dumps(i, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
                         post.save()
-                        p = post.medias.create(original_url=post.url, original_id=post_id, status='INITIAL', mediatype='VIDEO')
+                        p = post.medias.create(original_url=post.url, original_id=post_id, status='INITIAL', mediatype='VIDEO', source=self.memo_source[0])
         
                     if p and self.video_download:
                         p.status = 'DOWNLOADING'

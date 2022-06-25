@@ -75,9 +75,9 @@ def save_keywords(modeladmin, request, queryset):
 
 class MemoMediaAdmin(admin.ModelAdmin):
     model = MemoMedia
-    list_display = ('original_url', 'status', 'mediatype')
+    list_display = ('original_url', 'status', 'mediatype', 'source')
     actions = [download_media, transcribe_media]
-    list_filter = ('mediatype', 'status')
+    list_filter = ('mediatype', 'status', 'source')
 
 
 @admin.display(description='Link')

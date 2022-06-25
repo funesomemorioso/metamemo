@@ -98,7 +98,7 @@ class Command(BaseCommand):
                     for m in i.attachments['media_keys']:
                         media = tweet_media[m]
                         if media['mediatype']=='VIDEO':
-                            p = post.medias.create(original_url=f'https://twitter.com/{self.user.data.username}/status/{i.id}', original_id=m, status='INITIAL', mediatype='VIDEO')
+                            p = post.medias.create(original_url=f'https://twitter.com/{self.user.data.username}/status/{i.id}', original_id=m, status='INITIAL', mediatype='VIDEO', source=self.memo_source[0])
                             if self.video_download:
                                 p.status = 'DOWNLOADING'
                                 p.save()
