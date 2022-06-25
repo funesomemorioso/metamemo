@@ -2,16 +2,26 @@
 @import "./icons.css?ss";
 
 /*Cores*/
-.metablue{ background-color: #3478B7 !important; }
-.metablue-text{ color: #3478B7 !important; }
-.metagreen{ background-color: #1B975B !important; }
-.metagreen-text{color: #1B975B !important; }
-.metapink{ background-color: #EF5DA8 !important; }
-.metapink-text{ color: #EF5DA8 !important; }
-.metaroxo{ background-color: #462F87 !important; }
-.metaroxo-text{ color: #462F87 !important; }
-.metacinza{background-color:#C4C4C4 !important;}
-.metacinza-text{background-color:#C4C4C4 !important;}
+:root {
+	--metablue: #3478B7;
+	--metagreen: #1B975B;
+	--metapink: #EF5DA8;
+	--metaroxo: #462F87;
+	--metagold: #C5A44F;
+	--metared: #AB3D55;
+  }
+.metablue{ background-color: var(--metablue) !important; }
+.metablue-text{ color: var(--metablue) !important; }
+.metagreen{ background-color: var(--metagreen) !important; }
+.metagreen-text{ color: var(--metagreen) !important; }
+.metapink{ background-color: var(--metapink) !important; }
+.metapink-text{ color: var(--metapink) !important; }
+.metaroxo{ background-color: var(--metaroxo) !important; }
+.metaroxo-text{ color: var(--metaroxo) !important; } 
+.metagold{ background-color: var(--metagold) !important; }
+.metagold-text{ color: var(--metagold) !important; } 
+.metared{ background-color: var(--metared) !important; }
+.metared-text{ color: var(--metared) !important; } 
 
 /*FIM CORES*/
 
@@ -87,12 +97,15 @@
 .align-stretch{ align-items: stretch }
 .minheight439 { min-height: 439px !important; }
 .minheight50 { min-height: 50px !important; }
+.font10{ font-size: 10px; line-height: 10px; }
 .font14{ font-size: 14px; }
 .font18{ font-size: 18px; }
 .font16{ font-size: 16px !important; }
 .font22{ font-size: 22px; line-height: 22px; }
+.font24{ font-size: 24px; line-height: 28px; }
 .font25{ font-size: 25px; }
-.font35{ font-size: 35px; }
+.font35{ font-size: 35px; line-height: 35px; }
+.font48{ font-size: 48px  !important; line-height: 52px  !important; }
 .fontBold {
 	font-style: normal;
 	font-weight: 700;
@@ -737,6 +750,160 @@ footer h3 {
 	margin: 0 auto;
 }
 
+.page-timeline header{
+	display: flex;
+	align-items: stretch;
+	flex-direction: column;
+	height: auto;
+}
+.page-timeline header h1{
+	margin-top: 85px;
+	font-weight: 800;
+	font-size: 96px;
+	line-height: 145px;
+}
+.page-timeline header h1 small{
+	display: block;
+	font-weight: 400;
+	font-size: 48px;
+	line-height: 52px;
+}
+
+.page-timeline > header > div:first-child{
+	flex: 1;
+	min-height: 880px;
+	background: url("../imgs/familia-bozo.png") center bottom;
+	background-repeat: no-repeat;
+	background-size: 60vw;
+}
+.page-timeline > header > div:last-child{
+	height: 264px;
+	flex-shrink: 0;
+}
+.timeline-body { 
+	padding-top: 40px;
+	height: 0;
+	opacity: 0;
+	overflow: hidden;
+	transition: height 3s, opacity 3s;
+}
+.timeline-body.active { height: 100%; opacity: 1; }
+.page-timeline .start{
+	position: relative;
+	margin-top: 120px;
+}
+.page-timeline .start img{
+	max-width: 100%;
+	width: 670px;
+	border: 5px solid #EF5DA8;
+	transform: rotate(2.53deg);
+}
+.page-timeline .start .bubble {
+	position: absolute;
+	left: 50%;
+  	transform: translate(-50%, -50%);
+  	margin: 0 !important;
+  	z-index: 1;
+}
+.page-timeline .start p{
+	padding: 32px;
+	margin: 14px auto;
+	max-width: 770px;
+	font-size: 20px;
+	line-height: 26px;
+}
+.timeline-content {
+	background-image: url('../imgs/pontos.jpg');
+	background-repeat: repeat-y;
+	background-position: center;
+	background-size: 5px 20px;
+}
+.timeline-content .row { margin-bottom: 50px; }
+.timeline-content > .row:last-child { padding-bottom: 180px; margin-bottom: 0px; }
+.timeline-content .row.active .row:first-of-type { margin-top: 50px; }
+.timeline-content .row.active .row:last-of-type { margin-bottom: 0px; }
+.timeline-content .row.active > .bubble.metagreen { color: var(--metagreen); border: 3px solid var(--metagreen); background-color: #FFF !important; }
+.timeline-content .row.active > .bubble.metagold { color: var(--metagold); border: 3px solid var(--metagold); background-color: #FFF !important; }
+.timeline-content .row.active > .bubble.metablue { color: var(--metablue); border: 3px solid var(--metablue); background-color: #FFF !important; }
+.timeline-content .row.active > .bubble.metared { color: var(--metared); border: 3px solid var(--metared); background-color: #FFF !important; }
+.timeline-content .row > .row { height:  54px; transition: height 1s, opacity .5s, margin 1s, background-color 1s linear; }
+.timeline-content .row:not(.active) > .row { height: 0; opacity: 0; margin: 0; }
+.bubble {
+	width: 100px;
+	height:  100px;
+	font-size: 26px;
+	margin: 0 auto;
+	text-align: center;
+	display: block;
+	cursor: pointer;
+	font-weight: 800;
+	line-height: 100px;
+	color: #FFF;
+	font-weight: bold;
+	border-radius: 50%;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.bubble.large {
+	width: 178px;
+	height:  178px;
+	font-size: 36px;
+	line-height: 178px;
+}
+.bubble.mini {
+	width: 54px;
+	height:  54px;
+	font-size: 16px;
+	line-height: 54px;
+	text-transform: uppercase;
+}
+.timeline-board {
+	display: block;
+	padding: 10px 0;
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 373px;
+	text-align: center;
+	color: #FFF;
+	border-radius: 8px;
+}
+.timeline-board small { display: block; font-weight: 800; }
+.timeline-modal { 
+	top: 0 !important;
+	bottom: 0;
+	padding-top: 100px;
+	height: initial;
+	max-height: initial;
+	width: auto;
+	max-width: 480px;
+	box-shadow: none;
+	background-color: transparent !important;
+}
+.timeline-modal::-webkit-scrollbar {
+    width: 0;
+}
+.timeline-modal .modal-content { padding: 0 10px; max-width: 470px; } 
+.timeline-modal .modal-content p{ 
+	margin: 0 auto;
+	max-width: 470px;
+	padding: 30px;
+	font-family: 'Fira Sans';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 20px;
+	line-height: 26px;
+} 
+.timeline-modal .modal-content p:not(:first-of-type){
+	margin: 30px auto;
+}
+.timeline-modal .modal-content p b{ font-weight: 700; }
+.timeline-modal .modal-content img{
+	margin: 0 auto;
+	width: 100%;
+	max-width: 470px;
+	border: 5px solid var(--metapink);
+	transform: rotate(2.53deg);
+}
+/*FIM TIMELINE*/
 
 @media only screen and (max-width: 601px){
 	.row.valign-wrapper { flex-wrap: wrap; }

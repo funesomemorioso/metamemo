@@ -148,5 +148,18 @@ $(document).ready(function () {
         $("#get_media").parent()[0].textContent = 'baixando...'
     });
 
+    /*timeline*/
+    $('.timeline-seletor a').each(function(index, el) {
+        $(this).click(function(event) {
+            $('#timeline-body').toggleClass('active');
+        });
+    });
+    $('.timeline-content > .row').each(function(index, el) {
+        var row = this;
+        $(row).find('> .bubble').click(function(event) {
+            $(row).toggleClass('active');
+        });
+    });
+    $('.modal').modal();
 
 });

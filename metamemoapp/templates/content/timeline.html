@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block title %}Metamemo - Metamix{% endblock %}
+{% block page_class %}timeline{% endblock %}
+
+{% block content %}
+<header>
+	<div class="metagreen">
+		<div class="container">
+			<h1 class="white-text center-align"><small>Linha do Tempo</small> Família <br class="hide-on-med-and-up"> Bolsonaro</h1>
+		</div>
+	</div>
+	<div class="metablue">
+		<div class="row no-margin height100">
+			<div class="col s12 offset-m1 m4 white-text height100">
+				<div class="valign-wrapper height100">
+					<p class="right-align center-align-s font24">Selecione um personagem para ver a linha do tempo</p>
+				</div>
+			</div>
+			<div class="col s12 m6 white-text height100 valign-wrapper">
+				<div class="row no-margin no-padding-s timeline-seletor">
+					<div class="col offset-s3 s6 m3 padding-top50 center-align"><a href="#timeline-body" class="white-text"><img src="https://picsum.photos/130" alt="" class="circle darken-filter" width="100%"><br>Jair Bolsonaro</a></div>
+					<div class="col offset-s3 s6 m3 padding-top50 center-align"><a href="#timeline-body" class="white-text"><img src="https://picsum.photos/130" alt="" class="circle darken-filter" width="100%"><br>Jair Bolsonaro</a></div>
+					<div class="col offset-s3 s6 m3 padding-top50 center-align"><a href="#timeline-body" class="white-text"><img src="https://picsum.photos/130" alt="" class="circle darken-filter" width="100%"><br>Jair Bolsonaro</a></div>
+					<div class="col offset-s3 s6 m3 padding-top50 center-align"><a href="#timeline-body" class="white-text"><img src="https://picsum.photos/130" alt="" class="circle darken-filter" width="100%"><br>Jair Bolsonaro</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<section id="timeline-body" class="timeline-body active">
+	<div class="center-align">
+		<img src="https://picsum.photos/282" alt="" class="circle">
+	</div>
+	<div class="center-align metagreen-text font35 font26-s fontBold">
+		JAIR MESSIAS BOLSONARO
+	</div>
+	<div class="start container center-align">
+		<span class="bubble large metapink">1888</span>
+		<img src="https://picsum.photos/670/375" alt="" class="z-depth-3">
+		<p class="radius8 grey lighten-3"><b>Abril de 1888</b> - Vittorio 
+Bolsonaro emigra de Anguillara, na região do Vêneto, nordeste da Itália,
+ para o Brasil. Aos dez anos, viaja com o pai, a mãe e dois irmãos. 
+Desembarcaram em Santos. Angelo, seu filho, casou com uma brasileira 
+descendente de alemães e teve Percy Geraldo, pai de Jair Messias 
+Bolsonaro em 1927.</p>
+	</div>
+	<div class="timeline-content">
+		<div class="row timeline-board metagreen">
+			<div><b>PARTE 1</b></div>
+			Jair, infância e adolescência 
+			<small>1955-1972</small>
+		</div>
+		<div class="row">
+			<span class="bubble metagreen">1955</span>
+			<div class="row">
+				<span data-target="modal1" class="bubble mini metagreen modal-trigger">JAN</span>
+			</div>
+			<div class="row">
+				<span data-target="modal1" class="bubble mini metagreen modal-trigger">FEV</span>
+			</div>
+		</div>
+		<div class="row"><span class="bubble metagreen">1955</span></div>
+		<div class="row"><span class="bubble metagreen">1955</span></div>
+
+		<div class="row timeline-board metagold">
+			<div><b>PARTE 2</b></div>
+			Jair, de cadete à capitão
+			<small>1973-1988</small>
+		</div>
+		<div class="row"><span class="bubble metagold">1955</span></div>
+		<div class="row"><span class="bubble metagold">1955</span></div>
+		<div class="row"><span class="bubble metagold">1955</span></div>
+
+		<div class="row timeline-board metablue"> 
+			<div><b>PARTE 3</b></div>
+			Jair, de vereador a deputado polêmico 
+			<small>1988- 2015</small>
+		</div>
+		<div class="row"><span class="bubble metablue">1955</span></div>
+		<div class="row"><span class="bubble metablue">1955</span></div>
+		<div class="row"><span class="bubble metablue">1955</span></div>
+
+		<div class="row timeline-board metared">
+			<div><b>PARTE 4</b></div>
+			Jair, de vereador a deputado polêmico
+			<small>1988- 2015</small> 
+		</div>
+		<div class="row"><span class="bubble metared">1955</span></div>
+		<div class="row"><span class="bubble metared">1955</span></div>
+		<div class="row"><span class="bubble metared">1955</span></div>
+	</div>
+</section>
+<section class="sobre no-padding-bottom">
+	<div class="container">
+		<div class="row grey lighten-4 valign-wrapper">
+			<div class="col s12 m6 no-padding"><img src="https://picsum.photos/570/493?sdsd" width="100%"></div>
+			<div class="col s12 offset-m1 m5">
+				<h2 class="metagreen-text">Pesquise fatos direto no metamemo</h2>
+				<p>Continue a linha do tempo na ferramenta de pesquisa da MetaMemo</p>			
+				<a href="#" class="btn metapink white-text">Acesse aqui</a>
+			</div>
+		</div>
+	</div>
+</section>
+<div id="modal1" class="modal timeline-modal" tabindex="0" style="z-index: 1003; display: none; opacity: 0; top: 4%; transform: scaleX(0.8) scaleY(0.8);">
+	<div class="modal-content">
+		<p class="radius8 metapink white-text"><b>Janeiro de 1971</b> -  Bolsonaro começa a colaborar com o jornal O Estado de S. Paulo, enviando palavras cruzadas. Foram 21 colaborações até 1976.</p>
+		<img src="timeline.php_files/251.jpeg" alt="" class="z-depth-3">
+		<p class="radius8 metapink white-text"><b>Abril de 1888</b> - Vittorio
+ Bolsonaro emigra de Anguillara, na região do Vêneto, nordeste da 
+Itália, para o Brasil. Aos dez anos, viaja com o pai, a mãe e dois 
+irmãos. Desembarcaram em Santos. Angelo, seu filho, casou com uma 
+brasileira descendente de alemães e teve Percy Geraldo, pai de Jair 
+Messias Bolsonaro em 1927.</p>
+		<p class="radius8 metapink white-text"><b>Abril de 1888</b> - Vittorio
+ Bolsonaro emigra de Anguillara, na região do Vêneto, nordeste da 
+Itália, para o Brasil. Aos dez anos, viaja com o pai, a mãe e dois 
+irmãos. Desembarcaram em Santos. Angelo, seu filho, casou com uma 
+brasileira descendente de alemães e teve Percy Geraldo, pai de Jair 
+Messias Bolsonaro em 1927.</p>
+	</div>
+</div>
+{% endblock %}
