@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "metamemoapp",
+    "timeline",
     "import_export",
     "blog",
     "debug_toolbar",
