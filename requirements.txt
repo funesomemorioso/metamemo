@@ -38,3 +38,4 @@ aiohttp
 django-debug-toolbar
 django-filter
 django-summernote
+django-tastypie
