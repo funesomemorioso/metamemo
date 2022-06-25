@@ -5,6 +5,8 @@ mysqlclient
 python-decouple
 ffmpeg-python
 yt-dlp
+youtube_dl
+Pillow
 
 google-cloud-speech
 google-cloud-language
@@ -33,5 +35,6 @@ telethon
 cryptg
 aiohttp
 
+django-debug-toolbar
 django-filter
 django-summernote

@@ -1,0 +1,36 @@
+{% extends "results.html" %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block results_bar %}
+{% endblock results_bar %}
+{% block results_header %}
+    
+    <div class="col s12">Capas de Jornais do Período Selecionado</div>
+{% endblock results_header %}
+{% block results_content %}
+    {% static "imgs/noun-newspaper.png" as default_source_icon %}
+    {# eye icon#}
+    <div class="col s1 valign-wrapper">
+        <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
+    </div>
+    {# source icon#}
+    <div class="col s2 valign-wrapper">
+        <img width="50px"
+             height="50px"
+             src="{{ data.sources|get_item:item.source.name|default_if_none:default_source_icon }}"
+             alt="icon for {{ item.source }}"/>
+    </div>
+    {# date #}
+    <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
+    {# url #}
+    <div class="col s1 valign-wrapper">
+        <a href="{{ item.media.url }}" target="_blank">Ver</a>
+    </div>
+    {# cover #}
+    <div class="col s7 valign-wrapper">
+        <img 
+             height="122px"
+             src="{{ item.media.url }}"
+             alt="cover for {{item.source}} on {{item.content_date|date:'d/m/y'}}"/>
+    </div>
+{% endblock results_content %}

@@ -1,55 +1,75 @@
 {% load l10n %}
 {% load static %}
 {% load metamemoapp_extras %}
-
 <!DOCTYPE html>
 <html>
-
-{% block HEAD %}
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<title>{% block title %}Metamemo{% endblock %}</title>
-	<link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-{% endblock %}
-
-<body class="pages page-{% block page_class %}{% endblock %}">
-{% block header %}
-  <nav>
-	<div class="container">
-		<div class="row">
-			<div class="col s12 m5">
-				<a href="{% url 'home' %}"><img src="{% static 'imgs/logo.png' %}" alt="logo Metamemo"></a>
-			</div>
-			<div class="col s12 m7">
-				<ul>
-					<li><a href="{% url 'content' 'metodologia' %}">Metodologia</a></li>
-					<li><a href="#">Linha do Tempo</a></li>
-					<li><a href="{% url 'blog' %}">Metamix</a></li>
-					<li><a href="{% url 'content' 'colabore' %}">Colabore</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</nav>
-{% endblock %}
-
-{% block content %}
-{% endblock %}
-
-{% block footer %}
-<footer class="center-align">
-	<p><a href="mailto:metamemo@metamemo.info">metamemo@metamemo.info</a></p>
-	<p>Conteúdo original do site licenciado sobre CC BY SA</p>
-</footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
-{% endblock %}
-
-</body>
+    {% block HEAD %}
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>
+                {% block title %}Metamemo{% endblock %}
+            </title>
+            <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+            <link rel="stylesheet" href="{% static 'css/style.css' %}">
+            <link rel="stylesheet" href="{% static 'css/icons.css' %}">
+        </head>
+    {% endblock %}
+    <body class="pages page-{% spaceless %}{% block page_class %}{% endblock %}{% endspaceless %}">
+        {% block header %}
+            <nav>
+                <div class="container">
+                    <div class="row">
+                        <div class="col s12 m5">
+                            <a href="{% url 'home' %}">
+                                <img src="{% static 'imgs/logo.png' %}" alt="logo Metamemo">
+                            </a>
+                        </div>
+                        <div class="col s12 m7">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'content' 'metodologia' %}">Metodologia</a>
+                                </li>
+                                <li>
+                                    <a href="#">Linha do Tempo</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'blog' %}">Metamix</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'content' 'colabore' %}">Colabore</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+        {% block content %}{% endblock %}
+        {% block footer %}
+            <footer class="grey lighten-4 black-text">
+                <div class="container">
+                    <div class="row no-margin"> 
+                        <div class="col s12  m3">
+                            <img src="{% static 'imgs/metamemo-logo.png' %}" alt="" width="100%"><br>
+                            inbox@metamememo.com.br
+                            <p>Conteúdo original do site licenciado <br> sob <b>CC BY SA.</b></p>
+                        </div>
+                        <div class="col s12 offset-m3 m3">
+                            <p>Baixe, armazene e/ou distribua <br> via torrent este <b>metamemo.</b></p>
+                            <p><a href="#" class="btn metapink white-text font16">Baixe Aqui</a></p>
+                        </div>
+                        <div class="col s12 m3">
+                            <h3>Colabore!</h3>
+                            <p><i class="icon-github"></i> Fork me on GitHub</p>
+                            <p><a href="#" class="btn metapink white-text font16">Colabore no GitHub</a></p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+            <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+        {% endblock %}
+    </body>
 </html>
-
-

@@ -1,6 +1,6 @@
 # MetaMemo
 
-## Requisitods
+## Requisitos
 
 - Django
 
@@ -22,7 +22,7 @@ python manage.py migrate
 
 Para criar o usuário administrativo:
 
-    python manage createsuperuser
+    python manage.py createsuperuser
 
 Depois de instalado o django no seu venv preferido:
 
