@@ -97,7 +97,7 @@ def download_async(self, url, mediatype):
     self.progress_recorder = ProgressRecorder(self)
 
     def progress_hook(info):
-        if 'downloaded_bytes' in info:
+        if 'downloaded_bytes' in info and 'total_bytes' in info:
             state, meta = self.progress_recorder.set_progress(info['downloaded_bytes'],info['total_bytes'])
             self.first.progress=meta['percent']
             self.first.save()
