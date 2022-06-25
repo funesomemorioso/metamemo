@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
         if self.queue:
             q = len(app.control.inspect().reserved()[self.queue])
-            if q==0:
+            if not q==0:
                 print(q)
                 return None
 
