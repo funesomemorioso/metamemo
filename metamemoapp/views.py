@@ -11,7 +11,7 @@ from metamemoapp.models import (
 )
 from metamemoapp.filters import MemoItemFilter, MemoNewsFilter
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Q
 
 
 from datetime import date, datetime, timedelta
@@ -87,6 +87,10 @@ def contexts(request):
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
     start_date, end_date = (parse_date(d) for d in dates)
 
+    memocontext = MemoContext.objects.filter(
+        end_date__gte=start_date, start_date__lte=end_date
+    ).order_by("start_date")
+
     filters = {}
     if start_date:
         filters["content_date__gte"] = start_date
@@ -121,6 +125,7 @@ def contexts(request):
         "dates": dates,
         "paginator_list": pages,
         "items": items.page(page_nm),
+        "memocontexts": memocontext,
         "results_total": len(newscovers),
     }
 

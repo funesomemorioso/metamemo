@@ -2,9 +2,16 @@
 {% load static %}
 {% load metamemoapp_extras %}
 {% block results_bar %}
+{%for item in data.memocontexts %}
+<div>
+    <p>
+    {{item.context}}
+    </p>
+    <div><a href="{{item.url}}">fonte</a></div>
+</div>
+{% endfor %}
 {% endblock results_bar %}
 {% block results_header %}
-    
     <div class="col s12">Capas de Jornais do Período Selecionado</div>
 {% endblock results_header %}
 {% block results_content %}
