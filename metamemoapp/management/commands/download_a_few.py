@@ -37,6 +37,6 @@ class Command(BaseCommand):
             if p.mediatype == 'VIDEO' and not self.fake:
                 p.status = 'DOWNLOADING'
                 p.save()
-                download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'}, queue="download")
+                download_async.apply_async(kwargs={'url': p.original_url, 'mediatype': 'VIDEO'}, queue="fastlane")
             elif p.mediatype=='IMAGE' and not self.fake:
-                download_img_async.apply_async(kwargs={'url' : p.original_url, 'pk' : p.pk}, queue="download")
+                download_img_async.apply_async(kwargs={'url' : p.original_url, 'pk' : p.pk}, queue="fastlane")
