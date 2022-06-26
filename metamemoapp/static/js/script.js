@@ -1,5 +1,10 @@
 window.mobileCheck = window.innerWidth <= 601;
 $(document).ready(function () {
+    $.getJSON( "http://127.0.0.1:8000/timeline/api/v1/fact/?limit=100000", function( data ) {
+        $.each( data["objects"], function( key, val ) {
+            console.log(val)
+        });
+    });
     $('.parallax').parallax();
     $('.resultado-slider .slider').slider({
         indicators: false,
@@ -151,7 +156,8 @@ $(document).ready(function () {
     /*timeline*/
     $('.timeline-seletor a').each(function(index, el) {
         $(this).click(function(event) {
-            $('#timeline-body').toggleClass('active');
+            $('.timeline-body').removeClass('active');
+            $(`#timeline-${this.id}`).addClass('active');
         });
     });
     $('.timeline-content > .row').each(function(index, el) {
