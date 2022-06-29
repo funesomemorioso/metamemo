@@ -780,6 +780,9 @@ footer h3 {
 	height: 264px;
 	flex-shrink: 0;
 }
+.timeline-seletor{
+	width: 100%;
+}
 .timeline-body { 
 	padding-top: 40px;
 	height: 0;
@@ -906,6 +909,9 @@ footer h3 {
 /*FIM TIMELINE*/
 
 @media only screen and (max-width: 601px){
+	.font26-s { font-size: 26px !important; line-height: 26px !important; }
+	.center-align-s { text-align: center !important; }
+	.left-align-s { text-align: left !important; }
 	.row.valign-wrapper { flex-wrap: wrap; }
 	.col.s12{ margin-top: 10px; margin-bottom: 10px; }
 	.page-home section{ padding: 40px 0 ;}
@@ -928,7 +934,10 @@ footer h3 {
 	.blog .carousel { height: auto; }
 	.blog .carousel-wrap { padding: 42px 20px 0 20px; }
 	.blog .carousel .carousel-item { visibility: initial; position: initial !important; }
-
+	.page-timeline > header > div:last-child {
+		height: auto;
+		padding-bottom: 70px;
+	}
 }
 
 .pointer {
