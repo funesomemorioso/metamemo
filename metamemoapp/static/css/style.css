@@ -755,6 +755,7 @@ footer h3 {
 	align-items: stretch;
 	flex-direction: column;
 	height: auto;
+	margin-bottom: 40px;
 }
 .page-timeline header h1{
 	margin-top: 85px;
@@ -784,7 +785,7 @@ footer h3 {
 	width: 100%;
 }
 .timeline-body { 
-	padding-top: 40px;
+	padding-top: 0px;
 	height: 0;
 	opacity: 0;
 	overflow: hidden;
@@ -801,6 +802,7 @@ footer h3 {
 	border: 5px solid #EF5DA8;
 	transform: rotate(2.53deg);
 }
+
 .page-timeline .start .bubble {
 	position: absolute;
 	left: 50%;
