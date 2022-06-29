@@ -6,6 +6,7 @@ class Timeline(models.Model):
     text = models.TextField(blank=True)
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
+    image = models.ImageField(upload_to='timeline', blank=True, null=True)
 
     def __str__(self):
         return(self.name)
