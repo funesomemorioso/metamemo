@@ -22,7 +22,7 @@ $(document).ready(function () {
             timeline_selectors.push(`
                 <div class="col offset-s3 s6 m3 padding-top50 center-align">
                     <a id="${nome_id}" class="white-text">
-                        <img src="https://picsum.photos/130" alt="" width="100%" class="circle darken-filter">
+                        <img src="${val["image"]}" alt="" width="100%" class="circle darken-filter">
                         <br>${val["name"]}
                     </a>
                 </div>
@@ -148,7 +148,7 @@ $(document).ready(function () {
             }
             $(`#timeline-${this_tl_facts["name"].split(' ').join('-')}`).append(`
             <div class="center-align">
-                <img src="https://picsum.photos/282" alt="" class="circle">
+                <img src="${this_tl_facts["facts"][0]["timeline"]["image"]}" alt="" class="circle">
             </div>
             <div class="center-align metagreen-text font35 font26-s fontBold">
                 ${this_tl_facts["name"].toUpperCase()}
