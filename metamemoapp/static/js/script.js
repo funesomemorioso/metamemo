@@ -1,12 +1,15 @@
 window.mobileCheck = window.innerWidth <= 601;
 $(document).ready(function () {
     $.when($.getJSON("http://127.0.0.1:8000/timeline/api/v1/fact/?limit=100000"),$.getJSON( "http://127.0.0.1:8000/timeline/api/v1/session/?limit=100000")).then(function(data,data_sessions){
+        //formatação das datas 
         const option = {
             year: 'numeric',
             month: ('long' || 'short' || 'numeric'),
             day: 'numeric',
         }
         const locale = 'pt-br'
+
+        
         all_timelines = data[0]["objects"].map(function(A) {return A["timeline"];});
         timelines = all_timelines.filter((value, index, self) =>
             index === self.findIndex((t) => (
@@ -163,69 +166,6 @@ $(document).ready(function () {
             `);
             
         })  
-/*         $( "#ovo" ).after(`<section id="timeline-jair_bolsonaro" class="timeline-body active">
-        <div class="center-align">
-            <img src="https://picsum.photos/282" alt="" class="circle">
-        </div>
-        <div class="center-align metagreen-text font35 font26-s fontBold">
-            JAIR MESSIAS BOLSONARO
-        </div>
-        <div class="start container center-align">
-            <span class="bubble large metapink">1888</span>
-            <img src="https://picsum.photos/670/375" alt="" class="z-depth-3">
-            <p class="radius8 grey lighten-3"><b>Abril de 1888</b> - Vittorio 
-    Bolsonaro emigra de Anguillara, na região do Vêneto, nordeste da Itália,
-     para o Brasil. Aos dez anos, viaja com o pai, a mãe e dois irmãos. 
-    Desembarcaram em Santos. Angelo, seu filho, casou com uma brasileira 
-    descendente de alemães e teve Percy Geraldo, pai de Jair Messias 
-    Bolsonaro em 1927.</p>
-        </div>
-        <div class="timeline-content">
-            <div class="row timeline-board metagreen">
-                <div><b>PARTE 1</b></div>
-                Jair, infância e adolescência 
-                <small>1955-1972</small>
-            </div>
-            <div class="row">
-                <span class="bubble metagreen">1955</span>
-                <div class="row">
-                    <span data-target="modal1" class="bubble mini metagreen modal-trigger">JAN</span>
-                </div>
-                <div class="row">
-                    <span data-target="modal1" class="bubble mini metagreen modal-trigger">FEV</span>
-                </div>
-            </div>
-            <div class="row"><span class="bubble metagreen">1955</span></div>
-            <div class="row"><span class="bubble metagreen">1955</span></div>
-    
-            <div class="row timeline-board metagold">
-                <div><b>PARTE 2</b></div>
-                Jair, de cadete à capitão
-                <small>1973-1988</small>
-            </div>
-            <div class="row"><span class="bubble metagold">1955</span></div>
-            <div class="row"><span class="bubble metagold">1955</span></div>
-            <div class="row"><span class="bubble metagold">1955</span></div>
-    
-            <div class="row timeline-board metablue"> 
-                <div><b>PARTE 3</b></div>
-                Jair, de vereador a deputado polêmico 
-                <small>1988- 2015</small>
-            </div>
-            <div class="row"><span class="bubble metablue">1955</span></div>
-            <div class="row"><span class="bubble metablue">1955</span></div>
-            <div class="row"><span class="bubble metablue">1955</span></div>
-    
-            <div class="row timeline-board metared">
-                <div><b>PARTE 4</b></div>
-                Jair, de vereador a deputado polêmico
-                <small>1988- 2015</small> 
-            </div>
-            <div class="row"><span class="bubble metared">1955</span></div>
-            <div class="row"><span class="bubble metared">1955</span></div>
-            <div class="row"><span class="bubble metared">1955</span></div>
-        </div>
-    </section>`); */
         $('.timeline-seletor a').each(function(index, el) {
             $(this).click(function(event) {
                 $('.timeline-body').removeClass('active');
