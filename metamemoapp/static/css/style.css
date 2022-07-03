@@ -342,7 +342,7 @@ nav ul a:hover {
     background-color: #F4F4F4;
 }
 
-.page-home .btn, .page-filters .btn, .page-colabore .btn ,.page-memoitem .btn{
+.page-home .btn, .page-filters .btn,.page-colabore .btn, .page-metodologia .btn ,.page-memoitem .btn{
 	display: inline-block;
 	height: initial !important ;
 	border: 0;
