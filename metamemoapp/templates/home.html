@@ -19,14 +19,16 @@
                     </div>
                     <div class="row no-margin-sides grey lighten-4 radius8">
                         <div class="col s12">
-                            <h3>Selecione uma Data</h3>
-                            <div class="col s4">
+                            <h3>Selecione um Periodo</h3>
+                            <div class="col s4 input-field">
+                                <label class="active" for="start_date">Inicio</label>
                                 <input id="start_date" class="datepicker" type="text" />
                                 <input id="start-date-hidden"
                                        value="{{ data.date|date:"Y-m-d" }}"
                                        type="hidden"/>
                             </div>
-                            <div class="col s4">
+                            <div class="col s4 input-field">
+                                <label class="active" for="end_date">Final</label>
                                 <input id="end_date" class="datepicker" type="text" />
                                 <input id="end-date-hidden"
                                        value="{{ data.date|date:"Y-m-d" }}"
