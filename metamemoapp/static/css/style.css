@@ -125,6 +125,34 @@
 .text-lighter {font-weight: lighter;}
 .flex{display:flex}
 .height100 {height: 100%;}
+
+.speech-bubble {
+	background: #ddd;
+	color: #333;
+	display: inline-block;
+	font-size: 14px;
+	line-height: 4em;
+	margin-bottom: 1em;
+	padding: 0 1em;
+	position: relative;
+	text-align: center;
+	vertical-align: top;
+	min-width: 7em;
+	border-radius: .4em;
+}
+
+.speech-bubble:after {
+	border: 1em solid transparent;
+	border-top-color: #ddd;
+	content: '';
+	margin-left: -1em;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 0;
+	height: 0;
+}
+
 /*fim Helpers*/
 
 
@@ -543,6 +571,7 @@ nav ul a:hover {
 	font-size: 14px;
 	line-height: 16px;
 	color:  #000;
+	cursor: pointer;
 }
 .chip i{
 	float: none;
