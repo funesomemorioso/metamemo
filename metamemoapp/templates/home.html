@@ -85,38 +85,61 @@
                     <p>
                         Um METAMEMO é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.
                     </p>
-                    <a href="{% url "content" "metamemo" %}" class="btn metapink white-text">Saiba mais</a>
+                    <a href="{% url 'content' 'metamemo' %}" class="btn metapink white-text">Saiba mais</a>
                 </div>
                 <div class="card-imagem col s12 m6 offset-m1 no-padding">
                     <img alt="Pesquisador negro em frente ao computador"
-                         src="{% static "imgs/stock/home_metamemo.png" %}"/>
+                         src="{% static 'imgs/stock/home_metamemo.png' %}"/>
                 </div>
             </div>
         </div>
     </section>
-    <!-- <section class="timeline">
-<h2 class="metaroxo-text center-align">Linha do Tempo</h2>
-<div class="row valign-wrapper">
-    <div class="col s12 m8">
-        <img src="img-timeline.png?sdsd" width="100%" alt="">
-    </div>
-    <div class="col s12 m4 ">
-        <a href="#" class="btn metapink white-text">Acesse aqui</a>
-    </div>
-
-</div>
-
-</section>
--->
+    <!-- TIMELINE -->
+    <section class="timeline no-padding">
+            <h2 class="metagreen-text center-align">Linha do Tempo Bolsodata</h2>
+            <div class="timeline-box">
+                <div class="timeline-snippet">
+                    <!--  <img src="img-timeline.png?sdsd" width="100%" alt=""> -->
+                    <div class="tl-snippet-fact--botom">
+                        <div class="speech-bubble">Xyz fato sobre bolsonaro</div>
+                        <span class="bubble metagreen">1992</span>
+                        <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div> 
+                    <div class="tl-snippet-fact">
+                            <div class="speech-bubble">Xyz fato sobre bolsonaro</div>
+                            <span class="bubble metagreen">1992</span>
+                            <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div>
+                    <div class="tl-snippet-img">
+                        <div class="circle metagreen"></div>
+                    </div>
+                    <div class="tl-snippet-fact">
+                        <div class="speech-bubble">Xyz fato sobre bolsonaro</div>
+                        <span class="bubble metagreen">1992</span>
+                        <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div>
+                    <div class="tl-snippet-fact--botom">
+                        <div class="speech-bubble">Xyz fato sobre bolsonarou</div>
+                        <span class="bubble metagreen">1992</span>
+                        <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div>
+                </div>
+                <div class="timeline-btn">
+                    <a href="{% url 'content' 'timeline' %}" class="btn metapink white-text">Acesse aqui</a>
+                </div>
+                <div class="timeline-margin"></div>
+            </div>
+    </section>
+   <!------------->
     <section class="sobre no-padding-bottom">
         <div class="container">
             <div class="row grey lighten-4 valign-wrapper">
                 <div class="card-imagem col s12 m6 no-padding">
                     <img alt="Pesquisadora trabalhando no computador em uma escrivaninha"
-                         src="{% static "imgs/stock/home_metamix.png" %}"/>
+                         src="{% static 'imgs/stock/home_metamix.png' %}"/>
                 </div>
                 <div class="col s12 offset-m1 m5 metaroxo-text">
-                    <h2 class="metaroxo-text">Metamix</h2>
+                    <h2 class="metagreen-text">Metamix</h2>
                     <p>MetaMix é um blog com produções criadas através da nossa plataforma:</p>
                     <a href="{% url "blog" %}" class="btn metapink white-text">Acesse aqui</a>
                 </div>
@@ -124,7 +147,7 @@
             <div class="row grey lighten-4 valign-wrapper align-stretch">
                 <div class="col s12 offset-m1 m4 metaroxo-text minheight439 valign-wrapper">
                     <div>
-                        <h2 class="metaroxo-text">
+                        <h2 class="metagreen-text">
                             MetaTags
                         </h2>
                         <p>
@@ -142,7 +165,7 @@
         <div class="row metagreen valign-wrapper no-margin">
             <div class="card-imagem col s12 m6 no-padding">
                 <img alt="Pesquisador branco sorrindo de frente para a camera"
-                     src="{% static "imgs/stock/home_colabore.png" %}"/>
+                     src="{% static 'imgs/stock/home_colabore.png' %}"/>
             </div>
             <div class="col s12 offset-m1 m5 white-text">
                 <div class="col s12 m10">

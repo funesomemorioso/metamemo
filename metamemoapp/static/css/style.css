@@ -131,9 +131,9 @@
 	color: #333;
 	display: inline-block;
 	font-size: 14px;
-	line-height: 4em;
+	line-height: 1.4em;
 	margin-bottom: 1em;
-	padding: 0 1em;
+	padding: 0.6em 1em;
 	position: relative;
 	text-align: center;
 	vertical-align: top;
@@ -142,10 +142,10 @@
 }
 
 .speech-bubble:after {
-	border: 1em solid transparent;
+	border: 0.5em solid transparent;
 	border-top-color: #ddd;
 	content: '';
-	margin-left: -1em;
+	margin-left: -0.5em;
 	position: absolute;
 	top: 100%;
 	left: 50%;
@@ -229,6 +229,7 @@ h1{
 .sobre .card-conteudo {}
 .sobre .card-imagem {
 	overflow: hidden;
+	margin: 0;
 }
 .sobre .card-imagem img {
 	display: block;
@@ -437,10 +438,137 @@ nav ul a:hover {
 	line-height: 24px;
 	letter-spacing: 0.3px;
 }
+.page-home .timeline{
+	padding-bottom: 0px;
+}
+.timeline .timeline-box{
+	width:100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	padding: 0 2.5%;
+}
+.timeline .timeline-snippet{
+	height: 570px;
+	background-image: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%),url('../imgs/meta-back-repeat2.png');
+	background-repeat: repeat-x;
+	background-position: right 50%;
+	display: flex;
+	justify-content: flex-end;
+	padding: 0;	
+	flex-grow: 1;
+	margin-right: 15px;
+}
+.timeline .timeline-snippet div:first-child{
+	margin-left: 15px;
+}
+.timeline .timeline-btn{
+	height: fit-content;
+}
+.timeline .timeline-btn .btn{
+	margin-left: 45px;
+}
+.timeline .timeline-margin{
+	--maxWidth: 1187px;
+	--margin: calc(100% - var(--maxWidth));
+	--halfMargin: calc(var(--margin) / 2);
+	width: var(--halfMargin);
+	flex-shrink: 1;
+}
+.timeline-snippet .tl-snippet-img{
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 377px;
+}
+.timeline-snippet .tl-snippet-img .circle.metagreen{
+	width: 363px;
+	height: 363px;
+	background: url('../imgs/familia-bozo.png');
+	background-size: 145%;
+	background-repeat: no-repeat;
+	background-position: bottom 0px right 60%;
+}
+.timeline-snippet .tl-snippet-fact{
+	height: 100%;
+	width: 125px;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: center;
+}
+.timeline-snippet .tl-snippet-fact .speech-bubble{
+	width: 155px;
+}
+.timeline-snippet .tl-snippet-fact img{
+	width: min-content;
+}
+.timeline-snippet .tl-snippet-fact .bubble{
+	width:94px;
+	height:94px;	
+	box-shadow: none;
+	margin-bottom:11px
+}
+.timeline-snippet .tl-snippet-fact--botom{
+	height: 100%;
+	width: 125px;
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: end;
+	align-items: center;
+}
+.timeline-snippet .tl-snippet-fact--botom .speech-bubble{
+	width: 155px;
+	margin-bottom: 0em;
+	margin-top: 1em;
+}
+.timeline-snippet .tl-snippet-fact--botom .speech-bubble::after{
+	border: 0em solid transparent;
+	content: none;
+	margin-left: 0;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 0;
+	height: 0;
 
+
+}
+.timeline-snippet .tl-snippet-fact--botom .speech-bubble::before{
+	border: 0.5em solid transparent;
+	border-bottom-color: transparent;
+	border-bottom-color: #ddd;
+	content: '';
+	margin-left: -0.5em;
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	width: 0;
+	height: 0;
+}
+.timeline-snippet .tl-snippet-fact--botom img{
+	width: min-content;
+	-webkit-transform:rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.timeline-snippet .tl-snippet-fact--botom .bubble{
+	width:94px;
+	height:94px;	
+	box-shadow: none;
+	margin-top:17px
+}
 .page-home section{
 	padding: 81px 0 117px 0;
 }
+.page-home .sobre{
+	padding-bottom: 60px;
+}
+
 .page-home h2{
 	font-style: normal;
 	font-weight: 700;
@@ -448,6 +576,9 @@ nav ul a:hover {
 	line-height: 48px;
 	align-items: center;
 	letter-spacing: 0.1px;
+}
+.page-home .timeline h2{
+	margin: 2.4rem;
 }
 .page-home .btn{
 	display: inline-block;
@@ -941,6 +1072,28 @@ footer h3 {
 	transform: rotate(2.53deg);
 }
 /*FIM TIMELINE*/
+
+@media only screen and (max-width: 1254px){
+	.timeline .timeline-margin{
+		display:none;
+	}
+	.timeline .timeline-snippet{
+		justify-content: center;
+	}
+
+	.timeline-snippet .tl-snippet-fact--botom{
+		display: none;
+	}
+	.timeline-snippet .tl-snippet-fact{
+		display: none;
+	}
+	.timeline-snippet .tl-snippet-img{
+		margin: 0 500px;
+	}
+	.timeline .timeline-btn .btn {
+		margin-left: 0px;
+	}
+}
 
 @media only screen and (max-width: 601px){
 	.font26-s { font-size: 26px !important; line-height: 26px !important; }
