@@ -14,29 +14,31 @@
                 <div class="destaque-box metasearch radius8 col s12 m6 white">
                     <div>
                         <h1>
-                            Busque um <b>metamemo</b>
+                            Busque um <b>METAMEMO</b>
                         </h1>
                     </div>
                     <div class="row no-margin-sides grey lighten-4 radius8">
                         <div class="col s12">
-                            <h3>Selecione uma Data</h3>
-                            <div class="col s4">
-                                <input id="start_date" class="datepicker" type="text" />
+                            <h3>Selecione um Periodo</h3>
+                            <div class="col s4 input-field">
+                                <label class="active" for="start_date">Inicio</label>
+                                <input id="start_date" class="datepicker" value="{{ y_date|date:'Y-m-d' }}" type="text" />
                                 <input id="start-date-hidden"
-                                       value="{{ data.date|date:"Y-m-d" }}"
+                                       value="{{ y_date|date:'Y-m-d' }}"
                                        type="hidden"/>
                             </div>
-                            <div class="col s4">
-                                <input id="end_date" class="datepicker" type="text" />
+                            <div class="col s4 input-field">
+                                <label class="active" for="end_date">Final</label>
+                                <input id="end_date" class="datepicker" value="{{ date|date:'Y-m-d' }}" type="text" />
                                 <input id="end-date-hidden"
-                                       value="{{ data.date|date:"Y-m-d" }}"
+                                       value="{{ date|date:'Y-m-d' }}"
                                        type="hidden"/>
                             </div>
                         </div>
                     </div>
                     <div class="row no-margin-sides grey lighten-4 radius8">
                         <div class="col s12">
-                            <h3>Selecione um ou mais METAmemos</h3>
+                            <h3>Selecione um ou mais MetaMemos</h3>
                             <div id="authors" class="filters metamemo_filter">
                                 {% for memo in metamemo %}
                                     <span name="author"
@@ -48,7 +50,7 @@
                     </div>
                     <div class="row no-margin-sides grey lighten-4 radius8">
                         <div class="col s12">
-                            <h3>Selecione uma rede</h3>
+                            <h3>Selecione uma ou mais redes</h3>
                             <div id="sources" class="social-icons">
                                 <span class="source transparent" data-source="Facebook"><span class="icon-face font35"><span class="path1"></span><span class="path2"></span></span></span>
                                 <span class="source transparent" data-source="Twitter"><span class="icon-twitter1 font35"><span class="path1"></span><span class="path2"></span></span></span>
@@ -65,7 +67,7 @@
                 </div>
                 <div class="col s12 offset-m1 m5 white-text font35 destaque-texto">
                     <p>
-                        <b>MetaMemo</b> é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca)
+                        <b>METAMEMO</b> é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa (ou organização, coletivo, empresa, marca)
                     </p>
                 </div>
             </div>
@@ -76,71 +78,94 @@
         <div class="container">
             <div class="row grey lighten-4">
                 <div class="card-conteudo col s12 offset-m1 m4 metaroxo-text">
-                    <h2 class="metaroxo-text">O que é o MetaMemo</h2>
+                    <h2 class="metaroxo-text">O que é o METAMEMO</h2>
                     <p>
-                        MetaMemo é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa nas mais populares plataformas de redes sociais da internet. O objetivo é preservar e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.
+                        METAMEMO é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa nas mais populares plataformas de redes sociais da internet. O objetivo é preservar e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.
                     </p>
                     <p>
-                        Um metamemo é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.
+                        Um METAMEMO é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.
                     </p>
-                    <a href="{% url "content" "metamemo" %}" class="btn metapink white-text">Saiba mais</a>
+                    <a href="{% url 'content' 'metamemo' %}" class="btn metapink white-text">Saiba mais</a>
                 </div>
                 <div class="card-imagem col s12 m6 offset-m1 no-padding">
                     <img alt="Pesquisador negro em frente ao computador"
-                         src="{% static "imgs/stock/home_metamemo.png" %}"/>
+                         src="{% static 'imgs/stock/home_metamemo.png' %}"/>
                 </div>
             </div>
         </div>
     </section>
-    <!-- <section class="timeline">
-<h2 class="metaroxo-text center-align">Linha do Tempo</h2>
-<div class="row valign-wrapper">
-    <div class="col s12 m8">
-        <img src="img-timeline.png?sdsd" width="100%" alt="">
-    </div>
-    <div class="col s12 m4 ">
-        <a href="#" class="btn metapink white-text">Acesse aqui</a>
-    </div>
-
-</div>
-
-</section>
--->
+    <!-- TIMELINE -->
+    <section class="timeline no-padding">
+            <h2 class="metagreen-text center-align">Linha do Tempo Bolsodata</h2>
+            <div class="timeline-box">
+                <div class="timeline-snippet">
+                    <!--  <img src="img-timeline.png?sdsd" width="100%" alt=""> -->
+                    <div class="tl-snippet-fact--botom">
+                        <div class="speech-bubble">Xyz fato sobre bolsonaro</div>
+                        <span class="bubble metagreen">1992</span>
+                        <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div> 
+                    <div class="tl-snippet-fact">
+                            <div class="speech-bubble">Xyz fato sobre bolsonaro</div>
+                            <span class="bubble metagreen">1992</span>
+                            <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div>
+                    <div class="tl-snippet-img">
+                        <div class="circle metagreen"></div>
+                    </div>
+                    <div class="tl-snippet-fact">
+                        <div class="speech-bubble">Xyz fato sobre bolsonaro</div>
+                        <span class="bubble metagreen">1992</span>
+                        <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div>
+                    <div class="tl-snippet-fact--botom">
+                        <div class="speech-bubble">Xyz fato sobre bolsonarou</div>
+                        <span class="bubble metagreen">1992</span>
+                        <img src="{% static 'imgs/Arrow1.png' %}"/>
+                    </div>
+                </div>
+                <div class="timeline-btn">
+                    <a href="{% url 'content' 'timeline' %}" class="btn metapink white-text">Acesse aqui</a>
+                </div>
+                <div class="timeline-margin"></div>
+            </div>
+    </section>
+   <!------------->
     <section class="sobre no-padding-bottom">
         <div class="container">
             <div class="row grey lighten-4 valign-wrapper">
                 <div class="card-imagem col s12 m6 no-padding">
                     <img alt="Pesquisadora trabalhando no computador em uma escrivaninha"
-                         src="{% static "imgs/stock/home_metamix.png" %}"/>
+                         src="{% static 'imgs/stock/home_metamix.png' %}"/>
                 </div>
                 <div class="col s12 offset-m1 m5 metaroxo-text">
-                    <h2 class="metaroxo-text">Metamix</h2>
-                    <p>Nosso blog com a documentação do projeto:</p>
+                    <h2 class="metagreen-text">Metamix</h2>
+                    <p>MetaMix é um blog com produções criadas através da nossa plataforma:</p>
                     <a href="{% url "blog" %}" class="btn metapink white-text">Acesse aqui</a>
                 </div>
             </div>
             <div class="row grey lighten-4 valign-wrapper align-stretch">
                 <div class="col s12 offset-m1 m4 metaroxo-text minheight439 valign-wrapper">
                     <div>
-                        <h2 class="metaroxo-text">
+                        <h2 class="metagreen-text">
                             MetaTags
                         </h2>
                         <p>
-                            Este são os assuntos mais acessados entre os metamemos:
+                            Este são os assuntos mais acessados entre os METAMEMOs:
                         </p>
                     </div>
                 </div>
-                <div class="col s12 m6 offset-m1 metapink no-padding center-align valign-wrapper minheight439">
+                <div class="col s12 m6 offset-m1 metagreen no-padding center-align valign-wrapper minheight439">
                     <div class="container">
                         {% for tag in tags %}<span class="chip">{{ tag.0 }}</span>{% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row metablue valign-wrapper no-margin">
+        <div class="row metagreen valign-wrapper no-margin">
             <div class="card-imagem col s12 m6 no-padding">
                 <img alt="Pesquisador branco sorrindo de frente para a camera"
-                     src="{% static "imgs/stock/home_colabore.png" %}"/>
+                     src="{% static 'imgs/stock/home_colabore.png' %}"/>
             </div>
             <div class="col s12 offset-m1 m5 white-text">
                 <div class="col s12 m10">
@@ -148,7 +173,7 @@
                         Colabore!
                     </h2>
                     <p>
-                        A plataforma Metamemo é aberta. Colabore conosco:
+                        A plataforma METAMEMO é aberta e você pode colaborar conosco:
                     </p>
                     <p>
                         <a href="{% url "content" "colabore" %}" class="btn metapink white-text">Acesse aqui</a>

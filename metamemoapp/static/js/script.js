@@ -148,5 +148,6 @@ $(document).ready(function () {
         $("#get_media").parent()[0].textContent = 'baixando...'
     });
 
+    /*timeline*/
 
 });

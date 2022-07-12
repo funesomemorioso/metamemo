@@ -24,9 +24,10 @@ def home(request):
     tags = MemoItem.objects.all().values_list("keyword__word", flat=True)
     tags = Counter(tags)
     tags[None] = 0
-
+    data_atual = datetime.now() 
+    data_ontem = data_atual - timedelta(days=1)
     return render(
-        request, "home.html", {"metamemo": metamemo, "tags": tags.most_common(15)}
+        request, "home.html", {"metamemo": metamemo,"y_date":data_ontem,"date":data_atual, "tags": tags.most_common(15)}
     )
 
 
