@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $.when($.getJSON("http://127.0.0.1:8000/timeline/api/v1/fact/?limit=100000"),$.getJSON( "http://127.0.0.1:8000/timeline/api/v1/session/?limit=100000")).then(function(data,data_sessions){
+    var origin   = window.location.origin;
+    $.when($.getJSON(origin+"/timeline/api/v1/fact/?limit=100000"),$.getJSON( origin+"/timeline/api/v1/session/?limit=100000")).then(function(data,data_sessions){
         //formatação das datas 
         const option = {
             year: 'numeric',
