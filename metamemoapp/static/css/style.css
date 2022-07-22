@@ -945,6 +945,16 @@ footer h3 {
 .timeline-seletor{
     width: 100%;
 }
+.timeline-seletor .ovo{
+    padding:1rem;
+}
+.timeline-seletor .miniature{
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    max-height: 190px;
+    max-width: 190px;
+}
 .timeline-body { 
     padding-top: 0rem;
     height: 0;
@@ -1071,7 +1081,7 @@ footer h3 {
 }
 /*FIM TIMELINE*/
 
-@media only screen and (max-width: 78.375rem){
+@media only screen and (max-width: 1254px){
     .timeline .timeline-margin{
         display:none;
     }
@@ -1092,8 +1102,7 @@ footer h3 {
         margin-left: 0rem;
     }
 }
-
-@media only screen and (max-width: 37.5625rem){
+@media only screen and (max-width: 601px){
     .font26-s { font-size: 1.625rem !important; line-height: 1.625rem !important; }
     .center-align-s { text-align: center !important; }
     .left-align-s { text-align: left !important; }
