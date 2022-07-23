@@ -153,7 +153,7 @@ $(document).ready(function () {
             }
             $(`#timeline-${this_tl_facts["name"].split(' ').join('-')}`).append(`
             <div class="center-align">
-                <img src="${this_tl_facts["facts"][0]["timeline"]["image"]}" alt="" class="circle">
+                <img src="${this_tl_facts["facts"][0]["timeline"]["image"]}" alt="" width="282px" height="282px" class="circle">
             </div>
             <div class="center-align metagreen-text font35 font26-s fontBold">
                 ${this_tl_facts["name"].toUpperCase()}

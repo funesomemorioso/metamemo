@@ -967,6 +967,10 @@ footer h3 {
     position: relative;
     margin-top: 7.5rem;
 }
+.timeline-body .center-align .circle{
+    object-fit: cover;
+    object-position: center;
+}
 .page-timeline .start img{
     max-width: 100%;
     width: 41.875rem;
