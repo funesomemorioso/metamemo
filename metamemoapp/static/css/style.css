@@ -9,6 +9,7 @@
     --metaroxo: #462F87;
     --metagold: #C5A44F;
     --metared: #AB3D55;
+    --metacinza: #C4C4C4;
     }
 .metablue{ background-color: var(--metablue) !important; }
 .metablue-text{ color: var(--metablue) !important; }
@@ -22,7 +23,8 @@
 .metagold-text{ color: var(--metagold) !important; } 
 .metared{ background-color: var(--metared) !important; }
 .metared-text{ color: var(--metared) !important; } 
-
+.metacinza{background-color:var(--metacinza) !important;}
+.metacinza-text{color:var(--metacinza) !important;}
 /*FIM CORES*/
 
 
