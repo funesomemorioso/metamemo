@@ -142,10 +142,10 @@ def lista(request):
         "Telegram": "telegram",
         "Blog": "blog1",
     }
-    memoqs = MemoItem.objects.all().order_by("-content_date")
+    #memoqs = 
     memofilter = MemoItemFilter(
         request.GET,
-        queryset=memoqs.select_related("author", "source").prefetch_related("medias"),
+        queryset=MemoItem.objects.all().select_related("author", "source").prefetch_related("medias"),
     )
 
     #sources_total = {
@@ -170,10 +170,12 @@ def lista(request):
         pages = list(range(page_nm - 1, page_nm + 2))
 
     # Hackish
+    #tags_g = {}
+    #tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
+    #tags_g = Counter(tags_raw)
+    #tags_g[None] = 0
+    #tags = tags_g.most_common(10)
     tags = {}
-    tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
-    tags = Counter(tags_raw)
-    tags[None] = 0
 
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
 
@@ -185,7 +187,7 @@ def lista(request):
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
         "sources_total": [],#sources_total,
-        "tags": tags.most_common(10),
+        "tags": tags,
     }
 
     return render(request, "files.html", {"data": data})
