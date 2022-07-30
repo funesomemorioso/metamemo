@@ -148,12 +148,12 @@ def lista(request):
         queryset=memoqs.select_related("author", "source").prefetch_related("medias"),
     )
 
-    sources_total = {
-        source["source__name"]: source["total"]
-        for source in memofilter.qs.values("source__name")
-        .annotate(total=Count("source__name"))
-        .order_by("total")
-    }
+    #sources_total = {
+    #    source["source__name"]: source["total"]
+    #    for source in memofilter.qs.values("source__name")
+    #    .annotate(total=Count("source__name"))
+    #    .order_by("total")
+    #}
 
     items = Paginator(memofilter.qs, 50)
     try:
@@ -184,7 +184,7 @@ def lista(request):
         "items": items.page(page_nm),
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
-        "sources_total": sources_total,
+        "sources_total": [],#sources_total,
         "tags": tags.most_common(10),
     }
 
