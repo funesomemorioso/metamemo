@@ -20,12 +20,14 @@ $(document).ready(function () {
         facts = []
         sessions = []
         facts_timelines = []
+        selectors_width = 100/timelines.length
+        $("#timeline_style").text(`@media (min-width: 600px) {.timeline-seletor .ovo.m3{width:${selectors_width}%;}}`);
         $.each( timelines, function( key, val ) {            
             nome_id = val["name"].split(' ').join('-');
             timeline_selectors.push(`
-                <div class="col offset-s3 s6 m3 padding-top50 center-align">
+                <div class="ovo col offset-s3 s6 m3 padding-top50 center-align">
                     <a id="${nome_id}" class="white-text">
-                        <img src="${val["image"]}" alt="" width="100%" class="circle darken-filter">
+                        <img src="${val["image"]}" alt="" width="100%" class="miniature circle darken-filter">
                         <br>${val["name"]}
                     </a>
                 </div>
@@ -151,7 +153,7 @@ $(document).ready(function () {
             }
             $(`#timeline-${this_tl_facts["name"].split(' ').join('-')}`).append(`
             <div class="center-align">
-                <img src="${this_tl_facts["facts"][0]["timeline"]["image"]}" alt="" class="circle">
+                <img src="${this_tl_facts["facts"][0]["timeline"]["image"]}" alt="" width="282px" height="282px" class="circle">
             </div>
             <div class="center-align metagreen-text font35 font26-s fontBold">
                 ${this_tl_facts["name"].toUpperCase()}
