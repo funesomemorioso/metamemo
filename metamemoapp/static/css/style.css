@@ -10,6 +10,7 @@
     --metagold: #C5A44F;
     --metared: #AB3D55;
     --metacinza: #C4C4C4;
+    --metabranco: #ffffff;
     }
 .metablue{ background-color: var(--metablue) !important; }
 .metablue-text{ color: var(--metablue) !important; }
@@ -1156,6 +1157,31 @@ footer h3 {
 .hide-source, .hide-author { display:none !important }
 .transparent { opacity:0.5 !important }
 
-.page-memoitem .memoitem-media img, .pagememoitem .memoitem-media video {
+.page-memoitem .memoitem-media img, .page-memoitem .memoitem-media video {
     max-width:100%;
+}
+.page-memoitem .memoitem-media{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+.page-memoitem .memoitem-media .transcript{
+    height: 2rem;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0 0 0.5rem 0.5rem;
+    color: var(--metabranco);
+    font-weight: bolder;
+}
+.page-memoitem .memoitem-media .transcript.open{
+    min-height: 2rem;
+    height: 6rem;
+    overflow:scroll;
+    width: 100%;
+    
+}
+.page-memoitem .memoitem-media .transcript .destranscript{
+    height:2rem;
+    padding: 0.5rem;
+    background-color:#373F41;
 }

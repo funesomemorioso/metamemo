@@ -48,7 +48,13 @@ $(document).ready(function () {
         });
         event.currentTarget.classList.toggle("transparent");
     });
-
+    $('.transcript').click(function(event){
+        if ($(this).hasClass('open')) {
+            $(this).removeClass('open')
+        } else {
+            $(this).addClass("open");
+        }
+    });
     $('.button').click(function (event) {
         var authors = $('.metasearch #authors .author:not(.transparent)')
             .map(function (i, chip) {
