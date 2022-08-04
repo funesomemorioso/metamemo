@@ -9,7 +9,8 @@
     --metaroxo: #462F87;
     --metagold: #C5A44F;
     --metared: #AB3D55;
-    --metacinza: #C4C4C4;
+    /* --metacinza: #C4C4C4; */
+    --metacinza: #F4F4F4;
     --metabranco: #ffffff;
     }
 .metablue{ background-color: var(--metablue) !important; }
@@ -128,6 +129,15 @@
 .text-lighter {font-weight: lighter;}
 .flex{display:flex}
 .height100 {height: 100%;}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
 
 .speech-bubble {
     background: var(--metablue);
@@ -1166,22 +1176,37 @@ footer h3 {
     align-content: center;
 }
 .page-memoitem .memoitem-media .transcript{
-    height: 2rem;
+    height: auto;
+    max-height: 1.4rem;
     width: 100%;
     overflow: hidden;
-    border-radius: 0 0 0.5rem 0.5rem;
+    /*border-radius: 0 0 0.5rem 0.5rem;*/
     color: var(--metabranco);
     font-weight: bolder;
-}
+    transition: height 0.5s,max-height 0.5s;}
 .page-memoitem .memoitem-media .transcript.open{
-    min-height: 2rem;
-    height: 6rem;
-    overflow:scroll;
+    max-height:8rem;
+
     width: 100%;
-    
+
 }
 .page-memoitem .memoitem-media .transcript .destranscript{
-    height:2rem;
-    padding: 0.5rem;
-    background-color:#373F41;
+    height: 1.4rem;
+    padding: 0.2rem 1.2rem;
+    font-size: 0.7rem;
+    background-color: #1F1F1F;
+    line-height: 1rem;
+    cursor: pointer;
+}
+.page-memoitem .memoitem-media .transcript .transcription{
+    padding: 0.8rem 1.2rem;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    color: #373F41;
+    overflow: scroll;
+    height: 6rem;
+}
+
+.page-memoitem .memoitem-media .transcript .destranscript:hover{
+    color: #48a0f7;
 }
