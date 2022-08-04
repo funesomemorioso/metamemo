@@ -80,7 +80,7 @@
 }
 .card .card-content p:first-child{ margin: 0; }
 .card .card-image img{ 
-    border-radius: 0.25rem !important; 
+    /* border-radius: 0.25rem !important;  */
     width:12.5rem;
     height:100%;
     object-fit:cover;
@@ -854,22 +854,26 @@ div .metricas > div:last-child{
 }
 /* fim memoitem */
 
-.blog h1{ margin: 0 0 1.50rem 0; }
-.blog .parallax-container, .blog .parallax-container > div {
+.page-blog h1{ margin: 0 0 1.50rem 0; }
+.page-blog .parallax-container, .page-blog .parallax-container > div {
     height: 22.5rem;
 }
-.blog .carousel { 
+.page-blog .carousel { 
     min-height: 38.8125rem;
 }
-.blog .carousel-wrap{
+.carousel .card .card-image img{
+    width: 100%;
+
+}
+.page-blog .carousel-wrap{
     margin-top: -6.25rem;
     padding: 2.625rem 3.5625rem 0 3.5625rem;
 }
 
-.blog .carousel-wrap .col{
+.page-blog .carousel-wrap .col{
     padding: 0 0.625rem;
 }
-.blog .carousel-wrap .card h2{
+.page-blog .carousel-wrap .card h2{
     margin: 0.375rem 0rem;
     font-style: normal;
     font-weight: 700;
@@ -879,7 +883,7 @@ div .metricas > div:last-child{
 .card .card-content{
     padding: 1.25rem;
 }
-.blog .carousel-wrap .card p{
+.page-blog .carousel-wrap .card p{
     margin: 0.375rem 0rem;
     font-style: normal;
     font-weight: 400;
@@ -888,11 +892,11 @@ div .metricas > div:last-child{
     color: #212529;
     margin: 0.75rem 0rem;
 }
-.blog .carousel-wrap .card .card-action{
+.page-blog .carousel-wrap .card .card-action{
     padding: 1.125rem;
     padding-top: 0;
 }
-.blog .carousel-wrap .card .card-action .btn{
+.page-blog .carousel-wrap .card .card-action .btn{
     padding: 0.75rem 1.3125rem ;
 }
 .carousel .indicators{
@@ -1147,9 +1151,9 @@ footer h3 {
     .hal-container { padding: 0 !important; margin: 0 auto; float: none !important; }
     .hal-container .row { margin-left: 0  !important;  margin-right: 0  !important; }
 
-    .blog .carousel { height: auto; }
-    .blog .carousel-wrap { padding: 2.625rem 1.25rem 0 1.25rem; }
-    .blog .carousel .carousel-item { visibility: initial; position: initial !important; }
+    .page-blog .carousel { height: auto; }
+    .page-blog .carousel-wrap { padding: 2.625rem 1.25rem 0 1.25rem; }
+    .page-blog .carousel .carousel-item { visibility: initial; position: initial !important; }
     .page-timeline > header > div:last-child {
         height: auto;
         padding-bottom: 4.375rem;
