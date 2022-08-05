@@ -28,23 +28,33 @@
 		</div>
 		<div class="row memoitem-media">
 			{% for m in memoitem.medias.all %}
-			{% if m.media %}
-				{% if m.mediatype == "IMAGE" %}
-					<img src="{{m.media.url}}" />
-				{% elif m.mediatype == "VIDEO" %}
-					<video class='metavideo' controls>	
-						<source src="{{m.media.url}}">
-					</video>
-				{% endif %}
-			{% else %}
-				{% if m.status != 'DOWNLOADING' %}
-					<i>{{m.mediatype}} ainda não baixada.<br />
-					<span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
-				
+				{% if m.media %}
+					{% if m.mediatype == "IMAGE" %}
+						<img src="{{m.media.url}}" />
+						{% if m.transcription %}
+							<div class="transcript">
+								<div class="destranscript">Transcrição automática disponivel \/</div>
+								{{ m.transcription }}
+							</div>
+						{% endif %}
+					{% elif m.mediatype == "VIDEO" %}
+						<video class='metavideo' controls>	
+							<source src="{{m.media.url}}">
+						</video>
+						<div class="transcript metacinza meta">
+							<div class="destranscript noselect">Transcrição automática disponivel&nbsp;&nbsp;<span class="transcript_arow">▼</span></div>
+							<div class="transcription">{{ m.transcription }}</div>
+						</div>
+					{% endif %}
 				{% else %}
-					<i>{{m.mediatype}} na fila de download.</i>
+					{% if m.status != 'DOWNLOADING' %}
+						<i>{{m.mediatype}} ainda não baixada.<br />
+						<span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
+					
+					{% else %}
+						<i>{{m.mediatype}} na fila de download.</i>
+					{% endif %}
 				{% endif %}
-			{% endif %}
 			{% endfor %}
 		</div>
 

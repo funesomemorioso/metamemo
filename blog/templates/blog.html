@@ -2,33 +2,170 @@
 {% load static %}
 {% load metamemoapp_extras %}
 {% block title %}Metamemo - Metamix{% endblock %}
-{% block page_class %}list{% endblock %}
+{% block page_class %}blog{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-    <h3>Metamix</h3>
-
-    <div class="row">
-        <div class="col s12 m8">
-        {% for post in posts %}
-        <div class="row">
-        
-        
-            <h2>{{post.title}}</h2>
-            <b>{{post.updated_on}}</b>
-
-            {{post.content|safe|truncatewords_html:50}}
-
-            <a href="{% url 'blog' post.slug %}" class='align-right'>Ler mais</a>
-        </div>
-            {% endfor %}
+<section class="no-padding-top">
+	<div class="parallax-container">
+		<div class="row valign-wrapper no-margin">
+			<div class="col s12 offset-m4 m4">
+				<h1 class="white-text center-align">MetaMix</h1>
+				<p class="white-text center-align font22">Metamix é um blog com produções <br> criadas através da nossa plataforma</p>
+			</div>
+		</div>
+    	<div class="parallax"><img src="https://picsum.photos/1440/700?sdsd" style="transform: translate3d(-50%, 412.233px, 0px); opacity: 1;"></div>
     </div>
-        
-    <div class="col s12 m4">
-        <h2>Sobre</h2>
-        <p>Lorem ipsum sic dolor</p>
+    <div class="container">
+	    <div class="row grey lighten-4 carousel-wrap">
+			<div class="carousel carousel-slider" style="height: 139.217px;">
+				<div class="row grey lighten-4 carousel-item active" style="z-index: 0; opacity: 1; visibility: visible; transform: translateX(0px) translateX(0px) translateX(0px) translateZ(0px);">
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+				</div>
+				<div class="row grey lighten-4 carousel-item" style="transform: translateX(0px) translateX(1073px) translateZ(0px); z-index: -1; opacity: 1; visibility: visible;">
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+					<div class="col s12 m3">
+						<article class="card">
+							<div class="card-image">
+								<img src="https://picsum.photos/255/143?sdsd">
+							</div>
+							<div class="card-content">
+								<h2>Família Bolsonaro: Como o Presidente do Brasil se relaciona com as milícias</h2>
+								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							</div>
+							<div class="card-action">
+								<a href="#" class="btn metapink white-text">Leia Mais</a>
+							</div>
+						</article>
+					</div>
+				</div>
+			<ul class="indicators"><li class="indicator-item active"></li><li class="indicator-item"></li></ul></div>
+	    </div>
     </div>
-    </div>
-</div>
+</section>
+<section class="sobre no-padding-bottom">
+	<div class="container">
+		<div class="row grey lighten-4 valign-wrapper align-stretch">
+			<div class="col s12 offset-m1 m4 minheight439 valign-wrapper">
+				<div>
+					<h2 class="metagreen-text">MetaTags</h2>
+					<p>Esses são os assuntos mais acessados entre os metamemos, confira:</p>				
+				</div>
+			</div>
+			<div class="col s12 m6 offset-m1 metagreen no-padding center-align valign-wrapper minheight439">
+				<div class="container">
+					<span class="chip">Bolsonaro</span><span class="chip">Flávio</span><span class="chip">Férias</span><span class="chip">Eleição</span> <br>
+					<span class="chip">FIlhos</span><span class="chip">Moro</span><span class="chip">Armamento</span><span class="chip">Kit Gay</span> <br>
+					<span class="chip">Carlos Bolsonaro</span><span class="chip">Flávio</span><span class="chip">Férias</span><span class="chip">Guerra</span> <br>
+					<span class="chip">Pandemia</span><span class="chip">Obras</span><span class="chip">Férias</span><span class="chip">Eleição</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row metagreen valign-wrapper no-margin">
+		<div class="col s12 m6 no-padding"><img src="https://picsum.photos/705/493?sdsd" width="100%"></div>
+		<div class="col s12 offset-m1 m5 white-text">
+			<div class="col s12 m10">
+				<h2 class="white-text">Colabore!</h2>
+				<p>A plataforma MetaMemo é aberta, e você pode colaborar conosco</p>			
+				<p><a href="#" class="btn metapink white-text">Acesse aqui</a></p>
+			</div>
+		</div>
+	</div>
+<div></div></section>
 {% endblock %}

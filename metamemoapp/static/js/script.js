@@ -1,4 +1,11 @@
 window.mobileCheck = window.innerWidth <= 601;
+$('.destranscript').click(function(event){
+    if ($(this).parent('.transcript').hasClass('open')) {
+        $(this).parent('.transcript').removeClass('open')
+    } else {
+        $(this).parent('.transcript').addClass("open");
+    }
+});
 $(document).ready(function () {
     $('.parallax').parallax();
     $('.resultado-slider .slider').slider({
@@ -65,8 +72,9 @@ $(document).ready(function () {
             'source': sources,
             'content': $("#id_content").val()
         }
-
         var sd = M.Datepicker.getInstance($("#start_date")).date;
+        console.log("alou")
+        console.log(sd)
         var ed = M.Datepicker.getInstance($("#end_date")).date;
 
         if (sd) {
@@ -85,6 +93,7 @@ $(document).ready(function () {
     //Datepicker
     $('.datepicker').datepicker({
         yearRange: [2008, 2022],
+        defaultDate: new Date(Date.parse(this.value)),
         i18n: {
             today: 'Hoje',
             clear: 'Limpar',
@@ -97,6 +106,10 @@ $(document).ready(function () {
             monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
         }
+    });
+    jQuery('.datepicker').each(function () {
+        var newDate = new Date(Date.parse(this.value));
+        $(this).datepicker('setDate', newDate);
     });
 
 

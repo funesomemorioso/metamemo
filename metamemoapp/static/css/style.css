@@ -9,6 +9,9 @@
     --metaroxo: #462F87;
     --metagold: #C5A44F;
     --metared: #AB3D55;
+    /* --metacinza: #C4C4C4; */
+    --metacinza: #F4F4F4;
+    --metabranco: #ffffff;
     }
 .metablue{ background-color: var(--metablue) !important; }
 .metablue-text{ color: var(--metablue) !important; }
@@ -22,7 +25,8 @@
 .metagold-text{ color: var(--metagold) !important; } 
 .metared{ background-color: var(--metared) !important; }
 .metared-text{ color: var(--metared) !important; } 
-
+.metacinza{background-color:var(--metacinza) !important;}
+.metacinza-text{color:var(--metacinza) !important;}
 /*FIM CORES*/
 
 
@@ -76,7 +80,7 @@
 }
 .card .card-content p:first-child{ margin: 0; }
 .card .card-image img{ 
-    border-radius: 0.25rem !important; 
+    /* border-radius: 0.25rem !important;  */
     width:12.5rem;
     height:100%;
     object-fit:cover;
@@ -125,6 +129,15 @@
 .text-lighter {font-weight: lighter;}
 .flex{display:flex}
 .height100 {height: 100%;}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
 
 .speech-bubble {
     background: var(--metablue);
@@ -371,7 +384,7 @@ nav ul a:hover {
     background-color: #F4F4F4;
 }
 
-.page-home .btn, .page-filters .btn,.page-colabore .btn, .page-metodologia .btn ,.page-memoitem .btn{
+.page-home .btn, .page-blog .btn, .page-filters .btn,.page-colabore .btn, .page-metodologia .btn ,.page-memoitem, .btn{
     display: inline-block;
     height: initial !important ;
     border: 0;
@@ -642,6 +655,11 @@ nav ul a:hover {
 .resultado-social hr{
     margin-bottom: 1rem;
 }
+.step-links .btn {
+    font-weight: unset;
+    padding: 0.75rem 1.2rem;
+    font-weight: bolder;
+}
 .resultado-cabecalio{
     margin-bottom: 0;
 }
@@ -836,22 +854,26 @@ div .metricas > div:last-child{
 }
 /* fim memoitem */
 
-.blog h1{ margin: 0 0 1.50rem 0; }
-.blog .parallax-container, .blog .parallax-container > div {
+.page-blog h1{ margin: 0 0 1.50rem 0; }
+.page-blog .parallax-container, .page-blog .parallax-container > div {
     height: 22.5rem;
 }
-.blog .carousel { 
+.page-blog .carousel { 
     min-height: 38.8125rem;
 }
-.blog .carousel-wrap{
+.carousel .card .card-image img{
+    width: 100%;
+
+}
+.page-blog .carousel-wrap{
     margin-top: -6.25rem;
     padding: 2.625rem 3.5625rem 0 3.5625rem;
 }
 
-.blog .carousel-wrap .col{
+.page-blog .carousel-wrap .col{
     padding: 0 0.625rem;
 }
-.blog .carousel-wrap .card h2{
+.page-blog .carousel-wrap .card h2{
     margin: 0.375rem 0rem;
     font-style: normal;
     font-weight: 700;
@@ -861,7 +883,7 @@ div .metricas > div:last-child{
 .card .card-content{
     padding: 1.25rem;
 }
-.blog .carousel-wrap .card p{
+.page-blog .carousel-wrap .card p{
     margin: 0.375rem 0rem;
     font-style: normal;
     font-weight: 400;
@@ -870,20 +892,28 @@ div .metricas > div:last-child{
     color: #212529;
     margin: 0.75rem 0rem;
 }
-.blog .carousel-wrap .card .card-action{
+.page-blog .carousel-wrap .card .card-action{
     padding: 1.125rem;
     padding-top: 0;
 }
-.blog .carousel-wrap .card .card-action .btn{
-    padding: 0.75rem 1.3125rem ;
+.page-blog .carousel-wrap .card .card-action .btn{
+    padding: 0.75rem 1.125rem ;
+    font-weight: normal;
+    font-size: 1rem;
+    height: 40px !important;
+    line-height: 1rem;
+
 }
-.carousel .indicators{
+/* .carousel .indicators{
     bottom: 2.5rem;
-}
+} */
 .carousel .indicators .indicator-item{
     background-color: #C4C4C4;
     height: 0.875rem;
     width: 0.875rem;
+}
+.carousel .indicators .indicator-item.active {
+    background-color: #EF5DA8 !important;
 }
 footer{
     padding: 3.125rem 0;
@@ -1129,9 +1159,9 @@ footer h3 {
     .hal-container { padding: 0 !important; margin: 0 auto; float: none !important; }
     .hal-container .row { margin-left: 0  !important;  margin-right: 0  !important; }
 
-    .blog .carousel { height: auto; }
-    .blog .carousel-wrap { padding: 2.625rem 1.25rem 0 1.25rem; }
-    .blog .carousel .carousel-item { visibility: initial; position: initial !important; }
+    .page-blog .carousel { height: auto; }
+    .page-blog .carousel-wrap { padding: 2.625rem 1.25rem 0 1.25rem; }
+    .page-blog .carousel .carousel-item { visibility: initial; position: initial !important; }
     .page-timeline > header > div:last-child {
         height: auto;
         padding-bottom: 4.375rem;
@@ -1149,6 +1179,46 @@ footer h3 {
 .hide-source, .hide-author { display:none !important }
 .transparent { opacity:0.5 !important }
 
-.memoitem .memoitem-media img, .memoitem .memoitem-media video {
+.page-memoitem .memoitem-media img, .page-memoitem .memoitem-media video {
     max-width:100%;
+}
+.page-memoitem .memoitem-media{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+.page-memoitem .memoitem-media .transcript{
+    height: auto;
+    max-height: 1.4rem;
+    width: 100%;
+    overflow: hidden;
+    /*border-radius: 0 0 0.5rem 0.5rem;*/
+    color: var(--metabranco);
+    font-weight: bolder;
+    transition: height 0.5s,max-height 0.5s;}
+.page-memoitem .memoitem-media .transcript.open{
+    max-height:8rem;
+
+    width: 100%;
+
+}
+.page-memoitem .memoitem-media .transcript .destranscript{
+    height: 1.4rem;
+    padding: 0.2rem 1.2rem;
+    font-size: 0.7rem;
+    background-color: #1F1F1F;
+    line-height: 1rem;
+    cursor: pointer;
+}
+.page-memoitem .memoitem-media .transcript .transcription{
+    padding: 0.8rem 1.2rem;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    color: #373F41;
+    overflow: scroll;
+    height: 6rem;
+}
+
+.page-memoitem .memoitem-media .transcript .destranscript:hover{
+    color: #48a0f7;
 }
