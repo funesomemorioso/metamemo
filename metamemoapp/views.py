@@ -142,10 +142,11 @@ def lista(request):
         "Telegram": "telegram",
         "Blog": "blog1",
     }
+
     #memoqs = 
     memofilter = MemoItemFilter(
         request.GET,
-        queryset=MemoItem.objects.all().select_related("author", "source").prefetch_related("medias"),
+        queryset=MemoItem.objects.all(),
     )
 
     #sources_total = {
@@ -155,7 +156,7 @@ def lista(request):
     #    .order_by("total")
     #}
 
-    items = Paginator(memofilter.qs, 50)
+    items = Paginator(memofilter.qs.prefetch_related("medias").select_related("author", "source"), 50)
     try:
         page_nm = int(request.GET.get("page", 1))
     except ValueError:
