@@ -157,12 +157,12 @@ def lista(request):
     #}
 
     items = Paginator(memofilter.qs.prefetch_related("medias").select_related("author", "source"), 50)
+    
     try:
         page_nm = int(request.GET.get("page", 1))
     except ValueError:
         page_nm = 1
     last_page = items.num_pages
-    count = items.count
 
     if page_nm == 1:
         pages = list(range(page_nm, min(last_page, page_nm + 3)))
@@ -185,8 +185,8 @@ def lista(request):
         "path": request.resolver_match.url_name,
         "dates": dates,
         "paginator_list": pages,
-        "items": items.page(page_nm),
-        "results_total": count,
+        "items": items.get_page(page_nm),
+        "results_total": items.count,
         "social_sources": social_sources,
         "sources_total": [],#sources_total,
         "tags": tags,
