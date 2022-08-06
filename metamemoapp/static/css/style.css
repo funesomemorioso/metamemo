@@ -859,7 +859,7 @@ div .metricas > div:last-child{
     height: 22.5rem;
 }
 .page-blog .carousel { 
-    min-height: 38.8125rem;
+    min-height: 34.225rem;
 }
 .carousel .card .card-image img{
     width: 100%;
@@ -904,9 +904,9 @@ div .metricas > div:last-child{
     line-height: 1rem;
 
 }
-/* .carousel .indicators{
-    bottom: 2.5rem;
-} */
+.carousel .indicators{
+    bottom: 0rem;
+}
 .carousel .indicators .indicator-item{
     background-color: #C4C4C4;
     height: 0.875rem;
