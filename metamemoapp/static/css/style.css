@@ -236,7 +236,13 @@ h1{
     padding: 1rem;
     margin-bottom: .75rem;
 }
-
+.container .row .fut-baixe,.container .row .fut-colabore{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 9.4rem;
+    align-items: baseline;
+}
 .sobre .card-conteudo {
     padding-bottom: 3.9rem;
 }
