@@ -8,9 +8,8 @@
 <div class="memoitem-container container white">
 	<div class="mini-container white">
 		<div class="breadcrumb">
-			<a href="#">Home</a> &gt; 
-			<a href="#">Busca</a> &gt; 
-			<a href="#">Resultados Metamemos</a> &gt; 
+			<a href="{% url 'home' %}">Home</a> &gt;
+            <a href="{% url 'lista' %}">Busca</a> &gt;
 			<a href="#">Memoitem {{memoitem.pk}}</a>
 		</div>
 		<div class="row">

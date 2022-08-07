@@ -7,6 +7,7 @@ $('.destranscript').click(function(event){
     }
 });
 $(document).ready(function () {
+
     $('.parallax').parallax();
     $('.resultado-slider .slider').slider({
         indicators: false,
@@ -52,6 +53,7 @@ $(document).ready(function () {
 
 
     //Form de busca
+
     $('.metasearch #authors .author').click(function (event) {
         $(`.card[data-author="${event.currentTarget.textContent}"]`).parent().each(function (i, chip) {
             chip.classList.toggle("hide-author");
@@ -68,6 +70,9 @@ $(document).ready(function () {
     });
 
     $('.button').click(function (event) {
+        var sd = M.Datepicker.getInstance($("#start_date"));
+        var ed = M.Datepicker.getInstance($("#end_date"));
+    
         var authors = $('.metasearch #authors .author:not(.transparent)')
             .map(function (i, chip) {
                 return chip.getAttribute('data-author');
@@ -83,17 +88,13 @@ $(document).ready(function () {
             'source': sources,
             'content': $("#id_content").val()
         }
-        var sd = M.Datepicker.getInstance($("#start_date")).date;
-        console.log("alou")
-        console.log(sd)
-        var ed = M.Datepicker.getInstance($("#end_date")).date;
 
         if (sd) {
-            let date = new Date(sd);
+            let date = new Date(sd.date);
             qs['start_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
         if (ed) {
-            let date = new Date(ed);
+            let date = new Date(ed.date);
             qs['end_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
         qs = $.param(qs, true);
@@ -121,6 +122,8 @@ $(document).ready(function () {
     jQuery('.datepicker').each(function () {
         var newDate = new Date(Date.parse(this.value));
         $(this).datepicker('setDate', newDate);
+        var dp = M.Datepicker.getInstance($(this));
+        dp._finishSelection();
     });
 
 
