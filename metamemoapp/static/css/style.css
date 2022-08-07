@@ -14,7 +14,7 @@
     --metagold: #C5A44F;
     --metared: #AB3D55;
     /* --metacinza: #C4C4C4; */
-    --metacinza: #F4F4F4;
+    --metacinza: #c4c4c4;
     --metabranco: #ffffff;
     }
 .metablue{ background-color: var(--metablue) !important; }
