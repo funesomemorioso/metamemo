@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Roboto&display=swap');
 @import "./icons.css?ss";
+@font-face {
+    font-family: "Redacted";
+    src: url("./fonts/FlowRounded-Regular.ttf");
+}
 
 /*Cores*/
 :root {
@@ -141,8 +145,9 @@
 
 .speech-bubble {
     background: var(--metablue);
-    color: white;
+    color: rgb(255, 255, 255);
     display: inline-block;
+    font-family: "Redacted";
     font-size: 0.875rem;
     line-height: 1.4em;
     margin-bottom: 1em;
@@ -859,7 +864,7 @@ div .metricas > div:last-child{
     height: 22.5rem;
 }
 .page-blog .carousel { 
-    min-height: 38.8125rem;
+    min-height: 34.225rem;
 }
 .carousel .card .card-image img{
     width: 100%;
@@ -904,9 +909,9 @@ div .metricas > div:last-child{
     line-height: 1rem;
 
 }
-/* .carousel .indicators{
-    bottom: 2.5rem;
-} */
+.carousel .indicators{
+    bottom: 0rem;
+}
 .carousel .indicators .indicator-item{
     background-color: #C4C4C4;
     height: 0.875rem;

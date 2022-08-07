@@ -17,6 +17,17 @@ $(document).ready(function () {
     setTimeout(function () {
         $('.resultado-slider .slider').slider('pause');
     }, 3000)
+    $(document).ready(function(){
+        $('.carousel').carousel({
+            indicators: true,
+            fullWidth: true,
+            duration: 300,
+            numVisible: 1,
+            dist: 0,
+            padding: 0,
+            noWrap: true,
+        });
+    });
     if (!window.mobileCheck) {
         $('.blog .carousel').carousel({
             indicators: true,
