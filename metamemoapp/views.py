@@ -21,9 +21,9 @@ from metamemoapp.tasks import download_async, download_img_async
 # Create your views here.
 def home(request):
     metamemo = MetaMemo.objects.all()
-    tags = MemoItem.objects.all().values_list("keyword__word", flat=True)
-    tags = Counter(tags)
-    tags[None] = 0
+    #tags = MemoItem.objects.all().values_list("keyword__word", flat=True)
+    #tags = Counter(tags)
+    #tags[None] = 0
     data_atual = datetime.now() 
     data_ontem = data_atual - timedelta(days=1)
     return render(
@@ -172,10 +172,10 @@ def lista(request):
         pages = list(range(page_nm - 1, page_nm + 2))
 
     # Hackish
-    tags = {}
-    tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
-    tags = Counter(tags_raw)
-    tags[None] = 0
+    #tags = {}
+    #tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
+    #tags = Counter(tags_raw)
+    #tags[None] = 0
 
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
 
