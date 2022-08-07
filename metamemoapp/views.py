@@ -9,7 +9,7 @@ from metamemoapp.models import (
     NewsCover,
     NewsItem,
 )
-from metamemoapp.filters import MemoItemFilter, MemoNewsFilter
+from metamemoapp.filters import MemoItemFilter, MemoNewsFilter, MemoContextFilter, NewsCoverFilter
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 
@@ -86,21 +86,18 @@ def parse_date(string):
 
 def contexts(request):
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
-    start_date, end_date = (parse_date(d) for d in dates)
 
-    memocontext = MemoContext.objects.filter(
-        end_date__gte=start_date, start_date__lte=end_date
-    ).order_by("start_date")
+    memocontext = MemoContextFilter(
+        request.GET,
+        queryset=MemoContext.objects.all(),
+    )
 
-    filters = {}
-    if start_date:
-        filters["content_date__gte"] = start_date
-    if end_date:
-        filters["content_date__lte"] = end_date
+    newscovers = NewsCoverFilter(
+        request.GET,
+        queryset=NewsCover.objects.all(),
+    )
 
-    newscovers = NewsCover.objects.filter(**filters)
-
-    items = Paginator(newscovers, 50)
+    items = Paginator(newscovers.qs, 50)
 
     try:
         page_nm = int(request.GET.get("page", 1))
@@ -125,9 +122,9 @@ def contexts(request):
         "sources": sources,
         "dates": dates,
         "paginator_list": pages,
-        "items": items.page(page_nm),
-        "memocontexts": memocontext,
-        "results_total": len(newscovers),
+        "items": items.get_page(page_nm),
+        "memocontexts": memocontext.qs,
+        "results_total": items.count,
     }
 
     return render(request, "contexts.html", {"data": data})
