@@ -588,7 +588,7 @@ nav ul a:hover {
     padding: 5.0625rem 0 7.3125rem 0;
 }
 .page-home .sobre{
-    padding-bottom: 3.75rem;
+    padding-bottom: 1rem;
 }
 
 .page-home h2{
@@ -600,7 +600,7 @@ nav ul a:hover {
     letter-spacing: 0.00625rem;
 }
 .page-home .timeline h2{
-    margin: 2.4rem;
+    margin: 3.4rem;
 }
 .page-home .btn{
     display: inline-block;
