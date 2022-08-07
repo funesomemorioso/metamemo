@@ -148,7 +148,7 @@
     color: rgb(255, 255, 255);
     display: inline-block;
     font-family: "Redacted";
-    font-size: 0.875rem;
+    font-size: 14px;
     line-height: 1.4em;
     margin-bottom: 1em;
     padding: 0.6em 1em;
@@ -474,7 +474,7 @@ nav ul a:hover {
     padding: 0 2.5%;
 }
 .timeline .timeline-snippet{
-    height: 35.625rem;
+    height: 570px;
     background-image: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%),url('../imgs/meta-back-repeat2.png');
     background-repeat: repeat-x;
     background-position: right 50%;
@@ -482,17 +482,17 @@ nav ul a:hover {
     justify-content: flex-end;
     padding: 0;	
     flex-grow: 1;
-    margin-right: 0.9375rem;
+    margin-right: 15px;
 }
 
 .timeline .timeline-btn{
     height: fit-content;
 }
 .timeline .timeline-btn .btn{
-    margin-left: 2.6875rem;
+    margin-left: 43px;
 }
 .timeline .timeline-margin{
-    --maxWidth: 74.1875rem;
+    --maxWidth: 1187px;
     --margin: calc(100% - var(--maxWidth));
     --halfMargin: calc(var(--margin) / 2);
     width: var(--halfMargin);
@@ -503,11 +503,11 @@ nav ul a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 23.5625rem;
+    width: 377px;
 }
 .timeline-snippet .tl-snippet-img .circle.metagreen{
-    width: 22.6875rem;
-    height: 22.6875rem;
+    width: 363px;
+    height: 363px;
     background: url('../imgs/familia-bozo.png');
     background-size: 145%;
     background-repeat: no-repeat;
@@ -515,34 +515,34 @@ nav ul a:hover {
 }
 .timeline-snippet .tl-snippet-fact{
     height: 100%;
-    width: 7.8125rem;
+    width: 125px;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
 }
 .timeline-snippet .tl-snippet-fact .speech-bubble{
-    width: 9.6875rem;
+    width: 155px;
 }
 .timeline-snippet .tl-snippet-fact img{
     width: min-content;
 }
 .timeline-snippet .tl-snippet-fact .bubble{
-    width:5.875rem;
-    height:5.875rem;	
+    width:94px;
+    height:94px;	
     box-shadow: none;
     margin-bottom:0.6875rem
 }
 .timeline-snippet .tl-snippet-fact--botom{
     height: 100%;
-    width: 7.8125rem;
+    width: 125px;
     display: flex;
     flex-direction: column-reverse;
     justify-content: end;
     align-items: center;
 }
 .timeline-snippet .tl-snippet-fact--botom .speech-bubble{
-    width: 9.6875rem;
+    width: 155px;
     margin-bottom: 0em;
     margin-top: 1em;
 }
@@ -579,10 +579,10 @@ nav ul a:hover {
     transform: rotate(180deg);
 }
 .timeline-snippet .tl-snippet-fact--botom .bubble{
-    width:5.875rem;
-    height:5.875rem;	
+    width:94px;
+    height:94px;	
     box-shadow: none;
-    margin-top:1.0625rem
+    margin-top:17px;
 }
 .page-home section{
     padding: 5.0625rem 0 7.3125rem 0;
@@ -1066,7 +1066,7 @@ footer h3 {
     display: block;
     cursor: pointer;
     font-weight: 800;
-    line-height: 6.25rem;
+    line-height: 100px;
     color: #FFF;
     font-weight: bold;
     border-radius: 50%;
