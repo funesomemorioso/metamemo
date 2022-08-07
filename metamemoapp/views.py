@@ -32,8 +32,7 @@ def home(request):
 
 
 def news(request):
-    newsqs = NewsItem.objects.all().order_by("-content_date")
-    newsfilter = MemoNewsFilter(request.GET, queryset=newsqs)
+    newsfilter = MemoNewsFilter(request.GET, queryset=NewsItem.objects.all().order_by("-content_date"))
 
     sources_total = {
         source["source__name"]: source["total"]
@@ -69,7 +68,7 @@ def news(request):
         "dates": dates,
         "paginator_list": pages,
         "items": items.page(page_nm),
-        "results_total": len(newsfilter.qs),
+        "results_total": items.count,
         "sources": sources,
         "sources_total": sources_total,
     }
@@ -89,12 +88,12 @@ def contexts(request):
 
     memocontext = MemoContextFilter(
         request.GET,
-        queryset=MemoContext.objects.all(),
+        queryset=MemoContext.objects.all().order_by("-start_date"),
     )
 
     newscovers = NewsCoverFilter(
         request.GET,
-        queryset=NewsCover.objects.all(),
+        queryset=NewsCover.objects.all().order_by("-content_date"),
     )
 
     items = Paginator(newscovers.qs, 50)
@@ -143,7 +142,7 @@ def lista(request):
     #memoqs = 
     memofilter = MemoItemFilter(
         request.GET,
-        queryset=MemoItem.objects.all(),
+        queryset=MemoItem.objects.all().order_by("-content_date"),
     )
 
     #sources_total = {
