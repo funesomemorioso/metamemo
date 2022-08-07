@@ -15,7 +15,7 @@
     --metared: #AB3D55;
     /* --metacinza: #C4C4C4; */
     --metacinza: #c4c4c4;
-    --metabranco: #ffffff;
+    --metabranco: #fbfbfb;
     }
 .metablue{ background-color: var(--metablue) !important; }
 .metablue-text{ color: var(--metablue) !important; }
@@ -31,6 +31,8 @@
 .metared-text{ color: var(--metared) !important; } 
 .metacinza{background-color:var(--metacinza) !important;}
 .metacinza-text{color:var(--metacinza) !important;}
+.metabranco{background-color:var(--metabranco) !important;}
+.metabranco-text{color:var(--metabranco) !important;}
 /*FIM CORES*/
 
 
@@ -113,6 +115,7 @@
 .font24{ font-size: 1.5rem; line-height: 1.75rem; }
 .font25{ font-size: 1.5625rem; }
 .font35{ font-size: 2.1875rem; line-height: 2.1875rem; }
+.font40{ font-size: 2.5rem; line-height: 3rem; }
 .font48{ font-size: 3rem  !important; line-height: 3.25rem  !important; }
 .fontBold {
     font-style: normal;
@@ -130,6 +133,7 @@
 .no-margin { margin: 0 !important; }
 .no-margin-sides { margin-left: 0 !important; margin-right: 0 !important; }
 .text-bold {font-weight: bold;}
+.text-center {text-align: center;}
 .text-lighter {font-weight: lighter;}
 .flex{display:flex}
 .height100 {height: 100%;}
@@ -148,7 +152,7 @@
     color: rgb(255, 255, 255);
     display: inline-block;
     font-family: "Redacted";
-    font-size: 0.875rem;
+    font-size: 14px;
     line-height: 1.4em;
     margin-bottom: 1em;
     padding: 0.6em 1em;
@@ -293,14 +297,15 @@ small{
     background-position: center left;
 }
 .back-metaondas{
-    min-height: 6.125rem;
-    margin-top: -3.125rem;
+    min-height: 98px;
+    margin-top: -49px;
+    margin-bottom: -49px;
     background-image: url('../imgs/meta-ondas.png?rtty');
     background-repeat: repeat-x;
     background-position: center left;
 }
 .back-metaondas.mini {
-    background-size: 14.375rem;
+    background-size: 230px;
 }
 [class^="ipt-outline"], [class*=" ipt-outline"] {
     display: inline-block;
@@ -474,7 +479,7 @@ nav ul a:hover {
     padding: 0 2.5%;
 }
 .timeline .timeline-snippet{
-    height: 35.625rem;
+    height: 570px;
     background-image: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 100%),url('../imgs/meta-back-repeat2.png');
     background-repeat: repeat-x;
     background-position: right 50%;
@@ -482,17 +487,17 @@ nav ul a:hover {
     justify-content: flex-end;
     padding: 0;	
     flex-grow: 1;
-    margin-right: 0.9375rem;
+    margin-right: 15px;
 }
 
 .timeline .timeline-btn{
     height: fit-content;
 }
 .timeline .timeline-btn .btn{
-    margin-left: 2.6875rem;
+    margin-left: 43px;
 }
 .timeline .timeline-margin{
-    --maxWidth: 74.1875rem;
+    --maxWidth: 1187px;
     --margin: calc(100% - var(--maxWidth));
     --halfMargin: calc(var(--margin) / 2);
     width: var(--halfMargin);
@@ -503,11 +508,11 @@ nav ul a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 23.5625rem;
+    width: 377px;
 }
 .timeline-snippet .tl-snippet-img .circle.metagreen{
-    width: 22.6875rem;
-    height: 22.6875rem;
+    width: 363px;
+    height: 363px;
     background: url('../imgs/familia-bozo.png');
     background-size: 145%;
     background-repeat: no-repeat;
@@ -515,34 +520,34 @@ nav ul a:hover {
 }
 .timeline-snippet .tl-snippet-fact{
     height: 100%;
-    width: 7.8125rem;
+    width: 125px;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
 }
 .timeline-snippet .tl-snippet-fact .speech-bubble{
-    width: 9.6875rem;
+    width: 155px;
 }
 .timeline-snippet .tl-snippet-fact img{
     width: min-content;
 }
 .timeline-snippet .tl-snippet-fact .bubble{
-    width:5.875rem;
-    height:5.875rem;	
+    width:94px;
+    height:94px;	
     box-shadow: none;
     margin-bottom:0.6875rem
 }
 .timeline-snippet .tl-snippet-fact--botom{
     height: 100%;
-    width: 7.8125rem;
+    width: 125px;
     display: flex;
     flex-direction: column-reverse;
     justify-content: end;
     align-items: center;
 }
 .timeline-snippet .tl-snippet-fact--botom .speech-bubble{
-    width: 9.6875rem;
+    width: 155px;
     margin-bottom: 0em;
     margin-top: 1em;
 }
@@ -579,10 +584,10 @@ nav ul a:hover {
     transform: rotate(180deg);
 }
 .timeline-snippet .tl-snippet-fact--botom .bubble{
-    width:5.875rem;
-    height:5.875rem;	
+    width:94px;
+    height:94px;	
     box-shadow: none;
-    margin-top:1.0625rem
+    margin-top:17px;
 }
 .page-home section{
     padding: 5.0625rem 0 7.3125rem 0;
@@ -1066,7 +1071,7 @@ footer h3 {
     display: block;
     cursor: pointer;
     font-weight: 800;
-    line-height: 6.25rem;
+    line-height: 100px;
     color: #FFF;
     font-weight: bold;
     border-radius: 50%;
@@ -1133,6 +1138,71 @@ footer h3 {
     transform: rotate(2.53deg);
 }
 /*FIM TIMELINE*/
+/* PAGE SAIBA */
+.page-saiba .row .col{
+    padding: 0 1.2rem;
+}
+.page-saiba .sobre p{
+    margin: 1.2rem 0;
+}
+.page-saiba .sobre .row{
+    min-height: 45rem;
+}
+.page-saiba section .col .btn{
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+}
+.page-saiba .sobre .card-conteudo{
+    padding-top: 6rem;
+}
+.page-saiba .sobre .row{
+    margin-bottom: 0rem;
+}
+.page-saiba .sobre .card-imagem{
+    margin-bottom: 0rem;
+}
+.page-saiba .back-metaondas{
+    z-index: 1000;
+    position: relative;
+}
+.page-saiba .roxo .metaroxo{
+    min-height: 342px;
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+.page-saiba .funciona{
+    padding-top:5rem;
+    padding-bottom:5rem;
+}
+.page-saiba .funciona .titulo{
+    margin-bottom: 3.2rem;
+}
+.page-saiba .bolsodata .row{
+    background-color: #F4F5F4;
+}
+.page-saiba .bolsodata .card-imagem{
+    height: 44.9375rem;
+}
+.page-saiba .bolsodata .card-imagem img{
+    background-color: var(--metagreen);
+    padding: 0px;
+    /* margin-bottom: -1rem; */
+    object-fit: none;
+    object-position: bottom;
+}
+.page-saiba .colabore .card-imagem{
+    height: 27.4375rem;
+}
+.page-saiba .colabore .card-imagem img{
+    padding: 0px;
+    object-fit: none;
+    object-position: center;
+}
+
+/* FIM PAGE SAIBA */
 
 @media only screen and (max-width: 1254px){
     .timeline .timeline-margin{
