@@ -15,7 +15,7 @@
     --metared: #AB3D55;
     /* --metacinza: #C4C4C4; */
     --metacinza: #c4c4c4;
-    --metabranco: #ffffff;
+    --metabranco: #fbfbfb;
     }
 .metablue{ background-color: var(--metablue) !important; }
 .metablue-text{ color: var(--metablue) !important; }
@@ -31,6 +31,8 @@
 .metared-text{ color: var(--metared) !important; } 
 .metacinza{background-color:var(--metacinza) !important;}
 .metacinza-text{color:var(--metacinza) !important;}
+.metabranco{background-color:var(--metabranco) !important;}
+.metabranco-text{color:var(--metabranco) !important;}
 /*FIM CORES*/
 
 
@@ -113,6 +115,7 @@
 .font24{ font-size: 1.5rem; line-height: 1.75rem; }
 .font25{ font-size: 1.5625rem; }
 .font35{ font-size: 2.1875rem; line-height: 2.1875rem; }
+.font40{ font-size: 2.5rem; line-height: 3rem; }
 .font48{ font-size: 3rem  !important; line-height: 3.25rem  !important; }
 .fontBold {
     font-style: normal;
@@ -130,6 +133,7 @@
 .no-margin { margin: 0 !important; }
 .no-margin-sides { margin-left: 0 !important; margin-right: 0 !important; }
 .text-bold {font-weight: bold;}
+.text-center {text-align: center;}
 .text-lighter {font-weight: lighter;}
 .flex{display:flex}
 .height100 {height: 100%;}
@@ -293,14 +297,15 @@ small{
     background-position: center left;
 }
 .back-metaondas{
-    min-height: 6.125rem;
-    margin-top: -3.125rem;
+    min-height: 98px;
+    margin-top: -49px;
+    margin-bottom: -49px;
     background-image: url('../imgs/meta-ondas.png?rtty');
     background-repeat: repeat-x;
     background-position: center left;
 }
 .back-metaondas.mini {
-    background-size: 14.375rem;
+    background-size: 230px;
 }
 [class^="ipt-outline"], [class*=" ipt-outline"] {
     display: inline-block;
@@ -1133,6 +1138,71 @@ footer h3 {
     transform: rotate(2.53deg);
 }
 /*FIM TIMELINE*/
+/* PAGE SAIBA */
+.page-saiba .row .col{
+    padding: 0 1.2rem;
+}
+.page-saiba .sobre p{
+    margin: 1.2rem 0;
+}
+.page-saiba .sobre .row{
+    min-height: 45rem;
+}
+.page-saiba section .col .btn{
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+}
+.page-saiba .sobre .card-conteudo{
+    padding-top: 6rem;
+}
+.page-saiba .sobre .row{
+    margin-bottom: 0rem;
+}
+.page-saiba .sobre .card-imagem{
+    margin-bottom: 0rem;
+}
+.page-saiba .back-metaondas{
+    z-index: 1000;
+    position: relative;
+}
+.page-saiba .roxo .metaroxo{
+    min-height: 342px;
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+.page-saiba .funciona{
+    padding-top:5rem;
+    padding-bottom:5rem;
+}
+.page-saiba .funciona .titulo{
+    margin-bottom: 3.2rem;
+}
+.page-saiba .bolsodata .row{
+    background-color: #F4F5F4;
+}
+.page-saiba .bolsodata .card-imagem{
+    height: 44.9375rem;
+}
+.page-saiba .bolsodata .card-imagem img{
+    background-color: var(--metagreen);
+    padding: 0px;
+    /* margin-bottom: -1rem; */
+    object-fit: none;
+    object-position: bottom;
+}
+.page-saiba .colabore .card-imagem{
+    height: 27.4375rem;
+}
+.page-saiba .colabore .card-imagem img{
+    padding: 0px;
+    object-fit: none;
+    object-position: center;
+}
+
+/* FIM PAGE SAIBA */
 
 @media only screen and (max-width: 1254px){
     .timeline .timeline-margin{
