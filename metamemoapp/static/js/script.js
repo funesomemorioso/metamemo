@@ -147,6 +147,11 @@ $(document).ready(function () {
 
 
         var redes = p.getAll("source");
+        if(redes.length < 1){
+            $('.metasearch #sources .source').each(function (i, rede) {
+                rede.click();
+            });
+        }
         $('.metasearch #sources .source').each(function (i, rede) {
             var source = rede.getAttribute('data-source');
             if (redes.includes(source)) {
@@ -156,6 +161,11 @@ $(document).ready(function () {
 
 
         var authors = p.getAll("author");
+        if(authors.length < 1){
+            $('.metasearch #authors .author').each(function (i, chip) {
+                chip.click();
+            });
+        }
         $('.metasearch #authors .author').each(function (i, chip) {
             var source = chip.getAttribute('data-author');
             if (authors.includes(source)) {

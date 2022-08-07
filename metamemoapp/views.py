@@ -134,6 +134,8 @@ def contexts(request):
 
 
 def lista(request):
+    metamemo = MetaMemo.objects.all()
+
     social_sources = {
         "Facebook": "face",
         "Twitter": "twitter1",
@@ -186,6 +188,7 @@ def lista(request):
         "social_sources": social_sources,
         "sources_total": sources_total,
         "tags": tags.most_common(10),
+        "metamemo": metamemo,
     }
 
     return render(request, "files.html", {"data": data})
