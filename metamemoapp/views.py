@@ -187,7 +187,7 @@ def lista(request):
         "results_total": len(memofilter.qs),
         "social_sources": social_sources,
         "sources_total": sources_total,
-        "tags": tags.most_common(10),
+        #"tags": tags.most_common(10),   --tags on search interface
         "metamemo": metamemo,
     }
 
