@@ -28,8 +28,8 @@
         </div>
     </div>
     <div id="authors" class="row metamemo_filter">
-        {% for name in data.metamemo %}
-            <span class="author chip transparent" data-author="{{ name }}"}>{{ name }}</span>
+        {% for memo in data.metamemo %}
+            <span class="author chip transparent" data-author="{{ memo.name }}"}>{{ memo.name }}</span>
         {% endfor %}
     </div>
     <div id="search-bar" class="row">

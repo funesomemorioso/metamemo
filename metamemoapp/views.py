@@ -21,12 +21,18 @@ from metamemoapp.tasks import download_async, download_img_async
 # Create your views here.
 def home(request):
     metamemo = MetaMemo.objects.all()
-    tags = MemoItem.objects.all().values("keyword__word").annotate(total=Count('keyword__word')).order_by('-total')
+    tags = MemoItem.objects.all().values_list("keyword__word", flat=True)
+    tags = Counter(tags)
+    tags[None] = 0
     data_atual = datetime.now() 
     data_ontem = data_atual - timedelta(days=1)
     return render(
-        request, "home.html", {"metamemo": metamemo,"y_date":data_ontem,"date":data_atual, "tags": tags[0:15]}
-    )
+        request, "home.html", {
+            "metamemo": metamemo,
+            "y_date":data_ontem,
+            "date":data_atual, 
+            "tags": tags.most_common(15)
+            })
 
 
 def news(request):
@@ -128,6 +134,8 @@ def contexts(request):
 
 
 def lista(request):
+    metamemo = MetaMemo.objects.all()
+
     social_sources = {
         "Facebook": "face",
         "Twitter": "twitter1",
@@ -165,14 +173,13 @@ def lista(request):
     else:
         pages = list(range(page_nm - 1, page_nm + 2))
 
-    # Hackish
+    # ToDo: Implementar tags
     #tags_g = {}
     #tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
     #tags_g = Counter(tags_raw)
     #tags_g[None] = 0
     #tags = tags_g.most_common(10)
-    tags = {}
-
+    
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
 
     data = {
@@ -183,7 +190,8 @@ def lista(request):
         "results_total": items.count,
         "social_sources": social_sources,
         "sources_total": [],#sources_total,
-        "tags": tags,
+        #"metamemo": metamemo,
+        #"tags": tags,
     }
 
     return render(request, "files.html", {"data": data})

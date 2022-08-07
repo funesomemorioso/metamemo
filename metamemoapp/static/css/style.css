@@ -14,7 +14,7 @@
     --metagold: #C5A44F;
     --metared: #AB3D55;
     /* --metacinza: #C4C4C4; */
-    --metacinza: #F4F4F4;
+    --metacinza: #c4c4c4;
     --metabranco: #ffffff;
     }
 .metablue{ background-color: var(--metablue) !important; }
@@ -236,7 +236,13 @@ h1{
     padding: 1rem;
     margin-bottom: .75rem;
 }
-
+.container .row .fut-baixe,.container .row .fut-colabore{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 9.4rem;
+    align-items: baseline;
+}
 .sobre .card-conteudo {
     padding-bottom: 3.9rem;
 }
@@ -582,7 +588,7 @@ nav ul a:hover {
     padding: 5.0625rem 0 7.3125rem 0;
 }
 .page-home .sobre{
-    padding-bottom: 3.75rem;
+    padding-bottom: 1rem;
 }
 
 .page-home h2{
@@ -594,7 +600,7 @@ nav ul a:hover {
     letter-spacing: 0.00625rem;
 }
 .page-home .timeline h2{
-    margin: 2.4rem;
+    margin: 3.4rem;
 }
 .page-home .btn{
     display: inline-block;
@@ -668,6 +674,12 @@ nav ul a:hover {
 .resultado-cabecalio{
     margin-bottom: 0;
 }
+.resultado-cabecalio .btn{
+    display: flex;
+    padding: 1.125rem;
+    justify-content: center;
+    width: 100%;
+}
 .resultado-cabecalio .row{
     margin-bottom: 0;
 }
@@ -712,7 +724,9 @@ nav ul a:hover {
 .tab_underline.inactive{
     background-color: #ef5da800 ;
 }
-
+.page-list .chip{
+    border: 0.125rem solid #b3b7ba;
+}
 .chip{
     background-color: #FFF;
     border: 0.125rem solid #E8EAEE;
@@ -721,7 +735,7 @@ nav ul a:hover {
     margin: 0rem 0.25rem 0.5rem 0;
     font-weight: 400;
     font-size: 0.875rem;
-    line-height: 1rem;
+    line-height: 0.75rem;
     color:  #000;
     cursor: pointer;
 }
