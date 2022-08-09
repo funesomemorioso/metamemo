@@ -5,6 +5,10 @@
     src: url("./fonts/FlowRounded-Regular.ttf");
 }
 
+html{
+    color: #373F41;
+}
+
 /*Cores*/
 :root {
     --metablue: #3478B7;
@@ -111,6 +115,7 @@
 .font14{ font-size: 0.875rem; }
 .font18{ font-size: 1.125rem; }
 .font16{ font-size: 1rem !important; }
+.font20{ font-size: 1.25rem; line-height: 1.35rem; }
 .font22{ font-size: 1.375rem; line-height: 1.375rem; }
 .font24{ font-size: 1.5rem; line-height: 1.75rem; }
 .font25{ font-size: 1.5625rem; }
@@ -282,7 +287,7 @@ h2{
     line-height: 0.875rem;
     align-items: center;
     letter-spacing: 0.00625rem;
-    color: #000000;	
+    color: #373F41;	
 }
 small{
     font-weight: 300;
@@ -413,20 +418,24 @@ nav ul a:hover {
     letter-spacing: 0.00625rem;
     text-align: center;
 }
+/* PAGE COLABORE */
 .page-colabore small{
     display: block;
     margin-top: 0.625rem;
     font-weight: 400;
-    font-size: 1.375rem;
-    line-height: 1.65rem;
 }
 .page-colabore h2{
-    font-weight: 400;
+    font-weight: bolder;
     font-size: 2.1875rem;
     line-height: 2.625rem;
+    color: #373F41;
 }
 .page-colabore .font22{
     margin: 0 0 2.3733333333rem 0;
+}
+.page-colabore .remixe-txt{
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
 }
 .page-colabore li {
     margin-bottom: 0.625rem;
@@ -434,7 +443,52 @@ nav ul a:hover {
 .page-colabore section.metablue {
     min-height: 16.125rem;
 }
-
+/* FIM PAGE COLABORE */
+/* PAGE OOPS */
+.page-oops .oops-container {
+    overflow: hidden;
+}
+  
+.page-oops .sliding-background {
+    background: url('../imgs/meta-back-repeat2.png') repeat-x;
+    background-position: right 50%;
+    height: 560px;
+    width: 5076px;
+    animation: slide 60s linear infinite;
+}
+.page-oops .oops-message{
+    position: relative;
+    text-align: center;
+    top: 10.5rem;
+    border-radius: 0.2rem;
+    color: #ff5f7c;
+    font-weight: bolder;
+    z-index: 100;
+    padding: 2rem;
+    background-color: #F4F4F4;
+    font-size: 1.2rem;
+}
+.page-oops .oops-message h2{
+    color: var(--metaroxo);
+    font-size: 2rem;
+    line-height: 2rem;
+}
+.page-oops .oops-message a{
+    color: #ff5f7c;
+    cursor: pointer;
+}
+.page-oops .oops-message a:hover{
+    color: #039be5;
+}
+@keyframes slide{
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-1692px, 0, 0);
+    }
+}
+/* FIM PAGE OOPS */
 .page-metodologia .conteudo-colunas h2{
     font-weight: 700;
     font-size: 1rem;
