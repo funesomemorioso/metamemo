@@ -152,12 +152,12 @@ def lista(request):
         queryset=MemoItem.objects.all().order_by("-content_date"),
     )
 
-    sources_total = {
-        source["source__name"]: source["total"]
-        for source in memofilter.qs.values("source__name")
-        .annotate(total=Count("source__name"))
-        .order_by("total")
-    }
+    #sources_total = {
+    #    source["source__name"]: source["total"]
+    #    for source in memofilter.qs.values("source__name")
+    #    .annotate(total=Count("source__name"))
+    #    .order_by("total")
+    #}
 
     items = Paginator(memofilter.qs.prefetch_related("medias").select_related("author", "source"), 50)
     
@@ -190,7 +190,7 @@ def lista(request):
         "items": items.get_page(page_nm),
         "results_total": items.count,
         "social_sources": social_sources,
-        "sources_total": sources_total,#sources_total,
+        "sources_total": [],#sources_total,
         "metamemo": metamemo,
         #"tags": tags,
     }
