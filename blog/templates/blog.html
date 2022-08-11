@@ -16,145 +16,24 @@
     	<div class="parallax"><img src="https://picsum.photos/1440/700?sdsd" style="transform: translate3d(-50%, 412.233px, 0px); opacity: 1;"></div>
     </div>
     <div class="container">
-	    <div class="row grey lighten-4 carousel-wrap">
-			<div class="carousel carousel-slider">
-				<div class="row grey lighten-4 carousel-item" >
-					{% for post in posts %}
-						<div class="col s12 m3">
-							<article class="card">
-								<div class="card-image">
-									<img src="https://picsum.photos/255/143?sdsd">
-								</div>
-								<div class="card-content">
-									<h2>{{ post.title }}</h2>
-									<p>{{ post.abstract }}</p>
-								</div>
-								<div class="card-action">
-									<a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
-								</div>
-							</article>
-						</div>
-							{% if forloop.counter|divisibleby:"4" %}
-								</div>
-								<div class="row grey lighten-4 carousel-item">
-							{% endif%}
-					{% endfor %}
-				</div>
-					<!-- <div class="col s12 m3">
+	    <div class="row grey lighten-4 caro-wrap">
+			<div class="row grey lighten-4" >
+				{% for post in posts %}
+					<div class="blog-post col s12 m3">
 						<article class="card">
 							<div class="card-image">
 								<img src="https://picsum.photos/255/143?sdsd">
 							</div>
 							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+								<h2>{{ post.title }}</h2>
+								<p>{{ post.abstract }}</p>
 							</div>
 							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
+								<a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
 							</div>
 						</article>
 					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-				</div>
-				<div class="row grey lighten-4 carousel-item">
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-				</div> -->
+				{% endfor %}
 	    </div>
     </div>
 </section>
