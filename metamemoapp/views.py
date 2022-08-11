@@ -191,7 +191,7 @@ def lista(request):
         "results_total": items.count,
         "social_sources": social_sources,
         "sources_total": [],#sources_total,
-        #"metamemo": metamemo,
+        "metamemo": metamemo,
         #"tags": tags,
     }
 
