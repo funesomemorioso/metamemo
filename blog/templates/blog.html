@@ -19,7 +19,28 @@
 	    <div class="row grey lighten-4 carousel-wrap">
 			<div class="carousel carousel-slider">
 				<div class="row grey lighten-4 carousel-item" >
-					<div class="col s12 m3">
+					{% for post in posts %}
+						<div class="col s12 m3">
+							<article class="card">
+								<div class="card-image">
+									<img src="https://picsum.photos/255/143?sdsd">
+								</div>
+								<div class="card-content">
+									<h2>{{ post.title }}</h2>
+									<p>{{ post.abstract }}</p>
+								</div>
+								<div class="card-action">
+									<a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
+								</div>
+							</article>
+						</div>
+							{% if forloop.counter|divisibleby:"4" %}
+								</div>
+								<div class="row grey lighten-4 carousel-item">
+							{% endif%}
+					{% endfor %}
+				</div>
+					<!-- <div class="col s12 m3">
 						<article class="card">
 							<div class="card-image">
 								<img src="https://picsum.photos/255/143?sdsd">
@@ -133,7 +154,7 @@
 							</div>
 						</article>
 					</div>
-				</div>
+				</div> -->
 	    </div>
     </div>
 </section>
