@@ -8,7 +8,7 @@
 <section class="no-padding-top">
 	<div class="parallax-container">
 		<div class="row valign-wrapper no-margin">
-			<div class="col s12 offset-m4 m4">
+			<div class="text-shadow col s12 offset-m4 m4">
 				<h1 class="white-text center-align">MetaMix</h1>
 				<p class="white-text center-align font22">Metamix é um blog com produções <br> criadas através da nossa plataforma</p>
 			</div>
@@ -18,22 +18,26 @@
     <div class="container">
 	    <div class="row grey lighten-4 caro-wrap">
 			<div class="row grey lighten-4" >
-				{% for post in posts %}
-					<div class="blog-post col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>{{ post.title }}</h2>
-								<p>{{ post.abstract }}</p>
-							</div>
-							<div class="card-action">
-								<a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-				{% endfor %}
+				{% if posts %}
+					{% for post in posts %}
+						<div class="blog-post col s12 m3">
+							<article class="card">
+								<div class="card-image">
+									<img src="https://picsum.photos/255/143?sdsd">
+								</div>
+								<div class="card-content">
+									<h2>{{ post.title }}</h2>
+									<p>{{ post.abstract }}</p>
+								</div>
+								<div class="card-action">
+									<a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
+								</div>
+							</article>
+						</div>
+					{% endfor %}
+				{% else %}
+					<div class="sorry font18">nenhuma postagem foi encontrada.</div>
+				{% endif %}
 	    </div>
     </div>
 </section>

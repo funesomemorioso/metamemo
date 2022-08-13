@@ -14,17 +14,18 @@
 		</div>
 		<div class="row">
 			<p>
-				<a href="{{memoitem.url}}" title="Link original" target="_blank"><span class="icon-{{memoitem.source.ico}} font35 valign-middle">
-					<span class="path1"></span><span class="path2"></span></span></a>
-				<b>{{post.author}}</b>
+				{{ post.content|safe }}
 			</p>
 		</div>
 		<div class="row">
 			<p>
-				{{ post.content|safe }}
+				autor:<b> {{post.author}}</b>
 			</p>
 		</div>
-		<div><a class="btn left button metapink font16 white-text">compartilhar</a><a class="btn right button metapink font16 white-text">></a><a class="btn right button metapink font16 white-text" style="margin-right: 0.7rem;"><</a></div>
+		<div>
+			<a href="{% url 'content' 'oops' %}" class="btn left button metapink font16 white-text">compartilhar</a>
+			<!-- <a class="btn right button metapink font16 white-text">></a><a class="btn right button metapink font16 white-text" style="margin-right: 0.7rem;"><</a> -->
+		</div>
 	</div>
 </div>
 {% endblock %}

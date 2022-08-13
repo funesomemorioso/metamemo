@@ -140,6 +140,7 @@ html{
 .text-bold {font-weight: bold;}
 .text-center {text-align: center;}
 .text-lighter {font-weight: lighter;}
+.text-shadow {text-shadow: 1px 1px 0px #0000007d;}
 .flex{display:flex}
 .height100 {height: 100%;}
 .noselect {
@@ -936,7 +937,9 @@ div .metricas > div:last-child{
 .page-blog .parallax-container, .page-blog .parallax-container > div {
     height: 22.5rem;
 }
-
+.page-blog .grey .grey{
+    min-height: 10rem;
+}
 .page-blog .card{
     display: flex;
     height: 28rem;
@@ -959,7 +962,16 @@ div .metricas > div:last-child{
     margin-top: -6.25rem;
     padding: 2.625rem 3.5625rem 0 3.5625rem;
 }
-
+.page-blog .caro-wrap .sorry{
+    color: #a5a5a5;
+    text-align: center;
+    display: flex;
+    height: 10rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 1.8rem;
+}
 .page-blog .caro-wrap .col{
     padding: 0 0.625rem;
 }
