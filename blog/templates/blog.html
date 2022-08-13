@@ -8,7 +8,7 @@
 <section class="no-padding-top">
 	<div class="parallax-container">
 		<div class="row valign-wrapper no-margin">
-			<div class="col s12 offset-m4 m4">
+			<div class="text-shadow col s12 offset-m4 m4">
 				<h1 class="white-text center-align">MetaMix</h1>
 				<p class="white-text center-align font22">Metamix é um blog com produções <br> criadas através da nossa plataforma</p>
 			</div>
@@ -16,11 +16,11 @@
     	<div class="parallax"><img src="https://picsum.photos/1440/700?sdsd" style="transform: translate3d(-50%, 412.233px, 0px); opacity: 1;"></div>
     </div>
     <div class="container">
-	    <div class="row grey lighten-4 carousel-wrap">
-			<div class="carousel carousel-slider">
-				<div class="row grey lighten-4 carousel-item" >
+	    <div class="row grey lighten-4 caro-wrap">
+			<div class="row grey lighten-4" >
+				{% if posts %}
 					{% for post in posts %}
-						<div class="col s12 m3">
+						<div class="blog-post col s12 m3">
 							<article class="card">
 								<div class="card-image">
 									<img src="https://picsum.photos/255/143?sdsd">
@@ -34,149 +34,14 @@
 								</div>
 							</article>
 						</div>
-							{% if forloop.counter|divisibleby:"4" %}
-								</div>
-								<div class="row grey lighten-4 carousel-item">
-							{% endif%}
 					{% endfor %}
-				</div>
-					<!-- <div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-				</div>
-				<div class="row grey lighten-4 carousel-item">
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-					<div class="col s12 m3">
-						<article class="card">
-							<div class="card-image">
-								<img src="https://picsum.photos/255/143?sdsd">
-							</div>
-							<div class="card-content">
-								<h2>Pellentesque porta, odio ac mattis finibus, dui odio dignissim libero, in auctor. </h2>
-								<p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							</div>
-							<div class="card-action">
-								<a href="#" class="btn metapink white-text">Leia Mais</a>
-							</div>
-						</article>
-					</div>
-				</div> -->
+				{% else %}
+					<div class="sorry font18">nenhuma postagem foi encontrada.</div>
+				{% endif %}
 	    </div>
     </div>
 </section>
 <section class="sobre no-padding-bottom">
-	<div class="container">
-		<div class="row grey lighten-4 valign-wrapper align-stretch">
-			<div class="col s12 offset-m1 m4 minheight439 valign-wrapper">
-				<div>
-					<h2 class="metagreen-text">MetaTags</h2>
-					<p>Esses são os assuntos mais acessados entre os metamemos, confira:</p>				
-				</div>
-			</div>
-			<div class="col s12 m6 offset-m1 metagreen no-padding center-align valign-wrapper minheight439">
-				<div class="container">
-					<span class="chip">Bolsonaro</span><span class="chip">Flávio</span><span class="chip">Férias</span><span class="chip">Eleição</span> <br>
-					<span class="chip">FIlhos</span><span class="chip">Moro</span><span class="chip">Armamento</span><span class="chip">Kit Gay</span> <br>
-					<span class="chip">Carlos Bolsonaro</span><span class="chip">Flávio</span><span class="chip">Férias</span><span class="chip">Guerra</span> <br>
-					<span class="chip">Pandemia</span><span class="chip">Obras</span><span class="chip">Férias</span><span class="chip">Eleição</span>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="row metagreen valign-wrapper no-margin">
 		<div class="col s12 m6 no-padding"><img src="https://picsum.photos/705/493?sdsd" width="100%"></div>
 		<div class="col s12 offset-m1 m5 white-text">

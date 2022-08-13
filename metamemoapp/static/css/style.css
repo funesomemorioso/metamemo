@@ -140,6 +140,7 @@ html{
 .text-bold {font-weight: bold;}
 .text-center {text-align: center;}
 .text-lighter {font-weight: lighter;}
+.text-shadow {text-shadow: 1px 1px 0px #0000007d;}
 .flex{display:flex}
 .height100 {height: 100%;}
 .noselect {
@@ -405,7 +406,7 @@ nav ul a:hover {
     background-color: #F4F4F4;
 }
 
-.page-home .btn, .page-blog .btn, .page-filters .btn,.page-colabore .btn, .page-metodologia .btn ,.page-memoitem, .btn{
+.page-home .btn, .page-blog .btn, .page-filters .btn,.page-colabore .btn, .page-metodologia .btn ,.page-memoitem .btn, .btn{
     display: inline-block;
     height: initial !important ;
     border: 0;
@@ -931,56 +932,92 @@ div .metricas > div:last-child{
     margin-right: 1rem;
 }
 /* fim memoitem */
-
+/* PAGE BLOG */
 .page-blog h1{ margin: 0 0 1.50rem 0; }
 .page-blog .parallax-container, .page-blog .parallax-container > div {
     height: 22.5rem;
 }
-.page-blog .carousel { 
-    min-height: 34.225rem;
+.page-blog .grey .grey{
+    min-height: 10rem;
 }
-.carousel .card .card-image img{
+.page-blog .card{
+    display: flex;
+    height: 28rem;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.page-blog .card .card-action{
+    margin-top: auto;
+}
+
+.page-blog .blog-post{
+    height: 30rem;
+}
+.blog-post .card .card-image img{
     width: 100%;
 
 }
-.page-blog .carousel-wrap{
+.page-blog .caro-wrap{
     margin-top: -6.25rem;
     padding: 2.625rem 3.5625rem 0 3.5625rem;
 }
-
-.page-blog .carousel-wrap .col{
+.page-blog .caro-wrap .sorry{
+    color: #a5a5a5;
+    text-align: center;
+    display: flex;
+    height: 10rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 1.8rem;
+}
+.page-blog .caro-wrap .col{
     padding: 0 0.625rem;
 }
-.page-blog .carousel-wrap .card h2{
+.page-blog .caro-wrap .card h2{
     margin: 0.375rem 0rem;
     font-style: normal;
     font-weight: 700;
     font-size: 1.25rem;
     line-height: 1.625rem;
+    max-height: 4.5rem;
+    overflow: auto;
 }
 .card .card-content{
     padding: 1.25rem;
 }
-.page-blog .carousel-wrap .card p{
+.page-blog .caro-wrap .card p{
     margin: 0.375rem 0rem;
     font-style: normal;
     font-weight: 400;
     font-size: 1rem;
     line-height: 1.5rem;
     color: #212529;
-    margin: 0.75rem 0rem;
+    margin: 0.75rem 0rem 0rem 0rem;
+    max-height: 8.8rem;
+    overflow: auto;
 }
-.page-blog .carousel-wrap .card .card-action{
+.page-blog .caro-wrap .card .card-action{
     padding: 1.125rem;
     padding-top: 0;
 }
-.page-blog .carousel-wrap .card .card-action .btn{
+
+.page-blog .caro-wrap .card .card-image img{
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.page-blog .caro-wrap .card .card-action .btn{
     padding: 0.75rem 1.125rem ;
     font-weight: normal;
     font-size: 1rem;
     height: 40px !important;
     line-height: 1rem;
-
+}
+/* FIM PAGE BLOG */
+/* PAGE POST */
+.page-post .btn{
+    padding:0.775rem 1.375rem;
 }
 .carousel .indicators{
     bottom: 0rem;
