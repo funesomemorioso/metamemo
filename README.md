@@ -2,30 +2,56 @@
 
 ## Requisitos
 
-- Django
+- Docker
+- Docker compose
 
 ## Como usar
 
-Primeiro, copie o .env-example para .env e atualize com as informações do seu banco de dados.
-Não se esqueça de, na hora de criar o banco de dados, configurar character set e collation.
-Exemplo (no MariaDB 10.3.34):
+Primeiro, copie o `.env-example` para `.env` e edite o arquivo caso necessário.
+Para subir todos os serviços necessários, execute `docker compose up -d` na
+raiz do projeto. A primeira vez que o comando for executado irá demorar alguns
+minutos, dado que o `docker compose` precisará baixar algumas imagens e gerar a
+image do serviço `web`.
 
-    CREATE DATABASE metamemo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+Quando tudo estiver rodando você poderá acompanhar os logs com `docker compose
+logs -t` e quando todos os serviços tiverem subido, basta acessar
+[localhost:5000](http://localhost:5000/).
 
-Para criar o banco de dados:
+
+## Configurações iniciais
+
+Não se esqueça de, na hora de criar o banco de dados, configurar character set
+e collation. Exemplo (no MariaDB 10.3.34), execute `docker compose exec web bash`:
+
+```sql
+CREATE DATABASE metamemo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Para criar a estrutura dos modelos no banco de dados, execute o `bash` dentro
+do container `web` com `docker compose exec web bash` e, dentro do container,
+execute:
 
 ```shell
-python manage.py makemigrations
-python manage.py makemigrations metamemoapp
 python manage.py migrate
 ```
 
 Para criar o usuário administrativo:
 
-    python manage.py createsuperuser
+```shell
+python manage.py createsuperuser
+```
 
-Depois de instalado o django no seu venv preferido:
+## Refazendo a imagem
 
-    python manage.py runserver
+Caso seja necessário refazer a imagem do container `web` (por ter adicionado
+alguma dependência de sistema ou Python), basta executar:
 
-Para colocar em produção a gente usa o mod_wsgi mas não precisamos nos preocupar com isso agora.
+```shell
+docker compose stop web
+docker compose build web  # em alguns casos, `--no-cache` pode ajudar
+docker compose start web
+```
+
+## Deployment
+
+(a fazer)

@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -U pip
 COPY requirements.txt /app/
 COPY requirements-development.txt /app/
 RUN pip install --no-cache-dir -r /app/requirements.txt \
-  && if [[ "$DEV_BUILD" = "true" ]]; then pip install --no-cache-dir -r /app/requirements-development.txt; fi
+  && if [ "$DEV_BUILD" = "true" ]; then pip install --no-cache-dir -r /app/requirements-development.txt; fi
 
 COPY . /app/
 
