@@ -78,8 +78,6 @@ class Command(BaseCommand):
                     tweet_media[m["media_key"]] = {"mediatype": "VIDEO", "url": m["url"]}
                 elif m["type"] == "photo":
                     tweet_media[m["media_key"]] = {"mediatype": "IMAGE", "url": m["url"]}
-                else:
-                    pass
 
         for i in input_posts.data:
             if str(i.id) in self.memo_itens:
@@ -104,6 +102,8 @@ class Command(BaseCommand):
 
                 if i.attachments:
                     for m in i.attachments["media_keys"]:
+                        if m not in tweet_media:
+                            continue
                         media = tweet_media[m]
                         if media["mediatype"] == "VIDEO":
                             p = post.medias.create(
