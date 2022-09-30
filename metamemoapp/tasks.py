@@ -155,17 +155,14 @@ def download_async(self, url, mediatype):
 
 @shared_task
 def download_img_async(pk, url):
-    result = urllib.request.urlopen(url)
     i = MemoMedia.objects.get(pk=pk)
+    filename = os.path.basename(url)
     try:
-        filename = os.path.basename(url)
+        result = urllib.request.urlopen(url)
+    except:
+        i.status = "FAILED_DONWLOAD"
+        i.save(update_fields=["status"])
+    else:
         i.media.save(f"{i.original_id}_{filename}", File(result))
         i.status = "DOWNLOADED"
         i.save(update_fields=["status", "media"])
-    except:
-        i.status = "FAILED_DONWLOAD"
-        i.save(
-            update_fields=[
-                "status",
-            ]
-        )
