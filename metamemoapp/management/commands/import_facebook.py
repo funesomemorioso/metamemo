@@ -1,4 +1,11 @@
-import datetime
+"""
+Cada arquivo dentro de management/commands é um comando que pode ser rodado
+usando `python manage.py nomedocomando`.
+Handle() é a função executada pelo código.
+A vantagem de fazer assim é que as libs e dependencias do Django já estão
+encapsuladas e você pode chamar essa função dentro do resto do código.
+"""
+
 import json
 import os
 import pprint
@@ -7,14 +14,9 @@ import facebook_scraper
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
-
-"""
-Cada arquivo dentro de management/commands é um comando que pode ser rodado usando 'python manage.py nomedocomando'.
-Handle() é a função executada pelo código.
-A vantagem de fazer assim é que as libs e dependencias do Django já estão encapsuladas e você pode chamar essa função dentro do resto do código.
-"""
 
 
 class Command(BaseCommand):
@@ -75,7 +77,7 @@ class Command(BaseCommand):
                 else:
                     post.title = ""  # FIX
                 post.content = i["post_text"]
-                post.extraction_date = datetime.datetime.now()
+                post.extraction_date = timezone.now()
                 post.content_date = i["time"]
                 post.url = i["post_url"]
                 post.likes = i["likes"]

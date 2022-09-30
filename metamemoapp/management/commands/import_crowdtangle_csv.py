@@ -1,10 +1,10 @@
 import csv
-import datetime
 import json
 from textwrap import shorten
 
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
 
@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 )[0]
                 post.content = p["message"]
                 post.title = shorten(p["message"].replace("\n", " "), TITLE_MAX_CHAR)
-                post.extraction_date = datetime.datetime.now()
+                post.extraction_date = timezone.now()
                 post.content_date = p["post_created"].replace("EST", "").replace("EDT", "").strip()
                 post.url = p["url"]
                 post.likes = int(p["likes"])
@@ -66,7 +66,7 @@ class Command(BaseCommand):
                 )[0]
                 post.content = p["description"]
                 post.title = shorten(p["description"].replace("\n", " "), TITLE_MAX_CHAR)
-                post.extraction_date = datetime.datetime.now()
+                post.extraction_date = timezone.now()
                 post.content_date = p["post_created"].replace("EST", "").replace("EDT", "").strip()
                 post.url = p["url"]
                 post.likes = int(p["likes"])

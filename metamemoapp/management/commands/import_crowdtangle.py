@@ -1,4 +1,3 @@
-import datetime
 import json
 import urllib
 from textwrap import shorten
@@ -6,6 +5,7 @@ from textwrap import shorten
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
 from metamemoapp.tasks import download_async, download_img_async
@@ -87,7 +87,7 @@ class Command(BaseCommand):
                         else:
                             post.title = ""  # FIX
                             post.content = ""
-                        post.extraction_date = datetime.datetime.now()
+                        post.extraction_date = timezone.now()
                         post.content_date = i["date"]
                         post.url = i["postUrl"]
                         post.likes = i["statistics"]["actual"]["likeCount"]
@@ -104,7 +104,7 @@ class Command(BaseCommand):
                             post.title = ""
                             post.content = ""
 
-                        post.extraction_date = datetime.datetime.now()
+                        post.extraction_date = timezone.now()
                         post.content_date = i["date"]
                         post.url = i["postUrl"]
                         post.likes = i["statistics"]["actual"]["favoriteCount"]

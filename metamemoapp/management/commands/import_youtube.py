@@ -5,6 +5,7 @@ import urllib
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
 from metamemoapp.tasks import download_async
@@ -46,7 +47,7 @@ class Command(BaseCommand):
         self.base_url = f"https://www.googleapis.com/youtube/v3/search?channelId={self.channel}&type=video&key={self.apikey}&maxResults=50&part=id"
 
         if self.days:
-            timeAgo = (datetime.datetime.now() - datetime.timedelta(self.days)).strftime("%Y-%m-%dT00:00:00Z")
+            timeAgo = (timezone.now() - datetime.timedelta(self.days)).strftime("%Y-%m-%dT00:00:00Z")
             self.base_url += f"&publishedAfter={timeAgo}"
         self.parseUrl(self.base_url)
 
@@ -88,7 +89,7 @@ class Command(BaseCommand):
 
                         post.content = i["snippet"]["description"]
                         post.title = i["snippet"]["title"]
-                        post.extraction_date = datetime.datetime.now()
+                        post.extraction_date = timezone.now()
                         post.content_date = i["snippet"]["publishedAt"]
                         post.url = f'https://www.youtube.com/watch?v={i["id"]}'
                         post.likes = i["statistics"]["likeCount"]

@@ -1,4 +1,3 @@
-import datetime
 import json
 from textwrap import shorten
 
@@ -6,6 +5,7 @@ import tweepy
 from decouple import config
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
 from metamemoapp.tasks import download_async, download_img_async
@@ -92,7 +92,7 @@ class Command(BaseCommand):
                 post.source = self.memo_source[0]
                 post.title = shorten(i.text, TITLE_MAX_CHAR)
                 post.content = i.text
-                post.extraction_date = datetime.datetime.now()
+                post.extraction_date = timezone.now()
                 post.content_date = i.created_at
                 post.url = f"https://twitter.com/{self.user.data.username}/status/{i.id}"
                 post.likes = i.public_metrics["like_count"]

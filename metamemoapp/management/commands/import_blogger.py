@@ -1,10 +1,10 @@
-import datetime
 import json
 import urllib
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
 
@@ -70,7 +70,7 @@ class Command(BaseCommand):
 
                 post.content = i["content"]
                 post.title = i["title"]
-                post.extraction_date = datetime.datetime.now()
+                post.extraction_date = timezone.now()
                 post.content_date = i["updated"][:-6]
                 post.url = i["url"]
                 post.likes = 0

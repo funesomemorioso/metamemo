@@ -1,4 +1,11 @@
-import datetime
+"""
+Cada arquivo dentro de management/commands é um comando que pode ser rodado
+usando `python manage.py nomedocomando`.
+Handle() é a função executada pelo código. A vantagem de fazer assim é que as
+libs e dependencias do Django já estão encapsuladas e você pode chamar essa
+função dentro do resto do código.
+"""
+
 import io
 from textwrap import shorten
 
@@ -6,17 +13,12 @@ from asgiref.sync import sync_to_async
 from decouple import config
 from django.core.files.base import File
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 from telethon import TelegramClient
 
 from metamemoapp.models import MemoItem, MemoSource, MetaMemo
 
 TITLE_MAX_CHAR = 300
-
-"""
-Cada arquivo dentro de management/commands é um comando que pode ser rodado usando 'python manage.py nomedocomando'.
-Handle() é a função executada pelo código.
-A vantagem de fazer assim é que as libs e dependencias do Django já estão encapsuladas e você pode chamar essa função dentro do resto do código.
-"""
 
 
 class Command(BaseCommand):
@@ -69,7 +71,7 @@ class Command(BaseCommand):
                 post.source = self.memo_source[0]
                 post.title = shorten(i.text, TITLE_MAX_CHAR)
                 post.content = i.text
-                post.extraction_date = datetime.datetime.now()
+                post.extraction_date = timezone.now()
                 post.content_date = i.date
                 post.url = ""
                 post.likes = 0
