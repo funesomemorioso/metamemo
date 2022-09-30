@@ -67,6 +67,7 @@ dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 dokku plugin:install https://github.com/dokku/dokku-maintenance.git
 dokku plugin:install https://github.com/dokku/dokku-mariadb.git
 dokku plugin:install https://github.com/dokku/dokku-postgres.git
+dokku plugin:install https://github.com/dokku/dokku-redis.git
 
 # Dokku configs
 dokku config:set --global DOKKU_RM_CONTAINER=1  # don't keep `run` containers around
@@ -119,6 +120,7 @@ export DEV_BUILD="false"
 export LETSENCRYPT_EMAIL="$(echo $ADMINS | sed 's/^[^|]*|\([^,]*\).*$/\1/')"
 export MARIADB_NAME="mariadb_${APP_NAME}"
 export POSTGRES_NAME="postgres_${APP_NAME}"
+export REDIS_NAME="redis_${APP_NAME}"
 export SECRET_KEY=$(openssl rand -base64 64 | tr -d ' \n')
 export STORAGE_PATH="/var/lib/dokku/data/storage/$APP_NAME"
 ```
@@ -140,11 +142,14 @@ dokku storage:mount $APP_NAME "$STORAGE_PATH:$DATA_DIR"
 dokku mariadb:create $MARIADB_NAME -i mariadb -I 10.3-focal --shm-size 2g
 dokku mariadb:link $MARIADB_NAME $APP_NAME
 
-# dokku postgres:create $POSTGRES_NAME -i postgres -I 14-bullseye --shm-size 2g
-# dokku postgres:stop $POSTGRES_NAME
-# cp deploy/postgres.prod.conf /var/lib/dokku/services/postgres/$POSTGRES_NAME/data/postgresql.conf
-# dokku postgres:start $POSTGRES_NAME
-# dokku postgres:link $POSTGRES_NAME $APP_NAME
+dokku postgres:create $POSTGRES_NAME -i postgres -I 14-bullseye --shm-size 2g
+dokku postgres:stop $POSTGRES_NAME
+cp deploy/postgres.prod.conf /var/lib/dokku/services/postgres/$POSTGRES_NAME/data/postgresql.conf
+dokku postgres:start $POSTGRES_NAME
+dokku postgres:link $POSTGRES_NAME $APP_NAME
+
+dokku redis:create $REDIS_NAME
+dokku redis:link $REDIS_NAME $APP_NAME
 
 dokku config:set --no-restart $APP_NAME ADMINS="$ADMINS"
 dokku config:set --no-restart $APP_NAME ALLOWED_HOSTS="$ALLOWED_HOSTS"

@@ -49,8 +49,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 if DEBUG:
+
+    def show_toolbar(request):
+        return request.user.is_authenticated
+
     position = INSTALLED_APPS.index("blog")
     INSTALLED_APPS.insert(position, "debug_toolbar")
+
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": "metamemo.settings.show_toolbar",
+    }
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -157,6 +165,7 @@ AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default="")
 # CELERY SETTINGS
 
 CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = config("REDIS_URL")
 
 
 # METAMEMO SETTINGS

@@ -2,6 +2,5 @@
 
 autoflake==1.6.1
 black==22.8.0
-django-debug-toolbar==3.2.4
 flake8==3.7.9
 isort==5.10.1

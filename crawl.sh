@@ -48,11 +48,11 @@ elif [[ $source = "telegram" ]]; then
 elif [[ $source = "twitter" ]]; then
 	python manage.py import_twitter -u "jairbolsonaro" -a "Jair Bolsonaro" -m
 	sleep 1m
-	python manage import_twitter -u "carlosbolsonaro" -a "Carlos Bolsonaro" -m
+	python manage.py import_twitter -u "carlosbolsonaro" -a "Carlos Bolsonaro" -m
 	sleep 1m
-	python manage import_twitter -u "bolsonaroSP" -a "Eduardo Bolsonaro" -m
+	python manage.py import_twitter -u "bolsonaroSP" -a "Eduardo Bolsonaro" -m
 	sleep 1m
-	python manage import_twitter -u "FlavioBolsonaro" -a "Flávio Bolsonaro" -m
+	python manage.py import_twitter -u "FlavioBolsonaro" -a "Flávio Bolsonaro" -m
 
 elif [[ $source = "folha" ]]; then
 	python manage.py import_folha -k "Jair Bolsonaro" -a "Jair Bolsonaro" -f "Bolsonaro"
