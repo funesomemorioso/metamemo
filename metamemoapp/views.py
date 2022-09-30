@@ -1,39 +1,25 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
-from metamemoapp.models import (
-    MetaMemo,
-    MemoItem,
-    MemoContext,
-    MemoNews,
-    NewsSource,
-    NewsCover,
-    NewsItem,
-)
-from metamemoapp.filters import MemoItemFilter, MemoNewsFilter, MemoContextFilter, NewsCoverFilter
-from django.core.paginator import Paginator
-from django.db.models import Count, Q
-
-
 from datetime import date, datetime, timedelta
-from collections import Counter
+
+from django.core.paginator import Paginator
+from django.db.models import Count
+from django.http import JsonResponse
+from django.shortcuts import render
+
+from metamemoapp.filters import MemoContextFilter, MemoItemFilter, MemoNewsFilter, NewsCoverFilter
+from metamemoapp.models import MemoContext, MemoItem, MetaMemo, NewsCover, NewsItem, NewsSource
 from metamemoapp.tasks import download_async, download_img_async
+
 
 # Create your views here.
 def home(request):
     metamemo = MetaMemo.objects.all()
-    #tags = MemoItem.objects.all().values_list("keyword__word", flat=True)
-    #tags = Counter(tags)
-    #tags[None] = 0
+    # tags = MemoItem.objects.all().values_list("keyword__word", flat=True)
+    # tags = Counter(tags)
+    # tags[None] = 0
     tags = {}
-    data_atual = datetime.now() 
+    data_atual = datetime.now()
     data_ontem = data_atual - timedelta(days=1)
-    return render(
-        request, "home.html", {
-            "metamemo": metamemo,
-            "y_date":data_ontem,
-            "date":data_atual, 
-            "tags": tags
-            })
+    return render(request, "home.html", {"metamemo": metamemo, "y_date": data_ontem, "date": data_atual, "tags": tags})
 
 
 def news(request):
@@ -41,15 +27,10 @@ def news(request):
 
     sources_total = {
         source["source__name"]: source["total"]
-        for source in newsfilter.qs.values("source__name")
-        .annotate(total=Count("source__name"))
-        .order_by("total")
+        for source in newsfilter.qs.values("source__name").annotate(total=Count("source__name")).order_by("total")
     }
 
-    sources = {
-        source.name: source.image.url if source.image else None
-        for source in NewsSource.objects.all()
-    }
+    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
 
     items = Paginator(newsfilter.qs, 50)
 
@@ -116,10 +97,7 @@ def contexts(request):
     else:
         pages = list(range(page_nm - 1, page_nm + 2))
 
-    sources = {
-        source.name: source.image.url if source.image else None
-        for source in NewsSource.objects.all()
-    }
+    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
 
     data = {
         "path": request.resolver_match.url_name,
@@ -135,8 +113,6 @@ def contexts(request):
 
 
 def lista(request):
-    metamemo = MetaMemo.objects.all()
-
     social_sources = {
         "Facebook": "face",
         "Twitter": "twitter1",
@@ -146,21 +122,21 @@ def lista(request):
         "Blog": "blog1",
     }
 
-    #memoqs = 
+    # memoqs =
     memofilter = MemoItemFilter(
         request.GET,
         queryset=MemoItem.objects.all().order_by("-content_date"),
     )
 
-    #sources_total = {
+    # sources_total = {
     #    source["source__name"]: source["total"]
     #    for source in memofilter.qs.values("source__name")
     #    .annotate(total=Count("source__name"))
     #    .order_by("total")
-    #}
+    # }
 
     items = Paginator(memofilter.qs.prefetch_related("medias").select_related("author", "source"), 50)
-    
+
     try:
         page_nm = int(request.GET.get("page", 1))
     except ValueError:
@@ -175,12 +151,12 @@ def lista(request):
         pages = list(range(page_nm - 1, page_nm + 2))
 
     # ToDo: Implementar tags
-    #tags_g = {}
-    #tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
-    #tags_g = Counter(tags_raw)
-    #tags_g[None] = 0
-    #tags = tags_g.most_common(10)
-    
+    # tags_g = {}
+    # tags_raw = memofilter.qs.values_list("keyword__word", flat=True)
+    # tags_g = Counter(tags_raw)
+    # tags_g[None] = 0
+    # tags = tags_g.most_common(10)
+
     dates = (request.GET.get("start_date"), request.GET.get("end_date"))
 
     data = {
@@ -190,9 +166,9 @@ def lista(request):
         "items": items.get_page(page_nm),
         "results_total": items.count,
         "social_sources": social_sources,
-        "sources_total": [],#sources_total,
-        #"metamemo": metamemo,
-        #"tags": tags,
+        "sources_total": [],  # sources_total,
+        # "metamemo": metamemo,
+        # "tags": tags,
     }
 
     return render(request, "files.html", {"data": data})
@@ -217,9 +193,7 @@ def get_media(request, item_id):
                     "status",
                 ]
             )
-            download_async.apply_async(
-                kwargs={"url": p.original_url, "mediatype": "VIDEO"}, queue="fastlane"
-            )
+            download_async.apply_async(kwargs={"url": p.original_url, "mediatype": "VIDEO"}, queue="fastlane")
         elif p.mediatype == "IMAGE" and p.status in ["INITIAL", "FAILED_DOWNLOAD"]:
             p.status = "DOWNLOADING"
             p.save(
@@ -227,9 +201,7 @@ def get_media(request, item_id):
                     "status",
                 ]
             )
-            download_img_async.apply_async(
-                kwargs={"url": p.original_url, "pk": p.pk}, queue="fastlane"
-            )
+            download_img_async.apply_async(kwargs={"url": p.original_url, "pk": p.pk}, queue="fastlane")
         response["medias"].append(
             {
                 "mediatype": p.mediatype,

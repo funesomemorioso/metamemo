@@ -13,13 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
-from metamemoapp import views
 from blog import views as blogviews
+from metamemoapp import views
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -35,5 +35,5 @@ urlpatterns = [
     path("celery-progress/", include("celery_progress.urls")),
     path("__debug__", include("debug_toolbar.urls")),
     path("summernote/", include("django_summernote.urls")),
-    path('timeline/', include('timeline.urls'))
+    path("timeline/", include("timeline.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

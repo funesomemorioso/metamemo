@@ -1,43 +1,46 @@
 from tastypie import fields
-from tastypie.resources import ModelResource, Resource, ALL_WITH_RELATIONS
+from tastypie.resources import ALL_WITH_RELATIONS, ModelResource
+
 from timeline.models import Fact, Session, Timeline
+
 
 class TimelineResource(ModelResource):
     class Meta:
-        resource_name = 'timeline'
+        resource_name = "timeline"
         queryset = Timeline.objects.all()
-        filtering = {
-            "name" : ('exact',)
-        }
+        filtering = {"name": ("exact",)}
+
     def determine_format(self, request):
-        return 'application/json'
+        return "application/json"
+
 
 class SessionResource(ModelResource):
-    timeline = fields.ForeignKey(TimelineResource, 'timeline', full=True)
+    timeline = fields.ForeignKey(TimelineResource, "timeline", full=True)
 
     class Meta:
-        resource_name = 'session'
+        resource_name = "session"
         queryset = Session.objects.all()
-        list_allowed_methods = ['get']
-        detail_allowed_methods = ['get']
+        list_allowed_methods = ["get"]
+        detail_allowed_methods = ["get"]
         filtering = {
             "timeline": ALL_WITH_RELATIONS,
         }
-    
+
     def determine_format(self, request):
-        return 'application/json'
+        return "application/json"
+
 
 class FactResource(ModelResource):
-    timeline = fields.ForeignKey(TimelineResource, 'timeline', full=True)
+    timeline = fields.ForeignKey(TimelineResource, "timeline", full=True)
 
     class Meta:
-        resource_name = 'fact'
+        resource_name = "fact"
         queryset = Fact.objects.all()
-        list_allowed_methods = ['get']
-        detail_allowed_methods = ['get']
+        list_allowed_methods = ["get"]
+        detail_allowed_methods = ["get"]
         filtering = {
             "timeline": ALL_WITH_RELATIONS,
         }
-    
+
     def determine_format(self, request):
-        return 'application/json'
+        return "application/json"
