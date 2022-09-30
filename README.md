@@ -48,6 +48,7 @@ alguma dependência de sistema ou Python), basta executar:
 
 ```shell
 docker compose stop web
+docker compose rm -f web
 docker compose build web  # em alguns casos, `--no-cache` pode ajudar
 docker compose start web
 ```

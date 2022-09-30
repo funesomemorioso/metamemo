@@ -21,7 +21,7 @@ services:
         condition: service_started
 
   database:
-    image: mariadb:10.3.34
+    image: mariadb:10.3-focal
     container_name: metamemo_mariadb
     ports:
       - 33060:3306
