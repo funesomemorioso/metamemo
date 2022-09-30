@@ -1,0 +1,12 @@
+{
+  "cron": [
+    { "schedule":   "0 3,9,15,21 * * *", "command": "./crawl.sh instagram" },
+    { "schedule":  "10 3,9,15,21 * * *", "command": "./crawl.sh facebook" },
+    { "schedule":  "20 3,9,15,21 * * *", "command": "./crawl.sh youtube" },
+    { "schedule":  "30 3,9,15,21 * * *", "command": "./crawl.sh telegram" },
+    { "schedule":  "40 3,9,15,21 * * *", "command": "./crawl.sh twitter" },
+    { "schedule":  "50 3,9,15,21 * * *", "command": "./crawl.sh folha" },
+
+    { "schedule":  "*/10 * * * *", "command": "python manage.py download_a_few -n 10 -q 'fastlane@metamemo.local' -t VIDEO" }
+  ]
+}
