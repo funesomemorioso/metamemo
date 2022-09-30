@@ -10,9 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
-from decouple import Csv, config
 import os
+from pathlib import Path
+
+import dj_database_url
+from decouple import Csv, config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -58,8 +61,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+if DEBUG:
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = "metamemo.urls"
 
@@ -88,8 +92,8 @@ WSGI_APPLICATION = "metamemo.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    # TODO: change to use dj_database_url
-    "default": {
+    "default": dj_database_url.config(),
+    "other": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
@@ -97,15 +101,8 @@ DATABASES = {
         "HOST": config("DB_HOST"),
         "PORT": config("DB_PORT"),
         "OPTIONS": {"charset": "utf8mb4"},
-    }
+    },
 }
-
-# DATABASES = {
-#    'default': {
-#       'ENGINE': 'djongo',
-#       'NAME': 'metamemo',
-#    }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

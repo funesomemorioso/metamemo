@@ -6,6 +6,7 @@ boto3==1.21.13
 celery-progress==0.1.2
 celery==5.2.3
 cryptg==0.2.post4
+dj_database_url==1.0.0
 django-celery-results==2.2.0
 django-filter==21.1
 django-import-export==2.7.1
@@ -19,6 +20,7 @@ google-cloud-speech==2.12.0
 google-cloud-storage==2.1.0
 lxml==4.8.0
 mysqlclient==2.1.0
+psycopg2-binary==2.9.3
 pydub==0.25.1
 python-decouple==3.6
 tweepy==4.8.0
