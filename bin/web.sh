@@ -8,6 +8,9 @@ if [ -z ${PORT+x} ]; then
 	PORT=5000
 fi
 HOST_PORT="0.0.0.0:$PORT"
+if [ -z ${USE_ASGI+x} ]; then
+	USE_ASGI=false
+fi
 
 if [[ $(echo $DEV_BUILD | tr a-z A-Z) = "TRUE" ]]; then
 	python manage.py runserver $HOST_PORT
@@ -17,7 +20,7 @@ else
 	fi
 
 	OPTS="--bind=$HOST_PORT --chdir=/app --log-file - --workers=$WEB_WORKERS"
-	if [[ $(echo $USE_ASGI | tr a-z A-Z) = "TRUE" ]]; then
+	if [[ "$(echo $USE_ASGI | tr a-z A-Z)" = "TRUE" ]]; then
 		APP_MODULE="metamemo.asgi:application"
 		OPTS="$OPTS --worker-class uvicorn.workers.UvicornWorker"
 	else
