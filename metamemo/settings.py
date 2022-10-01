@@ -16,6 +16,7 @@ from pathlib import Path
 import dj_database_url
 import sentry_sdk
 from decouple import Csv, config
+from django.utils.log import DEFAULT_LOGGING
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,18 +25,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool, default=False)
 
+# Hostname
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
 
 # Application definition
-
 INSTALLED_APPS = [
     "metamemoapp",
     "timeline",
@@ -94,20 +94,28 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = "metamemo.wsgi.application"
 
+# Error reporting
+SENTRY_DSN = config("SENTRY_DSN", default=None)
+if SENTRY_DSN:
+    sentry_sdk.init(
+        SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        send_default_pii=True,
+    )
+LOGGING = DEFAULT_LOGGING.copy()
+LOGGING["handlers"]["null"] = {"class": "logging.NullHandler"}
+LOGGING["loggers"]["django.security.DisallowedHost"] = {"handlers": ["null"], "propagate": False}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     "default": dj_database_url.config(),
 }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -123,52 +131,39 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = "pt-br"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = "/static/"
 STATIC_ROOT = str(BASE_DIR) + "/static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# DJANGO STORAGES
+# Storage
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_ENDPOINT_URL = config("AWS_S3_ENDPOINT_URL", default="")
 AWS_S3_ACCESS_KEY_ID = config("AWS_S3_ACCESS_KEY_ID", default="")
 AWS_S3_SECRET_ACCESS_KEY = config("AWS_S3_SECRET_ACCESS_KEY", default="")
 AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default="")
 
-# CELERY SETTINGS
-
+# Celery
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_BROKER_URL = config("REDIS_URL")
 
-
-# METAMEMO SETTINGS
-
+# Custom settings
 METAMEMO_LANGUAGE = "pt-BR"
 FACEBOOK_COOKIES = config("FACEBOOK_COOKIES", default="")
 FACEBOOK_PAGES = config("FACEBOOK_PAGES", default=0, cast=int)
 FACEBOOK_PPP = config("FACEBOOK_PPP", default=0, cast=int)
-
 
 GOOGLE_APPLICATION_CREDENTIALS = config("GOOGLE_APPLICATION_CREDENTIALS", default="")
 GOOGLE_BLOGGER_CREDENTIALS = config("GOOGLE_BLOGGER_CREDENTIALS", default="")
@@ -176,11 +171,3 @@ GOOGLE_YOUTUBE_CREDENTIALS = config("GOOGLE_YOUTUBE_CREDENTIALS", default="")
 
 CROWDTANGLE_FACEBOOK_API_KEY = config("CROWDTANGLE_FACEBOOK_API_KEY", default="")
 CROWDTANGLE_INSTAGRAM_API_KEY = config("CROWDTANGLE_INSTAGRAM_API_KEY", default="")
-
-SENTRY_DSN = config("SENTRY_DSN", default=None)
-if SENTRY_DSN:
-    sentry_sdk.init(
-        SENTRY_DSN,
-        integrations=[DjangoIntegration()],
-        send_default_pii=True,
-    )
