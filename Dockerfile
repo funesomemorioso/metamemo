@@ -10,7 +10,7 @@ RUN apt update \
   && echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && wget --quiet -O /etc/apt/trusted.gpg.d/postgres.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc \
   && apt update \
-  && apt install -y mariadb-client libmariadb-dev postgresql-client-14 libpq-dev \
+  && apt install -y postgresql-client-14 libpq-dev \
   && apt upgrade -y \
   && apt purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt clean \
@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -U pip
 COPY requirements.txt /app/
 COPY requirements-development.txt /app/
 RUN pip install --no-cache-dir -r /app/requirements.txt \
-  && if [ $(echo $DEV_BUILD | tr a-z A-Z) = "TRUE" ]; then pip install --no-cache-dir -r /app/requirements-development.txt; fi
+  && if [ "$(echo $DEV_BUILD | tr a-z A-Z)" = "TRUE" ]; then pip install --no-cache-dir -r /app/requirements-development.txt; fi
 
 COPY . /app/
 

@@ -32,13 +32,6 @@ services:
       retries: 3
       start_period: 30s
 
-  database_old:
-    image: mariadb:10.3-focal
-    container_name: metamemo_mariadb
-    ports:
-      - 33060:3306
-    env_file: .env
-
   broker:
     image: redis:6
     container_name: metamemo_redis

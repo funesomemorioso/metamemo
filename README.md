@@ -20,13 +20,6 @@ logs -t` e quando todos os serviços tiverem subido, basta acessar
 
 ## Configurações iniciais
 
-Não se esqueça de, na hora de criar o banco de dados, configurar character set
-e collation. Exemplo (no MariaDB 10.3.34), execute `docker compose exec web bash`:
-
-```sql
-CREATE DATABASE metamemo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
 Para criar a estrutura dos modelos no banco de dados, execute o `bash` dentro
 do container `web` com `docker compose exec web bash` e, dentro do container,
 execute:

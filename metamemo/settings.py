@@ -102,15 +102,6 @@ WSGI_APPLICATION = "metamemo.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(),
-    "other": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASS"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
-        "OPTIONS": {"charset": "utf8mb4"},
-    },
 }
 
 # Password validation
