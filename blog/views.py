@@ -1,8 +1,14 @@
-from django.shortcuts import render
-from .models import Post
 from django.core.paginator import Paginator
+from django.shortcuts import redirect, render
 
-# Create your views here.
+from .models import Post
+
+
+# O blog não está mais hospedado no Django - agora temos um Medium
+def blog_redir(request, post=None):
+    return redirect("https://medium.com/@metamixblog")
+
+
 def blog(request, post=None):
     if post:
         post = Post.objects.get(slug=post)

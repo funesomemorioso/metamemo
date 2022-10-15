@@ -24,8 +24,8 @@ from blog import views as blogviews
 urlpatterns = [
     path("", views.home, name="home"),
     path("content/<str:page>", views.content, name="content"),
-    path("blog/", blogviews.blog, name="blog"),
-    path("blog/<str:post>", blogviews.blog, name="blog"),
+    path("blog/", blogviews.blog_redir, name="blog"),
+    path("blog/<str:post>", blogviews.blog_redir, name="blog"),
     path("lista/", views.lista, name="lista"),
     path("news/", views.news, name="news"),
     path("contexts/", views.contexts, name="contexts"),
