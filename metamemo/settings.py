@@ -88,6 +88,7 @@ MIDDLEWARE = [
 ]
 if DEBUG:
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+    MIDDLEWARE.append("utils.sqlprint.SqlPrintingMiddleware")
 
 ROOT_URLCONF = "metamemo.urls"
 
