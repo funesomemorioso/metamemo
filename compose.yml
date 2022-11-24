@@ -5,10 +5,9 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - 5000:80
+      - 5000:5000
     volumes:
       - .:/app
-      - django-static:/app/staticfiles
     build:
       context: .
       dockerfile: Dockerfile
@@ -25,6 +24,9 @@ services:
     shm_size: 2g
     container_name: metamemo_postgres
     env_file: .env
+    volumes:
+      - ${PWD}/deploy/postgresql.dev.conf:/etc/postgresql/postgresql.conf
+      - ${PWD}/data/database:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -53,6 +55,3 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
-
-volumes:
-  django-static:

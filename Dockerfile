@@ -1,4 +1,4 @@
-FROM python:3.8-slim-bullseye
+FROM python:3.8-bullseye
 
 ENV PYTHONUNBUFFERED 1
 ARG DEV_BUILD
