@@ -162,6 +162,29 @@ class MemoItem(models.Model):
         ]
         ordering = ["-content_date"]
 
+    def serialize(self):
+        video, image = None, None
+        for media in self.medias.all():
+            if video is None and media.mediatype == "VIDEO":
+                video = media
+            elif image is None and media.mediatype == "IMAGE":
+                image = media
+
+        return {
+            "id": self.id,
+            "content_date": self.content_date,
+            "likes": self.likes,
+            "interactions": self.interactions,
+            "shares": self.shares,
+            "title": self.title,
+            "source": self.source.name,
+            "author": self.author.name,
+            "url": self.url,
+            "video_url": video.original_url if video is not None else None,
+            "image_url": image.original_url if image is not None else None,
+            "content": self.content,
+        }
+
 
 class MemoContextQuerySet(models.QuerySet):
     def since(self, value):

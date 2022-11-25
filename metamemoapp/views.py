@@ -13,8 +13,25 @@ from metamemoapp.tasks import download_async, download_img_async
 DEFAULT_TIMEZONE = timezone.get_default_timezone()
 
 
-def bad_request(request):
-    return render(request, "content/oops.html", status=400)
+def bad_request(request, message=None):
+    return render(request, "content/oops.html", {"message": message}, status=400)
+
+
+def csv_response(queryset, filename):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = "attachment; filename=metamemo-search.csv"
+    writer = None
+    for obj in queryset:
+        row = obj.serialize()
+        if writer is None:
+            writer = csv.DictWriter(response, fieldnames=list(row.keys()))
+            writer.writeheader()
+        writer.writerow(row)
+    return response
+
+
+def json_response(queryset):
+    return JsonResponse({"items": [obj.serialize() for  obj in queryset]})
 
 
 def define_pages(page, last_page):
@@ -75,7 +92,7 @@ def news(request):
         start_date = qs.date("start_date")
         end_date = qs.date("end_date")
     except ValueError:
-        return bad_request(request)
+        return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = NewsItem.objects.since(start_date).until(end_date)
     sources_total = {
@@ -106,7 +123,7 @@ def contexts(request):
         start_date = qs.date("start_date")
         end_date = qs.date("end_date")
     except ValueError:
-        return bad_request(request)
+        return bad_request(request, message="Erro de formato nos filtros")
 
     memocontext = MemoContext.objects.since(start_date).until(end_date)
     newscovers = NewsCover.objects.since(start_date).until(end_date)
@@ -128,13 +145,14 @@ def lista(request):
     qs = QueryStringParser(request.GET)
     try:
         page = qs.int("page", default=1)
+        output_format = qs.str("format")
         content = qs.str("content")
         authors = qs.list("author", type=str)
         sources = qs.list("source", type=str)
         start_date = qs.date("start_date")
         end_date = qs.date("end_date")
     except ValueError:
-        return bad_request(request)
+        return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = (
         MemoItem.objects
@@ -144,6 +162,14 @@ def lista(request):
         .prefetch_related("medias")
     )
 
+    if output_format:
+        output_format = str(output_format or "").lower().strip()
+        if output_format == "csv":
+            return csv_response(queryset, "metamemo-search.csv")
+        elif output_format == "json":
+            return json_response(queryset)
+        else:
+            return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 
     items = Paginator(queryset, 50)
     data = {
