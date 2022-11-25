@@ -23,15 +23,16 @@ def home(request):
 
 
 def news(request):
-    newsfilter = MemoNewsFilter(request.GET, queryset=NewsItem.objects.all().order_by("-content_date"))
-
+    qs = NewsItem.objects.all().order_by("-content_date").select_related("source")
+    newsfilter = MemoNewsFilter(request.GET, queryset=qs)
     sources_total = {
         source["source__name"]: source["total"]
         for source in newsfilter.qs.values("source__name").annotate(total=Count("source__name")).order_by("total")
     }
-
-    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
-
+    sources = {
+        source.name: source.image.url if source.image else None
+        for source in NewsSource.objects.all()
+    }
     items = Paginator(newsfilter.qs, 50)
 
     try:
@@ -163,17 +164,16 @@ def lista(request):
         # "metamemo": metamemo,
         # "tags": tags,
     }
-
     return render(request, "files.html", {"data": data})
 
 
 def memoitem(request, item_id):
-    memoitem = MemoItem.objects.get(pk=item_id)
+    memoitem = MemoItem.objects.select_related("author").prefetch_related("medias").get(pk=item_id)
     return render(request, "memoitem.html", {"memoitem": memoitem})
 
 
 def get_media(request, item_id):
-    memoitem = MemoItem.objects.get(pk=item_id)
+    memoitem = MemoItem.objects.prefetch_related("medias").get(pk=item_id)
 
     response = {
         "medias": [],

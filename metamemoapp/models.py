@@ -53,12 +53,17 @@ class MetaMemo(models.Model):
     twitter_handle = models.CharField(max_length=200, blank=True)
     youtube_handle = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
+
     def get_facebook(self):
         if self.facebook_handle:
             call_command("import_facebook", username=self.facebook_handle, author=self.name)
-
-    def __str__(self):
-        return self.name
 
 
 class MemoMedia(models.Model):
@@ -90,7 +95,49 @@ class MemoMedia(models.Model):
         return self.original_id
 
 
+class MemoItemQuerySet(models.QuerySet):
+    def get_full(self, pk):
+        return self.select_related("author").prefetch_related("medias").get(pk=pk)
+
+    def from_author(self, value):
+        if not value:
+            return self
+        return self.filter(author__name=value).select_related("author")
+
+    def from_authors(self, values):
+        if not values:
+            return self
+        return self.filter(author__name__in=values).select_related("author")
+
+    def from_source(self, value):
+        if not value:
+            return self
+        return self.filter(source__name=value).select_related("source")
+
+    def from_sources(self, values):
+        if not values:
+            return self
+        return self.filter(source__name__in=values).select_related("source")
+
+    def since(self, value):
+        if not value:
+            return self
+        return self.filter(content_date__gte=value)
+
+    def until(self, value):
+        if not value:
+            return self
+        return self.filter(content_date__lte=value)
+
+    def search(self, value):
+        if not value:
+            return self
+        return self.filter(models.Q(content__icontains=value) | models.Q(title__icontains=value))
+
+
 class MemoItem(models.Model):
+    objects = MemoItemQuerySet().as_manager()
+
     author = models.ForeignKey(MetaMemo, on_delete=models.CASCADE)
     source = models.ForeignKey(MemoSource, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
@@ -109,22 +156,40 @@ class MemoItem(models.Model):
     def __str__(self):
         return self.title
 
-    def getImageUrl(self):
-        img = self.medias.filter(mediatype="IMAGE").exclude(media=None)
-        if img and img.first().media:
-            return img.first().media.url
-        elif self.author.picture:
-            return self.author.picture.url
-        return None
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_date"]),
+        ]
+        ordering = ["-content_date"]
+
+
+class MemoContextQuerySet(models.QuerySet):
+    def since(self, value):
+        if not value:
+            return self
+        return self.filter(start_date__gte=value)
+
+    def until(self, value):
+        if not value:
+            return self
+        return self.filter(end_date__lte=value)
 
 
 class MemoContext(models.Model):
+    objects = MemoContextQuerySet().as_manager()
+
     context = models.TextField(blank=True)
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
     url = models.URLField(blank=True, null=True)
     source = models.CharField(max_length=500, blank=True, null=True)
     keyword = models.ManyToManyField(MemoKeyWord, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["start_date", "end_date"]),
+        ]
+        ordering = ["-start_date"]
 
     def __str__(self):
         return self.context
@@ -138,6 +203,11 @@ class MemoNews(models.Model):
     source = models.CharField(max_length=200)
     metamemo = models.ForeignKey(MetaMemo, on_delete=models.CASCADE, null=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_date"]),
+        ]
+
     def __str__(self):
         return f"{self.title} - {self.source}"
 
@@ -150,7 +220,21 @@ class NewsSource(models.Model):
         return self.name
 
 
+class NewsItemQuerySet(models.QuerySet):
+    def since(self, value):
+        if not value:
+            return self
+        return self.filter(content_date__gte=value)
+
+    def until(self, value):
+        if not value:
+            return self
+        return self.filter(content_date__lte=value)
+
+
 class NewsItem(models.Model):
+    objects = NewsItemQuerySet().as_manager()
+
     title = models.CharField(max_length=200)
     url = models.URLField()
     text = models.TextField(blank=True)
@@ -158,11 +242,35 @@ class NewsItem(models.Model):
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)
     metamemo = models.ForeignKey(MetaMemo, on_delete=models.CASCADE, null=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_date"]),
+        ]
+        ordering = ["-content_date"]
+
     def __str__(self):
         return f"{self.title} - {self.source}"
+
+
+class NewsCoverQuerySet(models.QuerySet):
+    def since(self, value):
+        if not value:
+            return self
+        return self.filter(content_date__gte=value)
+
+    def until(self, value):
+        if not value:
+            return self
+        return self.filter(content_date__lte=value)
 
 
 class NewsCover(models.Model):
     content_date = models.DateTimeField(null=True)
     media = models.ImageField(upload_to="cover", blank=True)
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_date"]),
+        ]
+        ordering = ["-content_date"]
