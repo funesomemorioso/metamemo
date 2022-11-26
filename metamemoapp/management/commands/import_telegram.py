@@ -10,7 +10,7 @@ import io
 from textwrap import shorten
 
 from asgiref.sync import sync_to_async
-from decouple import config
+from django.conf import settings
 from django.core.files.base import File
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -45,8 +45,8 @@ class Command(BaseCommand):
             )
         )
 
-        self.telegram_api_id = config("TELEGRAM_API_ID", default="")
-        self.telegram_api_hash = config("TELEGRAM_API_HASH", default="")
+        self.telegram_api_id = settings.TELEGRAM_API_ID
+        self.telegram_api_hash = settings.TELEGRAM_API_HASH
 
         if not self.telegram_api_hash and not self.telegram_api_id:
             print("You need to setup the API in .env")

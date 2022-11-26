@@ -48,11 +48,11 @@ class Command(BaseCommand):
 
         # Leva as configurações para o settings.py (que herdam do .env)
         if self.source == "Facebook":
-            apikey = getattr(settings, "CROWDTANGLE_FACEBOOK_API_KEY", None)
+            apikey = settings.CROWDTANGLE_FACEBOOK_API_KEY
         elif self.source == "Instagram":
-            apikey = getattr(settings, "CROWDTANGLE_INSTAGRAM_API_KEY", None)
-        pages = getattr(settings, "CROWDTANGLE_POSTS_COUNT", 100)
-        interval = urllib.parse.quote_plus(getattr(settings, "CROWDTANGLE_POSTS_INTERVAL", "5 DAY"))
+            apikey = settings.CROWDTANGLE_INSTAGRAM_API_KEY
+        pages = settings.CROWDTANGLE_POSTS_COUNT
+        interval = urllib.parse.quote_plus(settings.CROWDTANGLE_POSTS_INTERVAL)
 
         url = f"https://api.crowdtangle.com/posts?token={apikey}&accounts={self.username}&sortBy=date&timeframe={interval}&count={pages}"
         self.parseUrl(url)

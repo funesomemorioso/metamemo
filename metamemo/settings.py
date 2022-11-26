@@ -10,14 +10,27 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import base64
 import os
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import dj_database_url
 import sentry_sdk
 from decouple import Csv, config
 from django.utils.log import DEFAULT_LOGGING
 from sentry_sdk.integrations.django import DjangoIntegration
+
+
+def base64_decode_to_file(value):
+    """Decode base64 value, write to a temp file and return filename"""
+    if not value:
+        return ""
+    credentials = base64.b64decode(value)
+    temp = NamedTemporaryFile(delete=False)
+    with open(temp.name, mode="wb") as fobj:
+        fobj.write(credentials)
+    return temp.name
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -161,13 +174,21 @@ CELERY_BROKER_URL = config("REDIS_URL")
 
 # Custom settings
 METAMEMO_LANGUAGE = "pt-BR"
-FACEBOOK_COOKIES = config("FACEBOOK_COOKIES", default="")
-FACEBOOK_PAGES = config("FACEBOOK_PAGES", default=0, cast=int)
-FACEBOOK_PPP = config("FACEBOOK_PPP", default=0, cast=int)
 
-GOOGLE_APPLICATION_CREDENTIALS = config("GOOGLE_APPLICATION_CREDENTIALS", default="")
-GOOGLE_BLOGGER_CREDENTIALS = config("GOOGLE_BLOGGER_CREDENTIALS", default="")
-GOOGLE_YOUTUBE_CREDENTIALS = config("GOOGLE_YOUTUBE_CREDENTIALS", default="")
+TWITTER_BEARER_TOKEN = config("TWITTER_BEARER_TOKEN", default="")
+
+FACEBOOK_COOKIES = base64_decode_to_file(config("FACEBOOK_COOKIES_BASE64", default=""))
+FACEBOOK_PAGES = config("FACEBOOK_PAGES", default=4, cast=int)
+FACEBOOK_PPP = config("FACEBOOK_PPP", default=10, cast=int)
+
+TELEGRAM_API_ID = config("TELEGRAM_API_ID", default="")
+TELEGRAM_API_HASH = config("TELEGRAM_API_HASH", default="")
 
 CROWDTANGLE_FACEBOOK_API_KEY = config("CROWDTANGLE_FACEBOOK_API_KEY", default="")
 CROWDTANGLE_INSTAGRAM_API_KEY = config("CROWDTANGLE_INSTAGRAM_API_KEY", default="")
+CROWDTANGLE_POSTS_COUNT = config("CROWDTANGLE_POSTS_COUNT", default=100, cast=int)
+CROWDTANGLE_POSTS_INTERVAL = config("CROWDTANGLE_POSTS_INTERVAL", default="5 DAY")
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = base64_decode_to_file(config("GOOGLE_APPLICATION_CREDENTIALS_BASE64", default=""))
+GOOGLE_BLOGGER_CREDENTIALS = config("GOOGLE_BLOGGER_CREDENTIALS", default="")
+GOOGLE_YOUTUBE_CREDENTIALS = config("GOOGLE_YOUTUBE_CREDENTIALS", default="")

@@ -2,7 +2,7 @@ import json
 from textwrap import shorten
 
 import tweepy
-from decouple import config
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils import timezone
@@ -42,13 +42,11 @@ class Command(BaseCommand):
             "original_id", flat=True
         )
 
-        self.twitter_bearer = config("TWITTER_BEARER_TOKEN", default="")
-
-        if not self.twitter_bearer:
+        if not settings.TWITTER_BEARER_TOKEN:
             print("You need to setup the bearer token in .env")
             raise
 
-        self.client = tweepy.Client(self.twitter_bearer)
+        self.client = tweepy.Client(settings.TWITTER_BEARER_TOKEN)
         self.user = self.client.get_user(username=self.username)
 
         self.getTweets()

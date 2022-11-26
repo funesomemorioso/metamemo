@@ -6,9 +6,6 @@ from django.conf import settings
 from google.cloud import speech, storage
 from pydub import AudioSegment
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None)
-METAMEMO_DEFAULT_LANGUAGE = getattr(settings, "METAMEMO_DEFAULT_LANGUAGE", "pt-BR")
-
 
 def convert_to_wav(audio_file):
     sound = AudioSegment.from_file(audio_file)
@@ -59,7 +56,7 @@ def google_transcribe(video, bucket_name="metamemo"):
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=frame_rate,
-        language_code=METAMEMO_DEFAULT_LANGUAGE,
+        language_code=settings.METAMEMO_DEFAULT_LANGUAGE,
     )
 
     # Detects speech in the audio file
@@ -76,7 +73,7 @@ def google_transcribe(video, bucket_name="metamemo"):
 def generate_keyword(text):
     max_ngram_size = 1
 
-    kw_extractor = yake.KeywordExtractor(lan=METAMEMO_DEFAULT_LANGUAGE, n=max_ngram_size)
+    kw_extractor = yake.KeywordExtractor(lan=settings.METAMEMO_DEFAULT_LANGUAGE, n=max_ngram_size)
 
     keywords = kw_extractor.extract_keywords(text)
     return keywords

@@ -42,7 +42,7 @@ class Command(BaseCommand):
         )
 
         # Leva as configurações para o settings.py (que herdam do .env)
-        self.apikey = getattr(settings, "GOOGLE_YOUTUBE_CREDENTIALS", None)
+        self.apikey = settings.GOOGLE_YOUTUBE_CREDENTIALS
 
         self.base_url = f"https://www.googleapis.com/youtube/v3/search?channelId={self.channel}&type=video&key={self.apikey}&maxResults=50&part=id"
 

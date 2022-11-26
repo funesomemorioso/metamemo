@@ -14,9 +14,6 @@ from yt_dlp import YoutubeDL
 
 from metamemoapp.models import MemoMedia
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = getattr(settings, "GOOGLE_APPLICATION_CREDENTIALS", None)
-METAMEMO_DEFAULT_LANGUAGE = getattr(settings, "METAMEMO_DEFAULT_LANGUAGE", "pt-BR")
-
 
 @shared_task
 def convert_to_wave_async(media):
@@ -54,7 +51,7 @@ def transcribe_on_google_async(result):
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=result["frame_rate"],
-        language_code=METAMEMO_DEFAULT_LANGUAGE,
+        language_code=settings.METAMEMO_DEFAULT_LANGUAGE,
     )
 
     # Detects speech in the audio file

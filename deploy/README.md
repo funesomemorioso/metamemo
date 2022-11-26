@@ -121,6 +121,22 @@ export POSTGRES_NAME="postgres_${APP_NAME}"
 export REDIS_NAME="redis_${APP_NAME}"
 export SECRET_KEY=$(openssl rand -base64 64 | tr -d ' \n')
 export STORAGE_PATH="/var/lib/dokku/data/storage/$APP_NAME"
+
+export TWITTER_BEARER_TOKEN=xxx
+export FACEBOOK_COOKIES_BASE64=xxx
+export TELEGRAM_API_ID=xxx
+export TELEGRAM_API_HASH=xxx
+export CROWDTANGLE_FACEBOOK_API_KEY=xxx
+export CROWDTANGLE_INSTAGRAM_API_KEY=xxx
+export GOOGLE_BLOGGER_CREDENTIALS=xxx
+export GOOGLE_YOUTUBE_CREDENTIALS=xxx
+export GOOGLE_APPLICATION_CREDENTIALS_BASE64=xxx
+
+# Opcionais:
+# FACEBOOK_PAGES (default: 4)
+# FACEBOOK_PPP (default: 10)
+# CROWDTANGLE_POSTS_COUNT (default: 100)
+# CROWDTANGLE_POSTS_INTERVAL (default: "5 DAY")
 ```
 
 Depois que as variáveis foram definidas, podemos criar o app, os serviços de
@@ -157,6 +173,23 @@ dokku config:set --no-restart $APP_NAME DEV_BUILD="$DEV_BUILD"
 dokku config:set --no-restart $APP_NAME DOKKU_LETSENCRYPT_EMAIL="$LETSENCRYPT_EMAIL"
 dokku config:set --no-restart $APP_NAME SECRET_KEY="$SECRET_KEY"
 dokku config:set --no-restart $APP_NAME SENTRY_DSN="$SENTRY_DSN"
+
+# Configurações para mídias sociais:
+dokku config:set --no-restart $APP_NAME TWITTER_BEARER_TOKEN="$TWITTER_BEARER_TOKEN"
+dokku config:set --no-restart $APP_NAME FACEBOOK_COOKIES_BASE64="$FACEBOOK_COOKIES_BASE64"
+dokku config:set --no-restart $APP_NAME TELEGRAM_API_ID="$TELEGRAM_API_ID"
+dokku config:set --no-restart $APP_NAME TELEGRAM_API_HASH="$TELEGRAM_API_HASH"
+dokku config:set --no-restart $APP_NAME CROWDTANGLE_FACEBOOK_API_KEY="$CROWDTANGLE_FACEBOOK_API_KEY"
+dokku config:set --no-restart $APP_NAME CROWDTANGLE_INSTAGRAM_API_KEY="$CROWDTANGLE_INSTAGRAM_API_KEY"
+dokku config:set --no-restart $APP_NAME GOOGLE_BLOGGER_CREDENTIALS="$GOOGLE_BLOGGER_CREDENTIALS"
+dokku config:set --no-restart $APP_NAME GOOGLE_YOUTUBE_CREDENTIALS="$GOOGLE_YOUTUBE_CREDENTIALS"
+dokku config:set --no-restart $APP_NAME GOOGLE_APPLICATION_CREDENTIALS_BASE64="$GOOGLE_APPLICATION_CREDENTIALS_BASE64"
+
+# Opcionais:
+# dokku config:set --no-restart $APP_NAME FACEBOOK_PAGES="$FACEBOOK_PAGES"
+# dokku config:set --no-restart $APP_NAME FACEBOOK_PPP="$FACEBOOK_PPP"
+# dokku config:set --no-restart $APP_NAME CROWDTANGLE_POSTS_COUNT="$CROWDTANGLE_POSTS_COUNT"
+# dokku config:set --no-restart $APP_NAME CROWDTANGLE_POSTS_INTERVAL="$CROWDTANGLE_POSTS_INTERVAL"
 ```
 
 Com o app criado e configurado, agora precisamos fazer o primeiro deployment,

@@ -45,9 +45,9 @@ class Command(BaseCommand):
             memo_itens = []
 
         # Leva as configurações para o settings.py (que herdam do .env)
-        cookies_file = getattr(settings, "FACEBOOK_COOKIES", None)
-        pages = getattr(settings, "FACEBOOK_PAGES", 4)
-        ppp = getattr(settings, "FACEBOOK_PPP", 10)
+        cookies_file = settings.FACEBOOK_COOKIES
+        pages = settings.FACEBOOK_PAGES
+        ppp = settings.FACEBOOK_PPP
 
         if not cookies_file or not os.path.isfile(cookies_file):
             print("Facebook Cookie File not found!")
