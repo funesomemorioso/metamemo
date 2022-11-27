@@ -1,5 +1,3 @@
-import datetime
-
 # import csv
 import pymongo
 from django.core.management.base import BaseCommand

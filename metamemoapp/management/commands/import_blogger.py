@@ -36,9 +36,7 @@ class Command(BaseCommand):
 
         # Leva as configurações para o settings.py (que herdam do .env)
         self.apikey = settings.GOOGLE_BLOGGER_CREDENTIALS
-
         url = f"https://www.googleapis.com/blogger/v3/blogs/byurl?url={self.url}&key={self.apikey}"
-
         self.parseUrl(url)
 
     def parseUrl(self, url):

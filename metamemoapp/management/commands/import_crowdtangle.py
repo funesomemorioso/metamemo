@@ -36,7 +36,6 @@ class Command(BaseCommand):
 
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
         self.memo_source = MemoSource.objects.get_or_create(name=self.source)
-
         self.memo_itens = MemoItem.objects.filter(author__name=self.author, source__name=self.source).values_list(
             "original_id", flat=True
         )

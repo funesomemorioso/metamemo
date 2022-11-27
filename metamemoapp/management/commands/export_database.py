@@ -92,4 +92,3 @@ class Command(BaseCommand):
             writer.writerow(header)
             for row in cursor.fetchall():
                 writer.writerow(row)
-

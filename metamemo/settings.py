@@ -32,6 +32,7 @@ def base64_decode_to_file(value):
         fobj.write(credentials)
     return temp.name
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -189,6 +190,8 @@ CROWDTANGLE_INSTAGRAM_API_KEY = config("CROWDTANGLE_INSTAGRAM_API_KEY", default=
 CROWDTANGLE_POSTS_COUNT = config("CROWDTANGLE_POSTS_COUNT", default=100, cast=int)
 CROWDTANGLE_POSTS_INTERVAL = config("CROWDTANGLE_POSTS_INTERVAL", default="5 DAY")
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = base64_decode_to_file(config("GOOGLE_APPLICATION_CREDENTIALS_BASE64", default=""))
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = base64_decode_to_file(
+    config("GOOGLE_APPLICATION_CREDENTIALS_BASE64", default="")
+)
 GOOGLE_BLOGGER_CREDENTIALS = config("GOOGLE_BLOGGER_CREDENTIALS", default="")
 GOOGLE_YOUTUBE_CREDENTIALS = config("GOOGLE_YOUTUBE_CREDENTIALS", default="")
