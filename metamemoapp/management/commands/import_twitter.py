@@ -35,20 +35,17 @@ class Command(BaseCommand):
         self.update = kwargs["refresh"]
         self.finished = False
 
-        self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
-        self.memo_source = MemoSource.objects.get_or_create(name="Twitter")
-
-        self.memo_itens = MemoItem.objects.filter(author__name=self.author, source__name="Twitter").values_list(
-            "original_id", flat=True
-        )
-
         if not settings.TWITTER_BEARER_TOKEN:
             print("You need to setup the bearer token in .env")
             raise
 
+        self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
+        self.memo_source = MemoSource.objects.get_or_create(name="Twitter")
+        self.memo_itens = MemoItem.objects.filter(author__name=self.author, source__name="Twitter").values_list(
+            "original_id", flat=True
+        )
         self.client = tweepy.Client(settings.TWITTER_BEARER_TOKEN)
         self.user = self.client.get_user(username=self.username)
-
         self.getTweets()
 
     def getTweets(self, paginationToken=None):

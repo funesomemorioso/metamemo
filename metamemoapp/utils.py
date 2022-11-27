@@ -1,10 +1,39 @@
+import datetime
 import io
-import os
+import re
 
 import yake
 from django.conf import settings
+from django.utils import timezone
 from google.cloud import speech, storage
 from pydub import AudioSegment
+
+
+def parse_date(content_date):
+    mes = {
+        "jan": 1,
+        "fev": 2,
+        "mar": 3,
+        "abr": 4,
+        "mai": 5,
+        "jun": 6,
+        "jul": 7,
+        "ago": 8,
+        "set": 9,
+        "out": 10,
+        "nov": 11,
+        "dez": 12,
+    }
+    c = re.search("([0-9]{1,2})\.([a-z]{3})\.([0-9]{1,4}) à[s]? ([0-9]{1,2})h([0-9]{1,2})", content_date)
+    return datetime.datetime(
+        int(c[3]),
+        mes[c[2]],
+        int(c[1]),
+        int(c[4]),
+        int(c[5]),
+        0,
+        tzinfo=timezone.get_default_timezone(),
+    )
 
 
 def convert_to_wav(audio_file):

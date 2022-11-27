@@ -13,20 +13,12 @@ class Command(BaseCommand):
         parser.add_argument("-t", "--type", type=str, help="Which types?")
         parser.add_argument("-f", "--fake", action="store_true")
         parser.add_argument("-r", "--retry", action="store_true")
-        parser.add_argument("-q", "--queue", type=str, help="Queue to check")
 
     def handle(self, *args, **kwargs):
         self.count = kwargs["number"]
         self.type = kwargs["type"]
         self.fake = kwargs["fake"]
         self.retry = kwargs["retry"]
-        self.queue = kwargs["queue"]
-
-        if self.queue:
-            q = len(app.control.inspect().reserved()[self.queue])
-            if not q == 0:
-                print(q)
-                return None
 
         self.medias = MemoMedia.objects.filter(media="").exclude(status="DOWNLOADING")
         if not self.retry:

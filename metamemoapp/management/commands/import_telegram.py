@@ -36,23 +36,18 @@ class Command(BaseCommand):
         self.video_download = kwargs["media"]
         self.limit = kwargs["limit"]
 
+        if not settings.TELEGRAM_API_ID or not settings.TELEGRAM_API_HASH:
+            print("You need to setup the Telegram API credentials")
+            raise
+
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
         self.memo_source = MemoSource.objects.get_or_create(name="Telegram")
-
         self.memo_itens = list(
             MemoItem.objects.filter(author__name=self.author, source__name="Telegram").values_list(
                 "original_id", flat=True
             )
         )
-
-        self.telegram_api_id = settings.TELEGRAM_API_ID
-        self.telegram_api_hash = settings.TELEGRAM_API_HASH
-
-        if not self.telegram_api_hash and not self.telegram_api_id:
-            print("You need to setup the API in .env")
-            raise
-
-        self.client = TelegramClient("anon", self.telegram_api_id, self.telegram_api_hash)
+        self.client = TelegramClient("anon", settings.TELEGRAM_API_ID, settings.TELEGRAM_API_HASH)
 
         with self.client:
             self.client.loop.run_until_complete(self.getChat())

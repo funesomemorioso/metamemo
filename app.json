@@ -7,6 +7,7 @@
     { "schedule":  "40 3,9,15,21 * * *", "command": "./crawl.sh twitter" },
     { "schedule":  "50 3,9,15,21 * * *", "command": "./crawl.sh folha" },
 
-    { "schedule":  "*/10 * * * *", "command": "python manage.py download_a_few -n 10 -q 'fastlane@metamemo.local' -t VIDEO" }
+    { "schedule":  "*/10 * * * *", "command": "python manage.py download_a_few -n 10 -t VIDEO" },
+    { "schedule":  "*/10 * * * *", "command": "python manage.py download_a_few -n 10 -t IMAGE" }
   ]
 }

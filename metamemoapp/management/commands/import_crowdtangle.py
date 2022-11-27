@@ -1,3 +1,4 @@
+import datetime
 import json
 import urllib
 from textwrap import shorten
@@ -53,6 +54,7 @@ class Command(BaseCommand):
         pages = settings.CROWDTANGLE_POSTS_COUNT
         interval = urllib.parse.quote_plus(settings.CROWDTANGLE_POSTS_INTERVAL)
 
+        # TODO: should get more pages?
         url = f"https://api.crowdtangle.com/posts?token={apikey}&accounts={self.username}&sortBy=date&timeframe={interval}&count={pages}"
         self.parseUrl(url)
 
@@ -73,6 +75,7 @@ class Command(BaseCommand):
                         if self.debug:
                             print(f"{post_id} already in base")
                 else:
+                    i["date"] = datetime.datetime.strptime(i["date"] + "Z", "%Y-%m-%d %H:%M:%S%z")
                     if self.debug:
                         print(f"Saving {post_id}")
                     post = MemoItem()
