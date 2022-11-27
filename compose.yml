@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  web:
+    container_name: metamemo_django
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_started
+      broker:
+        condition: service_started
+      storage:
+        condition: service_started
+
+  database:
+    image: postgres:14-bullseye
+    shm_size: 2g
+    container_name: metamemo_postgres
+    env_file: .env
+    volumes:
+      - ${PWD}/deploy/postgresql.dev.conf:/etc/postgresql/postgresql.conf
+      - ${PWD}/data/database:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  broker:
+    image: redis:6
+    container_name: metamemo_redis
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  storage:
+    image: minio/minio
+    container_name: metamemo_minio
+    env_file: .env
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: ["server", "/data", "--console-address", ":9001"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/index.html || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5

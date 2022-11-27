@@ -1,0 +1,6 @@
+docker/data/
+dump/
+*.sql
+*.sql.gz
+*.csv
+*.csv.gz
