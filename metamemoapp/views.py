@@ -30,8 +30,8 @@ def csv_response(queryset, filename):
     return response
 
 
-def json_response(queryset):
-    return JsonResponse({"items": [obj.serialize() for obj in queryset]})
+def json_response(queryset, full=False):
+    return JsonResponse({"items": [obj.serialize(full=full) for obj in queryset]})
 
 
 def define_pages(page, last_page):
@@ -165,7 +165,7 @@ def lista(request):
         if output_format == "csv":
             return csv_response(queryset, "metamemo-search.csv")
         elif output_format == "json":
-            return json_response(queryset)
+            return json_response(queryset, full=True)
         else:
             return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 

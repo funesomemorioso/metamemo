@@ -162,7 +162,7 @@ class MemoItem(models.Model):
         ]
         ordering = ["-content_date"]
 
-    def serialize(self):
+    def serialize(self, full=False):
         video, image = None, None
         for media in self.medias.all():
             if video is None and media.mediatype == "VIDEO":
@@ -170,7 +170,7 @@ class MemoItem(models.Model):
             elif image is None and media.mediatype == "IMAGE":
                 image = media
 
-        return {
+        row = {
             "id": self.id,
             "content_date": self.content_date,
             "likes": self.likes,
@@ -184,6 +184,9 @@ class MemoItem(models.Model):
             "image_url": image.original_url if image is not None else None,
             "content": self.content,
         }
+        if full:
+            row["raw"] = self.raw
+        return row
 
 
 class MemoContextQuerySet(models.QuerySet):
