@@ -1,114 +1,114 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - Resultado da busca{% endblock %}
+{% block title %}MemoItem | MetaMemo{% endblock %}
 {% block page_class %} memoitem metablue back-malha{% endblock %}
 
 {% block content %}
 <div class="memoitem-container container white">
-	<div class="mini-container white">
-		<div class="breadcrumb">
-			<a href="{% url 'home' %}">Home</a> &gt;
-            <a href="{% url 'lista' %}">Busca</a> &gt;
-			<a href="#">Memoitem {{memoitem.pk}}</a>
-		</div>
-		<div class="row">
-			<p>
-				<a href="{{memoitem.url}}" title="Link original" target="_blank"><span class="icon-{{memoitem.source.ico}} font35 valign-middle">
-					<span class="path1"></span><span class="path2"></span></span></a>
-				<b>{{memoitem.author.name}}</b>
-			</p>
-			
-		</div>
-		<div class="row">
-			<p>
-				{{memoitem.content|safe}}
-			</p>
-		</div>
-		<div class="row memoitem-media">
-			{% for m in memoitem.medias.all %}
-				{% if m.media %}
-					{% if m.mediatype == "IMAGE" %}
-						<img src="{{m.media.url}}" />
-						{% if m.transcription %}
-							<div class="transcript">
-								<div class="destranscript">Transcrição automática disponivel \/</div>
-								{{ m.transcription }}
-							</div>
-						{% endif %}
-					{% elif m.mediatype == "VIDEO" %}
-						<video class='metavideo' controls>	
-							<source src="{{m.media.url}}">
-						</video>
-						<div class="transcript metacinza meta">
-							<div class="destranscript noselect">Transcrição automática disponivel&nbsp;&nbsp;<span class="transcript_arow">▼</span></div>
-							<div class="transcription">{{ m.transcription }}</div>
-						</div>
-					{% endif %}
-				{% else %}
-					{% if m.status != 'DOWNLOADING' %}
-						<i>{{m.mediatype}} ainda não baixada.<br />
-						<span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
-					
-					{% else %}
-						<i>{{m.mediatype}} na fila de download.</i>
-					{% endif %}
-				{% endif %}
-			{% endfor %}
-		</div>
+  <div class="mini-container white">
+    <div class="breadcrumb">
+      <a href="{% url 'home' %}">Home</a> &gt;
+      <a href="{% url 'lista' %}">Busca</a> &gt;
+      <a href="#">Memoitem {{memoitem.pk}}</a>
+    </div>
+    <div class="row">
+      <p>
+        <a href="{{memoitem.url}}" title="Link original" target="_blank"><span class="icon-{{memoitem.source.ico}} font35 valign-middle">
+            <span class="path1"></span><span class="path2"></span></span></a>
+        <b>{{memoitem.author.name}}</b>
+      </p>
 
-		<div class="metricas row">
-			<div class="col s12 m7 no-padding">
-				<b>Métricas de engajamento</b>
-				<div class="metricas-engajamento">
-					<div>
-						<span class="icon-thumb-up font25 valign-middle">
-							<span class="path1"></span><span class="path2"></span>
-							</span>
-							<br /><b>{{memoitem.likes}}</b>
-					</div>
-					<div>
-						<span class="icon-comment font25 valign-middle">
-							<span class="path1"></span><span class="path2"></span><span class="path3"></span>
-							</span>
-							<br /><b>{{memoitem.interactions}}</b>
-					</div>
-				</div>
-			</div>
-			<div class="data-tempo col s12 m5 no-padding">
-				<b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
-				<b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"d/m/Y"}} </b>
-			</div>
-		</div>
+    </div>
+    <div class="row">
+      <p>
+        {{memoitem.content|safe}}
+      </p>
+    </div>
+    <div class="row memoitem-media">
+      {% for m in memoitem.medias.all %}
+      {% if m.media %}
+      {% if m.mediatype == "IMAGE" %}
+      <img src="{{m.media.url}}" />
+      {% if m.transcription %}
+      <div class="transcript">
+        <div class="destranscript">Transcrição automática disponivel \/</div>
+        {{ m.transcription }}
+      </div>
+      {% endif %}
+      {% elif m.mediatype == "VIDEO" %}
+      <video class='metavideo' controls>
+      <source src="{{m.media.url}}">
+      </video>
+      <div class="transcript metacinza meta">
+        <div class="destranscript noselect">Transcrição automática disponivel&nbsp;&nbsp;<span class="transcript_arow">▼</span></div>
+        <div class="transcription">{{ m.transcription }}</div>
+      </div>
+      {% endif %}
+      {% else %}
+      {% if m.status != 'DOWNLOADING' %}
+      <i>{{m.mediatype}} ainda não baixada.<br />
+        <span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
+
+      {% else %}
+      <i>{{m.mediatype}} na fila de download.</i>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="metricas row">
+      <div class="col s12 m7 no-padding">
+        <b>Métricas de engajamento</b>
+        <div class="metricas-engajamento">
+          <div>
+            <span class="icon-thumb-up font25 valign-middle">
+              <span class="path1"></span><span class="path2"></span>
+            </span>
+            <br /><b>{{memoitem.likes}}</b>
+          </div>
+          <div>
+            <span class="icon-comment font25 valign-middle">
+              <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+            </span>
+            <br /><b>{{memoitem.interactions}}</b>
+          </div>
+        </div>
+      </div>
+      <div class="data-tempo col s12 m5 no-padding">
+        <b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
+        <b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"d/m/Y"}} </b>
+      </div>
+    </div>
 
 
-<!-- 		
-
-		<div class="row">
-			<div class="col s12 m6 no-padding">
-				<b>Métricas de engajamento</b>
-			</div>
-			<div class="col s6 m3 right-align metaroxo-text font14">
-				<b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
-			</div>
-			<div class="col s6 m3 right-align metaroxo-text font14">
-				<b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"d/m/Y"}} </b>
-			</div>
-		</div>
-		<div class="row">
-				<div class="col s6 m1 center-align">
-					<span class="icon-thumb-up font25 valign-middle">
-			<span class="path1"></span><span class="path2"></span>
-			</span>
-			<br /><small><b>{{memoitem.likes}}</b></small>
-				</div>
-				<div class="col s6 m1 center-align">
-					<span class="icon-comment font25 valign-middle">
-			<span class="path1"></span><span class="path2"></span><span class="path3"></span>
-			</span>
-			<br /><small><b>{{memoitem.interactions}}</b></small>
-				</div>
-		</div> -->
-	</div>
+    <!--
+    <div class="row">
+      <div class="col s12 m6 no-padding">
+        <b>Métricas de engajamento</b>
+      </div>
+      <div class="col s6 m3 right-align metaroxo-text font14">
+        <b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
+      </div>
+      <div class="col s6 m3 right-align metaroxo-text font14">
+        <b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"d/m/Y"}} </b>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 m1 center-align">
+        <span class="icon-thumb-up font25 valign-middle">
+          <span class="path1"></span><span class="path2"></span>
+        </span>
+        <br /><small><b>{{memoitem.likes}}</b></small>
+      </div>
+      <div class="col s6 m1 center-align">
+        <span class="icon-comment font25 valign-middle">
+          <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+        </span>
+        <br /><small><b>{{memoitem.interactions}}</b></small>
+      </div>
+    </div>
+    -->
+  </div>
 </div>
 {% endblock content %}

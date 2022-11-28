@@ -2,28 +2,36 @@
 {% load metamemoapp_extras %}
 
 <div class="resultado-cabecalio na_regua row">
-    {# count #}
-    <div class="col s12 m6 l3">
-        <div class="results-total">
-            <p class="metapink-text center-align text-bold">{{ data.results_total }} arquivos encontrados</p>
-        </div>
+  {# count #}
+  <div class="col s12 m6 l3">
+    <div class="results-total">
+      <p class="metapink-text center-align text-bold">
+        {% if data.results_total == 0 %}
+        Nenhum arquivo encontrado
+        {% elif data.results_total == 1 %}
+        1 arquivo encontrado
+        {% else %}
+        {{ data.results_total }} arquivos encontrados
+        {% endif %}
+      </p>
     </div>
-    {# sources #}
-    <div class="col s12 m6 l4 flex">
-        {% for source, total in data.sources_total.items %}
-            <div class="source-count">
-                <span class="source" data-source="{{ source }}">
-                    <span class="icon-{{ data.social_sources|get_item:source }}"><span class="path1"></span><span class="path2"></span></span>
-                </span>
-                <div class="metablue-text center-align">{{ total }}</div>
-            </div>
-        {% endfor %}
+  </div>
+  {# sources #}
+  <div class="col s12 m6 l4 flex">
+    {% for source, total in data.sources_total.items %}
+    <div class="source-count">
+      <span class="source" data-source="{{ source }}">
+        <span class="icon-{{ data.social_sources|get_item:source }}"><span class="path1"></span><span class="path2"></span></span>
+      </span>
+      <div class="metablue-text center-align">{{ total }}</div>
     </div>
-    {# download #}
-    <div class="col s12 m6 l2 right-align">
-        <a href="{% url 'content' 'oops' %}"
-            target="_blank"
-            class="btn metapink white-text"><i class="icon-download3 left"></i>Baixar</a>
-    </div>
+    {% endfor %}
+  </div>
+  {# download #}
+  <div class="col s12 m6 l2 right-align">
+    <a href="{% url 'content' 'oops' %}"
+      target="_blank"
+      class="btn metapink white-text"><i class="icon-download3 left"></i>Baixar</a>
+  </div>
 </div>
 

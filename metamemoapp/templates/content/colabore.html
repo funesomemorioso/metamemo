@@ -1,46 +1,46 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - Metamix{% endblock %}
+{% block title %}Colabore | MetaMemo{% endblock %}
 {% block page_class %}colabore{% endblock %}
 
 {% block content %}
 <section class="row valign-wrapper default-flex align-stretch no-margin">
-	<div class="col s12 m5 metagreen white-text no-padding">
-		<div class="col s10 offset-m2 m8 valign-wrapper height100">
-			<div>
-				<h1 class="white-text fontBold"><sapan class="text-lighter">Baixe, armazene e/ou distribua via torrent este </sapan>metamemo.</h1>
-				<p><a href="{% url 'content' 'oops' %}" class="btn metapink white-text">Baixe Aqui</a></p>
-			</div>
-		</div>
-	</div>
-	<div class="col s12 m7 no-padding">
-		<div class="remixe-txt col s12 offset-m1 m8">
-			<h2>Remixe esta base de dados para novas implementações, desenvolvimentos, derivações e usos do metamemo BolsoData.  
-			<small class="font20">Conteúdo original do site licenciado sob <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.pt">CC BY SA.</a></small></h2>
-			<div class="font20">
-				<p><b>Você pode:</b></p>
-				<ul class="browser-default">
-					<li><b>Compartilhar:</b> copiar e redistribuir o material em qualquer suporte ou formato;</li>
-					<li><b>Adaptar:</b>  remixar, transformar, e criar a partir do material para qualquer fim, mesmo que comercial;</li>
-					<li><b>Você deve</b> dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas.</li>
-					<li><b>Compartilha Igual:</b> Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+  <div class="col s12 m5 metagreen white-text no-padding">
+    <div class="col s10 offset-m2 m8 valign-wrapper height100">
+      <div>
+        <h1 class="white-text fontBold"><sapan class="text-lighter">Baixe, armazene e/ou distribua via torrent este </sapan>metamemo.</h1>
+        <p><a href="{% url 'content' 'oops' %}" class="btn metapink white-text">Baixe Aqui</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 m7 no-padding">
+    <div class="remixe-txt col s12 offset-m1 m8">
+      <h2>Remixe esta base de dados para novas implementações, desenvolvimentos, derivações e usos do metamemo BolsoData.
+        <small class="font20">Conteúdo original do site licenciado sob <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.pt">CC BY SA.</a></small></h2>
+      <div class="font20">
+        <p><b>Você pode:</b></p>
+        <ul class="browser-default">
+          <li><b>Compartilhar:</b> copiar e redistribuir o material em qualquer suporte ou formato;</li>
+          <li><b>Adaptar:</b>  remixar, transformar, e criar a partir do material para qualquer fim, mesmo que comercial;</li>
+          <li><b>Você deve</b> dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas.</li>
+          <li><b>Compartilha Igual:</b> Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
 <section class="metablue valign-wrapper">
-	<div class="row no-margin height100 valign-wrapper default-flex">
-		<div class="col s10 m5 white-text no-margin right-align left-align-s height100 font35 fontBold">
-			POR GENTILEZA REMIXAR
-		</div>
-		<div class="col s12 m3 white-text center-align left-align-s height100 font35 fontBold">
-			<a href="https://github.com/404" class="btn metapink white-text">Acesse aqui</a>
-		</div>
-		<div class="col s12 m4 white-text height100 center-align left-align-s font22">
-			inbox@metamememo.com.br
-		</div>
-	</div>
+  <div class="row no-margin height100 valign-wrapper default-flex">
+    <div class="col s10 m5 white-text no-margin right-align left-align-s height100 font35 fontBold">
+      POR GENTILEZA REMIXAR
+    </div>
+    <div class="col s12 m3 white-text center-align left-align-s height100 font35 fontBold">
+      <a target="_blank" href="https://github.com/funesomemorioso/metamemo" class="btn metapink white-text">Acesse aqui</a>
+    </div>
+    <div class="col s12 m4 white-text height100 center-align left-align-s font22">
+      inbox@metamememo.com.br
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -78,10 +78,10 @@ class QueryStringParser:
 
 def home(request):
     metamemo = MetaMemo.objects.all()
-    last_date = timezone.now().date()
-    first_date = last_date - datetime.timedelta(days=7)
-    context = {"metamemo": metamemo, "y_date": last_date, "date": first_date, "tags": tags}
+    end_date = timezone.now().date()
+    start_date = end_date - datetime.timedelta(days=7)
     tags = {}  # TODO: implement (from keywords)?
+    context = {"metamemo": metamemo, "end_date": end_date, "start_date": start_date, "tags": tags}
     return render(request, "home.html", context)
 
 
@@ -128,14 +128,14 @@ def contexts(request):
     memocontext = MemoContext.objects.since(start_date).until(end_date)
     newscovers = NewsCover.objects.since(start_date).until(end_date)
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
-    items = Paginator(newscovers.qs, 50)
+    items = Paginator(newscovers, 50)
     data = {
         "path": request.resolver_match.url_name,
         "sources": sources,
         "dates": (start_date, end_date),
         "paginator_list": define_pages(page, items.num_pages),
         "items": items.get_page(page),
-        "memocontexts": memocontext.qs,
+        "memocontexts": memocontext,
         "results_total": items.count,
     }
     return render(request, "contexts.html", {"data": data})

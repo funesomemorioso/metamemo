@@ -3,13 +3,12 @@
     {% include "list/files_header.html" %}
 {% endblock results_bar %}
 {% block results_header %}
-    <div class="col s5 offset-s1">Título</div>
-    <div class="col s1">Rede</div>
-    <div class="col s1">Data</div>
-    <div class="col s1">Hora</div>
-    <div class="col s1">Metamemo</div>
-    <div class="col s1">Url</div>
-    <div class="col s1">Mídia</div>
+    <div class="col s5 offset-s1"> Título </div>
+    <div class="col s1"> Rede </div>
+    <div class="col s1"> Data/hora </div>
+    <div class="col s1"> MetaMemo </div>
+    <div class="col s1"> Link </div>
+    <div class="col s1"> Mídia </div>
 {% endblock results_header %}
 {% block results_content %}
     {# eye icon#}
@@ -23,9 +22,7 @@
         <i class='icon icon-{{ item.source.ico }}'><span class="path1"></span><span class="path2"></span></i>
     </div>
     {# date #}
-    <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
-    {# time #}
-    <div class="col s1 valign-wrapper">{{ item.content_date|date:"H:i" }}</div>
+    <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y H:i:s" }}</div>
     {# author #}
     <div class="col s1 valign-wrapper">{{ item.author.name }}</div>
     {# url #}

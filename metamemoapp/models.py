@@ -288,6 +288,8 @@ class NewsCoverQuerySet(models.QuerySet):
 
 
 class NewsCover(models.Model):
+    objects = NewsCoverQuerySet().as_manager()
+
     content_date = models.DateTimeField(null=True)
     media = models.ImageField(upload_to="cover", blank=True)
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)

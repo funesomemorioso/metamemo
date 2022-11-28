@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load metamemoapp_extras %}
-{% block title %}
-    Metamemo - Resultado da busca
-{% endblock title %}
+{% block title %}Resultado da busca | MetaMemo{% endblock title %}
 {% block page_class %}
     list search
 {% endblock page_class %}
@@ -11,7 +9,7 @@
         <div class="breadcrumb">
             <a href="{% url 'home' %}">Home</a> &gt;
             <a href="{% url 'lista' %}">Busca</a> &gt;
-            <a href="#">Resultados Metamemos</a>
+            <a href="#">Resultados</a>
         </div>
         {% include 'list/advform.html' %}
     </section>

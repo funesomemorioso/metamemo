@@ -1,31 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - {{post.title}}{% endblock %}
+{% block title %}{{post.title}} | Blog MetaMemo{% endblock %}
 {% block page_class %}post{% endblock %}
 
 {% block content %}
 <div class="memoitem-container container white">
-	<div class="mini-container white">
-		<div class="breadcrumb">
-			<a href="{% url 'home' %}">Home</a> &gt;
-            <a href="{% url 'blog' %}">Blog</a> &gt;
-			<a href="#">post {{ post.slug }}</a> <!-- aqui -->
-		</div>
-		<div class="row">
-			<p>
-				{{ post.content|safe }}
-			</p>
-		</div>
-		<div class="row">
-			<p>
-				autor:<b> {{post.author}}</b>
-			</p>
-		</div>
-		<div>
-			<a href="{% url 'content' 'oops' %}" class="btn left button metapink font16 white-text">compartilhar</a>
-			<!-- <a class="btn right button metapink font16 white-text">></a><a class="btn right button metapink font16 white-text" style="margin-right: 0.7rem;"><</a> -->
-		</div>
-	</div>
+  <div class="mini-container white">
+    <div class="breadcrumb">
+      <a href="{% url 'home' %}">Home</a> &gt;
+      <a href="{% url 'blog' %}">Blog</a> &gt;
+      <a href="#">post {{ post.slug }}</a> <!-- aqui -->
+    </div>
+    <div class="row">
+      <p>
+        {{ post.content|safe }}
+      </p>
+    </div>
+    <div class="row">
+      <p>
+        autor:<b> {{post.author}}</b>
+      </p>
+    </div>
+    <div>
+      <a href="{% url 'content' 'oops' %}" class="btn left button metapink font16 white-text">compartilhar</a>
+      <!-- <a class="btn right button metapink font16 white-text">></a><a class="btn right button metapink font16 white-text" style="margin-right: 0.7rem;"><</a> -->
+    </div>
+  </div>
 </div>
 {% endblock %}
