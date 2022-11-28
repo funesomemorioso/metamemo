@@ -177,6 +177,7 @@ CELERY_BROKER_URL = config("REDIS_URL")
 
 # Custom settings
 METAMEMO_LANGUAGE = "pt-BR"
+PAGE_SIZE = config("PAGE_SIZE", cast=int, default=50)
 
 TWITTER_BEARER_TOKEN = config("TWITTER_BEARER_TOKEN", default="")
 

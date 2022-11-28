@@ -1,6 +1,7 @@
 import csv
 import datetime
 
+from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
@@ -100,7 +101,7 @@ def news(request):
         for source in queryset.values("source__name").annotate(total=Count("source__name")).order_by("total")
     }
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
-    items = Paginator(queryset, 50)
+    items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
         "path": request.resolver_match.url_name,
         "dates": (start_date, end_date),
@@ -125,7 +126,7 @@ def contexts(request):
     memocontext = MemoContext.objects.since(start_date).until(end_date)
     newscovers = NewsCover.objects.since(start_date).until(end_date)
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
-    items = Paginator(newscovers, 50)
+    items = Paginator(newscovers, settings.PAGE_SIZE)
     data = {
         "path": request.resolver_match.url_name,
         "sources": sources,
@@ -159,6 +160,7 @@ def lista(request):
         .search(content)
         .prefetch_related("medias")
     )
+    items = Paginator(queryset, settings.PAGE_SIZE)
 
     if output_format:
         output_format = str(output_format or "").lower().strip()
@@ -169,7 +171,6 @@ def lista(request):
         else:
             return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 
-    items = Paginator(queryset, 50)
     data = {
         "path": request.resolver_match.url_name,
         "dates": (start_date, end_date),
