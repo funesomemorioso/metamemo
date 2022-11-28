@@ -33,7 +33,9 @@ urlpatterns = [
     path("memoitem/<int:item_id>/get_media", views.get_media, name="get_media"),
     path("admin/", admin.site.urls),
     path("celery-progress/", include("celery_progress.urls")),
-    path("__debug__", include("debug_toolbar.urls")),
     path("summernote/", include("django_summernote.urls")),
     path("timeline/", include("timeline.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [path("__debug__", include("debug_toolbar.urls"))]

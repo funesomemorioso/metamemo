@@ -159,6 +159,7 @@ class MemoContextResource(resources.ModelResource):
         import_id_fields = ("url", "context")
         export_order = fields
 
+
 @admin.register(MemoContext)
 class MemoContextAdmin(ImportExportModelAdmin):
     resource_class = MemoContextResource

@@ -31,7 +31,7 @@ def csv_response(queryset, filename):
 
 
 def json_response(queryset):
-    return JsonResponse({"items": [obj.serialize() for  obj in queryset]})
+    return JsonResponse({"items": [obj.serialize() for obj in queryset]})
 
 
 def define_pages(page, last_page):
@@ -99,10 +99,7 @@ def news(request):
         source["source__name"]: source["total"]
         for source in queryset.values("source__name").annotate(total=Count("source__name")).order_by("total")
     }
-    sources = {
-        source.name: source.image.url if source.image else None
-        for source in NewsSource.objects.all()
-    }
+    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
     items = Paginator(queryset, 50)
     data = {
         "path": request.resolver_match.url_name,
@@ -155,9 +152,10 @@ def lista(request):
         return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = (
-        MemoItem.objects
-        .since(start_date).until(end_date)
-        .from_authors(authors).from_sources(sources)
+        MemoItem.objects.since(start_date)
+        .until(end_date)
+        .from_authors(authors)
+        .from_sources(sources)
         .search(content)
         .prefetch_related("medias")
     )

@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 
-from metamemo.celery import app
 from metamemoapp.models import MemoMedia
 from metamemoapp.tasks import download_async, download_img_async
 

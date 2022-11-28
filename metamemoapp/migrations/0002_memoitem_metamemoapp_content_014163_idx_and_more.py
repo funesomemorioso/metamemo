@@ -6,16 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('metamemoapp', '0001_initial'),
+        ("metamemoapp", "0001_initial"),
     ]
 
     operations = [
         migrations.AddIndex(
-            model_name='memoitem',
-            index=models.Index(fields=['content_date'], name='metamemoapp_content_014163_idx'),
+            model_name="memoitem",
+            index=models.Index(fields=["content_date"], name="metamemoapp_content_014163_idx"),
         ),
         migrations.AddIndex(
-            model_name='metamemo',
-            index=models.Index(fields=['name'], name='metamemoapp_name_58f00f_idx'),
+            model_name="metamemo",
+            index=models.Index(fields=["name"], name="metamemoapp_name_58f00f_idx"),
         ),
     ]
