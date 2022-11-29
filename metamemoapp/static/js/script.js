@@ -99,7 +99,12 @@ $(document).ready(function () {
         }
         qs = $.param(qs, true);
 
-        window.location = window.location.href.split("?")[0] + "?" + qs;
+        let path = window.location.href.split("?")[0];
+        if ($(event.target).text() == "Consultar") {
+          // Está na home, logo precisa ir para "/lista/"
+          path = path.endsWith("/") ? path = `${path}lista/` : path = `${path}/lista/`;
+        }
+        window.location = `${path}?${qs}`;
     });
 
     //Datepicker
