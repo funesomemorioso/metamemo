@@ -101,12 +101,13 @@ def news_list(request):
     qs = QueryStringParser(request.GET)
     try:
         page = qs.int("page", default=1)
+        content = qs.str("content")
         start_date = qs.date("start_date")
         end_date = qs.date("end_date")
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = NewsItem.objects.since(start_date).until(end_date)
+    queryset = NewsItem.objects.since(start_date).until(end_date).search(content)
     sources_total = {
         source["source__name"]: source["total"]
         for source in queryset.values("source__name").annotate(total=Count("source__name")).order_by("total")
@@ -136,10 +137,11 @@ def contexts(request):
         page = qs.int("page", default=1)
         start_date = qs.date("start_date")
         end_date = qs.date("end_date")
+        content = qs.str("content")
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    memocontext = MemoContext.objects.since(start_date).until(end_date)
+    memocontext = MemoContext.objects.since(start_date).until(end_date).search(content)
     newscovers = NewsCover.objects.since(start_date).until(end_date)
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
     items = Paginator(newscovers, settings.PAGE_SIZE)

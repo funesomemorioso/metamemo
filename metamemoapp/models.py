@@ -277,6 +277,11 @@ class MemoContextQuerySet(models.QuerySet):
             return self
         return self.filter(end_date__lte=value)
 
+    def search(self, value):
+        if not value:
+            return self
+        return self.filter(context__icontains=value)
+
 
 class MemoContext(models.Model):
     objects = MemoContextQuerySet().as_manager()
@@ -333,6 +338,11 @@ class NewsItemQuerySet(models.QuerySet):
         if not value:
             return self
         return self.filter(content_date__lte=value)
+
+    def search(self, value):
+        if not value:
+            return self
+        return self.filter(text__icontains=value)
 
 
 class NewsItem(models.Model):
