@@ -99,7 +99,7 @@ $(document).ready(function () {
         }
         qs = $.param(qs, true);
 
-        window.location = `/lista/?${qs}`
+        window.location = window.location.href.split("?")[0] + "?" + qs;
     });
 
     //Datepicker

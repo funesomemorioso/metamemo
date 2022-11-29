@@ -1358,7 +1358,7 @@ footer h3 {
 
 /* Extra */
 .hide-source, .hide-author { display:none !important }
-.transparent { opacity:0.5 !important }
+.transparent { opacity: 0.2 !important }
 
 .page-memoitem .memoitem-media img, .page-memoitem .memoitem-media video {
     max-width:100%;
