@@ -39,13 +39,21 @@
 <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
 {# url #}
 <div class="col s1 valign-wrapper">
+  {% if item.media %}
   <a href="{{ item.media.url }}" target="_blank">Ver</a>
+  {% else %}
+  (sem mídia)
+  {% endif %}
 </div>
 {# cover #}
 <div class="col s7 valign-wrapper">
+  {% if item.media %}
   <img
   height="122px"
   src="{{ item.media.url }}"
   alt="cover for {{ item.source }} on {{ item.content_date|date:'d/m/Y' }}"/>
+  {% else %}
+  (sem mídia)
+  {% endif %}
 </div>
 {% endblock results_content %}

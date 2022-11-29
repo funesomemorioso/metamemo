@@ -22,14 +22,14 @@
     </div>
     <div class="row">
       <p>
-        {{memoitem.content|safe}}
+        {{ memoitem.content|safe }}
       </p>
     </div>
     <div class="row memoitem-media">
       {% for m in memoitem.medias.all %}
       {% if m.media %}
       {% if m.mediatype == "IMAGE" %}
-      <img src="{{m.media.url}}" />
+      <img src="{{ m.media.url }}" />
       {% if m.transcription %}
       <div class="transcript">
         <div class="destranscript">Transcrição automática disponivel \/</div>
@@ -38,7 +38,7 @@
       {% endif %}
       {% elif m.mediatype == "VIDEO" %}
       <video class='metavideo' controls>
-      <source src="{{m.media.url}}">
+      <source src="{{ m.media.url }}">
       </video>
       <div class="transcript metacinza meta">
         <div class="destranscript noselect">Transcrição automática disponivel&nbsp;&nbsp;<span class="transcript_arow">▼</span></div>

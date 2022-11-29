@@ -144,7 +144,7 @@ class MemoMedia(models.Model):
             "original_id": self.original_id,
             "original_url": self.original_url,
             "status": self.status,
-            "media_url": self.media.url,
+            "media_url": self.media.url if self.media else None,
             "mediatype": self.mediatype,
             "progress": self.progress,
             "transcription": self.transcription,

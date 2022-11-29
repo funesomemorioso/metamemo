@@ -31,17 +31,21 @@
     </div>
     {# media #}
     <div class="col s1 valign-wrapper">
-        {% for media in item.medias.all %}
-            {% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
-                <a href="{{ media.media.url }}" class="icon icon-file-play"></a>
-            {% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
-                <a href="{{ media.media.url }}" class="icon icon-file-picture"></a>
-            {% else %}
-                <span href="{% url 'get_media' item.pk %}"
-                      id="get_media"
-                      title="O download dessa mídia está pendente"
-                      class="icon icon-download pointer"></span>
-            {% endif %}
-        {% endfor %}
+      {% for media in item.medias.all %}
+        {% if media.media %}
+          {% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
+              <a href="{{ media.media.url }}" class="icon icon-file-play"></a>
+          {% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
+              <a href="{{ media.media.url }}" class="icon icon-file-picture"></a>
+          {% else %}
+              <span href="{% url 'get_media' item.pk %}"
+                    id="get_media"
+                    title="O download dessa mídia está pendente"
+                    class="icon icon-download pointer"></span>
+          {% endif %}
+        {% else %}
+            (sem mídia)
+        {% endif %}
+      {% endfor %}
     </div>
 {% endblock results_content %}
