@@ -136,7 +136,7 @@ def news_list(request):
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = NewsItem.objects.since(start_date).until(end_date).search(content)
+    queryset = NewsItem.objects.since(start_date).until(end_date).search(content).select_related("source")
     if output_format:
         return serialize_queryset(
             request,

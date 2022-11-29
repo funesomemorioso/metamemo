@@ -12,8 +12,33 @@ python mangage.py migrate -> para efetuar as migrações
 Obviamente a ideia é fechar o modelo de dados antes de começar a popular o banco definitivamente.
 """
 
+import django.contrib.postgres.indexes as pg_indexes
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVectorField
 from django.core.management import call_command
 from django.db import connection, models
+
+
+class SearchQuerySetMixin:
+    def search(self, term):
+        qs = self
+
+        if term:
+            query = SearchQuery(term, config="pg_catalog.portuguese", search_type="websearch")
+            qs = qs.annotate(search_rank=SearchRank(models.F("search_data"), query)).filter(search_data=query)
+            # Overwriting `qs.query.order_by` to APPEND ordering field
+            # instead of OVERWRITTING (as in `qs.order_by`). We append directly
+            # (instead of using `qs.query.add_ordering` because the search rank
+            # must have precedence over the other ordering.
+            qs.query.order_by = tuple(["-search_rank"] + list(qs.query.order_by))
+        return qs
+
+    def order_by(self, *args, **kwargs):
+        # We must force search_rank ordering, since some operations will add
+        # ordering after calling `.search` (like in Django Admin)
+        qs = super().order_by(*args, **kwargs)
+        if "-search_rank" in qs.query.order_by and qs.query.order_by[0] != "-search_rank":
+            qs.query.order_by = tuple(["-search_rank"] + [item for item in qs.query.order_by if item != "-search_rank"])
+        return qs
 
 
 class MemoKeyWord(models.Model):
@@ -63,7 +88,7 @@ class MetaMemo(models.Model):
         if self.facebook_handle:
             call_command("import_facebook", username=self.facebook_handle, author=self.name)
 
-class MemoMediaQuerySet(models.QuerySet):
+class MemoMediaQuerySet(SearchQuerySetMixin, models.QuerySet):
     def from_source(self, value):
         qs = self.select_related("source")
         if not value:
@@ -75,11 +100,6 @@ class MemoMediaQuerySet(models.QuerySet):
         if not values:
             return qs
         return qs.filter(source__name__in=values)
-
-    def search(self, value):
-        if not value:
-            return self
-        return self.filter(transcription__icontains=value)
 
 
 class MemoMedia(models.Model):
@@ -108,6 +128,12 @@ class MemoMedia(models.Model):
     mediatype = models.CharField(max_length=20, blank=True, choices=MEDIATYPE_CHOICES)
     progress = models.FloatField(default=0)
     source = models.ForeignKey(MemoSource, on_delete=models.CASCADE, null=True)
+    search_data = SearchVectorField(null=True)
+
+    class Meta:
+        indexes = [
+            pg_indexes.GinIndex(fields=["search_data"]),
+        ]
 
     def __str__(self):
         return self.original_id
@@ -125,7 +151,7 @@ class MemoMedia(models.Model):
         }
 
 
-class MemoItemQuerySet(models.QuerySet):
+class MemoItemQuerySet(SearchQuerySetMixin, models.QuerySet):
     def get_full(self, pk):
         return self.select_related("author").prefetch_related("medias").get(pk=pk)
 
@@ -162,11 +188,6 @@ class MemoItemQuerySet(models.QuerySet):
         if not value:
             return self
         return self.filter(content_date__lte=value)
-
-    def search(self, value):
-        if not value:
-            return self
-        return self.filter(models.Q(content__icontains=value) | models.Q(title__icontains=value))
 
     def export_csv(self):
         sql = """
@@ -261,6 +282,7 @@ class MemoItem(models.Model):
     medias = models.ManyToManyField(MemoMedia, blank=True)
     original_id = models.CharField(max_length=500)
     keyword = models.ManyToManyField(MemoKeyWord, blank=True)
+    search_data = SearchVectorField(null=True)
 
     def __str__(self):
         return self.title
@@ -268,6 +290,7 @@ class MemoItem(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=["content_date"]),
+            pg_indexes.GinIndex(fields=["search_data"]),
         ]
         ordering = ["-content_date"]
 
@@ -299,7 +322,7 @@ class MemoItem(models.Model):
         return row
 
 
-class MemoContextQuerySet(models.QuerySet):
+class MemoContextQuerySet(SearchQuerySetMixin, models.QuerySet):
     def since(self, value):
         if not value:
             return self
@@ -309,11 +332,6 @@ class MemoContextQuerySet(models.QuerySet):
         if not value:
             return self
         return self.filter(end_date__lte=value)
-
-    def search(self, value):
-        if not value:
-            return self
-        return self.filter(context__icontains=value)
 
 
 class MemoContext(models.Model):
@@ -325,10 +343,12 @@ class MemoContext(models.Model):
     url = models.URLField(blank=True, null=True)
     source = models.CharField(max_length=500, blank=True, null=True)
     keyword = models.ManyToManyField(MemoKeyWord, blank=True)
+    search_data = SearchVectorField(null=True)
 
     class Meta:
         indexes = [
             models.Index(fields=["start_date", "end_date"]),
+            pg_indexes.GinIndex(fields=["search_data"]),
         ]
         ordering = ["-start_date"]
 
@@ -371,7 +391,7 @@ class NewsSource(models.Model):
         return self.name
 
 
-class NewsItemQuerySet(models.QuerySet):
+class NewsItemQuerySet(SearchQuerySetMixin, models.QuerySet):
     def since(self, value):
         if not value:
             return self
@@ -381,11 +401,6 @@ class NewsItemQuerySet(models.QuerySet):
         if not value:
             return self
         return self.filter(content_date__lte=value)
-
-    def search(self, value):
-        if not value:
-            return self
-        return self.filter(text__icontains=value)
 
 
 class NewsItem(models.Model):
@@ -397,10 +412,12 @@ class NewsItem(models.Model):
     content_date = models.DateTimeField(null=True)
     source = models.ForeignKey(NewsSource, on_delete=models.CASCADE, null=True)
     metamemo = models.ForeignKey(MetaMemo, on_delete=models.CASCADE, null=True)
+    search_data = SearchVectorField(null=True)
 
     class Meta:
         indexes = [
             models.Index(fields=["content_date"]),
+            pg_indexes.GinIndex(fields=["search_data"]),
         ]
         ordering = ["-content_date"]
 
