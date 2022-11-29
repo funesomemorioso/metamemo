@@ -63,8 +63,28 @@ class MetaMemo(models.Model):
         if self.facebook_handle:
             call_command("import_facebook", username=self.facebook_handle, author=self.name)
 
+class MemoMediaQuerySet(models.QuerySet):
+    def from_source(self, value):
+        qs = self.select_related("source")
+        if not value:
+            return qs
+        return qs.filter(source__name=value)
+
+    def from_sources(self, values):
+        qs = self.select_related("source")
+        if not values:
+            return qs
+        return qs.filter(source__name__in=values)
+
+    def search(self, value):
+        if not value:
+            return self
+        return self.filter(transcription__icontains=value)
+
 
 class MemoMedia(models.Model):
+    objects = MemoMediaQuerySet().as_manager()
+
     STATUS_CHOICES = (
         ("INITIAL", "Initial"),
         ("DOWNLOADING", "Downloading"),
@@ -91,6 +111,18 @@ class MemoMedia(models.Model):
 
     def __str__(self):
         return self.original_id
+
+    def serialize(self, full=False):
+        return {
+            "source": self.source.name,
+            "original_id": self.original_id,
+            "original_url": self.original_url,
+            "status": self.status,
+            "media_url": self.media.url,
+            "mediatype": self.mediatype,
+            "progress": self.progress,
+            "transcription": self.transcription,
+        }
 
 
 class MemoItemQuerySet(models.QuerySet):

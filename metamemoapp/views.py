@@ -8,7 +8,7 @@ from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 
-from metamemoapp.models import MemoContext, MemoItem, MetaMemo, NewsCover, NewsItem, NewsSource
+from metamemoapp.models import MemoContext, MemoItem, MemoMedia, MetaMemo, NewsCover, NewsItem, NewsSource
 from metamemoapp.tasks import download_async, download_img_async
 
 DEFAULT_TIMEZONE = timezone.get_default_timezone()
@@ -271,6 +271,40 @@ def memoitems_download(request):
         lines=MemoItem.objects.export_csv(),
         filename=f"metamemo-memoitems-{timezone.now().date()}.csv",
     )
+
+
+# MemoMedia list (filtered + pagination; CSV or JSON)
+def media_list(request):
+    qs = QueryStringParser(request.GET)
+    try:
+        page = qs.int("page", default=1)
+        output_format = qs.str("format")
+        content = qs.str("content")
+        sources = qs.list("source", type=str)
+    except ValueError:
+        return bad_request(request, message="Erro de formato nos filtros")
+
+    queryset = MemoMedia.objects.from_sources(sources).search(content)
+
+    if output_format:
+        return serialize_queryset(
+            request,
+            output_format,
+            queryset,
+            filename="metamemo-memomedia-filtered.csv",
+        )
+
+    items = Paginator(queryset, settings.PAGE_SIZE)
+    data = {
+        "path": request.resolver_match.url_name,
+        "paginator_list": define_pages(page, items.num_pages),
+        "items": items.get_page(page),
+        "results_total": items.count,
+        "page": page,
+        "content": content,
+        "sources": sources,
+    }
+    return render(request, "media.html", {"data": data})
 
 
 # MemoMedia download start task (API)
