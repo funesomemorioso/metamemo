@@ -32,6 +32,14 @@ def queryset_to_lines(qs):
         yield [row.get(field) for field in header]
 
 
+class Echo:
+    """Implements just the write method of the file-like interface"""
+
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
 def csv_streaming_response(lines, filename):
     pseudo_buffer = Echo()
     writer = csv.writer(pseudo_buffer)
@@ -101,6 +109,7 @@ class QueryStringParser:
         return [self._parse_value(type, value) for value in self._data.getlist(key)]
 
 
+# MemoItem search/filter form (HTML)
 def home(request):
     metamemo = MetaMemo.objects.all()
     end_date = timezone.now().date()
@@ -110,6 +119,12 @@ def home(request):
     return render(request, "home.html", context)
 
 
+# "Static" pages content (HTML)
+def content(request, page):
+    return render(request, f"content/{page}.html")
+
+
+# NewsItem list (filtered + pagination; HTML, CSV or JSON)
 def news_list(request):
     qs = QueryStringParser(request.GET)
     try:
@@ -148,11 +163,13 @@ def news_list(request):
     return render(request, "news.html", {"data": data})
 
 
+# NewsItem detail (HTML)
 def news_detail(request, item_id):
     item = NewsItem.objects.get(pk=item_id)
     return render(request, "newsitem.html", {"item": item})
 
 
+# MemoContext list (filtered; HTML, CSV or JSON) + NewsCover list (filtered + pagination; HTML)
 def contexts(request):
     qs = QueryStringParser(request.GET)
     try:
@@ -187,23 +204,8 @@ def contexts(request):
     return render(request, "contexts.html", {"data": data})
 
 
-class Echo:
-    """Implements just the write method of the file-like interface"""
-
-    def write(self, value):
-        """Write the value by returning it, instead of storing in a buffer."""
-        return value
-
-
-def memoitems_download(request):
-    return csv_streaming_response(
-        lines=MemoItem.objects.export_csv(),
-        filename=f"metamemo-memoitems-{timezone.now().date()}.csv",
-    )
-
-
+# MemoItem list (filtered + pagination; HTML, CSV or JSON)
 def lista(request):
-    # TODO: merge `lista` and `memoitems_download` ?
     qs = QueryStringParser(request.GET)
     try:
         page = qs.int("page", default=1)
@@ -257,11 +259,21 @@ def lista(request):
     return render(request, "files.html", {"data": data})
 
 
+# MemoItem detail (HTML)
 def memoitem(request, item_id):
     memoitem = MemoItem.objects.get_full(pk=item_id)
     return render(request, "memoitem.html", {"memoitem": memoitem})
 
 
+# MemoItem (whole database) download (CSV)
+def memoitems_download(request):
+    return csv_streaming_response(
+        lines=MemoItem.objects.export_csv(),
+        filename=f"metamemo-memoitems-{timezone.now().date()}.csv",
+    )
+
+
+# MemoMedia download start task (API)
 def get_media(request, item_id):
     memoitem = MemoItem.objects.get_full(pk=item_id)
 
@@ -277,7 +289,3 @@ def get_media(request, item_id):
             download_img_async.apply_async(kwargs={"url": p.original_url, "pk": p.pk}, queue="fastlane")
         response["medias"].append({"mediatype": p.mediatype, "original_url": p.original_url, "status": p.status})
     return JsonResponse(response, status=200)
-
-
-def content(request, page):
-    return render(request, f"content/{page}.html")
