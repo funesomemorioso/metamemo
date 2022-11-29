@@ -260,6 +260,7 @@ class MemoItem(models.Model):
             "video_url": video.original_url if video is not None else None,
             "image_url": image.original_url if image is not None else None,
             "content": self.content,
+            "keywords": ", ".join(keyword.word for keyword in self.keyword.all()),
         }
         if full:
             row["raw"] = self.raw
@@ -301,6 +302,16 @@ class MemoContext(models.Model):
 
     def __str__(self):
         return self.context
+
+    def serialize(self, full=False):
+        return {
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "url": self.url,
+            "source": self.source,
+            "keywords": ", ".join(keyword.word for keyword in self.keyword.all()),
+            "context": self.context,
+        }
 
 
 class MemoNews(models.Model):
@@ -363,6 +374,16 @@ class NewsItem(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.source}"
+
+    def serialize(self, full=False):
+        return {
+            "title": self.title,
+            "url": self.url,
+            "text": self.text,
+            "content_date": self.content_date,
+            "source": self.source.name,
+            "metamemo": self.metamemo.name,
+        }
 
 
 class NewsCoverQuerySet(models.QuerySet):

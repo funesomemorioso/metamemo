@@ -59,6 +59,19 @@ def parse_date(value):
     return datetime.datetime.strptime(value, "%Y-%m-%d").replace(tzinfo=DEFAULT_TIMEZONE)
 
 
+def serialize_queryset(request, output_format, queryset, filename):
+    output_format = str(output_format or "").lower().strip()
+    if output_format == "csv":
+        return csv_streaming_response(
+            lines=queryset_to_lines(queryset),
+            filename=filename,
+        )
+    elif output_format == "json":
+        return json_response(queryset, full=True)
+    else:
+        return bad_request(request, f"Formato de arquivo inválido: {output_format}")
+
+
 class QueryStringParser:
     def __init__(self, data):
         self._data = data
@@ -100,14 +113,23 @@ def home(request):
 def news_list(request):
     qs = QueryStringParser(request.GET)
     try:
-        page = qs.int("page", default=1)
         content = qs.str("content")
-        start_date = qs.date("start_date")
         end_date = qs.date("end_date")
+        output_format = qs.str("format")
+        page = qs.int("page", default=1)
+        start_date = qs.date("start_date")
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = NewsItem.objects.since(start_date).until(end_date).search(content)
+    if output_format:
+        return serialize_queryset(
+            request,
+            output_format,
+            queryset,
+            filename="metamemo-newsitem-filtered.csv",
+        )
+
     sources_total = {
         source["source__name"]: source["total"]
         for source in queryset.values("source__name").annotate(total=Count("source__name")).order_by("total")
@@ -134,15 +156,23 @@ def news_detail(request, item_id):
 def contexts(request):
     qs = QueryStringParser(request.GET)
     try:
+        content = qs.str("content")
+        end_date = qs.date("end_date")
+        output_format = qs.str("format")
         page = qs.int("page", default=1)
         start_date = qs.date("start_date")
-        end_date = qs.date("end_date")
-        content = qs.str("content")
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    memocontext = MemoContext.objects.since(start_date).until(end_date).search(content)
-    newscovers = NewsCover.objects.since(start_date).until(end_date)
+    memocontext = MemoContext.objects.since(start_date).until(end_date).search(content).prefetch_related("keyword")
+    if output_format:
+        return serialize_queryset(
+            request,
+            output_format,
+            memocontext,
+            filename="metamemo-memocontext-filtered.csv",
+        )
+    newscovers = NewsCover.objects.since(start_date).until(end_date).select_related("source")
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
     items = Paginator(newscovers, settings.PAGE_SIZE)
     data = {
@@ -192,20 +222,16 @@ def lista(request):
         .from_authors(authors)
         .from_sources(sources)
         .search(content)
-        .prefetch_related("medias")
+        .prefetch_related("medias", "keyword")
     )
 
     if output_format:
-        output_format = str(output_format or "").lower().strip()
-        if output_format == "csv":
-            return csv_streaming_response(
-                lines=queryset_to_lines(queryset),
-                filename="metamemo-memoitems-filtered.csv",
-            )
-        elif output_format == "json":
-            return json_response(queryset, full=True)
-        else:
-            return bad_request(request, f"Formato de arquivo inválido: {output_format}")
+        return serialize_queryset(
+            request,
+            output_format,
+            queryset,
+            filename="metamemo-memoitems-filtered.csv",
+        )
 
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
