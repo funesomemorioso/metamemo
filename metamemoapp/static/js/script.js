@@ -89,11 +89,11 @@ $(document).ready(function () {
             'content': $("#id_content").val()
         }
 
-        if (sd) {
+        if (sd && sd.date) {
             let date = new Date(sd.date);
             qs['start_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
-        if (ed) {
+        if (ed && ed.date) {
             let date = new Date(ed.date);
             qs['end_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }

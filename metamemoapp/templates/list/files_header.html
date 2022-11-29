@@ -1,9 +1,10 @@
 {% load static %}
+{% load humanize %}
 {% load metamemoapp_extras %}
 
 <div class="resultado-cabecalio na_regua row">
   {# count #}
-  <div class="col s12 m6 l3">
+  <div class="col s12 m6 l4">
     <div class="results-total">
       <p class="metapink-text center-align text-bold">
         {% if data.results_total == 0 %}
@@ -11,7 +12,7 @@
         {% elif data.results_total == 1 %}
         1 arquivo encontrado
         {% else %}
-        {{ data.results_total }} arquivos encontrados
+        {{ data.results_total|intcomma }} arquivos encontrados
         {% endif %}
       </p>
     </div>

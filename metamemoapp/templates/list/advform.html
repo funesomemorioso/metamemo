@@ -1,7 +1,8 @@
 {% load metamemoapp_extras %}
 <div class="metasearch filters row">
+  <div class="col s12 m4 l4">
     <div class="row">
-        <div class="col s12 m2">
+        <div class="col s12 m4">
             <div class="input-field">
                 <label class="active" for="start_date">Início</label>
                 <input id="start_date" class="datepicker" type="text" />
@@ -10,7 +11,7 @@
                        type="hidden"/>
             </div>
         </div>
-        <div class="col s12 m2">
+        <div class="col s12 m4">
             <div class="input-field">
                 <label class="active" for="end_date">Final</label>
                 <input id="end_date" class="datepicker" type="text" />
@@ -31,7 +32,12 @@
         {% for memo in data.metamemo %}
             <span class="author chip transparent" data-author="{{ memo.name }}"}>{{ memo.name }}</span>
         {% endfor %}
-    </div>
+      </div>
+
+
+  </div>
+  <div class="col s12 m8 l8">
+
     <div id="search-bar" class="row">
         <div class="col s12">
             <label class="ipt-search">
@@ -39,10 +45,13 @@
                        name="content"
                        type="search"
                        class="browser-default"
-                       placeholder="Procure por termos específicos. Ex. Amazônia">
+                       placeholder="Procure por termos específicos, ex: Amazônia"
+                       value="{{ content }}">
+                <a class="big-btn btn button metapink white-text" id="buscar">Buscar</a>
             </label>
         </div>
     </div>
+  </div>
     {% if data.tags %}
         <div class="row">
             <div class="col s12">
@@ -55,9 +64,4 @@
             </div>
         </div>
     {% endif %}
-    <div class="row">
-        <div class="col s12">
-            <a class="big-btn btn button metapink white-text" id="buscar">Buscar</a>
-        </div>
-    </div>
 </div>

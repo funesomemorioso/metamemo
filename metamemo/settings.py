@@ -51,18 +51,24 @@ CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
 
 # Application definition
 INSTALLED_APPS = [
-    "metamemoapp",
-    "timeline",
-    "import_export",
-    "blog",
-    "django_summernote",
-    "django_celery_results",
+    # Django apps:
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
+
+    # Third-party apps
+    "django_summernote",
+    "django_celery_results",
+    "import_export",
+
+    # Project apps
+    "metamemoapp",
+    "timeline",
+    "blog",
 ]
 if DEBUG:
 

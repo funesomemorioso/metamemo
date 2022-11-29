@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% load metamemoapp_extras %}
 <div class="container">
   <div class="resultado-cabecalio row">
@@ -24,7 +25,7 @@
           {% elif data.results_total == 1 %}
           1 arquivo encontrado
           {% else %}
-          {{ data.results_total }} arquivos encontrados
+          {{ data.results_total|intcomma }} arquivos encontrados
           {% endif %}
         </p>
       </div>
