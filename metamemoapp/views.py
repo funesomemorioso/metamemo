@@ -97,7 +97,7 @@ def home(request):
     return render(request, "home.html", context)
 
 
-def news(request):
+def news_list(request):
     qs = QueryStringParser(request.GET)
     try:
         page = qs.int("page", default=1)
@@ -123,6 +123,11 @@ def news(request):
         "sources_total": sources_total,
     }
     return render(request, "news.html", {"data": data})
+
+
+def news_detail(request, item_id):
+    item = NewsItem.objects.get(pk=item_id)
+    return render(request, "newsitem.html", {"item": item})
 
 
 def contexts(request):

@@ -14,7 +14,7 @@
     {% static "imgs/noun-newspaper.png" as default_source_icon %}
     {# eye icon#}
     <div class="col s1 valign-wrapper">
-        <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
+        <a class="icon icon-eye" href="{% url 'news-detail' item.pk %}"></a>
     </div>
     {# title#}
     <div class="col s8 valign-wrapper">{{ item.title }}</div>

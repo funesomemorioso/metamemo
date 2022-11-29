@@ -47,7 +47,7 @@
       {% endif %}
       {% else %}
       {% if m.status != 'DOWNLOADING' %}
-      <i>{{m.mediatype}} ainda não baixada.<br />
+      <i>Arquivo ainda não baixado.<br />
         <span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
 
       {% else %}
@@ -76,39 +76,11 @@
         </div>
       </div>
       <div class="data-tempo col s12 m5 no-padding">
-        <b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
         <b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"d/m/Y"}} </b>
+        <b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
       </div>
     </div>
 
-
-    <!--
-    <div class="row">
-      <div class="col s12 m6 no-padding">
-        <b>Métricas de engajamento</b>
-      </div>
-      <div class="col s6 m3 right-align metaroxo-text font14">
-        <b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"H:m"}} </b>
-      </div>
-      <div class="col s6 m3 right-align metaroxo-text font14">
-        <b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{memoitem.content_date|date:"d/m/Y"}} </b>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col s6 m1 center-align">
-        <span class="icon-thumb-up font25 valign-middle">
-          <span class="path1"></span><span class="path2"></span>
-        </span>
-        <br /><small><b>{{memoitem.likes}}</b></small>
-      </div>
-      <div class="col s6 m1 center-align">
-        <span class="icon-comment font25 valign-middle">
-          <span class="path1"></span><span class="path2"></span><span class="path3"></span>
-        </span>
-        <br /><small><b>{{memoitem.interactions}}</b></small>
-      </div>
-    </div>
-    -->
   </div>
 </div>
 {% endblock content %}

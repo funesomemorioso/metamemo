@@ -22,11 +22,11 @@
                     </div>
                     <div class="tab_underline {% if data.path == 'lista' %}active{% endif %}"></div>
                 </a>
-                <a class="resultado_tab" href="{% url 'news' %}?{% url_replace %}">
+                <a class="resultado_tab" href="{% url 'news-list' %}?{% url_replace %}">
                     <div class="tab_txt">
                         <span class="metablue-text font18 text-bold">Notícias</span>
                     </div>
-                    <div class="tab_underline {% if data.path == 'news' %}active{% endif %}"></div>
+                    <div class="tab_underline {% if data.path == 'news-list' %}active{% endif %}"></div>
                 </a>
                 <a class="resultado_tab" href="{% url 'contexts' %}?{% url_replace %}">
                     <div class="tab_txt">
