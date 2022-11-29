@@ -181,6 +181,14 @@ $(document).ready(function () {
         $("#get_media").parent()[0].textContent = 'baixando...'
     });
 
+    // Baixar resultados da busca
+    $('#btn-download-filtered').click(function (event) {
+        let urlSearchParams = new URLSearchParams(window.location.search);
+        urlSearchParams.append('format', 'csv');
+        window.location.href = window.location.href.split('?')[0] + '?' + urlSearchParams.toString();
+        event.preventDefault();
+    });
+
     /*timeline*/
 
 });

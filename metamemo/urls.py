@@ -27,6 +27,7 @@ urlpatterns = [
     path("blog/", blogviews.blog_redir, name="blog"),
     path("blog/<str:post>", blogviews.blog_redir, name="blog"),
     path("lista/", views.lista, name="lista"),
+    path("memoitems/download", views.memoitems_download, name="memoitems-download"),
     path("news/", views.news, name="news"),
     path("contexts/", views.contexts, name="contexts"),
     path("memoitem/<int:item_id>", views.memoitem, name="memoitem"),

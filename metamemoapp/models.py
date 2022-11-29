@@ -1,8 +1,3 @@
-from django.core.management import call_command
-from django.db import models
-
-# Create your models here.
-
 """
 Aqui você define os modelos de dados, tem uma penca de classes disponíveis para os tipos de dados mais comuns.
 Acho que ainda precisa um pente fino e pensar melhor a relação entre MetaMemo e MemoSource.
@@ -16,6 +11,9 @@ python mangage.py migrate -> para efetuar as migrações
 
 Obviamente a ideia é fechar o modelo de dados antes de começar a popular o banco definitivamente.
 """
+
+from django.core.management import call_command
+from django.db import connection, models
 
 
 class MemoKeyWord(models.Model):
@@ -100,24 +98,28 @@ class MemoItemQuerySet(models.QuerySet):
         return self.select_related("author").prefetch_related("medias").get(pk=pk)
 
     def from_author(self, value):
+        qs = self.select_related("author")
         if not value:
-            return self
-        return self.filter(author__name=value).select_related("author")
+            return qs
+        return qs.filter(author__name=value)
 
     def from_authors(self, values):
+        qs = self.select_related("author")
         if not values:
-            return self
-        return self.filter(author__name__in=values).select_related("author")
+            return qs
+        return qs.filter(author__name__in=values)
 
     def from_source(self, value):
+        qs = self.select_related("source")
         if not value:
-            return self
-        return self.filter(source__name=value).select_related("source")
+            return qs
+        return qs.filter(source__name=value)
 
     def from_sources(self, values):
+        qs = self.select_related("source")
         if not values:
-            return self
-        return self.filter(source__name__in=values).select_related("source")
+            return qs
+        return qs.filter(source__name__in=values)
 
     def since(self, value):
         if not value:
@@ -133,6 +135,81 @@ class MemoItemQuerySet(models.QuerySet):
         if not value:
             return self
         return self.filter(models.Q(content__icontains=value) | models.Q(title__icontains=value))
+
+    def export_csv(self):
+        sql = """
+            WITH medias AS (
+            SELECT
+                u.memoitem_id,
+                m.media,
+                m.original_url,
+                m.mediatype
+            FROM (
+                SELECT
+                i.memoitem_id,
+                m.mediatype,
+                MIN(i.memomedia_id) AS memomedia_id
+                FROM metamemoapp_memoitem_medias AS i
+                LEFT JOIN metamemoapp_memomedia AS m
+                    ON m.id = i.memomedia_id
+                WHERE m.media IS NOT NULL
+                GROUP BY i.memoitem_id, m.mediatype
+            ) AS u
+                LEFT JOIN metamemoapp_memomedia AS m ON
+                u.memomedia_id = m.id
+                AND u.mediatype = m.mediatype
+            ),
+            images AS (
+            SELECT memoitem_id, media, original_url
+            FROM medias
+            WHERE mediatype = 'IMAGE'
+            ),
+            videos AS (
+            SELECT memoitem_id, media, original_url
+            FROM medias
+            WHERE mediatype = 'VIDEO'
+            )
+            SELECT
+            i.id,
+            i.content_date,
+            a.name AS author,
+            s.name AS source,
+            i.likes,
+            i.interactions,
+            i.shares,
+            i.original_id,
+            i.url,
+            i.title,
+            CASE
+                WHEN mv.media IS NOT NULL THEN 'downloaded'
+                WHEN mv.memoitem_id IS NOT NULL THEN 'not_downloaded'
+                ELSE 'no_media'
+            END AS video_status,
+            mv.media AS video_internal_url,
+            mv.original_url AS video_original_url,
+            CASE
+                WHEN mi.media IS NOT NULL THEN 'downloaded'
+                WHEN mi.memoitem_id IS NOT NULL THEN 'not_downloaded'
+                ELSE 'no_media'
+            END AS image_status,
+            mi.media AS image_internal_url,
+            mi.original_url AS image_original_url,
+            i.content
+            FROM metamemoapp_memoitem AS i
+            LEFT JOIN videos AS mv
+                ON mv.memoitem_id = i.id
+            LEFT JOIN images AS mi
+                ON mi.memoitem_id = i.id
+            LEFT JOIN metamemoapp_metamemo AS a
+                ON a.id = i.author_id
+            LEFT JOIN metamemoapp_memosource AS s
+                ON s.id = i.source_id
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+            yield [item[0] for item in cursor.description]  # Header
+            for row in cursor.fetchall():
+                yield row
 
 
 class MemoItem(models.Model):

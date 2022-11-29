@@ -4,7 +4,7 @@ import datetime
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -18,17 +18,28 @@ def bad_request(request, message=None):
     return render(request, "content/oops.html", {"message": message}, status=400)
 
 
-def csv_response(queryset, filename):
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=metamemo-search.csv"
-    writer = None
-    for obj in queryset:
+def queryset_to_lines(qs):
+    header = None
+    # XXX: we may want to use .iterator() in the future (if the number of rows
+    # increases a lot), but we'll need to deal with the timeout, since
+    # .iterator() will be a lot slower (but won't use too much memory and will
+    # start the response sooner).
+    for obj in qs:
         row = obj.serialize()
-        if writer is None:
-            writer = csv.DictWriter(response, fieldnames=list(row.keys()))
-            writer.writeheader()
-        writer.writerow(row)
-    return response
+        if header is None:
+            header = list(row.keys())
+            yield header
+        yield [row.get(field) for field in header]
+
+
+def csv_streaming_response(lines, filename):
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    return StreamingHttpResponse(
+        (writer.writerow(line) for line in lines),
+        content_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 def json_response(queryset, full=False):
@@ -139,7 +150,23 @@ def contexts(request):
     return render(request, "contexts.html", {"data": data})
 
 
+class Echo:
+    """Implements just the write method of the file-like interface"""
+
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
+def memoitems_download(request):
+    return csv_streaming_response(
+        lines=MemoItem.objects.export_csv(),
+        filename=f"metamemo-memoitems-{timezone.now().date()}.csv",
+    )
+
+
 def lista(request):
+    # TODO: merge `lista` and `memoitems_download` ?
     qs = QueryStringParser(request.GET)
     try:
         page = qs.int("page", default=1)
@@ -160,17 +187,20 @@ def lista(request):
         .search(content)
         .prefetch_related("medias")
     )
-    items = Paginator(queryset, settings.PAGE_SIZE)
 
     if output_format:
         output_format = str(output_format or "").lower().strip()
         if output_format == "csv":
-            return csv_response(queryset, "metamemo-search.csv")
+            return csv_streaming_response(
+                lines=queryset_to_lines(queryset),
+                filename="metamemo-memoitems-filtered.csv",
+            )
         elif output_format == "json":
             return json_response(queryset, full=True)
         else:
             return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 
+    items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
         "path": request.resolver_match.url_name,
         "dates": (start_date, end_date),
@@ -186,6 +216,10 @@ def lista(request):
             "Blog": "blog1",
         },
         "sources_total": {},  # TODO: what to do?
+        "page": page,
+        "content": content,
+        "authors": authors,
+        "sources": sources,
     }
     return render(request, "files.html", {"data": data})
 
