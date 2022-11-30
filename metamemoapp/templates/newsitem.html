@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load metamemoapp_extras %}
+{% block title %}Notícia | MetaMemo{% endblock %}
+{% block page_class %} memoitem metablue back-malha{% endblock %}
+
+{% block content %}
+<div class="memoitem-container container white">
+  <div class="mini-container white">
+    <div class="breadcrumb">
+      <a href="{% url 'home' %}">Home</a> &gt;
+      <a href="{% url 'lista' %}">Busca</a> &gt;
+      <a href="#">Notícia {{ item.pk }}</a>
+    </div>
+    <div class="row">
+      <p>
+        <a href="{{ item.url }}" title="Link original" target="_blank">
+          {{ item.title }}
+        </a>
+        <b>{{ item.source.name }}</b>
+      </p>
+
+    </div>
+    <div class="row">
+      <p>
+        {{ item.text|safe }}
+      </p>
+    </div>
+    <div class="metricas row">
+      <div class="data-tempo col s12 m5 no-padding">
+        <b><i class="icon-calendar font25 valign-middle"></i>&nbsp; {{ item.content_date|date:"d/m/Y"}} </b>
+        <b><i class="icon-clock2 font25 valign-middle"></i>&nbsp; {{ item.content_date|date:"H:m"}} </b>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,104 +1,124 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - Metamix{% endblock %}
+{% block title %}Sobre | MetaMemo{% endblock %}
 {% block page_class %}saiba{% endblock %}
 
 {% block content %}
 <section class="sobre">
-	<div class="row metabranco lighten-4">
-		<div class="card-conteudo col s12 offset-m2 m4 metaroxo-text">
-			<h2 class="metaroxo-text font48">O que é a METAMEMO</h2>
-			<p>
-				METAMEMO é um sistema criado para coletar, armazenar, processar e visualizar as publicações de qualquer perfil em plataformas de redes sociais da internet (Facebook, Instagram, Twitter, Youtube e TikTok). 
-			</p>
-			<p>
-				<b>
-					O objetivo é preservar a memória e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.
-				</b>
-			</p>
-			<a href="{% url 'content' 'metamemo' %}" class="btn metapink white-text">Saiba mais</a>
-		</div>
-		<div class="card-imagem col s12 m5 offset-m1 no-padding">
-			<img alt="Pesquisador negro em frente ao computador"
-					src="{% static 'imgs/stock/home_metamemo.png' %}"/>
-		</div>
-	</div>
+  <div class="row metabranco lighten-4">
+    <div class="card-conteudo col s12 offset-m2 m4 metaroxo-text">
+      <h2 class="metaroxo-text font48">O que é a METAMEMO</h2>
+      <p>
+        METAMEMO é um sistema criado para coletar, armazenar, processar e
+        visualizar as publicações de qualquer perfil em plataformas de redes
+        sociais da Internet (Facebook, Instagram, Twitter e Youtube).
+      </p>
+      <p>
+        <b>
+          O objetivo é preservar a memória e facilitar a análise desse conteúdo
+          por parte de ativistas, jornalistas e pesquisadores.
+        </b>
+      </p>
+      <a href="{% url 'content' 'metamemo' %}" class="btn metapink white-text">Saiba mais</a>
+    </div>
+    <div class="card-imagem col s12 m5 offset-m1 no-padding">
+      <img alt="Pesquisador negro em frente ao computador"
+      src="{% static 'imgs/stock/home_metamemo.png' %}"/>
+    </div>
+  </div>
 </section>
 <div class="back-metaondas"></div>
 <section class="roxo">
-	<div class="row metaroxo">
-		<div class="col s12 m6 offset-m3 font24 metabranco-text"><b>Um metamemo é uma coleção de dados, metadados e mídias agregadas de publicações de um ou mais perfis de redes sociais em um único arquivo.</b></div>
-	</div>
+  <div class="row metaroxo">
+    <div class="col s12 m6 offset-m3 font24 metabranco-text">
+      <b>
+        Um metamemo é uma coleção de dados, metadados e mídias agregadas de
+        publicações de um ou mais perfis de redes sociais em um único
+        arquivo.
+      </b>
+    </div>
+  </div>
 </section>
 <section class="funciona">
-	<div class="row">
-		<div class="col s12 m6 offset-m3 metaroxo-text">
-			<h2 class="titulo font35 text-center metaroxo-text">METAMEMO funciona em quarto partes:</h2>
-			<p>
-				<b class="font24">1 - Coletores:</b>
-			</p><p>
-				Um coletor é um script que executa uma tarefa periodicamente em um determinado cronograma. 
-				Exemplo: “coletar conteúdo, imagem, data e outras informações de um perfil no Facebook de janeiro de 2011 até dezembro de 2022”. 
-				Os dados, aqui chamados de metaitem (em formato texto) são apresentados em cada metamemo, enquanto as imagens (arquivos que exigem mais quantidade de memória) são armazenados em um servidor próprio.
-			</p><p>
-				<b class="font24">2 - Processadores:</b>
-			</p><p>
-				Um processador é uma ferramenta que, alimentada pelas informações das redes sociais trazidas pelos coletores, limpa e processa os dados, gerando também novos metadados. 
-				Exemplo: “transformar todo conteúdo de um perfil de Twitter de 11 de janeiro de 2011 até dezembro de 2022 em uma nuvem de tags, onde quanto maior a tag maior a frequência de sua aparição na coleta.
-			</p><p>
-				<b class="font24">3 - Armazenagem:</b>
-			</p><p>
-				Após coletados e processados, os metaitens são armazenados em um banco de dados com suporte a full-text search,ou seja: que a busca por palavras possa retornar automaticamente uma ou todas as palavras buscadas, não apenas a palavra exata.
-			</p><p>
-				<b class="font24">4 - Visualização:</b>
-			</p><p>
-				Depois de coletados, processados e armazenados, os metaitens eles então serão mostrados em uma interface visual acessível e administrável. 
-				A busca por um metamemo de uma determinada pessoa, num período delimitado, retorna uma série de postagens, que são separadas por rede social, com a possibilidade de clicar em cada post para ver o texto e a imagem (ou vídeo) na íntegra em outra tela.
-			</p>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col s12 m6 offset-m3 metaroxo-text">
+      <h2 class="titulo font35 text-center metaroxo-text">METAMEMO funciona em quarto partes:</h2>
+      <p>
+        <b class="font24">1 - Coletores:</b>
+        </p><p>
+        Um coletor é um script que executa uma tarefa periodicamente em um determinado cronograma.
+        Exemplo: “coletar conteúdo, imagem, data e outras informações de um perfil no Facebook de janeiro de 2011 até dezembro de 2022”.
+        Os dados, aqui chamados de metaitem (em formato texto) são apresentados em cada metamemo, enquanto as imagens (arquivos que exigem mais quantidade de memória) são armazenados em um servidor próprio.
+        </p><p>
+        <b class="font24">2 - Processadores:</b>
+        </p><p>
+        Um processador é uma ferramenta que, alimentada pelas informações das redes sociais trazidas pelos coletores, limpa e processa os dados, gerando também novos metadados.
+        Exemplo: “transformar todo conteúdo de um perfil de Twitter de 11 de janeiro de 2011 até dezembro de 2022 em uma nuvem de tags, onde quanto maior a tag maior a frequência de sua aparição na coleta.
+        </p><p>
+        <b class="font24">3 - Armazenagem:</b>
+        </p><p>
+        Após coletados e processados, os metaitens são armazenados em um banco de dados com suporte a full-text search,ou seja: que a busca por palavras possa retornar automaticamente uma ou todas as palavras buscadas, não apenas a palavra exata.
+        </p><p>
+        <b class="font24">4 - Visualização:</b>
+        </p><p>
+        Depois de coletados, processados e armazenados, os metaitens eles então serão mostrados em uma interface visual acessível e administrável.
+        A busca por um metamemo de uma determinada pessoa, num período delimitado, retorna uma série de postagens, que são separadas por rede social, com a possibilidade de clicar em cada post para ver o texto e a imagem (ou vídeo) na íntegra em outra tela.
+      </p>
+    </div>
+  </div>
 </section>
 <section class="bolsodata">
-	<div class="row no-margin">
-		<div class="card-imagem col s12 m6 no-padding">
-			<img alt="Familia Bolsonaro"
-				 src="{% static 'imgs/familia-bozo.png' %}"
-				 width="100%" height="100%"/>
-		</div>
-		<div class="col s12 offset-m1 m5 white-text">
-			<div class="col metaroxo-text s12 m10">
-				<h2 class="metagreen-text font48">
-					Bolsodata, o primeiro case da Metamemo
-				</h2>
-				<p>
-					A primeira implementação da METAMEMO foi o projeto BOLSODATA, que reuniu as postagens das figuras públicas da Família Bolsonaro (Jair, e seus filhos Flávio, Carlos e Eduardo, respectivamente Presidente, Senador, Vereador e Deputado) de notório interesse público no Brasil quando o projeto começou - em 2021. 
-				</p><p>
-					Para este caso, também foram inseridas informações do contexto brasileiro sobre o período coletado (2010-2022), de forma a possibilitar a identificação um fato isolado publicado pelos perfis em conjunto ao que estava acontecendo no Brasil no mesmo momento através de outros canais midiáticos (mídia impressa, digital e audiovisual). Este levantamento derivou uma reportagem cronológica, em forma de linha do tempo aqui chamada de “Os Bolsonaros” de 1951-2018, que pode ser acessada no link abaixo.
-				</p>
-				<a href="{% url 'home' %}" class="btn metapink white-text">Saiba mais</a>
-			</div>
-		</div>
-	</div>
+  <div class="row no-margin">
+    <div class="card-imagem col s12 m6 no-padding">
+      <img alt="Familia Bolsonaro"
+      src="{% static 'imgs/familia-bozo.png' %}"
+      width="100%" height="100%"/>
+    </div>
+    <div class="col s12 offset-m1 m5 white-text">
+      <div class="col metaroxo-text s12 m10">
+        <h2 class="metagreen-text font48">
+          Bolsodata, a primeira implementação do MetaMemo
+        </h2>
+        <p>
+          O projeto BOLSODATA reuniu as publicações das figuras públicas da
+          Família Bolsonaro (Jair, e seus filhos Flávio, Carlos e Eduardo,
+          respectivamente Presidente, Senador, Vereador e Deputado) de notório
+          interesse público no Brasil quando o projeto começou - em 2021.
+        </p>
+        <p>
+          Para este caso, também foram inseridas informações do contexto
+          brasileiro sobre o período coletado (2010-2022), de forma a
+          possibilitar a identificação um fato isolado publicado pelos perfis
+          em conjunto ao que estava acontecendo no Brasil no mesmo momento
+          através de outros canais midiáticos (mídia impressa, digital e
+          audiovisual). Este levantamento derivou uma reportagem cronológica,
+          em forma de linha do tempo aqui chamada de “Os Bolsonaros” de
+          1951-2018, que pode ser acessada no link abaixo.
+        </p>
+        <a href="{% url 'home' %}" class="btn metapink white-text">Saiba mais</a>
+      </div>
+    </div>
+  </div>
 </section>
 <section class="colabore">
-	<div class="row metaroxo valign-wrapper no-margin">
-		<div class="col s12 offset-m1 m5 white-text">
-			<div class="col white-text s12 m10">
-				<h2 class="white-text font48">
-					Colabore!
-				</h2>
-				<p class="font22">
-					<i class="icon-github"></i> Fork me on GitHub
-				</p>
-				<a href="{% url 'content' 'colabore' %}" class="btn metapink white-text">Colabore no GitHub</a>
-			</div>
-		</div>
-		<div class="card-imagem col s12 m6 no-padding">
-			<img alt="Familia Bolsonaro"
-				 src="{% static 'imgs/stock/home_colabore.png' %}"
-				 width="100%" height="100%"/>
-		</div>
-	</div>
+  <div class="row metaroxo valign-wrapper no-margin">
+    <div class="col s12 offset-m1 m5 white-text">
+      <div class="col white-text s12 m10">
+        <h2 class="white-text font48">
+          Colabore!
+        </h2>
+        <p class="font22">
+          <i class="icon-github"></i> Fork me on GitHub
+        </p>
+        <a href="{% url 'content' 'colabore' %}" class="btn metapink white-text">Colabore no GitHub</a>
+      </div>
+    </div>
+    <div class="card-imagem col s12 m6 no-padding">
+      <img alt="Familia Bolsonaro"
+      src="{% static 'imgs/stock/home_colabore.png' %}"
+      width="100%" height="100%"/>
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - Metamix{% endblock %}
+{% block title %}Ops! | MetaMemo{% endblock %}
 {% block page_class %}oops{% endblock %}
 
 {% block content %}
 <div class="row oops-container">
-    <div class="col s10 offset-s1 m6 offset-m3 oops-message">
-        <h2>Estamos trabalhando nisso...</h2>
-        <a href="{% url 'home' %}"><p>volte mais tarde</p></a>
-    </div>
-    <div class="sliding-background">
-    </div>
+  <div class="col s10 offset-s1 m6 offset-m3 oops-message">
+    <h2>Oops, aconteceu um problema!</h2>
+    {{ message }}
+    <br>
+    Caso o problema persista, entre em contato conosco.
+  </div>
+  <div class="sliding-background"></div>
 </div>
 {% endblock %}

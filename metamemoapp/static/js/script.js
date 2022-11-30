@@ -72,7 +72,7 @@ $(document).ready(function () {
     $('.button').click(function (event) {
         var sd = M.Datepicker.getInstance($("#start_date"));
         var ed = M.Datepicker.getInstance($("#end_date"));
-    
+
         var authors = $('.metasearch #authors .author:not(.transparent)')
             .map(function (i, chip) {
                 return chip.getAttribute('data-author');
@@ -89,22 +89,27 @@ $(document).ready(function () {
             'content': $("#id_content").val()
         }
 
-        if (sd) {
+        if (sd && sd.date) {
             let date = new Date(sd.date);
             qs['start_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
-        if (ed) {
+        if (ed && ed.date) {
             let date = new Date(ed.date);
             qs['end_date'] = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getDate()}`
         }
         qs = $.param(qs, true);
 
-        window.location = `/lista/?${qs}`
+        let path = window.location.href.split("?")[0];
+        if ($(event.target).text() == "Consultar") {
+          // Está na home, logo precisa ir para "/lista/"
+          path = path.endsWith("/") ? path = `${path}lista/` : path = `${path}/lista/`;
+        }
+        window.location = `${path}?${qs}`;
     });
 
     //Datepicker
     $('.datepicker').datepicker({
-        yearRange: [2008, 2022],
+        yearRange: [2008, 2023],
         defaultDate: new Date(Date.parse(this.value)),
         i18n: {
             today: 'Hoje',
@@ -126,8 +131,6 @@ $(document).ready(function () {
         dp._finishSelection();
     });
 
-
-
     //Carrega filtros
     if ($("body").hasClass("search")) {
         var p = new URLSearchParams(window.location.search);
@@ -148,7 +151,6 @@ $(document).ready(function () {
             end_date._finishSelection();
         }
 
-
         var redes = p.getAll("source");
         if(redes.length < 1){
             $('.metasearch #sources .source').each(function (i, rede) {
@@ -161,7 +163,6 @@ $(document).ready(function () {
                 rede.click();
             }
         });
-
 
         var authors = p.getAll("author");
         if(authors.length < 1){
@@ -183,6 +184,14 @@ $(document).ready(function () {
         var url = event.currentTarget.getAttribute('href');
         $.ajax(url);
         $("#get_media").parent()[0].textContent = 'baixando...'
+    });
+
+    // Baixar resultados da busca
+    $('#btn-download-filtered').click(function (event) {
+        let urlSearchParams = new URLSearchParams(window.location.search);
+        urlSearchParams.append('format', 'csv');
+        window.location.href = window.location.href.split('?')[0] + '?' + urlSearchParams.toString();
+        event.preventDefault();
     });
 
     /*timeline*/

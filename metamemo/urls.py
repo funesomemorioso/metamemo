@@ -22,18 +22,38 @@ from blog import views as blogviews
 from metamemoapp import views
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    # "Static" pages
     path("content/<str:page>", views.content, name="content"),
+
+    # Blog
     path("blog/", blogviews.blog_redir, name="blog"),
     path("blog/<str:post>", blogviews.blog_redir, name="blog"),
+
+    # MemoItem-related
+    path("", views.home, name="home"),
     path("lista/", views.lista, name="lista"),
-    path("news/", views.news, name="news"),
-    path("contexts/", views.contexts, name="contexts"),
+    path("memoitems/download", views.memoitems_download, name="memoitems-download"),
     path("memoitem/<int:item_id>", views.memoitem, name="memoitem"),
     path("memoitem/<int:item_id>/get_media", views.get_media, name="get_media"),
+
+    # MemoMedia-related
+    path("media/", views.media_list, name="media-list"),
+
+    # NewsItem-related
+    path("news/", views.news_list, name="news-list"),
+    path("news/<int:item_id>", views.news_detail, name="news-detail"),
+
+    # MemoContext-related
+    path("contexts/", views.contexts, name="contexts"),
+
+    # Timeline-related
+    path("timeline/", include("timeline.urls")),
+
+    # Administrative
     path("admin/", admin.site.urls),
     path("celery-progress/", include("celery_progress.urls")),
-    path("__debug__", include("debug_toolbar.urls")),
     path("summernote/", include("django_summernote.urls")),
-    path("timeline/", include("timeline.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [path("__debug__", include("debug_toolbar.urls"))]

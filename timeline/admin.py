@@ -3,8 +3,6 @@ from import_export.admin import ImportExportModelAdmin
 
 from timeline.models import Fact, Session, Timeline
 
-# Register your models here.
-
 
 class FactAdmin(ImportExportModelAdmin):
     model = Fact

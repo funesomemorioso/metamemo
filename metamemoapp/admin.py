@@ -1,3 +1,12 @@
+"""
+Esse é o principal motivo pelo qual eu quis vir pro django.
+Com poucas linhas a gente tem uma interface administrativa robusta e customizável.
+
+O list_display mostra quais campos exibir na interface administrativa.
+Tem outros parametros para configurar filtros, facets e coisas mais.
+Vale ler a documentação.
+"""
+
 from django.contrib import admin, messages
 from django.db.models import Count
 from django.utils.html import format_html
@@ -5,7 +14,6 @@ from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
 from import_export.widgets import ManyToManyWidget
 
-# Register your models here.
 from metamemoapp.models import (
     MemoContext,
     MemoItem,
@@ -19,15 +27,6 @@ from metamemoapp.models import (
 )
 from metamemoapp.tasks import download_async, transcribe_async
 from metamemoapp.utils import generate_keyword
-
-"""
-Esse é o principal motivo pelo qual eu quis vir pro django.
-Com poucas linhas a gente tem uma interface administrativa robusta e customizável.
-
-O list_display mostra quais campos exibir na interface administrativa.
-Tem outros parametros para configurar filtros, facets e coisas mais.
-Vale ler a documentação.
-"""
 
 
 # Action para baixar as midias.
@@ -83,6 +82,7 @@ def save_keywords(modeladmin, request, queryset):
             i.keyword.add(w[0])
 
 
+@admin.register(MemoMedia)
 class MemoMediaAdmin(admin.ModelAdmin):
     model = MemoMedia
     list_display = ("original_url", "status", "mediatype", "source")
@@ -115,8 +115,8 @@ def video_status(obj):
             return v.status
 
 
+@admin.register(MemoItem)
 class MemoItemAdmin(ImportExportModelAdmin):
-    model = MemoItem
     list_display = (
         "title",
         "author",
@@ -160,8 +160,8 @@ class MemoContextResource(resources.ModelResource):
         export_order = fields
 
 
+@admin.register(MemoContext)
 class MemoContextAdmin(ImportExportModelAdmin):
-    model = MemoContext
     resource_class = MemoContextResource
     filter_horizontal = ("keyword",)
     list_display = (
@@ -173,11 +173,12 @@ class MemoContextAdmin(ImportExportModelAdmin):
     )
 
 
+@admin.register(NewsItem)
 class NewsItemAdmin(admin.ModelAdmin):
-    model = NewsItem
     list_display = ("title", "source", "content_date", link_to_memoitem)
 
 
+@admin.register(MemoKeyWord)
 class MemoKeyWordAdmin(admin.ModelAdmin):
     model = MemoKeyWord
     list_display = ("word", "word_count")
@@ -194,8 +195,6 @@ class MemoKeyWordAdmin(admin.ModelAdmin):
 
 
 # Resources
-
-
 class MemoItemResource(resources.ModelResource):
     video_status = fields.Field()
     video_url = fields.Field()
@@ -246,13 +245,7 @@ class MemoItemResource(resources.ModelResource):
         return status
 
 
-admin.site.register(MetaMemo)
-admin.site.register(MemoItem, MemoItemAdmin)
 admin.site.register(MemoSource)
-admin.site.register(MemoMedia, MemoMediaAdmin)
-admin.site.register(MemoKeyWord, MemoKeyWordAdmin)
-admin.site.register(MemoContext, MemoContextAdmin)
-
-admin.site.register(NewsItem, NewsItemAdmin)
-admin.site.register(NewsSource)
+admin.site.register(MetaMemo)
 admin.site.register(NewsCover)
+admin.site.register(NewsSource)

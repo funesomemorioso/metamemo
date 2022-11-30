@@ -1,56 +1,56 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load metamemoapp_extras %}
-{% block title %}Metamemo - Metamix{% endblock %}
+{% block title %}Metamix | Blog MetaMemo{% endblock %}
 {% block page_class %}blog{% endblock %}
 
 {% block content %}
 <section class="no-padding-top">
-	<div class="parallax-container">
-		<div class="row valign-wrapper no-margin">
-			<div class="text-shadow col s12 offset-m4 m4">
-				<h1 class="white-text center-align">MetaMix</h1>
-				<p class="white-text center-align font22">Metamix é um blog com produções <br> criadas através da nossa plataforma</p>
-			</div>
-		</div>
-    	<div class="parallax"><img src="https://picsum.photos/1440/700?sdsd" style="transform: translate3d(-50%, 412.233px, 0px); opacity: 1;"></div>
+  <div class="parallax-container">
+    <div class="row valign-wrapper no-margin">
+      <div class="text-shadow col s12 offset-m4 m4">
+        <h1 class="white-text center-align">MetaMix</h1>
+        <p class="white-text center-align font22">Metamix é um blog com produções <br> criadas através da nossa plataforma</p>
+      </div>
     </div>
-    <div class="container">
-	    <div class="row grey lighten-4 caro-wrap">
-			<div class="row grey lighten-4" >
-				{% if posts %}
-					{% for post in posts %}
-						<div class="blog-post col s12 m3">
-							<article class="card">
-								<div class="card-image">
-									<img src="https://picsum.photos/255/143?sdsd">
-								</div>
-								<div class="card-content">
-									<h2>{{ post.title }}</h2>
-									<p>{{ post.abstract }}</p>
-								</div>
-								<div class="card-action">
-									<a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
-								</div>
-							</article>
-						</div>
-					{% endfor %}
-				{% else %}
-					<div class="sorry font18">nenhuma postagem foi encontrada.</div>
-				{% endif %}
-	    </div>
+    <div class="parallax"><img src="https://picsum.photos/1440/700?sdsd" style="transform: translate3d(-50%, 412.233px, 0px); opacity: 1;"></div>
+  </div>
+  <div class="container">
+    <div class="row grey lighten-4 caro-wrap">
+      <div class="row grey lighten-4" >
+        {% if posts %}
+        {% for post in posts %}
+        <div class="blog-post col s12 m3">
+          <article class="card">
+            <div class="card-image">
+              <img src="https://picsum.photos/255/143?sdsd">
+            </div>
+            <div class="card-content">
+              <h2>{{ post.title }}</h2>
+              <p>{{ post.abstract }}</p>
+            </div>
+            <div class="card-action">
+              <a href="{% url 'blog' post.slug %}" class="btn metapink white-text">Leia Mais</a>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="sorry font18">nenhuma postagem foi encontrada.</div>
+        {% endif %}
+      </div>
     </div>
-</section>
-<section class="sobre no-padding-bottom">
-	<div class="row metagreen valign-wrapper no-margin">
-		<div class="col s12 m6 no-padding"><img src="https://picsum.photos/705/493?sdsd" width="100%"></div>
-		<div class="col s12 offset-m1 m5 white-text">
-			<div class="col s12 m10">
-				<h2 class="white-text">Colabore!</h2>
-				<p>A plataforma MetaMemo é aberta, e você pode colaborar conosco</p>			
-				<p><a href="{% url 'content' 'colabore' %}" class="btn metapink white-text">Acesse aqui</a></p>
-			</div>
-		</div>
-	</div>
-<div></div></section>
-{% endblock %}
+  </section>
+  <section class="sobre no-padding-bottom">
+    <div class="row metagreen valign-wrapper no-margin">
+      <div class="col s12 m6 no-padding"><img src="https://picsum.photos/705/493?sdsd" width="100%"></div>
+      <div class="col s12 offset-m1 m5 white-text">
+        <div class="col s12 m10">
+          <h2 class="white-text">Colabore!</h2>
+          <p>A plataforma MetaMemo é aberta, e você pode colaborar conosco</p>
+          <p><a href="{% url 'content' 'colabore' %}" class="btn metapink white-text">Acesse aqui</a></p>
+        </div>
+      </div>
+    </div>
+    <div></div></section>
+  {% endblock %}

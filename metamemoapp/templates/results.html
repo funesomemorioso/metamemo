@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load metamemoapp_extras %}
-{% block title %}
-    Metamemo - Resultado da busca
-{% endblock title %}
+{% block title %}Resultado da busca | MetaMemo{% endblock title %}
 {% block page_class %}
     list search
 {% endblock page_class %}
@@ -11,7 +9,7 @@
         <div class="breadcrumb">
             <a href="{% url 'home' %}">Home</a> &gt;
             <a href="{% url 'lista' %}">Busca</a> &gt;
-            <a href="#">Resultados Metamemos</a>
+            <a href="#">Resultados</a>
         </div>
         {% include 'list/advform.html' %}
     </section>
@@ -24,11 +22,11 @@
                     </div>
                     <div class="tab_underline {% if data.path == 'lista' %}active{% endif %}"></div>
                 </a>
-                <a class="resultado_tab" href="{% url 'news' %}?{% url_replace %}">
+                <a class="resultado_tab" href="{% url 'news-list' %}?{% url_replace %}">
                     <div class="tab_txt">
                         <span class="metablue-text font18 text-bold">Notícias</span>
                     </div>
-                    <div class="tab_underline {% if data.path == 'news' %}active{% endif %}"></div>
+                    <div class="tab_underline {% if data.path == 'news-list' %}active{% endif %}"></div>
                 </a>
                 <a class="resultado_tab" href="{% url 'contexts' %}?{% url_replace %}">
                     <div class="tab_txt">

@@ -40,7 +40,7 @@
                                     <a href="{% url 'content' 'colabore' %}">Colabore</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'content' 'saiba' %}">A MetaMemo</a>
+                                    <a href="{% url 'content' 'saiba' %}">Sobre</a>
                                 </li>
                             </ul>
                         </div>
@@ -52,15 +52,15 @@
         {% block footer %}
             <footer class="grey lighten-4 black-text">
                 <div class="container">
-                    <div class="row no-margin"> 
+                    <div class="row no-margin">
                         <div class="col s12  m3">
                             <img src="{% static 'imgs/metamemo-logo.png' %}" alt="" width="100%"><br>
-                            inbox@metamememo.com.br
+                            <a href="mailto:inbox@metamemo.info">inbox@metamemo.info</a>
                             <p>Conteúdo original do site licenciado <br> sob <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.pt"><b>CC BY SA.</b></a></p>
                         </div>
                         <div class="col s12 offset-m3 m3 fut-baixe">
                             <p>Baixe, armazene e/ou distribua <br> via torrent este <b>METAMEMO.</b></p>
-                            <p><a href="{% url 'content' 'oops' %}" class="btn metapink white-text font16">Baixe Aqui</a></p>
+                            <p><a href="{% url 'memoitems-download' %}" class="btn metapink white-text font16">Baixe aqui</a></p>
                         </div>
                         <div class="col s12 m3 fut-colabore">
                             <h3>Colabore!</h3>

@@ -51,18 +51,24 @@ CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
 
 # Application definition
 INSTALLED_APPS = [
-    "metamemoapp",
-    "timeline",
-    "import_export",
-    "blog",
-    "django_summernote",
-    "django_celery_results",
+    # Django apps:
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
+
+    # Third-party apps
+    "django_summernote",
+    "django_celery_results",
+    "import_export",
+
+    # Project apps
+    "metamemoapp",
+    "timeline",
+    "blog",
 ]
 if DEBUG:
 
@@ -88,6 +94,7 @@ MIDDLEWARE = [
 ]
 if DEBUG:
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+    MIDDLEWARE.append("utils.sqlprint.SqlPrintingMiddleware")
 
 ROOT_URLCONF = "metamemo.urls"
 
@@ -148,7 +155,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 LANGUAGE_CODE = "pt-br"
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -176,6 +183,7 @@ CELERY_BROKER_URL = config("REDIS_URL")
 
 # Custom settings
 METAMEMO_LANGUAGE = "pt-BR"
+PAGE_SIZE = config("PAGE_SIZE", cast=int, default=50)
 
 TWITTER_BEARER_TOKEN = config("TWITTER_BEARER_TOKEN", default="")
 

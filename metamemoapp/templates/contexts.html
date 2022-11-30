@@ -1,43 +1,59 @@
 {% extends "results.html" %}
 {% load static %}
 {% load metamemoapp_extras %}
+
 {% block results_bar %}
+<h2>Contexto histórico</h2>
 {%for item in data.memocontexts %}
 <div>
-    <p>
-    {{item.context}}
-    </p>
-    <div><a href="{{item.url}}">fonte</a></div>
+  <hr>
+  <p class="context-datetime">
+    {% if item.start_date|date:'Y-m-d' == item.end_date|date:'Y-m-d' or not item.end_date %}
+    {{ item.start_date }}
+    {% else %}
+    {{ item.start_date }} a {{ item.end_date }}
+    {% endif %}
+  </p>
+  <p>
+    {{ item.context }}
+  </p>
+  <div><a href="{{ item.url }}">fonte</a></div>
 </div>
 {% endfor %}
 {% endblock results_bar %}
+
 {% block results_header %}
-    <div class="col s12">Capas de Jornais do Período Selecionado</div>
+<h2>Capas de jornais</h2>
 {% endblock results_header %}
+
 {% block results_content %}
-    {% static "imgs/noun-newspaper.png" as default_source_icon %}
-    {# eye icon#}
-    <div class="col s1 valign-wrapper">
-        <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
-    </div>
-    {# source icon#}
-    <div class="col s2 valign-wrapper">
-        <img width="50px"
-             height="50px"
-             src="{{ data.sources|get_item:item.source.name|default_if_none:default_source_icon }}"
-             alt="icon for {{ item.source }}"/>
-    </div>
-    {# date #}
-    <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
-    {# url #}
-    <div class="col s1 valign-wrapper">
-        <a href="{{ item.media.url }}" target="_blank">Ver</a>
-    </div>
-    {# cover #}
-    <div class="col s7 valign-wrapper">
-        <img 
-             height="122px"
-             src="{{ item.media.url }}"
-             alt="cover for {{item.source}} on {{item.content_date|date:'d/m/y'}}"/>
-    </div>
+{% static "imgs/noun-newspaper.png" as default_source_icon %}
+{# source icon#}
+<div class="col s2 valign-wrapper">
+  <img width="50px"
+  height="50px"
+  src="{{ data.sources|get_item:item.source.name|default_if_none:default_source_icon }}"
+  alt="icon for {{ item.source }}"/>
+</div>
+{# date #}
+<div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
+{# url #}
+<div class="col s1 valign-wrapper">
+  {% if item.media %}
+  <a href="{{ item.media.url }}" target="_blank">Ver</a>
+  {% else %}
+  (sem mídia)
+  {% endif %}
+</div>
+{# cover #}
+<div class="col s7 valign-wrapper">
+  {% if item.media %}
+  <img
+  height="122px"
+  src="{{ item.media.url }}"
+  alt="cover for {{ item.source }} on {{ item.content_date|date:'d/m/Y' }}"/>
+  {% else %}
+  (sem mídia)
+  {% endif %}
+</div>
 {% endblock results_content %}
