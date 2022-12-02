@@ -145,8 +145,8 @@ $(document).ready(function () {
                 sessions_list.push(sessio+sessio_years.join( "" ))
                 $("section.no-padding-bottom").after(sessio_modals.join( "" ))
             });
-            console.log("ovo")
-            console.log(this_tl_facts)
+            //console.log("ovo")
+            //console.log(this_tl_facts)
             this_tl_destaque_image = ""
             if(this_tl_facts["facts"][0]["image"]!= null){
                 this_tl_destaque_image = `<span class="bubble large metapink">${new Date(this_tl_facts["facts"][0]["date"]).getFullYear()}</span><img src="${this_tl_facts["facts"][0]["image"]}" alt="" class="z-depth-3"/>`
@@ -182,4 +182,6 @@ $(document).ready(function () {
         });
         $('.modal').modal();
     });
+    $('.timeline-body').removeClass('active');
+    $(`#timeline-${window.location.hash.substring(1)}`).addClass('active');
 });
