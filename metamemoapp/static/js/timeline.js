@@ -26,7 +26,7 @@ $(document).ready(function () {
             nome_id = val["name"].split(' ').join('-');
             timeline_selectors.push(`
                 <div class="ovo col offset-s3 s6 m3 padding-top50 center-align">
-                    <a id="${nome_id}" class="white-text">
+                    <a id="${nome_id}" href="#${nome_id}" class="white-text">
                         <img src="${val["image"]}" alt="" width="100%" class="miniature circle darken-filter">
                         <br>${val["name"]}
                     </a>
@@ -51,8 +51,8 @@ $(document).ready(function () {
             this_tl_sessions["sessions"].sort(function(a,b){
                 return new Date(a.start) - new Date(b.start);
             });
-            console.log("oooooooo")
-            console.log(this_tl_sessions)
+            //console.log("oooooooo")
+            //console.log(this_tl_sessions)
             
             //this timeline's header
             
@@ -88,8 +88,8 @@ $(document).ready(function () {
                     tl[sess_id]["years"][ano][mesin].push(fact)
                 }
             });
-            console.log("end_tl")
-            console.log(tl)
+            //console.log("end_tl")
+            //console.log(tl)
             
             $( "#ovo" ).after(`<section id="timeline-${this_tl_facts["name"].split(' ').join('-')}" class="timeline-body"></section>`)
             var sessions_list = []
