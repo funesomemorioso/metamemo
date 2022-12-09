@@ -170,6 +170,7 @@ STATIC_ROOT = str(BASE_DIR) + "/static"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Storage
+DATA_DIR = Path(config("DATA_DIR"))
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_ENDPOINT_URL = config("AWS_S3_ENDPOINT_URL", default="")
 AWS_S3_ACCESS_KEY_ID = config("AWS_S3_ACCESS_KEY_ID", default="")
@@ -193,6 +194,7 @@ FACEBOOK_PPP = config("FACEBOOK_PPP", default=10, cast=int)
 
 TELEGRAM_API_ID = config("TELEGRAM_API_ID", default="")
 TELEGRAM_API_HASH = config("TELEGRAM_API_HASH", default="")
+TELEGRAM_SESSION_FILE = config("TELEGRAM_SESSION_FILE", default=DATA_DIR / "telethon_session.sqlite3")
 
 CROWDTANGLE_FACEBOOK_API_KEY = config("CROWDTANGLE_FACEBOOK_API_KEY", default="")
 CROWDTANGLE_INSTAGRAM_API_KEY = config("CROWDTANGLE_INSTAGRAM_API_KEY", default="")

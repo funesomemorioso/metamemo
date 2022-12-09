@@ -47,7 +47,7 @@ class Command(BaseCommand):
                 "original_id", flat=True
             )
         )
-        self.client = TelegramClient("anon", settings.TELEGRAM_API_ID, settings.TELEGRAM_API_HASH)
+        self.client = TelegramClient(settings.TELEGRAM_SESSION_FILE, settings.TELEGRAM_API_ID, settings.TELEGRAM_API_HASH)
 
         with self.client:
             self.client.loop.run_until_complete(self.getChat())
