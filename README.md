@@ -34,6 +34,11 @@ Para criar o usuário administrativo:
 python manage.py createsuperuser
 ```
 
+É necessário fazer a autenticação por 2 fatores no Telegram na primeira vez (o
+arquivo de sessão ficará salvo em `settings.DATA_DIR` e será reutilizado nas
+outras vezes que o programa rodar). Para isso, execute manualmente qualquer um
+dos comandos `import_telegram` e responda com o telefone e o código.
+
 ## Refazendo a imagem
 
 Caso seja necessário refazer a imagem do container `web` (por ter adicionado

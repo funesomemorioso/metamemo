@@ -22,7 +22,7 @@ elif [[ $source = "facebook" ]]; then
 	sleep 1m
 	python manage.py import_crowdtangle --author "Carlos Bolsonaro" --username="cbolsonaro" --source="Facebook" --image --media --debug
 	sleep 1m
-	python manage.py import_crowdtangle --author "Flávio Bolsonaro" --username="flaviobolsonaro" --source="Instagram" --image --media --debug
+	python manage.py import_crowdtangle --author "Flávio Bolsonaro" --username="flaviobolsonaro" --source="Facebook" --image --media --debug
 	sleep 1m
 	python manage.py import_crowdtangle --author "Eduardo Bolsonaro" --username="bolsonaro.enb" --source="Facebook" --image --media --debug
 	sleep 1m
