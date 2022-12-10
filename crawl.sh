@@ -37,13 +37,13 @@ elif [[ $source = "youtube" ]]; then
 	python manage.py import_youtube --channel "UCl2HptoHv6PjZMQAwTdA--Q" --author "Flávio Bolsonaro" -t 30 -m
 
 elif [[ $source = "telegram" ]]; then
-	python manage.py import_telegram -u jairbolsonarobrasil -a "Jair Bolsonaro" -l 300
+	python manage.py import_telegram jairbolsonarobrasil "Jair Bolsonaro" -l 300
 	sleep 1m
-	python manage.py import_telegram -u bolsonarocarlos -a "Carlos Bolsonaro" -l 300
+	python manage.py import_telegram bolsonarocarlos "Carlos Bolsonaro" -l 300
 	sleep 1m
-	python manage.py import_telegram -u depeduardobolsonaro -a "Eduardo Bolsonaro" -l 300
+	python manage.py import_telegram depeduardobolsonaro "Eduardo Bolsonaro" -l 300
 	sleep 1m
-	python manage.py import_telegram -u senadorflaviobolsonaro -a "Flávio Bolsonaro" -l 300
+	python manage.py import_telegram senadorflaviobolsonaro "Flávio Bolsonaro" -l 300
 
 elif [[ $source = "twitter" ]]; then
 	python manage.py import_twitter -u "jairbolsonaro" -a "Jair Bolsonaro" -m

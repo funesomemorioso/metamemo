@@ -25,15 +25,13 @@ class Command(BaseCommand):
     help = "Importa de um usuário do telegram"
 
     def add_arguments(self, parser):
-        parser.add_argument("-u", "--username", type=str, help="Telegram Username")
-        parser.add_argument("-a", "--author", type=str, help="MetaMemo Author Name")
-        parser.add_argument("-m", "--media", action="store_true")
-        parser.add_argument("-l", "--limit", type=int, default=50, help="Post limits.")
+        parser.add_argument("username", type=str, help="Telegram Username")
+        parser.add_argument("author", type=str, help="MetaMemo Author Name")
+        parser.add_argument("-l", "--limit", type=int, default=300, help="Post limits.")
 
     def handle(self, *args, **kwargs):
         self.username = kwargs["username"]
         self.author = kwargs["author"]
-        self.video_download = kwargs["media"]
         self.limit = kwargs["limit"]
 
         if not settings.TELEGRAM_API_ID or not settings.TELEGRAM_API_HASH:
@@ -42,7 +40,7 @@ class Command(BaseCommand):
 
         self.memo_author = MetaMemo.objects.get_or_create(name=self.author)
         self.memo_source = MemoSource.objects.get_or_create(name="Telegram")
-        self.memo_itens = list(
+        self.memo_itens = set(
             MemoItem.objects.filter(author__name=self.author, source__name="Telegram").values_list(
                 "original_id", flat=True
             )
@@ -60,35 +58,32 @@ class Command(BaseCommand):
         chat = await self.client.get_input_entity(self.username)
         messages = await self.client.get_messages(chat, limit=self.limit)
 
-        for i in messages:
-            if f"{self.username}_{i.id}" in self.memo_itens:
-                print("Done!")
+        for message in messages:
+            if f"{self.username}_{message.id}" in self.memo_itens:
+                print(f"Done downloading messages for {self.username}.")
                 break
-            else:
-                post = MemoItem()
-                post.author = self.memo_author[0]
-                post.source = self.memo_source[0]
-                post.title = shorten(i.text, TITLE_MAX_CHAR)
-                post.content = i.text
-                post.extraction_date = timezone.now()
-                post.content_date = i.date
-                post.url = ""
-                post.likes = 0
-                post.shares = i.forwards
-                post.interactions = 0
-                post.original_id = f"{self.username}_{i.id}"
-                post.raw = i.to_json()
-                print(post)
-                await self.savePost(post)
 
-                if i.video:
-                    media = io.BytesIO()
-                    await i.download_media(media)
-                    await self.saveMedia(post, media, "VIDEO")
-                elif i.photo:
-                    media = io.BytesIO()
-                    await i.download_media(file=media)
-                    await self.saveMedia(post, media, "IMAGE")
+            post = MemoItem()
+            post.author = self.memo_author[0]
+            post.source = self.memo_source[0]
+            post.title = shorten(str(message.text or ""), TITLE_MAX_CHAR)
+            post.content = message.text
+            post.extraction_date = timezone.now()
+            post.content_date = message.date
+            post.url = ""
+            post.likes = 0
+            post.shares = message.forwards
+            post.interactions = 0
+            post.original_id = f"{self.username}_{message.id}"
+            post.raw = message.to_json()
+            print(post)
+            await self.savePost(post)
+
+            if message.photo or message.video:
+                file_type = "IMAGE" if message.photo else "VIDEO"
+                media = io.BytesIO()
+                await message.download_media(media)
+                await self.saveMedia(post, media, file_type)
 
     @sync_to_async
     def savePost(self, post):
