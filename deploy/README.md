@@ -222,3 +222,50 @@ Aplicação instalada e rodando! Para criar um superusuário no Django:
 ```shell
 dokku run $APP_NAME python manage.py createsuperuser
 ```
+
+## Instalação do MinIO (storage)
+
+Você precisará de um servidor com [Dokku](https://dokku.com/) e
+[dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt) instalados.
+
+No servidor, crie o app e as configurações iniciais:
+
+```shell
+export APP_NAME="storage-metamemo"
+export APP_DOMAIN="storage.metamemo.info"
+export DATA_PATH="/mnt/storage/storage-metamemo"
+export ADMIN_MAIL="metamemo@metamemo.info"
+
+dokku apps:create $APP_NAME
+dokku config:set --no-restart $APP_NAME MINIO_ROOT_USER=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-32)
+dokku config:set --no-restart $APP_NAME MINIO_ROOT_PASSWORD=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-32)
+dokku config:set --no-restart $APP_NAME NGINX_MAX_REQUEST_BODY=50M
+dokku config:set --no-restart $APP_NAME MINIO_DOMAIN=$APP_DOMAIN
+dokku config:set --no-restart $APP_NAME DOKKU_LETSENCRYPT_EMAIL=$ADMIN_MAIL
+
+mkdir -p $DATA_PATH
+chown 32769:32769 $DATA_PATH
+dokku storage:mount $APP_NAME ${DATA_PATH}:/home/dokku/data
+
+dokku domains:set $APP_NAME $APP_DOMAIN
+dokku proxy:ports-add $APP_NAME http:80:9000
+dokku proxy:ports-add $APP_NAME https:443:9000
+dokku proxy:ports-add $APP_NAME https:9001:9001
+dokku proxy:ports-remove $APP_NAME http:80:5000
+```
+
+Em sua máquina local, faça o deployment da aplicação:
+
+```shell
+git clone https://github.com/turicas/minio-dokku.git
+cd minio-dokku
+git checkout develop
+git remote add dokku dokku@storage.metamemo.info:storage-metamemo
+git push dokku main
+```
+
+Termine a configuração do certificado SSL no servidor:
+
+```shell
+dokku letsencrypt:enable $APP_NAME
+```
