@@ -51,6 +51,22 @@ docker compose build web  # em alguns casos, `--no-cache` pode ajudar
 docker compose start web
 ```
 
+## Backup/restore do banco local
+
+Para criar um backup da base de dados PostgreSQL local, execute dentro do container `web`:
+
+```shell
+# Para executar o bash no container, rode: docker compose exec web bash
+pg_dump -F c -d $DATABASE_URL -f "metamemo-$(date +'%Y-%m-%d').dump"
+```
+
+Para restaurar usando o arquivo `YYYY-MM-DD-metamemo.dump`, execute dentro do container `web`:
+
+```shell
+# Para executar o bash no container, rode: docker compose exec web bash
+pg_restore -d $DATABASE_URL YYY-MM-DD-metamemo.dump
+```
+
 ## Deployment
 
-(a fazer)
+Acesse [deploy/README.md](deploy/README.md).
