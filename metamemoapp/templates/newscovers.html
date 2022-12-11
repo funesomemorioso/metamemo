@@ -1,0 +1,31 @@
+{% extends "results.html" %}
+{% load static %}
+{% load metamemoapp_extras %}
+
+{% block results_bar %}
+{% include 'list/paginator.html' %}
+{% endblock results_bar %}
+
+{% block results_header %}
+<div class="col s4"> Data </div>
+<div class="col s4"> Veículo </div>
+<div class="col s4"> Capa </div>
+{% endblock results_header %}
+
+{% block results_content %}
+<div class="col s4 valign-wrapper">
+  {{ item.content_date|date }}
+</div>
+<div class="col s4 valign-wrapper">
+  {{ item.source }}
+</div>
+<div class="col s4 valign-wrapper">
+  {% if item.media %}
+  <a href="{{ item.media.url }}" title="Acessar capa do jornal {{ item.source }} de {{ item.content_date|date }}" target="_blank">
+    <img height="200px" src="{{ item.media.url }}" alt="Acessar capa do jornal">
+  </a>
+  {% else %}
+  (capa não baixada)
+  {% endif %}
+</div>
+{% endblock results_content %}

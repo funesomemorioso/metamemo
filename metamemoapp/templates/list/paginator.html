@@ -1,25 +1,27 @@
 {% load metamemoapp_extras %}
 <div class="row">
-    <div class="col s12 center-align">
-        <div class="pagination">
-            <span class="step-links">
-                {% if data.items.number != 1 %}
-                    <a href="?{% url_replacex page=1 %}"
-                       class="btn white-text font16 metapink">«</a>
-                {% endif %}
-                {% for page in data.paginator_list %}
-                    {% if page == data.items.number %}
-                        <span class="btn metapink white-text font16">{{ page }}</span>
-                    {% else %}
-                        <a href="?{% url_replacex page=page %}"
-                           class="btn white-text font16 metacinza">{{ page }}</a>
-                    {% endif %}
-                {% endfor %}
-                {% if data.items.number != data.items.paginator.num_pages %}
-                    <a href="?{% url_replacex page=data.items.paginator.num_pages %}"
-                       class="btn white-text font16 metapink">»</a>
-                {% endif %}
-            </span>
-        </div>
+  <div class="col s12 center-align">
+    <div class="pagination">
+      Página {{ data.page }} de {{ data.total_pages }}
+      <br>
+      <span class="step-links">
+        {% if data.items.number != 1 %}
+        <a href="?{% url_replacex page=1 %}"
+          class="btn white-text font16 metapink">«</a>
+        {% endif %}
+        {% for page in data.paginator_list %}
+        {% if page == data.items.number %}
+        <span class="btn metapink white-text font16">{{ page }}</span>
+        {% else %}
+        <a href="?{% url_replacex page=page %}"
+          class="btn white-text font16 metacinza">{{ page }}</a>
+        {% endif %}
+        {% endfor %}
+        {% if data.items.number != data.items.paginator.num_pages %}
+        <a href="?{% url_replacex page=data.items.paginator.num_pages %}"
+          class="btn white-text font16 metapink">»</a>
+        {% endif %}
+      </span>
     </div>
+  </div>
 </div>

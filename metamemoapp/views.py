@@ -128,16 +128,20 @@ def content(request, page):
 def news_list(request):
     qs = QueryStringParser(request.GET)
     try:
+        authors = qs.list("author", type=str)
         content = qs.str("content")
         end_date = qs.date("end_date")
         output_format = qs.str("format")
         page = qs.int("page", default=1)
+        sources = qs.list("source", type=str)
         start_date = qs.date("start_date")
+        # TODO: pass form data
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = NewsItem.objects.since(start_date).until(end_date).search(content).select_related("source")
     if output_format:
+        # TODO: what if `page` is specified?
         return serialize_queryset(
             request,
             output_format,
@@ -152,13 +156,15 @@ def news_list(request):
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
-        "path": request.resolver_match.url_name,
         "dates": (start_date, end_date),
-        "paginator_list": define_pages(page, items.num_pages),
         "items": items.page(page),
+        "page": page,
+        "paginator_list": define_pages(page, items.num_pages),
+        "path": request.resolver_match.url_name,
         "results_total": items.count,
         "sources": sources,
         "sources_total": sources_total,
+        "total_pages": items.num_pages,
     }
     return render(request, "news.html", {"data": data})
 
@@ -169,52 +175,96 @@ def news_detail(request, item_id):
     return render(request, "newsitem.html", {"item": item})
 
 
-# MemoContext list (filtered; HTML, CSV or JSON) + NewsCover list (filtered + pagination; HTML)
+# MemoContext list (filtered + pagination; HTML, CSV or JSON)
 def contexts(request):
     qs = QueryStringParser(request.GET)
     try:
+        authors = qs.list("author", type=str)
         content = qs.str("content")
         end_date = qs.date("end_date")
         output_format = qs.str("format")
         page = qs.int("page", default=1)
+        sources = qs.list("source", type=str)
         start_date = qs.date("start_date")
+        # TODO: pass form data
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    memocontext = MemoContext.objects.since(start_date).until(end_date).search(content).prefetch_related("keyword")
+    queryset = MemoContext.objects.since(start_date).until(end_date).search(content).prefetch_related("keyword")
     if output_format:
+        # TODO: what if `page` is specified?
         return serialize_queryset(
             request,
             output_format,
-            memocontext,
+            queryset,
             filename="metamemo-memocontext-filtered.csv",
         )
-    newscovers = NewsCover.objects.since(start_date).until(end_date).select_related("source")
     sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
-    items = Paginator(newscovers, settings.PAGE_SIZE)
+    items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
-        "path": request.resolver_match.url_name,
-        "sources": sources,
         "dates": (start_date, end_date),
-        "paginator_list": define_pages(page, items.num_pages),
         "items": items.get_page(page),
-        "memocontexts": memocontext,
+        "page": page,
+        "paginator_list": define_pages(page, items.num_pages),
+        "path": request.resolver_match.url_name,
         "results_total": items.count,
+        "sources": sources,
+        "total_pages": items.num_pages,
     }
     return render(request, "contexts.html", {"data": data})
+
+
+# NewsCover list (filtered + pagination; HTML, CSV or JSON)
+def news_covers(request):
+    qs = QueryStringParser(request.GET)
+    try:
+        authors = qs.list("author", type=str)
+        content = qs.str("content")
+        end_date = qs.date("end_date")
+        output_format = qs.str("format")
+        page = qs.int("page", default=1)
+        sources = qs.list("source", type=str)
+        start_date = qs.date("start_date")
+        # TODO: pass form data
+    except ValueError:
+        return bad_request(request, message="Erro de formato nos filtros")
+
+    queryset = NewsCover.objects.since(start_date).until(end_date).select_related("source")
+    if output_format:
+        # TODO: what if `page` is specified?
+        return serialize_queryset(
+            request,
+            output_format,
+            queryset,
+            filename="metamemo-newscover-filtered.csv",
+        )
+    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
+    items = Paginator(queryset, settings.PAGE_SIZE)
+    data = {
+        "dates": (start_date, end_date),
+        "items": items.get_page(page),
+        "page": page,
+        "paginator_list": define_pages(page, items.num_pages),
+        "path": request.resolver_match.url_name,
+        "results_total": items.count,
+        "sources": sources,
+        "total_pages": items.num_pages,
+    }
+    return render(request, "newscovers.html", {"data": data})
 
 
 # MemoItem list (filtered + pagination; HTML, CSV or JSON)
 def lista(request):
     qs = QueryStringParser(request.GET)
     try:
-        page = qs.int("page", default=1)
-        output_format = qs.str("format")
-        content = qs.str("content")
         authors = qs.list("author", type=str)
+        content = qs.str("content")
+        end_date = qs.date("end_date")
+        output_format = qs.str("format")
+        page = qs.int("page", default=1)
         sources = qs.list("source", type=str)
         start_date = qs.date("start_date")
-        end_date = qs.date("end_date")
+        # TODO: pass form data
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
@@ -228,6 +278,7 @@ def lista(request):
     )
 
     if output_format:
+        # TODO: what if `page` is specified?
         return serialize_queryset(
             request,
             output_format,
@@ -237,10 +288,13 @@ def lista(request):
 
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
-        "path": request.resolver_match.url_name,
+        "authors": authors,
+        "content": content,
         "dates": (start_date, end_date),
-        "paginator_list": define_pages(page, items.num_pages),
         "items": items.get_page(page),
+        "page": page,
+        "paginator_list": define_pages(page, items.num_pages),
+        "path": request.resolver_match.url_name,
         "results_total": items.count,
         "social_sources": {
             "Facebook": "face",
@@ -250,11 +304,9 @@ def lista(request):
             "Telegram": "telegram",
             "Blog": "blog1",
         },
-        "sources_total": {},  # TODO: what to do?
-        "page": page,
-        "content": content,
-        "authors": authors,
         "sources": sources,
+        "sources_total": {},  # TODO: what to do?
+        "total_pages": items.num_pages,
     }
     return render(request, "files.html", {"data": data})
 
@@ -277,16 +329,21 @@ def memoitems_download(request):
 def media_list(request):
     qs = QueryStringParser(request.GET)
     try:
-        page = qs.int("page", default=1)
-        output_format = qs.str("format")
+        authors = qs.list("author", type=str)
         content = qs.str("content")
+        end_date = qs.date("end_date")
+        output_format = qs.str("format")
+        page = qs.int("page", default=1)
         sources = qs.list("source", type=str)
+        start_date = qs.date("start_date")
+        # TODO: pass form data
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = MemoMedia.objects.from_sources(sources).search(content)
 
     if output_format:
+        # TODO: what if `page` is specified?
         return serialize_queryset(
             request,
             output_format,
@@ -296,13 +353,14 @@ def media_list(request):
 
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
-        "path": request.resolver_match.url_name,
-        "paginator_list": define_pages(page, items.num_pages),
-        "items": items.get_page(page),
-        "results_total": items.count,
-        "page": page,
         "content": content,
+        "items": items.get_page(page),
+        "page": page,
+        "paginator_list": define_pages(page, items.num_pages),
+        "path": request.resolver_match.url_name,
+        "results_total": items.count,
         "sources": sources,
+        "total_pages": items.num_pages,
     }
     return render(request, "media.html", {"data": data})
 

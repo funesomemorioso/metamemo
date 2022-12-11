@@ -46,6 +46,9 @@ urlpatterns = [
     # MemoContext-related
     path("contexts/", views.contexts, name="contexts"),
 
+    # NewsCover-related
+    path("newscovers/", views.news_covers, name="newscovers"),
+
     # Timeline-related
     path("timeline/", include("timeline.urls")),
 

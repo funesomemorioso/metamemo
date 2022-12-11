@@ -1,66 +1,66 @@
 {% extends "base.html" %}
 {% load metamemoapp_extras %}
+
 {% block title %}Resultado da busca | MetaMemo{% endblock title %}
+
 {% block page_class %}
-    list search
+list search
 {% endblock page_class %}
+
 {% block content %}
-    <section class="container na_regua">
-        <div class="breadcrumb">
-            <a href="{% url 'home' %}">Home</a> &gt;
-            <a href="{% url 'lista' %}">Busca</a> &gt;
-            <a href="#">Resultados</a>
+<section class="container na_regua">
+  <div class="breadcrumb">
+    <a href="{% url 'home' %}">Home</a> &gt;
+    <a href="{% url 'lista' %}">Busca</a> &gt;
+    <a href="#">Resultados</a>
+  </div>
+  {% include 'list/advform.html' %}
+</section>
+<section class="resultado-busca container">
+  <div class="resultado_tabs">
+    <div class="container na_regua">
+      <a class="resultado_tab" href="{% url 'lista' %}?{% url_replace %}">
+        <div class="tab_txt">
+          <span class="metablue-text font18 text-bold">Arquivos</span>
         </div>
-        {% include 'list/advform.html' %}
-    </section>
-    <section class="resultado-busca container">
-        <div class="resultado_tabs">
-            <div class="container na_regua">
-                <a class="resultado_tab" href="{% url 'lista' %}?{% url_replace %}">
-                    <div class="tab_txt">
-                        <span class="metablue-text font18 text-bold">Arquivos</span>
-                    </div>
-                    <div class="tab_underline {% if data.path == 'lista' %}active{% endif %}"></div>
-                </a>
-                <a class="resultado_tab" href="{% url 'news-list' %}?{% url_replace %}">
-                    <div class="tab_txt">
-                        <span class="metablue-text font18 text-bold">Notícias</span>
-                    </div>
-                    <div class="tab_underline {% if data.path == 'news-list' %}active{% endif %}"></div>
-                </a>
-                <a class="resultado_tab" href="{% url 'contexts' %}?{% url_replace %}">
-                    <div class="tab_txt">
-                        <span class="metablue-text font18 text-bold">Contexto histórico</span>
-                    </div>
-                    <div class="tab_underline {% if data.path == 'contexts' %}active{% endif %}"></div>
-                </a>
-            </div>
+        <div class="tab_underline {% if data.path == 'lista' %}active{% endif %}"></div>
+      </a>
+      <a class="resultado_tab" href="{% url 'news-list' %}?{% url_replace %}">
+        <div class="tab_txt">
+          <span class="metablue-text font18 text-bold">Notícias</span>
         </div>
-        <div class="resultado-social">
-            {% block results_bar %}
-            {% endblock results_bar %}
-            <div class="search-results">
-                <div class="results-header row flex">
-                    {% block results_header %}
-                    {% endblock results_header %}
-                </div>
-                {% for item in data.items %}
-                    <div class="result-item row flex">
-                        {% block results_content %}
-                        {% endblock results_content %}
-                    </div>
-                {% endfor %}
-            </div>
+        <div class="tab_underline {% if data.path == 'news-list' %}active{% endif %}"></div>
+      </a>
+      <a class="resultado_tab" href="{% url 'contexts' %}?{% url_replace %}">
+        <div class="tab_txt">
+          <span class="metablue-text font18 text-bold">Contexto histórico</span>
         </div>
-        {% include 'list/paginator.html' %}
-    </section>
-    {% block debug %}
-        <!--	<div>
-		<h2>Debug Filter</h2>
-		<form method="get">
-			{{ data.memofilter.form.as_p }}
-			<input type="submit" />
-		</form>
-	</div>-->
-    {% endblock debug %}
+        <div class="tab_underline {% if data.path == 'contexts' %}active{% endif %}"></div>
+      </a>
+      <a class="resultado_tab" href="{% url 'newscovers' %}?{% url_replace %}">
+        <div class="tab_txt">
+          <span class="metablue-text font18 text-bold">Capas de jornais</span>
+        </div>
+        <div class="tab_underline {% if data.path == 'newscovers' %}active{% endif %}"></div>
+      </a>
+    </div>
+  </div>
+  <div class="resultado-social">
+    {% block results_bar %}
+    {% endblock results_bar %}
+    <div class="search-results">
+      <div class="results-header row flex">
+        {% block results_header %}
+        {% endblock results_header %}
+      </div>
+      {% for item in data.items %}
+      <div class="result-item row flex">
+        {% block results_content %}
+        {% endblock results_content %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% include 'list/paginator.html' %}
+</section>
 {% endblock content %}

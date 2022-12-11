@@ -1,4 +1,5 @@
 {% extends "results.html" %}
+
 {% block results_bar %}
 <h2>Mídias transcritas (imagens e vídeos)</h2>
 {% if data.results_total == 0 %}
@@ -9,19 +10,21 @@ Nenhum transcrição encontrada
 {{ data.results_total }} transcrições encontradas
 {% endif %}
 {% endblock results_bar %}
+
 {% block results_header %}
-    <div class="col s3"> Fonte </div>
-    <div class="col s2"> Status/Progresso </div>
-    <div class="col s1"> Tipo </div>
-    <div class="col s6"> Transcrição </div>
+<div class="col s3"> Fonte </div>
+<div class="col s2"> Status/Progresso </div>
+<div class="col s1"> Tipo </div>
+<div class="col s6"> Transcrição </div>
 {% endblock results_header %}
+
 {% block results_content %}
-  <div class="col s3 valign-wrapper">
-    {{ item.source.name }}
-    (<a href="{{ item.original_url }}">Original</a>
-    {% if item.media %}/ <a href="{{ item.media.url }}">Arquivamento</a>{% endif %})
-  </div>
-  <div class="col s2 valign-wrapper">{{ item.status }} ({{ item.progress|stringformat:'d' }}%)</div>
-  <div class="col s1 valign-wrapper">{{ item.get_mediatype_display }}</div>
-  <div class="col s6 valign-wrapper">{{ item.transcription|default:'-' }}</div>
+<div class="col s3 valign-wrapper">
+  {{ item.source.name }}
+  (<a href="{{ item.original_url }}">Original</a>
+  {% if item.media %}/ <a href="{{ item.media.url }}">Arquivamento</a>{% endif %})
+</div>
+<div class="col s2 valign-wrapper">{{ item.status }} ({{ item.progress|stringformat:'d' }}%)</div>
+<div class="col s1 valign-wrapper">{{ item.get_mediatype_display }}</div>
+<div class="col s6 valign-wrapper">{{ item.transcription|default:'-' }}</div>
 {% endblock results_content %}

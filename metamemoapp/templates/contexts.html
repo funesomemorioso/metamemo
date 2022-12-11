@@ -3,57 +3,34 @@
 {% load metamemoapp_extras %}
 
 {% block results_bar %}
-<h2>Contexto histórico</h2>
-{%for item in data.memocontexts %}
-<div>
-  <hr>
-  <p class="context-datetime">
-    {% if item.start_date|date:'Y-m-d' == item.end_date|date:'Y-m-d' or not item.end_date %}
-    {{ item.start_date }}
-    {% else %}
-    {{ item.start_date }} a {{ item.end_date }}
-    {% endif %}
-  </p>
-  <p>
-    {{ item.context }}
-  </p>
-  <div><a href="{{ item.url }}">fonte</a></div>
-</div>
-{% endfor %}
+{% include 'list/paginator.html' %}
 {% endblock results_bar %}
 
 {% block results_header %}
-<h2>Capas de jornais</h2>
+<div class="col s2"> Período </div>
+<div class="col s10"> Contexto </div>
 {% endblock results_header %}
 
 {% block results_content %}
-{% static "imgs/noun-newspaper.png" as default_source_icon %}
-{# source icon#}
-<div class="col s2 valign-wrapper">
-  <img width="50px"
-  height="50px"
-  src="{{ data.sources|get_item:item.source.name|default_if_none:default_source_icon }}"
-  alt="icon for {{ item.source }}"/>
+<div class="col s2">
+  <p class="context-datetime">
+    <b>
+      {% if item.start_date|date:'Y-m-d' == item.end_date|date:'Y-m-d' or not item.end_date %}
+      {{ item.start_date|date }}
+      {% else %}
+      {{ item.start_date|date }}
+      <br>
+      a
+      <br>{{ item.end_date|date }}
+      {% endif %}
+    </b>
+  </p>
 </div>
-{# date #}
-<div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y" }}</div>
-{# url #}
-<div class="col s1 valign-wrapper">
-  {% if item.media %}
-  <a href="{{ item.media.url }}" target="_blank">Ver</a>
-  {% else %}
-  (sem mídia)
-  {% endif %}
-</div>
-{# cover #}
-<div class="col s7 valign-wrapper">
-  {% if item.media %}
-  <img
-  height="122px"
-  src="{{ item.media.url }}"
-  alt="cover for {{ item.source }} on {{ item.content_date|date:'d/m/Y' }}"/>
-  {% else %}
-  (sem mídia)
-  {% endif %}
+<div class="col s10">
+  <p>
+    {{ item.context }}
+    <br>
+    Acesse a <a href="{{ item.url }}">fonte</a>.
+  </p>
 </div>
 {% endblock results_content %}
