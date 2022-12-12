@@ -703,10 +703,6 @@ nav ul a:hover {
     color: #000;
 }
 .filters .col { padding-left: 0; }
-.filters .social-icons{
-    margin: 1.25rem 0;
-    font-size: 2.4375rem;
-}
 .filters .social-icons a{
     text-decoration: none;
 }
@@ -715,10 +711,6 @@ nav ul a:hover {
 }
 .resultado-social .row .col .row .col:last-child{
     padding-right: 0;
-}
-.resultado-social .social-icons{
-    margin: 1.25rem 0;
-    font-size: 2.4375rem;
 }
 .resultado-social .social-icons a{
     text-decoration: none;
@@ -1402,4 +1394,18 @@ footer h3 {
 
 .page-memoitem .memoitem-media .transcript .destranscript:hover{
     color: #48a0f7;
+}
+
+span.source {
+  cursor: pointer;
+  display: inline-block;
+  width: 50px;
+}
+span.source.transparent::after {
+  content: "×";
+  size: 10px;
+}
+span.source:not(.transparent)::after{
+  content: "✓";
+  size: 10px;
 }
