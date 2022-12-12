@@ -797,18 +797,18 @@ nav ul a:hover {
 }
 .filters [type="search"]{
     display: inline-block;
-    margin-right: 3rem;
     background: #F2F4F8;
     border-radius: 0.5rem;
     border: 0;
-    height: 4.625rem;
-    margin: 1.25rem 0;
-    padding: 1.5rem 3.625rem;
+    height: 1rem;
+    margin: 0 0;
+    padding: 2rem 2rem;
     font-weight: 400;
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1.625rem;
     outline: none;
     color: #000;
+    width: 100%;
 }
 .filters .ipt-search {position: relative; display: block;}
 .filters .ipt-search:before {
@@ -817,8 +817,9 @@ nav ul a:hover {
     content: "\e987";
     line-height: 1;
     position: absolute;
-    left: 1.875rem; top: 38%;
-    font-size: 1.25rem;
+    left: 0.5rem;
+    top: 1.5rem;
+    font-size: 1.5rem;
 }
 .filters [type="search"]::placeholder{
     color: gray;
@@ -1396,16 +1397,28 @@ footer h3 {
     color: #48a0f7;
 }
 
-span.source {
+span.source, button.source {
   cursor: pointer;
   display: inline-block;
   width: 50px;
+  position: relative;
 }
-span.source.transparent::after {
+span.source::after, button.source::after {
+  size: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+span.source.transparent::after, button.source.transparent::after {
   content: "×";
-  size: 10px;
 }
-span.source:not(.transparent)::after{
+span.source:not(.transparent)::after, button.source:not(.transparent)::after {
   content: "✓";
-  size: 10px;
+}
+button.source {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  border: 0;
+  background-color: transparent;
 }

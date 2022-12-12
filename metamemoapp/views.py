@@ -18,11 +18,23 @@ DEFAULT_TIMEZONE = timezone.get_default_timezone()
 def bad_request(request, message=None, status=400):
     return render(request, "content/oops.html", {"message": message}, status=status)
 
+def get_metamemos():
+    return models.MetaMemo.objects.all()
 
 def get_news_sources():
     return {
         source.name: source.image.url if source.image else None
         for source in models.NewsSource.objects.all()
+    }
+
+def get_social_sources():
+    return {
+        "Facebook": "face",
+        "Twitter": "twitter1",
+        "Youtube": "youtube1",
+        "Instagram": "instagram1",
+        "Telegram": "telegram",
+        "Blog": "blog1",
     }
 
 
@@ -119,11 +131,16 @@ class QueryStringParser:
 
 # MemoItem search/filter form (HTML)
 def home(request):
-    metamemo = models.MetaMemo.objects.all()
     end_date = timezone.now().date()
     start_date = end_date - datetime.timedelta(days=7)
     tags = {}  # TODO: implement (from keywords)?
-    context = {"metamemo": metamemo, "end_date": end_date, "start_date": start_date, "tags": tags}
+    context = {
+        "end_date": end_date,
+        "metamemo": get_metamemos(),
+        "social_sources": get_social_sources(),
+        "start_date": start_date,
+        "tags": tags,
+    }
     return render(request, "home.html", context)
 
 
@@ -170,12 +187,15 @@ def news_list(request):
     sources = get_news_sources()
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
+        "authors": authors,
         "dates": (start_date, end_date),
         "items": items.page(page),
+        "metamemo": get_metamemos(),
         "page": page,
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
+        "social_sources": get_social_sources(),
         "sources": sources,
         "sources_total": sources_total,
         "total_pages": items.num_pages,
@@ -218,10 +238,12 @@ def contexts(request):
     data = {
         "dates": (start_date, end_date),
         "items": items.get_page(page),
+        "metamemo": get_metamemos(),
         "page": page,
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
+        "social_sources": get_social_sources(),
         "sources": sources,
         "total_pages": items.num_pages,
     }
@@ -257,10 +279,12 @@ def news_covers(request):
     data = {
         "dates": (start_date, end_date),
         "items": items.get_page(page),
+        "metamemo": get_metamemos(),
         "page": page,
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
+        "social_sources": get_social_sources(),
         "sources": sources,
         "total_pages": items.num_pages,
     }
@@ -306,18 +330,12 @@ def lista(request):
         "content": content,
         "dates": (start_date, end_date),
         "items": items.get_page(page),
+        "metamemo": get_metamemos(),
         "page": page,
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
-        "social_sources": {
-            "Facebook": "face",
-            "Twitter": "twitter1",
-            "Youtube": "youtube1",
-            "Instagram": "instagram1",
-            "Telegram": "telegram",
-            "Blog": "blog1",
-        },
+        "social_sources": get_social_sources(),
         "sources": sources,
         "sources_total": {},  # TODO: what to do?
         "total_pages": items.num_pages,
@@ -369,10 +387,12 @@ def media_list(request):
     data = {
         "content": content,
         "items": items.get_page(page),
+        "metamemo": get_metamemos(),
         "page": page,
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
+        "social_sources": get_social_sources(),
         "sources": sources,
         "total_pages": items.num_pages,
     }
