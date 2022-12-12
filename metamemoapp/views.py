@@ -1,5 +1,6 @@
 import csv
 import datetime
+from pathlib import Path
 
 from django.conf import settings
 from django.core.paginator import Paginator
@@ -8,14 +9,21 @@ from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 
-from metamemoapp.models import MemoContext, MemoItem, MemoMedia, MetaMemo, NewsCover, NewsItem, NewsSource
-from metamemoapp.tasks import download_async, download_img_async
+from metamemoapp import models
+from metamemoapp import tasks
 
 DEFAULT_TIMEZONE = timezone.get_default_timezone()
 
 
-def bad_request(request, message=None):
-    return render(request, "content/oops.html", {"message": message}, status=400)
+def bad_request(request, message=None, status=400):
+    return render(request, "content/oops.html", {"message": message}, status=status)
+
+
+def get_news_sources():
+    return {
+        source.name: source.image.url if source.image else None
+        for source in models.NewsSource.objects.all()
+    }
 
 
 def queryset_to_lines(qs):
@@ -111,7 +119,7 @@ class QueryStringParser:
 
 # MemoItem search/filter form (HTML)
 def home(request):
-    metamemo = MetaMemo.objects.all()
+    metamemo = models.MetaMemo.objects.all()
     end_date = timezone.now().date()
     start_date = end_date - datetime.timedelta(days=7)
     tags = {}  # TODO: implement (from keywords)?
@@ -121,7 +129,13 @@ def home(request):
 
 # "Static" pages content (HTML)
 def content(request, page):
-    return render(request, f"content/{page}.html")
+    app_dir = Path(models.__file__).parent
+    template_html = f"content/{page}.html"
+    filename = app_dir / "templates" / template_html
+    if not filename.exists():
+        return bad_request(request, message="Página não encontrada", status=404)
+
+    return render(request, template_html)
 
 
 # NewsItem list (filtered + pagination; HTML, CSV or JSON)
@@ -139,7 +153,7 @@ def news_list(request):
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = NewsItem.objects.since(start_date).until(end_date).search(content).select_related("source")
+    queryset = models.NewsItem.objects.since(start_date).until(end_date).search(content).select_related("source")
     if output_format:
         # TODO: what if `page` is specified?
         return serialize_queryset(
@@ -153,7 +167,7 @@ def news_list(request):
         source["source__name"]: source["total"]
         for source in queryset.values("source__name").annotate(total=Count("source__name")).order_by("total")
     }
-    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
+    sources = get_news_sources()
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
         "dates": (start_date, end_date),
@@ -171,7 +185,7 @@ def news_list(request):
 
 # NewsItem detail (HTML)
 def news_detail(request, item_id):
-    item = NewsItem.objects.get(pk=item_id)
+    item = models.NewsItem.objects.get(pk=item_id)
     return render(request, "newsitem.html", {"item": item})
 
 
@@ -190,7 +204,7 @@ def contexts(request):
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = MemoContext.objects.since(start_date).until(end_date).search(content).prefetch_related("keyword")
+    queryset = models.MemoContext.objects.since(start_date).until(end_date).search(content).prefetch_related("keyword")
     if output_format:
         # TODO: what if `page` is specified?
         return serialize_queryset(
@@ -199,7 +213,7 @@ def contexts(request):
             queryset,
             filename="metamemo-memocontext-filtered.csv",
         )
-    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
+    sources = get_news_sources()
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
         "dates": (start_date, end_date),
@@ -229,7 +243,7 @@ def news_covers(request):
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = NewsCover.objects.since(start_date).until(end_date).select_related("source")
+    queryset = models.NewsCover.objects.since(start_date).until(end_date).select_related("source")
     if output_format:
         # TODO: what if `page` is specified?
         return serialize_queryset(
@@ -238,7 +252,7 @@ def news_covers(request):
             queryset,
             filename="metamemo-newscover-filtered.csv",
         )
-    sources = {source.name: source.image.url if source.image else None for source in NewsSource.objects.all()}
+    sources = get_news_sources()
     items = Paginator(queryset, settings.PAGE_SIZE)
     data = {
         "dates": (start_date, end_date),
@@ -269,7 +283,7 @@ def lista(request):
         return bad_request(request, message="Erro de formato nos filtros")
 
     queryset = (
-        MemoItem.objects.since(start_date)
+        models.MemoItem.objects.since(start_date)
         .until(end_date)
         .from_authors(authors)
         .from_sources(sources)
@@ -313,14 +327,14 @@ def lista(request):
 
 # MemoItem detail (HTML)
 def memoitem(request, item_id):
-    memoitem = MemoItem.objects.get_full(pk=item_id)
+    memoitem = models.MemoItem.objects.get_full(pk=item_id)
     return render(request, "memoitem.html", {"memoitem": memoitem})
 
 
 # MemoItem (whole database) download (CSV)
 def memoitems_download(request):
     return csv_streaming_response(
-        lines=MemoItem.objects.export_csv(),
+        lines=models.MemoItem.objects.export_csv(),
         filename=f"metamemo-memoitems-{timezone.now().date()}.csv",
     )
 
@@ -340,7 +354,7 @@ def media_list(request):
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = MemoMedia.objects.from_sources(sources).search(content)
+    queryset = models.MemoMedia.objects.from_sources(sources).search(content)
 
     if output_format:
         # TODO: what if `page` is specified?
@@ -367,17 +381,17 @@ def media_list(request):
 
 # MemoMedia download start task (API)
 def get_media(request, item_id):
-    memoitem = MemoItem.objects.get_full(pk=item_id)
+    memoitem = models.MemoItem.objects.get_full(pk=item_id)
 
     response = {"medias": []}
     for p in memoitem.medias.all():
         if p.mediatype == "VIDEO" and p.status in ["INITIAL", "FAILED_DOWNLOAD"]:
             p.status = "DOWNLOADING"
             p.save(update_fields=["status"])
-            download_async.apply_async(kwargs={"url": p.original_url, "mediatype": "VIDEO"}, queue="fastlane")
+            tasks.download_async.apply_async(kwargs={"url": p.original_url, "mediatype": "VIDEO"}, queue="fastlane")
         elif p.mediatype == "IMAGE" and p.status in ["INITIAL", "FAILED_DOWNLOAD"]:
             p.status = "DOWNLOADING"
             p.save(update_fields=["status"])
-            download_img_async.apply_async(kwargs={"url": p.original_url, "pk": p.pk}, queue="fastlane")
+            tasks.download_img_async.apply_async(kwargs={"url": p.original_url, "pk": p.pk}, queue="fastlane")
         response["medias"].append({"mediatype": p.mediatype, "original_url": p.original_url, "status": p.status})
     return JsonResponse(response, status=200)
