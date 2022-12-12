@@ -568,7 +568,7 @@ nav ul a:hover {
 .timeline-snippet .tl-snippet-img .circle.metagreen{
     width: 363px;
     height: 363px;
-    background: url('../imgs/familia-bozo.png');
+    background: url('../imgs/familia-bolsonaro.png');
     background-size: 145%;
     background-repeat: no-repeat;
     background-position: bottom 0rem right 60%;
@@ -1073,7 +1073,7 @@ footer h3 {
 .page-timeline > header > div:first-child{
     flex: 1;
     min-height: 55rem;
-    background: url("../imgs/familia-bozo.png") center bottom;
+    background: url("../imgs/familia-bolsonaro.png") center bottom;
     background-repeat: no-repeat;
     background-size: 60vw;
 }
