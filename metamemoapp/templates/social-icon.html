@@ -1,0 +1,49 @@
+{% if media == "Facebook" %}
+<button class="source{% if disabled %} transparent{% endif %}{% if choice %} choice{% endif %}" data-source="{{ media }}">
+  <span class="icon-face">
+    <span class="path1 font35"></span>
+    <span class="path2 font35"></span>
+  </span>
+</button>
+
+{% elif media == "Twitter" %}
+<button class="source{% if disabled %} transparent{% endif %}{% if choice %} choice{% endif %}" data-source="{{ media }}">
+  <span class="icon-twitter1">
+    <span class="path1 font35"></span>
+    <span class="path2 font35"></span>
+  </span>
+</button>
+
+{% elif media == "Youtube" %}
+<button class="source{% if disabled %} transparent{% endif %}{% if choice %} choice{% endif %}" data-source="{{ media }}">
+  <span class="icon-youtube1">
+    <span class="path1 font35"></span>
+    <span class="path2 font35"></span>
+  </span>
+</button>
+
+{% elif media == "Instagram" %}
+<button class="source{% if disabled %} transparent{% endif %}{% if choice %} choice{% endif %}" data-source="{{ media }}">
+  <span class="icon-instagram1">
+    <span class="path1 font35"></span>
+    <span class="path2 font35"></span>
+  </span>
+</button>
+
+{% elif media == "Telegram" %}
+<button class="source{% if disabled %} transparent{% endif %}{% if choice %} choice{% endif %}" data-source="{{ media }}">
+  <span class="icon-telegram font35">
+    <span class="path1"></span>
+    <span class="path2"></span>
+  </span>
+</button>
+
+{% elif media == "Blog" %}
+<button class="source{% if disabled %} transparent{% endif %}{% if choice %} choice{% endif %}" data-source="{{ media }}">
+  <span class="icon-blog1">
+    <span class="path1 font35"></span>
+    <span class="path2 font35"></span>
+  </span>
+</button>
+
+{% endif %}

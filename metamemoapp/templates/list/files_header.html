@@ -22,7 +22,7 @@
     {% for source, total in data.sources_total.items %}
     <div class="source-count">
       <span class="source" data-source="{{ source }}">
-        <span class="icon-{{ data.social_sources|get_item:source }}"><span class="path1"></span><span class="path2"></span></span>
+        {% include "social-icon.html" with media=source %}
       </span>
       <div class="metablue-text center-align">{{ total }}</div>
     </div>

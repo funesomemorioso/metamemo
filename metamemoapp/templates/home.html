@@ -50,13 +50,8 @@ home
           <div class="col s12">
             <h3>Selecione uma ou mais redes</h3>
             <div id="sources" class="social-icons">
-              {% for source, icon in social_sources.items %}
-              <button class="source" data-source="{{ source }}">
-                <span class="icon-{{ icon }}{% if source == "Telegram" %} font35{% endif %}">
-                  <span class="path1{% if source != "Telegram" %} font35{% endif %}"></span>
-                  <span class="path2{% if source != "Telegram" %} font35{% endif %}"></span>
-                </span>
-              </button>
+              {% for source in social_media_list %}
+              {% include "social-icon.html" with media=source disabled=False choice=True %}
               {% endfor %}
             </div>
           </div>

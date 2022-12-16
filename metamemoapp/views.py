@@ -13,6 +13,7 @@ from metamemoapp import models
 from metamemoapp import tasks
 
 DEFAULT_TIMEZONE = timezone.get_default_timezone()
+SOCIAL_MEDIA_LIST = ["Facebook", "Twitter", "Youtube", "Instagram", "Telegram", "Blog"]
 
 
 def bad_request(request, message=None, status=400):
@@ -27,15 +28,6 @@ def get_news_sources():
         for source in models.NewsSource.objects.all()
     }
 
-def get_social_sources():
-    return {
-        "Facebook": "face",
-        "Twitter": "twitter1",
-        "Youtube": "youtube1",
-        "Instagram": "instagram1",
-        "Telegram": "telegram",
-        "Blog": "blog1",
-    }
 
 
 def queryset_to_lines(qs):
@@ -100,6 +92,7 @@ def serialize_queryset(request, output_format, queryset, filename):
         return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 
 
+# TODO: order all paginated results
 class QueryStringParser:
     def __init__(self, data):
         self._data = data
@@ -137,7 +130,7 @@ def home(request):
     context = {
         "end_date": end_date,
         "metamemo": get_metamemos(),
-        "social_sources": get_social_sources(),
+        "social_media_list": SOCIAL_MEDIA_LIST,
         "start_date": start_date,
         "tags": tags,
     }
@@ -195,7 +188,7 @@ def news_list(request):
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
-        "social_sources": get_social_sources(),
+        "social_media_list": SOCIAL_MEDIA_LIST,
         "sources": sources,
         "sources_total": sources_total,
         "total_pages": items.num_pages,
@@ -243,7 +236,7 @@ def contexts(request):
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
-        "social_sources": get_social_sources(),
+        "social_media_list": SOCIAL_MEDIA_LIST,
         "sources": sources,
         "total_pages": items.num_pages,
     }
@@ -284,7 +277,7 @@ def news_covers(request):
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
-        "social_sources": get_social_sources(),
+        "social_media_list": SOCIAL_MEDIA_LIST,
         "sources": sources,
         "total_pages": items.num_pages,
     }
@@ -335,7 +328,7 @@ def lista(request):
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
-        "social_sources": get_social_sources(),
+        "social_media_list": SOCIAL_MEDIA_LIST,
         "sources": sources,
         "sources_total": {},  # TODO: what to do?
         "total_pages": items.num_pages,
@@ -392,7 +385,7 @@ def media_list(request):
         "paginator_list": define_pages(page, items.num_pages),
         "path": request.resolver_match.url_name,
         "results_total": items.count,
-        "social_sources": get_social_sources(),
+        "social_media_list": SOCIAL_MEDIA_LIST,
         "sources": sources,
         "total_pages": items.num_pages,
     }

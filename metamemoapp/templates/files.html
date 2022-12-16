@@ -1,51 +1,32 @@
 {% extends "results.html" %}
 {% block results_bar %}
-    {% include "list/files_header.html" %}
+{% include "list/files_header.html" %}
 {% endblock results_bar %}
 {% block results_header %}
-    <div class="col s5 offset-s1"> Título </div>
-    <div class="col s1"> Rede </div>
-    <div class="col s1"> Data/hora </div>
-    <div class="col s1"> MetaMemo </div>
-    <div class="col s1"> Link </div>
-    <div class="col s1"> Mídia </div>
+<div class="col s5 offset-s1"> Título </div>
+<div class="col s1"> Rede </div>
+<div class="col s1"> Data/hora </div>
+<div class="col s1"> MetaMemo </div>
+<div class="col s1"> Link </div>
+<div class="col s1"> Mídia </div>
 {% endblock results_header %}
 {% block results_content %}
-    {# eye icon#}
-    <div class="col s1 valign-wrapper">
-        <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
-    </div>
-    {# title#}
-    <div class="col s5 valign-wrapper">{{ item.title }}</div>
-    {# source icon#}
-    <div class="col s1 valign-wrapper">
-        <i class='icon icon-{{ item.source.ico }}'><span class="path1"></span><span class="path2"></span></i>
-    </div>
-    {# date #}
-    <div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y H:i:s" }}</div>
-    {# author #}
-    <div class="col s1 valign-wrapper">{{ item.author.name }}</div>
-    {# url #}
-    <div class="col s1 valign-wrapper">
-        <a href="{{ item.url }}" target="_blank">Post original</a>
-    </div>
-    {# media #}
-    <div class="col s1 valign-wrapper">
-      {% for media in item.medias.all %}
-        {% if media.media %}
-          {% if media.mediatype == 'VIDEO' and media.status == 'DOWNLOADED' %}
-              <a href="{{ media.media.url }}" class="icon icon-file-play"></a>
-          {% elif media.mediatype == 'IMAGE' and media.status == 'DOWNLOADED' %}
-              <a href="{{ media.media.url }}" class="icon icon-file-picture"></a>
-          {% else %}
-              <span href="{% url 'get_media' item.pk %}"
-                    id="get_media"
-                    title="O download dessa mídia está pendente"
-                    class="icon icon-download pointer"></span>
-          {% endif %}
-        {% else %}
-            (sem mídia)
-        {% endif %}
-      {% endfor %}
-    </div>
+<div class="col s1 valign-wrapper">
+  <a class="icon icon-eye" href="{% url 'memoitem' item.pk %}"></a>
+</div>
+<div class="col s5 valign-wrapper">{{ item.title }}</div>
+<div class="col s1 valign-wrapper">
+  {% include "social-icon.html" with media=item.source.name %}
+</div>
+<div class="col s1 valign-wrapper">{{ item.content_date|date:"d/m/Y H:i:s" }}</div>
+{# author #}
+<div class="col s1 valign-wrapper">{{ item.author.name }}</div>
+<div class="col s1 valign-wrapper">
+  <a href="{{ item.url }}" target="_blank">Post original</a>
+</div>
+<div class="col s1 valign-wrapper">
+  {% for media in item.medias.all %}
+  {% include "media-show.html" with obj=media %}
+  {% endfor %}
+</div>
 {% endblock results_content %}

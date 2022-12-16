@@ -1,0 +1,24 @@
+{% if not obj.media %}
+  <span href="{% url 'get_media' item.pk %}"
+    id="get_media"
+    title="Erro ao baixar mídia. Clique para tentar novamente"
+    class="icon icon-download pointer"></span>
+{% else %}
+  {% if obj.status != 'DOWNLOADED' and obj.status != 'TRANSCRIBED' %}
+    (download/transcrição pendente)
+  {% else %}
+    {% if obj.mediatype == 'VIDEO' %}
+      {% if player %}
+      <video style="max-width: 300px; max-height: 300px" class="metavideo" controls> <source src="{{ obj.media.url }}"> </video>
+      {% else %}
+      <a href="{{ obj.media.url }}" class="icon icon-file-play"></a>
+      {% endif %}
+    {% elif obj.mediatype == 'IMAGE' %}
+      {% if player %}
+      <a href="{{ obj.media.url }}"> <img style="max-width: 300px; max-height: 300px" src="{{ obj.media.url }}" /> </a>
+      {% else %}
+      <a href="{{ obj.media.url }}" class="icon icon-file-picture"></a>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}

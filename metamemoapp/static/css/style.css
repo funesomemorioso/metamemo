@@ -1397,28 +1397,38 @@ footer h3 {
     color: #48a0f7;
 }
 
-span.source, button.source {
+button.source {
+  background-color: transparent;
+  border: 0;
   cursor: pointer;
   display: inline-block;
-  width: 50px;
+  margin: 0;
+  padding: 0;
   position: relative;
+  width: 50px;
 }
-span.source::after, button.source::after {
+button.source::after {
   size: 10px;
   position: absolute;
   bottom: 0;
   right: 0;
 }
-span.source.transparent::after, button.source.transparent::after {
+button.source.choice.transparent::after {
   content: "×";
 }
-span.source:not(.transparent)::after, button.source:not(.transparent)::after {
+button.source.choice:not(.transparent)::after {
   content: "✓";
 }
-button.source {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  border: 0;
-  background-color: transparent;
+
+.icon-face > .path2::before,
+.icon-twitter1 > .path2::before,
+.icon-youtube1 > .path2::before,
+.icon-instagram1 > .path2::before {
+  margin-left: -1.2em !important;
+}
+.icon-telegram > .path2::before {
+  margin-left: 0 !important;
+}
+.icon-blog1 > .path2::before {
+  margin-left: -1.15em !important;
 }

@@ -10,13 +10,14 @@
     <div class="breadcrumb">
       <a href="{% url 'home' %}">Home</a> &gt;
       <a href="{% url 'lista' %}">Busca</a> &gt;
-      <a href="#">Memoitem {{memoitem.pk}}</a>
+      <a href="#">Memoitem {{ memoitem.pk }}</a>
     </div>
     <div class="row">
       <p>
-        <a href="{{memoitem.url}}" title="Link original" target="_blank"><span class="icon-{{memoitem.source.ico}} font35 valign-middle">
-            <span class="path1"></span><span class="path2"></span></span></a>
-        <b>{{memoitem.author.name}}</b>
+        <a href="{{ memoitem.url }}" title="Link original" target="_blank">
+          {% include "social-icon.html" with media=memoitem.source.name %}
+        </a>
+        <b>{{ memoitem.author.name }}</b>
       </p>
 
     </div>
@@ -26,13 +27,14 @@
       </p>
     </div>
     <div class="row memoitem-media">
+      {# TODO: unificar essa parte com media-show.html #}
       {% for m in memoitem.medias.all %}
       {% if m.media %}
       {% if m.mediatype == "IMAGE" %}
       <img src="{{ m.media.url }}" />
       {% if m.transcription %}
       <div class="transcript">
-        <div class="destranscript">Transcrição automática disponivel \/</div>
+        <div class="destranscript">Transcrição automática disponível</div>
         {{ m.transcription }}
       </div>
       {% endif %}
@@ -41,17 +43,20 @@
       <source src="{{ m.media.url }}">
       </video>
       <div class="transcript metacinza meta">
-        <div class="destranscript noselect">Transcrição automática disponivel&nbsp;&nbsp;<span class="transcript_arow">▼</span></div>
+        <div class="destranscript noselect">Transcrição automática disponivel <span class="transcript_arow">▼</span></div>
         <div class="transcription">{{ m.transcription }}</div>
       </div>
       {% endif %}
       {% else %}
       {% if m.status != 'DOWNLOADING' %}
       <i>Arquivo ainda não baixado.<br />
-        <span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>baixar {{m.mediatype}}</span></i>
+        <span href="{% url 'get_media' memoitem.pk %}" id="get_media" class='btn-small'>
+          baixar {{ m.mediatype }}
+        </span>
+      </i>
 
       {% else %}
-      <i>{{m.mediatype}} na fila de download.</i>
+      <i>{{ m.mediatype }} na fila de download.</i>
       {% endif %}
       {% endif %}
       {% endfor %}
@@ -65,13 +70,13 @@
             <span class="icon-thumb-up font25 valign-middle">
               <span class="path1"></span><span class="path2"></span>
             </span>
-            <br /><b>{{memoitem.likes}}</b>
+            <br /><b>{{ memoitem.likes }}</b>
           </div>
           <div>
             <span class="icon-comment font25 valign-middle">
               <span class="path1"></span><span class="path2"></span><span class="path3"></span>
             </span>
-            <br /><b>{{memoitem.interactions}}</b>
+            <br /><b>{{ memoitem.interactions }}</b>
           </div>
         </div>
       </div>

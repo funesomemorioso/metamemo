@@ -25,13 +25,8 @@
 
     <div class="col s12 m4">
       <div id="sources" class="social-icons">
-        {% for source, icon in data.social_sources.items %}
-        <button class="source transparent" data-source="{{ source }}">
-          <span class="icon-{{ icon }}{% if source == "Telegram" %} font35{% endif %}">
-            <span class="path1{% if source != "Telegram" %} font35{% endif %}"></span>
-            <span class="path2{% if source != "Telegram" %} font35{% endif %}"></span>
-          </span>
-        </button>
+        {% for source in data.social_media_list %}
+        {% include "social-icon.html" with media=source disabled=True choice=True %}
         {% endfor %}
       </div>
       <div id="authors" class="metamemo_filter">
