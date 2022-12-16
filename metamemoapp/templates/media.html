@@ -1,4 +1,5 @@
 {% extends "results.html" %}
+{% load humanize %}
 
 {% block results_bar %}
 <h2>Mídias transcritas (imagens e vídeos)</h2>
@@ -7,24 +8,30 @@ Nenhum transcrição encontrada
 {% elif data.results_total == 1 %}
 1 transcrição encontrada
 {% else %}
-{{ data.results_total }} transcrições encontradas
+{{ data.results_total|intcomma }} transcrições encontradas
 {% endif %}
 {% endblock results_bar %}
 
 {% block results_header %}
-<div class="col s3"> Fonte </div>
-<div class="col s2"> Status/Progresso </div>
-<div class="col s1"> Tipo </div>
-<div class="col s6"> Transcrição </div>
+<div class="col s1"> </div>
+<div class="col s1"> Fonte </div>
+<div class="col s2"> Autor </div>
+<div class="col s4"> Transcrição </div>
+<div class="col s4"> Visualização </div>
 {% endblock results_header %}
 
 {% block results_content %}
-<div class="col s3 valign-wrapper">
-  {{ item.source.name }}
-  (<a href="{{ item.original_url }}">Original</a>
-  {% if item.media %}/ <a href="{{ item.media.url }}">Arquivamento</a>{% endif %})
+<div class="col s1">
+  <a class="icon icon-eye" href="{% url 'memoitem' item.memoitem.pk %}" title="Ver detalhes"></a>
 </div>
-<div class="col s2 valign-wrapper">{{ item.status }} ({{ item.progress|stringformat:'d' }}%)</div>
-<div class="col s1 valign-wrapper">{{ item.get_mediatype_display }}</div>
-<div class="col s6 valign-wrapper">{{ item.transcription|default:'-' }}</div>
+<div class="col s1">
+  <a href="{{ item.memoitem.url }}" title="Acesse a publicação original em {{ item.source.name }}" target="_blank">
+    {% include "social-icon.html" with media=item.memoitem.source.name %}
+  </a>
+</div>
+<div class="col s2"> {{ item.memoitem.author.name }} </div>
+<div class="col s4"> {{ item.excerpt|safe }} </div>
+<div class="col s4">
+  {% include "media-show.html" with obj=item player=True %}
+</div>
 {% endblock results_content %}

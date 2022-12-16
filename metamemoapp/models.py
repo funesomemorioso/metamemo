@@ -11,11 +11,41 @@ python mangage.py migrate -> para efetuar as migrações
 
 Obviamente a ideia é fechar o modelo de dados antes de começar a popular o banco definitivamente.
 """
+import re
 
 import django.contrib.postgres.indexes as pg_indexes
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVectorField
 from django.core.management import call_command
 from django.db import connection, models
+
+
+def snippet(text, search_term="", highlight=True, max_size=140):
+    # TODO: add comments and tests
+    if not text:
+        return ""
+
+    search_term = search_term.strip()
+    search_term_lower = search_term.lower()
+    transcription_lower = text.lower()
+    transcription_size = len(text)
+    if not search_term or search_term_lower not in transcription_lower:
+        part = text[:max_size]
+        if len(part) < transcription_size:
+            part = part[:-3] + "..."
+        return part
+
+    start = transcription_lower.find(search_term_lower)
+    new_start = start + int(len(search_term) / 2) - int(max_size / 2)
+    new_stop = start + int(len(search_term) / 2) + int(max_size / 2)
+    new_start = max(new_start, 0)
+    new_stop = min(new_stop, len(text) - 1)
+    part = text[new_start:new_stop]
+    if len(part) < transcription_size:
+        part = "..." + part[3:-3] + "..."
+
+    if not highlight:
+        return part
+    return re.sub(r"\b(" + re.escape(search_term) + r")\b", r"<b>\1</b>", part, flags=re.IGNORECASE)
 
 
 class SearchQuerySetMixin:

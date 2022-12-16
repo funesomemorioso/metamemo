@@ -4,7 +4,7 @@ from pathlib import Path
 
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.utils import timezone
@@ -350,7 +350,7 @@ def memoitems_download(request):
     )
 
 
-# MemoMedia list (filtered + pagination; CSV or JSON)
+# MemoMedia list (filtered + pagination; HTML, CSV or JSON)
 def media_list(request):
     qs = QueryStringParser(request.GET)
     try:
@@ -365,7 +365,16 @@ def media_list(request):
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
-    queryset = models.MemoMedia.objects.from_sources(sources).search(content)
+    queryset = (
+        models.MemoMedia.objects
+        .filter(~Q(transcription=""), transcription__isnull=False)
+        .from_sources(sources)
+        .search(content)
+        .filter(memoitem__author__name__in=authors)
+        .select_related("source")
+        .prefetch_related("memoitem_set", "memoitem_set__source", "memoitem_set__author")
+    )
+
 
     if output_format:
         # TODO: what if `page` is specified?
@@ -377,9 +386,14 @@ def media_list(request):
         )
 
     items = Paginator(queryset, settings.PAGE_SIZE)
+    objs = []
+    for obj in items.get_page(page):
+        obj.excerpt = models.snippet(obj.transcription, content)
+        obj.memoitem = obj.memoitem_set.first()
+        objs.append(obj)
     data = {
         "content": content,
-        "items": items.get_page(page),
+        "items": objs,
         "metamemo": get_metamemos(),
         "page": page,
         "paginator_list": define_pages(page, items.num_pages),

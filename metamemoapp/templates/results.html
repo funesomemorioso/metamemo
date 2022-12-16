@@ -25,24 +25,35 @@ list search
         </div>
         <div class="tab_underline {% if data.path == 'lista' %}active{% endif %}"></div>
       </a>
+
+      <a class="resultado_tab" href="{% url 'media-list' %}?{% url_replace %}">
+        <div class="tab_txt">
+          <span class="metablue-text font18 text-bold">Transcrições</span>
+        </div>
+        <div class="tab_underline {% if data.path == 'media-list' %}active{% endif %}"></div>
+      </a>
+
       <a class="resultado_tab" href="{% url 'news-list' %}?{% url_replace %}">
         <div class="tab_txt">
           <span class="metablue-text font18 text-bold">Notícias</span>
         </div>
         <div class="tab_underline {% if data.path == 'news-list' %}active{% endif %}"></div>
       </a>
+
       <a class="resultado_tab" href="{% url 'contexts' %}?{% url_replace %}">
         <div class="tab_txt">
           <span class="metablue-text font18 text-bold">Contexto histórico</span>
         </div>
         <div class="tab_underline {% if data.path == 'contexts' %}active{% endif %}"></div>
       </a>
+
       <a class="resultado_tab" href="{% url 'newscovers' %}?{% url_replace %}">
         <div class="tab_txt">
           <span class="metablue-text font18 text-bold">Capas de jornais</span>
         </div>
         <div class="tab_underline {% if data.path == 'newscovers' %}active{% endif %}"></div>
       </a>
+
     </div>
   </div>
   <div class="resultado-social">

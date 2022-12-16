@@ -37,7 +37,7 @@ urlpatterns = [
     path("memoitem/<int:item_id>/get_media", views.get_media, name="get_media"),
 
     # MemoMedia-related
-    path("media/", views.media_list, name="media-list"),
+    path("transcricao/", views.media_list, name="media-list"),
 
     # NewsItem-related
     path("news/", views.news_list, name="news-list"),
