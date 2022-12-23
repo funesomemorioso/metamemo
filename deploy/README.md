@@ -269,3 +269,54 @@ Termine a configuração do certificado SSL no servidor:
 ```shell
 dokku letsencrypt:enable $APP_NAME
 ```
+
+
+## Backups
+
+### Servidor novo
+
+- PostgreSQL:
+
+```shell
+dokku postgres:export postgres_metamemo > postgres-metamemo-$(date +'%Y-%m-%dT%H:%M:%S%z').sql.gz
+```
+
+- Arquivos do storage:
+
+```shell
+# Rode um container com o mc:
+docker run -it --rm -v $(pwd)/minio:/data --entrypoint=/bin/bash minio/mc
+
+# Dentro do container, configure as variáveis de ambiente e autentique-se no servidor MinIO:
+AWS_S3_ENDPOINT_URL=https://storage.metamemo.info/
+AWS_S3_ACCESS_KEY_ID=...
+AWS_S3_SECRET_ACCESS_KEY=...
+mc config host add storage $AWS_S3_ENDPOINT_URL $AWS_S3_ACCESS_KEY_ID $AWS_S3_SECRET_ACCESS_KEY
+
+# Teste a autenticação com:
+mc ls storage
+
+# Ainda dentro do container, rode o `mc cp` para copiar todo o conteúdo do bucket:
+mc cp -r storage/metamemo /data/metamemo
+```
+
+### Servidor antigo
+
+> Nota: antes de fazer backup (para migração de servidor) o ideal é parar os script no cron (`crontab -e`) e o servidor
+> HTTP (`sudo service nginx stop && sudo service uwsgi stop`).
+
+- Dump do MySQL (formato SQL):
+
+```shell
+source .env
+export MYSQL_PWD=$DB_PASS
+mysqldump -u $DB_USER -h $DB_HOST $DB_NAME | gzip - > "mariadb-metamemo-$(date +'%Y-%m-%dT%H:%M:%S%z').dump.gz"
+```
+
+- Dump do MySQL (formato de fixture do Django - pode ser carregado diretamente no PostgreSQL com `manage.py loaddata`):
+
+```shell
+python manage.py dumpdata --format=jsonl \
+    admin auth django_celery_results django_summernote metamemoapp timeline blog \
+    | gzip - > django-fixture-metamemo-$(date +'%Y-%m-%dT%H:%M:%S%z').jsonl.gz
+```
