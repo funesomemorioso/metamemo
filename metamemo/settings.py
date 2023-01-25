@@ -118,6 +118,10 @@ TEMPLATES = [
 WSGI_APPLICATION = "metamemo.wsgi.application"
 
 # Error reporting
+LOGGING = DEFAULT_LOGGING.copy()
+LOGGING["handlers"]["null"] = {"class": "logging.NullHandler"}
+LOGGING["loggers"]["django.security.DisallowedHost"] = {"handlers": ["null"], "propagate": False}
+
 SENTRY_DSN = config("SENTRY_DSN", default=None)
 if SENTRY_DSN:
     sentry_sdk.init(
@@ -125,9 +129,6 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration()],
         send_default_pii=True,
     )
-LOGGING = DEFAULT_LOGGING.copy()
-LOGGING["handlers"]["null"] = {"class": "logging.NullHandler"}
-LOGGING["loggers"]["django.security.DisallowedHost"] = {"handlers": ["null"], "propagate": False}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
