@@ -7,7 +7,6 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - .:/app
       - ${PWD}/data/web:/data
     build:
       context: .

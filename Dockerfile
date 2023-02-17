@@ -1,3 +1,11 @@
+# Vue build
+FROM node:lts-alpine AS build-assets
+
+WORKDIR /app
+COPY ./frontend /app/frontend
+RUN cd /app/frontend && npm install -g npm@9.5.0 && npm install && npm run build
+
+# Django build
 FROM python:3.8-bullseye
 
 ENV PYTHONUNBUFFERED 1
@@ -23,5 +31,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt \
   && if [ "$(echo $DEV_BUILD | tr a-z A-Z)" = "TRUE" ]; then pip install --no-cache-dir -r /app/requirements-development.txt; fi
 
 COPY . /app/
+
+COPY --from=build-assets /app/metamemoapp/templates /app/metamemoapp/templates
 
 CMD "/app/bin/web.sh"
