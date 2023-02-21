@@ -1,0 +1,173 @@
+<script lang="ts">
+import { defineComponent, h } from "vue";
+import { RouterLink, useRoute } from "vue-router";
+import type { RouteLocationNormalizedLoaded } from "vue-router";
+import {
+  NLayout,
+  NLayoutHeader,
+  NLayoutContent,
+  NLayoutFooter,
+  NMenu,
+  NButton,
+  NSpace,
+  NAnchorLink,
+  NIcon,
+} from "naive-ui";
+import type { MenuOption } from "naive-ui"
+import Contrast from "@vicons/carbon/Contrast"
+import { useMeta } from "vue-meta"
+
+const menuOptions: MenuOption[] = [
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: "home",
+            path: "/",
+          },
+        },
+        { default: () => "Home" }
+      ),
+    key: "home",
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            path: "/methodology",
+          },
+        },
+        { default: () => "Metodologia" }
+      ),
+    key: "methodology",
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            path: "/query",
+          },
+        },
+        { default: () => "Consulta" }
+      ),
+    key: "query",
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            path: "/time-line",
+          },
+        },
+        { default: () => "Linha do Tempo" }
+      ),
+    key: "time-line",
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            path: "/collaborate",
+          },
+        },
+        { default: () => "Colabore" }
+      ),
+    key: "collaborate",
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: "about",
+          },
+        },
+        { default: () => "Sobre" }
+      ),
+    key: "about",
+  },
+];
+
+export default defineComponent({
+  props: {
+    changeTheme: {
+      type: Function,
+      required: true
+    }
+  },
+  components: {
+    NLayout,
+    NLayoutHeader,
+    NLayoutContent,
+    NLayoutFooter,
+    NMenu,
+    NButton,
+    NSpace,
+    NAnchorLink,
+    NIcon,
+    Contrast
+  },
+  setup() {
+    useMeta({
+      title: 'Testando',
+      description: 'Página de teste',
+      htmlAttrs: { lang: 'pt-br', amp: true }
+    })
+
+    const route: RouteLocationNormalizedLoaded = useRoute();
+
+    return {
+      menuOptions,
+      Contrast,
+      route,
+    };
+  },
+});
+</script>
+
+<template>
+  <n-layout>
+    <n-layout-header
+      bordered
+      class="flex justify-between items-center"
+    >
+      <div> </div>
+      <n-menu
+        mode="horizontal"
+        :value="route.path.substring(1)"
+        :options="menuOptions"
+      />
+      <n-button quaternary circle :focusable="false" @click="changeTheme()">
+        <template #icon>
+          <n-icon :component="Contrast" />
+        </template>
+      </n-button>
+    </n-layout-header>
+    <n-layout-content content-style="padding: 24px; width:100%; min-height: calc(100vh - 112px)">
+      <slot />
+    </n-layout-content>
+    <n-layout-footer class="flex justify-between items-center" bordered>
+        <div>
+          <h2>Footer</h2>
+        </div>
+    </n-layout-footer>
+  </n-layout>
+</template>
+
+<style>
+.n-layout-header,
+.n-layout-footer {
+  @apply  h-14 px-4;
+}
+</style>
