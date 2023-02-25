@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     outDir: "../metamemoapp/templates",
     assetsDir: "static",
-    chunkSizeWarningLimit: 700,
+    chunkSizeWarningLimit: 1000,
   },
   server: {
     proxy: {

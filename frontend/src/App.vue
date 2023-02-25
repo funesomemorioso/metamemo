@@ -1,14 +1,13 @@
 <script lang="ts">
 import { RouterView } from "vue-router";
-
-import { NConfigProvider, darkTheme } from "naive-ui";
-import type { GlobalThemeOverrides, GlobalTheme } from "naive-ui";
-
+import { NConfigProvider, darkTheme, ptBR, datePtBR } from "naive-ui";
 import { defineComponent, ref } from "vue";
+
+import type { GlobalThemeOverrides, GlobalTheme  } from "naive-ui";
 import type { Ref } from "vue";
 
 export default defineComponent({
-  components: { darkTheme, NConfigProvider },
+  components: { darkTheme, NConfigProvider, ptBR, datePtBR },
   setup() {
     const SITE_NAME = "Metamemo";
     let darkThemed: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -43,7 +42,9 @@ export default defineComponent({
       changeTheme,
       lightThemeOverrides,
       darkThemeOverrides,
-      SITE_NAME
+      SITE_NAME,
+      ptBR,
+      datePtBR
     };
   },
 });
@@ -59,6 +60,8 @@ export default defineComponent({
     <n-config-provider
       :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides"
       :theme="theme"
+      :locale="ptBR"
+      :date-locale="datePtBR"
       :class="theme ? 'dark' : ''"
     >
       <AppLayout :changeTheme="changeTheme">

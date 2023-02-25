@@ -15,7 +15,6 @@ import {
 } from "naive-ui";
 import type { MenuOption } from "naive-ui"
 import Contrast from "@vicons/carbon/Contrast"
-import { useMeta } from "vue-meta"
 
 const menuOptions: MenuOption[] = [
   {
@@ -119,12 +118,6 @@ export default defineComponent({
     Contrast
   },
   setup() {
-    useMeta({
-      title: 'Testando',
-      description: 'Página de teste',
-      htmlAttrs: { lang: 'pt-br', amp: true }
-    })
-
     const route: RouteLocationNormalizedLoaded = useRoute();
 
     return {
@@ -137,7 +130,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <n-layout>
+  <div class="min-h-screen flex flex-col">
     <n-layout-header
       bordered
       class="flex justify-between items-center"
@@ -154,18 +147,22 @@ export default defineComponent({
         </template>
       </n-button>
     </n-layout-header>
-    <n-layout-content content-style="padding: 24px; width:100%; min-height: calc(100vh - 112px)">
+    <n-layout-content class="p-12 grow">
       <slot />
     </n-layout-content>
     <n-layout-footer class="flex justify-between items-center" bordered>
-        <div>
-          <h2>Footer</h2>
-        </div>
+      <div>
+        <h2>Footer</h2>
+      </div>
     </n-layout-footer>
-  </n-layout>
+  </div>
 </template>
 
 <style>
+.v-binder-follower-container {
+  position: initial;
+}
+
 .n-layout-header,
 .n-layout-footer {
   @apply  h-14 px-4;

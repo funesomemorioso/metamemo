@@ -25,6 +25,7 @@
     "@types/node": "^18.11.12",
     "@types/vue": "^2.0.0",
     "@vicons/carbon": "^0.12.0",
+    "@vicons/fa": "^0.12.0",
     "@vicons/material": "^0.12.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",

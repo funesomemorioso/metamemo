@@ -1,193 +1,139 @@
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted, h } from 'vue';
-import type { Ref } from 'vue';
-import { NDataTable, NButton, NIcon } from 'naive-ui';
-import Link from '@vicons/carbon/Link';
-import Image from '@vicons/carbon/Image';
-import LogoTwitter from '@vicons/carbon/LogoTwitter';
-import LogoFacebook from '@vicons/carbon/LogoFacebook';
-import TelegramTwotone from '@vicons/material/TelegramTwotone';
-import LogoInstagram from '@vicons/carbon/LogoInstagram';
-import LogoYoutube from '@vicons/carbon/LogoYoutube';
-import type { DataTableColumns } from 'naive-ui';
+  import QueryTable from '../components/QueryTable.vue'
+  import { onMounted, ref } from 'vue'; 
+  import { NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton } from 'naive-ui';
 
+  function formatDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
+  }
 
-const createColumns = (): DataTableColumns => {
-  return [
-    {
-      title: 'Title',
-      key: 'title',
-      resizable: true,
-      minWidth: 300,
-      width: 500,
-    },
-    {
-      title: 'Rede',
-      key: 'source',
-      width: 100,
-      render (row) {
-        let url = row.url;
-        const source = row.source;
+  export default {
+    components: { QueryTable, NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton },
+    setup() {
+      const data = ref(null);
+      const loading = ref(true);
+      const api = import.meta.env.VITE_API_URL
 
-        let sourceIcon = { icon: Link, color: 'text-gray-600' }
-        console.log(source)
-        if (source == 'Twitter') {
-          sourceIcon = { icon: LogoTwitter, color: 'text-sky-600 dark:text-sky-500' }
+      onMounted(async () => {
+        try {
+          loading.value = true
+          const response = await fetch(
+            api + '/lista/?author=Jair+Bolsonaro&source=Facebook&start_date=2023-1-24&end_date=2023-2-19&format=json'
+          );
+          data.value = await response.json();
+          loading.value = false
+        } catch (error) {
+          // Do nothing
+          console.error(error);
         }
-        else if (source == 'Telegram') {
-          url = row.midia
-          sourceIcon = { icon: TelegramTwotone, color: 'text-gray-500 dark:text-gray-400' }
-        }
-        else if (source == 'Youtube') {
-          sourceIcon = { icon: LogoYoutube, color: 'text-rose-600 dark:text-rose-500' }
-        }
-        else if (source == 'Facebook') {
-          sourceIcon = { icon: LogoFacebook, color: 'text-blue-600 dark:text-blue-500' }
-        }
-        else if (source == 'Instagram') {
-          sourceIcon = { icon: LogoInstagram, color: 'text-pink-600 dark:text-pink-500' }
-        }
+      })
 
-        return h(
-          NButton,
-          {
-            strong: true,
-            secondary: true,
-            style: 'padding: 8px',
-            title: url,
-            onClick: () => { window.open(String(url), '_blank') },
-          },
-          { default:
-            () => h(NIcon,
-              {
-                size: '1.12rem',
-                class: sourceIcon.color,
-                component: () => h(sourceIcon.icon),
-              }
-            )
-          }
-        )
-      }
-    },
-    {
-      title: 'Data e Hora',
-      key: 'date',
-      width: 220,
-    },
-    {
-      title: 'Autor',
-      key: 'author',
-      width: 220,
-    },
-    {
-      title: 'Midia',
-      key: 'midia',
-      width: 220,
-      render (row) {
-        const midia = row.midia;
-        if (!midia) {
-          return;
+      const model = ref(
+        {
+          dateRange: null,
+          searchText: "",
+          socialMedia: [],
+          selectedPeople: [],
         }
-        return h(
-          NButton,
-          {
-            strong: true,
-            secondary: true,
-            style: 'padding: 8px',
-            title: midia,
-            onClick: () => { window.open(String(midia), '_blank') },
-          },
-          { default:
-            () => h(NIcon,
-              {
-                size: '1.12rem',
-                component: () => h(Image),
-              }
-            )
-          }
-        )
-      }
-    },
-  ]
-}
+      )
 
-function formatDateHour(
-    dateHourUTC: string,
-    locale: string = 'pt-BR',
-    separatorString: string = 'às'
-  ) {
-  const dateHour = new Date(dateHourUTC);
-  const dateFormated = dateHour.toLocaleDateString(locale);
-  const hourFormated = dateHour.toLocaleTimeString(locale);
-  return `${dateFormated} ${separatorString} ${hourFormated}`;
-}
+      const peopleOptions = [
+        { label: 'Jair Bolsonaro', value: 'Jair+Bolsonaro' },
+        { label: 'Carlos bolsonaro', value: 'Carlos+Bolsonaro' },
+        { label: 'Eduardo Bolsonaro', value: 'Eduardo+Bolsonaro' },
+        { label: 'Família Bolsonaro', value: 'Familia+Bolsonaro' },
+      ];
 
+      const socialOptions = [
+        { label: 'Facebook', value: 'Facebook' },
+        { label: 'Instagram', value: 'Instagram' },
+        { label: 'Twitter', value: 'Twitter' },
+        { label: 'Youtube', value: 'Youtube' },
+        { label: 'Telegram', value: 'Telegram' },
+        { label: 'Blog', value: 'Blog' }
+      ];
 
-export default defineComponent({
-  components: { NDataTable, NButton },
-  setup() {
-    const rows: [] | Ref = ref([]);
-    const loading = ref(true);
-    const paginationReactive = reactive({
-      page: 1,
-      pageSize: 5,
-      pageSlot: 7,
-      showSizePicker: true,
-      simple: window.innerWidth < 480 ? true : false,
-      pageSizes: [5, 10, 20, 50],
-      onChange: (page: number) => {
-        paginationReactive.page = page
-      },
-      onUpdatePageSize: (pageSize: number) => {
-        paginationReactive.pageSize = pageSize
-        paginationReactive.page = 1
-      }
-    })
+      const submitForm = async () => {
+        const form = model.value
+        const authors = [...form.selectedPeople].map(el => `&author=${el}`).join("")
+        const sources = [...form.socialMedia].map(el => `&source=${el}`).join("")
+        const content = `&content=${form.searchText}`
 
-    onMounted(async () => {
-      loading.value = true;
-      try {
-        const api = import.meta.env.VITE_API_URL
-        const response = await fetch(api + '/lista/?author=Jair%20Bolsonaro&author=Carlos%20Bolsonaro&author=Eduardo%20Bolsonaro&author=Fl%C3%A1vio%20Bolsonaro&author=Familia%20Bolsonaro&source=Facebook&source=Twitter&source=Youtube&source=Instagram&source=Telegram&source=Blog&content=&start_date=2023-2-1&end_date=2023-2-28&format=json');
-        const data = await response.json();
-        const result = [];
-        for (const row of data.items) {
-          result.push(
-            {
-              title:  row.title,
-              source: row.source,
-              "date": formatDateHour(row.content_date),
-              author: row.author,
-              url: row.url,
-              midia: row.image_url
-            })
+        let startDate = ""
+        let endDate = "" 
+
+        if (form.dateRange) {
+          startDate = `&start_date=${formatDate(form.dateRange[0])}`
+          endDate = `&end_date=${formatDate(form.dateRange[1])}`
         }
-        rows.value = result;
-      } catch (error) {
-        console.error(error);
-      }
+        let query = content + authors + sources + startDate + endDate
+        query = query.substring(1)
+        console.log(query)
+
+        loading.value = true;
+        const response = await fetch(api + `/lista/?${query}&format=json`)
+        data.value = await response.json();
         loading.value = false;
-    });
+      }
 
-    return {
-      data: rows,
-      columns: createColumns(),
-      loading,
-      pagination: paginationReactive,
-      scroll
+      return {
+        data,
+        model,
+        peopleOptions,
+        socialOptions,
+        submitForm,
+        loading
+      }
     }
-  },
-})
+  }
 </script>
 
 <template>
-    <n-data-table
-      :pagination="pagination"
-      :loading="loading"
-      :columns="columns"
-      :data="data"
-      :scrollbar-props="{ trigger: 'none', 'xScrollable': true }"
-    />
+  <n-form ref="form" :model="model" class="mb-6 grid grid-cols-12 gap-x-4">
+    <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+      <n-form-item label="Datas">
+        <n-date-picker
+          type="daterange"
+          start-placeholder="Data incial"
+          end-placeholder="Data final"
+          v-model:value="model.dateRange"
+          :update-value-on-close="true"
+        />
+      </n-form-item>
+    </div>
+    <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+      <n-form-item label="Pessoas">
+        <n-select
+          v-model:value="model.selectedPeople"
+          multiple
+          filterable
+          clearable
+          placeholder="Selecione pessoas"
+          :options="peopleOptions"
+        />
+      </n-form-item>
+    </div>
+    <div class="col-span-12 xl:col-span-6">
+      <n-form-item label="Redes sociais">
+        <n-checkbox-group  v-model:value="model.socialMedia" class="flex flex-wrap gap-y-2">
+            <n-checkbox v-for="(option) in socialOptions" :label="option.label" :value="option.value" />
+        </n-checkbox-group>
+      </n-form-item>
+    </div>
+    <div class="col-span-12 md:col-span-10">
+      <n-form-item label="Pesquisa">
+        <n-input v-model:value="model.searchText" size="large" placeholder="Procure por termos específicos, ex: Amazônia" />
+      </n-form-item>
+    </div>
+    <div class="col-span-12 md:col-span-2 flex flex-grow justify-center items-center">
+      <n-button @click="submitForm" size="large" type="success" class="grow">Enviar</n-button>
+    </div>
+  </n-form>
+  <QueryTable :loading="loading" :data="data" />
 </template>
 
 <style>
