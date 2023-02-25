@@ -1,7 +1,8 @@
 <script lang="ts">
   import QueryTable from '../components/QueryTable.vue'
-  import { onMounted, ref } from 'vue'; 
+  import { onMounted, ref } from 'vue';
   import { NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton } from 'naive-ui';
+  import { useRoute, useRouter, type LocationQueryValue } from 'vue-router';
 
   function formatDate(timestamp: number): string {
     const date = new Date(timestamp);
@@ -11,35 +12,65 @@
     return `${year}-${month}-${day}`;
   }
 
+  function convertToUtc(dateString: string): number {
+    const [year, month, day] = dateString.split('-').map(Number);
+    const utcDate = Date.UTC(year, month - 1, day);
+    return utcDate;
+  }
+
+  interface Model {
+    dateRange: any;
+    searchText: any;
+    socialMedia: any;
+    selectedPeople: any; 
+  }
+
   export default {
     components: { QueryTable, NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton },
     setup() {
+      const route = useRoute()
+      const routeArgs = route.query
+
+      const router = useRouter()
+      const routerQuery = router.currentRoute.value.fullPath
+
       const data = ref(null);
       const loading = ref(true);
       const api = import.meta.env.VITE_API_URL
 
+      const model = ref<Model>(
+        {
+          dateRange: routeArgs.start_date ?
+            [ convertToUtc(String(routeArgs.start_date)), convertToUtc(String(routeArgs.end_date)) ] : null,
+          searchText: routeArgs.content ? routeArgs.content : "",
+          socialMedia: Array.isArray(routeArgs.source) ? routeArgs.source : routeArgs.source ? [routeArgs.source] : [],
+          selectedPeople: Array.isArray(routeArgs.author) ? routeArgs.author : routeArgs.author ? [routeArgs.author] : [],
+        }
+      )
+
+
       onMounted(async () => {
         try {
           loading.value = true
-          const response = await fetch(
-            api + '/lista/?author=Jair+Bolsonaro&source=Facebook&start_date=2023-1-24&end_date=2023-2-19&format=json'
-          );
+          const resultPath =
+            routerQuery.replace(String(router.currentRoute.value.path), "").replace("%2B", "+")
+          let response;
+          if (resultPath) {
+            response = await fetch(
+              `${api}/lista/${resultPath}&format=json`
+            );
+          } else {
+            //response = await fetch(`${api}/lista/?format=json`);
+            response = await fetch(`${api}/lista/?author=Jair+Bolsonaro&source=Blog&source=Facebook&format=json`);
+          }
           data.value = await response.json();
           loading.value = false
         } catch (error) {
           // Do nothing
-          console.error(error);
+          // console.error(error);
+          loading.value = false
         }
       })
-
-      const model = ref(
-        {
-          dateRange: null,
-          searchText: "",
-          socialMedia: [],
-          selectedPeople: [],
-        }
-      )
 
       const peopleOptions = [
         { label: 'Jair Bolsonaro', value: 'Jair+Bolsonaro' },
@@ -59,24 +90,53 @@
 
       const submitForm = async () => {
         const form = model.value
-        const authors = [...form.selectedPeople].map(el => `&author=${el}`).join("")
-        const sources = [...form.socialMedia].map(el => `&source=${el}`).join("")
-        const content = `&content=${form.searchText}`
+        const routerResult: {
+          author?: LocationQueryValue[],
+          source?: LocationQueryValue[],
+          content?: LocationQueryValue[] | string
+          start_date?: string
+          end_date?: string
+          } = {}
+
+        let author: LocationQueryValue[] | string = [...form.selectedPeople]
+        if (author.length > 0) {
+            routerResult.author = author
+            author = author.map(el => `&author=${el}`).join("")
+        }
+
+        let source: LocationQueryValue[] | string = [...form.socialMedia]
+        if (source.length > 0) {
+          routerResult.source = source
+          source = source.map(el => `&source=${el}`).join("")
+        }
+
+        let content = form.searchText
+        if(content) {
+          routerResult.content = content
+          content = `&content=${content}`
+        }
 
         let startDate = ""
-        let endDate = "" 
+        let endDate = ""
 
         if (form.dateRange) {
-          startDate = `&start_date=${formatDate(form.dateRange[0])}`
-          endDate = `&end_date=${formatDate(form.dateRange[1])}`
+          startDate = formatDate(form.dateRange[0])
+          endDate = formatDate(form.dateRange[1])
+
+          routerResult.start_date = startDate
+          routerResult.end_date = endDate
+
+          startDate = `&start_date=${startDate}`
+          endDate = `&end_date=${endDate}`
         }
-        let query = content + authors + sources + startDate + endDate
+        let query = content + author + source + startDate + endDate
         query = query.substring(1)
-        console.log(query)
 
         loading.value = true;
         const response = await fetch(api + `/lista/?${query}&format=json`)
         data.value = await response.json();
+
+        router.push({ query: routerResult })
         loading.value = false;
       }
 

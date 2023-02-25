@@ -147,7 +147,7 @@ export default defineComponent({
         </template>
       </n-button>
     </n-layout-header>
-    <n-layout-content class="p-12 grow">
+    <n-layout-content class="px-12 lg:px-24 py-12">
       <slot />
     </n-layout-content>
     <n-layout-footer class="flex justify-between items-center" bordered>
