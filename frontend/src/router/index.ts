@@ -21,7 +21,7 @@ const router = createRouter({
     },
     {
       path: "/query",
-      name: "query",
+      name: "query lista",
       component: QueryView,
     },
     {

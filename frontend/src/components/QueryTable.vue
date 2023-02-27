@@ -1,5 +1,6 @@
 <script lang="ts">
   import { defineComponent, ref, reactive, watch, h, onMounted, toRef } from 'vue';
+  import { useRoute } from 'vue-router';
   import { NDataTable, NButton, NIcon, NText, NModal, NImage } from 'naive-ui';
   import { useMeta } from "vue-meta"
 
@@ -202,7 +203,9 @@
   export default defineComponent({
     props: ['data', 'loading'],
     components: { NDataTable, NButton, NModal, NImage },
-    setup(props) {
+    setup(props, context) {
+      const route = useRoute()
+
       useMeta({
         title: 'Consulta',
         description: 'Página de consulta de dados metamemo com formulários para filtragem de conteúdo extraído',
@@ -211,37 +214,32 @@
 
       const loading = toRef(props, 'loading');
       const rows = ref([]);
-      const paginationReactive = reactive(
-        {
-          page: 1,
-          pageSize: 5,
-          pageSlot: 7,
-          showSizePicker: true,
-          simple: window.innerWidth < 480 ? true : false,
-          pageSizes: [5, 10, 20, 50],
-          onChange: (page: number) => {
-            paginationReactive.page = page
-          },
-          onUpdatePageSize: async (pageSize: number) => {
-            paginationReactive.pageSize = pageSize
-            paginationReactive.page = 1
-          }
-        }
-      )
-
-      onMounted(() => {
-          populateTable(props.data, rows)
+      const paginationReactive = reactive({
+        page: 1,
+        pageCount: 10,
+        pageSize: 10,
+        pageTotal: 100,
       })
 
       watch(
-        () => props.data, (data) => populateTable(data, rows)
+        () => props.data, (data) => {
+          populateTable(data, rows)
+          paginationReactive.pageCount = props.data.total_pages
+          paginationReactive.pageSize = props.data.total_size
+          paginationReactive.page = props.data.page
+        }
       )
+
+      const handlePageChange = async (currentPage: number, pageSize: number) => {
+        context.emit('paginateAction', { currentPage, pageSize })
+      }
 
       return {
         data: rows,
         columns: createColumns(),
         loading,
         pagination: paginationReactive,
+        handlePageChange
       }
     },
   })
@@ -254,6 +252,8 @@
     :columns="columns"
     :data="data"
     :scrollbar-props="{ trigger: 'none', 'xScrollable': true }"
+    :remote="true"
+    @update:page="handlePageChange"
   />
 </template>
 

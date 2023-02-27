@@ -1,8 +1,9 @@
 <script lang="ts">
   import QueryTable from '../components/QueryTable.vue'
-  import { onMounted, ref } from 'vue';
-  import { NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton } from 'naive-ui';
-  import { useRoute, useRouter, type LocationQueryValue } from 'vue-router';
+  import { onMounted, ref } from 'vue'
+  import { NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton } from 'naive-ui'
+  import { useRoute, useRouter, type LocationQueryValue } from 'vue-router'
+  import ApiService from '@/api/apiService'
 
   function formatDate(timestamp: number): string {
     const date = new Date(timestamp);
@@ -22,7 +23,7 @@
     dateRange: any;
     searchText: any;
     socialMedia: any;
-    selectedPeople: any; 
+    selectedPeople: any;
   }
 
   export default {
@@ -36,7 +37,6 @@
 
       const data = ref(null);
       const loading = ref(true);
-      const api = import.meta.env.VITE_API_URL
 
       const model = ref<Model>(
         {
@@ -50,32 +50,18 @@
 
 
       onMounted(async () => {
-        try {
-          loading.value = true
-          const resultPath =
-            routerQuery.replace(String(router.currentRoute.value.path), "").replace("%2B", "+")
-          let response;
-          if (resultPath) {
-            response = await fetch(
-              `${api}/lista/${resultPath}&format=json`
-            );
-          } else {
-            //response = await fetch(`${api}/lista/?format=json`);
-            response = await fetch(`${api}/lista/?author=Jair+Bolsonaro&source=Blog&source=Facebook&format=json`);
-          }
-          data.value = await response.json();
-          loading.value = false
-        } catch (error) {
-          // Do nothing
-          // console.error(error);
-          loading.value = false
-        }
+        const resultPath =
+          routerQuery.replace(String(router.currentRoute.value.path), "").replace("%2B", "+")
+        loading.value = true;
+        data.value = await ApiService.get(`/lista/${resultPath}`)
+        loading.value = false;
       })
 
       const peopleOptions = [
         { label: 'Jair Bolsonaro', value: 'Jair+Bolsonaro' },
         { label: 'Carlos bolsonaro', value: 'Carlos+Bolsonaro' },
         { label: 'Eduardo Bolsonaro', value: 'Eduardo+Bolsonaro' },
+        { label: 'Flavio Bolsonaro', value: 'Flávio+Bolsonaro' },
         { label: 'Família Bolsonaro', value: 'Familia+Bolsonaro' },
       ];
 
@@ -101,19 +87,16 @@
         let author: LocationQueryValue[] | string = [...form.selectedPeople]
         if (author.length > 0) {
             routerResult.author = author
-            author = author.map(el => `&author=${el}`).join("")
         }
 
         let source: LocationQueryValue[] | string = [...form.socialMedia]
         if (source.length > 0) {
           routerResult.source = source
-          source = source.map(el => `&source=${el}`).join("")
         }
 
         let content = form.searchText
         if(content) {
           routerResult.content = content
-          content = `&content=${content}`
         }
 
         let startDate = ""
@@ -126,18 +109,22 @@
           routerResult.start_date = startDate
           routerResult.end_date = endDate
 
-          startDate = `&start_date=${startDate}`
-          endDate = `&end_date=${endDate}`
         }
-        let query = content + author + source + startDate + endDate
-        query = query.substring(1)
 
         loading.value = true;
-        const response = await fetch(api + `/lista/?${query}&format=json`)
-        data.value = await response.json();
-
+        data.value = await ApiService.get('/lista/', { ...routerResult })
         router.push({ query: routerResult })
         loading.value = false;
+      }
+
+      const paginateAction = async (
+        { currentPage, pageSize = "" }: { currentPage: number, pageSize: number | string }
+      ) => {
+        let routerResult = { ...route.query, page: currentPage }
+        loading.value = true
+        data.value = await ApiService.get('/lista/', routerResult )
+        router.push({ query: routerResult })
+        loading.value = false
       }
 
       return {
@@ -146,7 +133,8 @@
         peopleOptions,
         socialOptions,
         submitForm,
-        loading
+        loading,
+        paginateAction
       }
     }
   }
@@ -193,8 +181,5 @@
       <n-button @click="submitForm" size="large" type="success" class="grow">Enviar</n-button>
     </div>
   </n-form>
-  <QueryTable :loading="loading" :data="data" />
+  <QueryTable :loading="loading" :data="data" @paginateAction="paginateAction" />
 </template>
-
-<style>
-</style>
