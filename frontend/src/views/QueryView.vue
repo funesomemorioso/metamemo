@@ -1,7 +1,18 @@
 <script lang="ts">
   import QueryTable from '../components/QueryTable.vue'
   import { onMounted, ref } from 'vue'
-  import { NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton } from 'naive-ui'
+  import {
+    NForm,
+    NFormItem,
+    NDatePicker,
+    NInput,
+    NCheckboxGroup,
+    NCheckbox,
+    NSelect,
+    NButton,
+    NTabs,
+    NTabPane
+  } from 'naive-ui'
   import { useRoute, useRouter, type LocationQueryValue } from 'vue-router'
   import ApiService from '@/api/apiService'
 
@@ -27,15 +38,31 @@
   }
 
   export default {
-    components: { QueryTable, NForm, NFormItem, NDatePicker, NInput, NCheckboxGroup, NCheckbox, NSelect, NButton },
+    components: {
+      QueryTable,
+      NForm,
+      NFormItem,
+      NDatePicker,
+      NInput,
+      NCheckboxGroup,
+      NCheckbox,
+      NSelect,
+      NButton,
+      NTabs,
+      NTabPane
+    },
     setup() {
+      const getUrlCathegory = () => {
+        return route.path.replace(/\//g, " ").trim().split(" ").pop()
+      }
+
       const route = useRoute()
       const routeArgs = route.query
 
       const router = useRouter()
-      const routerQuery = router.currentRoute.value.fullPath
 
       const data = ref(null);
+      const category = ref(getUrlCathegory());
       const loading = ref(true);
 
       const model = ref<Model>(
@@ -50,10 +77,8 @@
 
 
       onMounted(async () => {
-        const resultPath =
-          routerQuery.replace(String(router.currentRoute.value.path), "").replace("%2B", "+")
         loading.value = true;
-        data.value = await ApiService.get(`/lista/${resultPath}`)
+        data.value = await ApiService.get(`/${category.value}/`, { ...routeArgs })
         loading.value = false;
       })
 
@@ -82,7 +107,7 @@
           content?: LocationQueryValue[] | string
           start_date?: string
           end_date?: string
-          } = {}
+        } = {}
 
         let author: LocationQueryValue[] | string = [...form.selectedPeople]
         if (author.length > 0) {
@@ -95,7 +120,7 @@
         }
 
         let content = form.searchText
-        if(content) {
+        if (content) {
           routerResult.content = content
         }
 
@@ -112,20 +137,63 @@
         }
 
         loading.value = true;
-        data.value = await ApiService.get('/lista/', { ...routerResult })
+        data.value = await ApiService.get(`/${category.value}/`, { ...routerResult })
         router.push({ query: routerResult })
         loading.value = false;
       }
 
       const paginateAction = async (
-        { currentPage, pageSize = "" }: { currentPage: number, pageSize: number | string }
+        currentPage: number
       ) => {
-        let routerResult = { ...route.query, page: currentPage }
+        let routerResult: { page: number } = { ...route.query, page: currentPage }
         loading.value = true
-        data.value = await ApiService.get('/lista/', routerResult )
+        data.value = await ApiService.get(`/${category.value}/`, routerResult )
         router.push({ query: routerResult })
         loading.value = false
       }
+
+      const paginateSizeAction = async (
+        pageSize: number
+      ) => {
+        let routerResult = { ...route.query, page_size: pageSize }
+        loading.value = true
+        data.value = await ApiService.get(`/${category.value}/`, routerResult )
+        router.push({ query: routerResult })
+        loading.value = false
+
+        // TODO: Search for a better way to behaviour in pagination with table change size
+        setTimeout(() => document.querySelector(".n-data-table__pagination")?.scrollIntoView({ behavior: 'smooth' }), 1)
+      }
+
+      const handleUpdateValue = async (name: string) => {
+        category.value = name
+        // Empty page value
+        const routerResult = { ...route.query}
+        delete routerResult['page']
+
+        loading.value = true
+        data.value = await ApiService.get(`/${category.value}/`, routerResult)
+        loading.value = false
+
+        router.push({ path: `/consulta/${category.value}/`, query: routerResult })
+      }
+
+      const sortAction = async (sort: { [key: string]: any }) => {
+        console.log("acessou sort emit", sort)
+      }
+
+      const requestAPI = async () => {
+        category.value = String(getUrlCathegory())
+        loading.value = true;
+        data.value = await ApiService.get(`/${category.value}/`, { ...route.query })
+        loading.value = false;
+      };
+
+      // Back button refresh table content
+      window.onpopstate = async () => { requestAPI() };
+
+      // Forward button refresh table content
+      window.history.forward = async () => { requestAPI() };
 
       return {
         data,
@@ -134,14 +202,18 @@
         socialOptions,
         submitForm,
         loading,
-        paginateAction
+        paginateAction,
+        paginateSizeAction,
+        handleUpdateValue,
+        category,
+        sortAction
       }
     }
   }
 </script>
 
 <template>
-  <n-form ref="form" :model="model" class="mb-6 grid grid-cols-12 gap-x-4">
+  <n-form ref="form" :model="model" class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12 lg:col-span-6 xl:col-span-3">
       <n-form-item label="Datas">
         <n-date-picker
@@ -181,5 +253,25 @@
       <n-button @click="submitForm" size="large" type="success" class="grow">Enviar</n-button>
     </div>
   </n-form>
-  <QueryTable :loading="loading" :data="data" @paginateAction="paginateAction" />
+  <n-tabs
+    type="bar"
+    :value="category"
+    @update:value="handleUpdateValue"
+    justify-content="center"
+    size="large"
+    class="mb-3"
+  >
+    <n-tab-pane name="lista" tab="Lista"></n-tab-pane>
+    <n-tab-pane name="transcricao" tab="Transcrição"></n-tab-pane>
+    <n-tab-pane name="news" tab="Notícias"></n-tab-pane>
+    <n-tab-pane name="contexts" tab="Contexto histórico"></n-tab-pane>
+    <n-tab-pane name="newscovers" tab="Capas de jornais"></n-tab-pane>
+  </n-tabs>
+  <QueryTable
+    :loading="loading"
+    :data="data"
+    @paginateAction="paginateAction"
+    @paginateSizeAction="paginateSizeAction"
+    @sortAction="sortAction"
+  />
 </template>

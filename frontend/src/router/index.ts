@@ -20,8 +20,28 @@ const router = createRouter({
       component: MethodologyView,
     },
     {
-      path: "/query",
-      name: "query lista",
+      path: "/consulta/lista/",
+      name: "consulta lista",
+      component: QueryView,
+    },
+    {
+      path: "/consulta/news/",
+      name: "consulta noticias",
+      component: QueryView,
+    },
+    {
+      path: "/consulta/contexts/",
+      name: "consulta contexto",
+      component: QueryView,
+    },
+    {
+      path: "/consulta/newscovers/",
+      name: "consulta capas de jornais",
+      component: QueryView,
+    },
+    {
+      path: "/consulta/transcricao/",
+      name: "consulta transcicao",
       component: QueryView,
     },
     {

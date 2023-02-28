@@ -29,7 +29,7 @@ const menuOptions: MenuOption[] = [
         },
         { default: () => "Home" }
       ),
-    key: "home",
+    key: "",
   },
   {
     label: () =>
@@ -50,7 +50,7 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            path: "/query",
+            path: "/consulta/lista/",
           },
         },
         { default: () => "Consulta" }
@@ -120,10 +120,18 @@ export default defineComponent({
   setup() {
     const route: RouteLocationNormalizedLoaded = useRoute();
 
+    const activeMenu = () => {
+      if ((route.path.split("/").length - 1) == 1) {
+        route.path.substring(1)
+      }
+      return route.path.replace(/\//g, ' ').trim().split(' ')[0]
+    }
+
     return {
       menuOptions,
       Contrast,
       route,
+      activeMenu
     };
   },
 });
@@ -138,7 +146,7 @@ export default defineComponent({
       <div> </div>
       <n-menu
         mode="horizontal"
-        :value="route.path.substring(1)"
+        :value="activeMenu()"
         :options="menuOptions"
       />
       <n-button quaternary circle :focusable="false" @click="changeTheme()">
