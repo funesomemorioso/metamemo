@@ -1,48 +1,32 @@
 <script lang="ts">
-import { defineComponent, ref, reactive, watch, h, onMounted, toRef } from 'vue';
-import { useRoute } from 'vue-router';
+import ApiService from '@/api/apiService'
 import { NDataTable, NButton, NIcon, NText, NModal, NImage } from 'naive-ui';
+import { defineComponent, ref, reactive, watch, h, onMounted } from 'vue';
 import { useMeta } from "vue-meta"
 
 // Icons
-import Link from '@vicons/carbon/Link';
-import Image from '@vicons/carbon/Image';
-import LogoTwitter from '@vicons/carbon/LogoTwitter';
-import LogoFacebook from '@vicons/carbon/LogoFacebook';
-import TelegramTwotone from '@vicons/material/TelegramTwotone';
-import LogoInstagram from '@vicons/carbon/LogoInstagram';
-import LogoYoutube from '@vicons/carbon/LogoYoutube';
 import Blogger from '@vicons/fa/Blogger';
+import Image from '@vicons/carbon/Image';
+import Link from '@vicons/carbon/Link';
+import LogoFacebook from '@vicons/carbon/LogoFacebook';
+import LogoInstagram from '@vicons/carbon/LogoInstagram';
+import LogoTwitter from '@vicons/carbon/LogoTwitter';
+import LogoYoutube from '@vicons/carbon/LogoYoutube';
+import TelegramTwotone from '@vicons/material/TelegramTwotone';
 
 // Types
 import type { DataTableColumns } from 'naive-ui';
 import type { Ref } from 'vue';
 import type { Url } from 'url';
+import { useStore } from 'vuex';
+
+import { formatDate, formatDateHour, formatToApi } from "../utils"
 
 const emptyResult = h(NText, { depth: 3, italic: true }, { default: () => '(vazio)' });
 
 function linkify(text: string): string {
   const urlRegex = /((?:https?:\/\/)[^\s]+)/g;
   return text.replace(urlRegex, '<a class="font-semibold hover:underline underline-offset-4" href="$1">$1</a>');
-}
-
-function formatDateHour(
-  dateHourUTC: string,
-  locale: string = 'pt-BR',
-  separatorString: string = 'às'
-) {
-  const dateHour = new Date(dateHourUTC);
-  const dateFormated = dateHour.toLocaleDateString(locale);
-  const hourFormated = dateHour.toLocaleTimeString(locale);
-  return `${dateFormated} ${separatorString} ${hourFormated}`;
-}
-
-function parseDateString(dateString: string): Date {
-  const [datePart, timePart] = dateString.split(' às ');
-  const [day, month, year] = datePart.split('/').map(Number);
-  const [hours, minutes, seconds] = timePart.split(':').map(Number);
-  const date = new Date(year, month - 1, day, hours, minutes, seconds);
-  return date;
 }
 
 function populateTable(
@@ -89,8 +73,8 @@ const createColumns = (): DataTableColumns => {
         }
         return h(
           "div", {
-            class: "h-42 p-2 rounded transition ease-in-out hover:bg-sky-100 dark:hover:bg-gray-700 hover:shadow",
-            innerHTML: `${linkify(String(title))}`,
+          class: "h-42 p-2 rounded transition ease-in-out hover:bg-sky-100 dark:hover:bg-gray-700 hover:shadow",
+          innerHTML: `${linkify(String(title))}`,
         }
         )
       }
@@ -195,10 +179,8 @@ const createColumns = (): DataTableColumns => {
 }
 
 export default defineComponent({
-  props: ['data', 'loading'],
   components: { NDataTable, NButton, NModal, NImage },
-  setup(props, context) {
-    const route = useRoute()
+  setup() {
 
     useMeta({
       title: 'Consulta',
@@ -206,35 +188,78 @@ export default defineComponent({
       htmlAttrs: { lang: 'pt-br', amp: true }
     })
 
-    const loading = toRef(props, 'loading');
+    const store = useStore();
+    const loading = ref(true);
     const rows = ref([]);
     const paginationReactive = reactive({
-      page: 1,
-      pageCount: 10,
-      pageSize: 5,
-      pageSizes: [5, 10, 20, 50, 100],
+      page: store.state.page,
+      pageCount: 0,
+      pageSize: store.state.pageSize,
+      pageSizes: store.state.pageSizes,
       showSizePicker: true
     })
 
+
+    onMounted(async () => {
+      await dataToApiRequest()
+    })
+
     watch(
-      () => props.data, (data) => {
-        populateTable(data, rows)
-        paginationReactive.pageCount = props.data.total_pages
-        paginationReactive.pageSize = props.data.page_size
-        paginationReactive.page = props.data.page
-      }
+      () => [
+        store.state.form,
+        store.state.tab,
+        store.state.page,
+        store.state.pageSize
+      ],
+      async () => { await dataToApiRequest() }
     )
 
-    const handlePageChange = (currentPage: number) => {
-      context.emit('paginateAction', currentPage)
+    const dataToApiRequest = async (
+    ) => {
+      const form = store.state.form;
+      const tab = store.state.tab
+      const page = store.state.page
+      const pageSize = store.state.pageSize
+
+      const routerResult = formatToApi(form, page, pageSize)
+
+      loading.value = true;
+      const result: {
+        items: [
+          {
+            title: string,
+            source: string,
+            content_date: string,
+            author: string,
+            url: Url,
+            image_url: Url,
+          }
+        ]
+        total_pages: number,
+        page_size: number,
+        page_page: number
+        page: number
+      } = await ApiService.get(`/${tab}/`, { ...routerResult })
+      loading.value = false;
+
+      populateTable(result, rows)
+
+      // Update table pagination controls
+      paginationReactive.page = Number(result.page)
+      paginationReactive.pageCount = Number(result.total_pages)
+      paginationReactive.pageSize = Number(result.page_size)
     }
 
-    const handlePageSizeChange = (pageSize: number) => {
-      context.emit('paginateSizeAction', pageSize)
+    const handlePageChange = async (currentPage: number) => {
+      store.commit('UPDATE_PAGE', currentPage) 
     }
 
-    const handleSorterChange = (sorter: { [key: string] : any }) => { 
-      context.emit('sortAction', sorter)
+    const handlePageSizeChange = async (pageSize: number) => {
+      store.commit('UPDATE_PAGE_SIZE', pageSize) 
+    }
+
+    const handleSorterChange = (sorter: { [key: string]: any }) => {
+      console.log(sorter)
     }
 
     return {
@@ -251,21 +276,16 @@ export default defineComponent({
 </script>
 
 <template>
-  <n-data-table
-    :pagination="pagination"
-    :loading="loading"
-    :columns="columns"
-    :data="data"
+  <n-data-table :pagination="pagination" :loading="loading" :columns="columns" :data="data"
     :scrollbar-props="{ trigger: 'none', 'xScrollable': true }" :remote="true" @update:page="handlePageChange"
-    @update:pageSize="handlePageSizeChange"
-    @update:sorter="handleSorterChange"
-  />
+    @update:pageSize="handlePageSizeChange" @update:sorter="handleSorterChange" />
 </template>
 
 <style>
 .n-date-panel {
   @apply flex flex-col sm:grid !important;
 }
+
 tbody .n-data-table-tr {
   @apply h-52;
 }

@@ -1,11 +1,8 @@
-<script setup lang="ts"></script>
-
+<script setup lang="ts">
+import Article from "../components/Article.vue"
+</script>
 <template>
-  <div>
-    <h1>This is a collaborate page</h1>
-  </div>
+  <Article title="Colaborar" />
 </template>
-
 <style>
 </style>
-

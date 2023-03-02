@@ -1,4 +1,5 @@
 <script lang="ts">
+import NavBar from "../components/NavBar.vue"
 import { defineComponent, h } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
@@ -13,89 +14,57 @@ import {
   NAnchorLink,
   NIcon,
 } from "naive-ui";
-import type { MenuOption } from "naive-ui"
 import Contrast from "@vicons/carbon/Contrast"
 
-const menuOptions: MenuOption[] = [
+const menuOptions = [
   {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: "home",
-            path: "/",
-          },
-        },
-        { default: () => "Home" }
-      ),
-    key: "",
+    to: {
+      name: "home",
+      path: "/",
+    },
+    label: "Home",
+    key: "home",
   },
   {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            path: "/methodology",
-          },
-        },
-        { default: () => "Metodologia" }
-      ),
+    to: {
+      name: "consulta",
+      path: "/consulta/lista",
+    },
+    label: "Consulta",
+    key: "consulta",
+  },
+  {
+    to: {
+      name: "methodology",
+      path: "/methodology",
+    },
+    label: "Metodologia",
     key: "methodology",
   },
   {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            path: "/consulta/lista/",
-          },
-        },
-        { default: () => "Consulta" }
-      ),
-    key: "query",
+    to: {
+      name: "timeline",
+      path: "/time-line",
+    },
+    label: "Linha do tempo",
+    key: "timeline",
   },
   {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            path: "/time-line",
-          },
-        },
-        { default: () => "Linha do Tempo" }
-      ),
-    key: "time-line",
-  },
-  {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            path: "/collaborate",
-          },
-        },
-        { default: () => "Colabore" }
-      ),
+    to: {
+      name: "collaborate",
+      path: "/collaborate",
+    },
+    label: "Colaborar",
     key: "collaborate",
   },
   {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: "about",
-          },
-        },
-        { default: () => "Sobre" }
-      ),
+    to: {
+      name: "about",
+      path: "/about",
+    },
+    label: "Sobre",
     key: "about",
-  },
+  }
 ];
 
 export default defineComponent({
@@ -115,7 +84,8 @@ export default defineComponent({
     NSpace,
     NAnchorLink,
     NIcon,
-    Contrast
+    Contrast,
+    NavBar
   },
   setup() {
     const route: RouteLocationNormalizedLoaded = useRoute();
@@ -138,31 +108,22 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
-    <n-layout-header
-      bordered
-      class="flex justify-between items-center"
-    >
-      <div> </div>
-      <n-menu
-        mode="horizontal"
-        :value="activeMenu()"
-        :options="menuOptions"
-      />
+  <div class="min-h-screen flex flex-col bg-white dark:bg-black dark:text-gray-200">
+    <NavBar :menu-options="menuOptions">
       <n-button quaternary circle :focusable="false" @click="changeTheme()">
         <template #icon>
           <n-icon :component="Contrast" />
         </template>
       </n-button>
-    </n-layout-header>
-    <n-layout-content class="px-12 lg:px-24 py-12">
+    </NavBar>
+    <main class="grow container xl:max-w-7xl px-4 py-6 lg:py-16 mx-auto">
       <slot />
-    </n-layout-content>
-    <n-layout-footer class="flex justify-between items-center" bordered>
+    </main>
+    <footer class="flex justify-between items-center p-6">
       <div>
         <h2>Footer</h2>
       </div>
-    </n-layout-footer>
+    </footer>
   </div>
 </template>
 

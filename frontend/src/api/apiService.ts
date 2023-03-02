@@ -3,6 +3,8 @@ class ApiService {
 
   async get<T>(path: string, params?: { [key: string]: any }): Promise<T> {
     const initialParams = [];
+
+    // Convert object to arrays to be used by URLSearchParams
     if (params) {
       for (const param of Object.entries(params)) {
         if (!Array.isArray(param[1])) {
@@ -27,6 +29,7 @@ class ApiService {
     const data = await response.json() as T;
     return data;
   }
+
 }
 
 export default new ApiService();

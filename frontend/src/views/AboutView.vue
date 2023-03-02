@@ -1,9 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Article from "../components/Article.vue"
+</script>
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <Article title="Sobre" />
 </template>
-
 <style>
 </style>
