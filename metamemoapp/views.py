@@ -62,7 +62,16 @@ def csv_streaming_response(lines, filename):
     )
 
 
-def json_response(queryset, page=1, page_size=10, full=False):
+def json_response(queryset, page=1, page_size=10, full=False, sort_by=None, sort_order="ascend"):
+    if sort_by is None:
+        sort_by = "id"
+
+    order_result = ""
+    if sort_order == "descend":
+        order_result = "-"
+
+    queryset = queryset.order_by(f"{order_result}{sort_by}")
+
     paginator = Paginator(queryset, page_size)
     page_obj = paginator.get_page(page)
     items = [obj.serialize(full=full) for obj in page_obj]
@@ -94,13 +103,17 @@ def serialize_queryset(request, output_format, queryset, filename):
     output_format = str(output_format or "").lower().strip()
     page = request.GET.get('page', 1)
     page_size = request.GET.get('page_size', 10)
+
+    sort_by = request.GET.get("sort_by", None)
+    sort_order = request.GET.get("sort_order", "ascend")
+
     if output_format == "csv":
         return csv_streaming_response(
             lines=queryset_to_lines(queryset),
             filename=filename,
         )
     elif output_format == "json":
-        return json_response(queryset, full=True, page=page, page_size=page_size)
+        return json_response(queryset, full=True, page=page, page_size=page_size, sort_by=sort_by, sort_order=sort_order)
     else:
         return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 
