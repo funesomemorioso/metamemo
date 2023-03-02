@@ -10,7 +10,6 @@ const getDefaultState = () => {
     },
     tab: "lista",
     pageSize: 10,
-    totalSize: 5,
     page: 1,
     pageSizes: [10, 20, 30, 50, 100]
   }

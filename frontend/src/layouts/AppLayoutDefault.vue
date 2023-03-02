@@ -1,7 +1,6 @@
 <script lang="ts">
 import NavBar from "../components/NavBar.vue"
-import { defineComponent, h } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 import {
   NLayout,
@@ -67,7 +66,7 @@ const menuOptions = [
   }
 ];
 
-export default defineComponent({
+export default {
   props: {
     changeTheme: {
       type: Function,
@@ -94,7 +93,8 @@ export default defineComponent({
       if ((route.path.split("/").length - 1) == 1) {
         route.path.substring(1)
       }
-      return route.path.replace(/\//g, ' ').trim().split(' ')[0]
+      const regex = /\//g
+      return route.path.replace(regex, ' ').trim().split(' ')[0]
     }
 
     return {
@@ -104,17 +104,17 @@ export default defineComponent({
       activeMenu
     };
   },
-});
+};
 </script>
 
 <template>
   <div class="min-h-screen flex flex-col bg-white dark:bg-black dark:text-gray-200">
     <NavBar :menu-options="menuOptions">
-      <n-button quaternary circle :focusable="false" @click="changeTheme()">
-        <template #icon>
-          <n-icon :component="Contrast" />
-        </template>
-      </n-button>
+    <n-button quaternary circle :focusable="false" @click="changeTheme()">
+      <template #icon>
+        <n-icon :component="Contrast" />
+      </template>
+    </n-button>
     </NavBar>
     <main class="grow container xl:max-w-7xl px-4 py-6 lg:py-16 mx-auto">
       <slot />

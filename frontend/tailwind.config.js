@@ -1,4 +1,12 @@
 const colors = require('tailwindcss/colors')
+
+// Removing deprecated colors to avoid warning messages
+delete colors['lightBlue'];
+delete colors['warmGray'];
+delete colors['trueGray'];
+delete colors['coolGray'];
+delete colors['blueGray'];
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',

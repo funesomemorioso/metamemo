@@ -1,7 +1,7 @@
 <script lang="ts">
 import FormSearch from "../components/FormSearch.vue"
 import QueryTable from "../components/QueryTable.vue"
-import { onBeforeUnmount, onMounted, watch, onBeforeMount } from 'vue'
+import { onBeforeUnmount, watch, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { formatToApi, convertDateToUtc } from "../utils"
@@ -10,11 +10,14 @@ export default {
     components: { FormSearch, QueryTable },
     setup() {
         const store = useStore()
-        const router = useRouter()      
+        const router = useRouter()
         const route = useRoute()
 
+        // Get last URL parameter
         const getTabFromUrl = () => {
-            return route.path.replace(/\//g, " ").trim().split(" ").pop()
+            const regex = /\//g
+            const result = route.path.replace(regex, " ").trim().split(" ")
+            return result[result.length -1]
         }
 
         const setStateFromUrl = () => {
@@ -57,7 +60,7 @@ export default {
                 store.state.page,
                 store.state.pageSize
             ],
-            async () => { 
+            async () => {
                 urlUpdateWithState()
              }
         )
@@ -77,6 +80,10 @@ export default {
             store.commit('CLEAN_STATE')
         })
 
+        // Back button refresh table content
+        window.onpopstate = async () => { setStateFromUrl() };
+        // Forward button refresh table content
+        window.history.forward = async () => { setStateFromUrl() };
     }
 }
 

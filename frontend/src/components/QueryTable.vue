@@ -1,7 +1,7 @@
 <script lang="ts">
 import ApiService from '@/api/apiService'
 import { NDataTable, NButton, NIcon, NText, NModal, NImage } from 'naive-ui';
-import { defineComponent, ref, reactive, watch, h, onMounted } from 'vue';
+import { defineComponent, ref, reactive, watch, h, onMounted, onBeforeUnmount } from 'vue';
 import { useMeta } from "vue-meta"
 
 // Icons
@@ -20,7 +20,7 @@ import type { Ref } from 'vue';
 import type { Url } from 'url';
 import { useStore } from 'vuex';
 
-import { formatDate, formatDateHour, formatToApi } from "../utils"
+import { formatDateHour, formatToApi } from "../utils"
 
 const emptyResult = h(NText, { depth: 3, italic: true }, { default: () => '(vazio)' });
 
@@ -73,9 +73,9 @@ const createColumns = (): DataTableColumns => {
         }
         return h(
           "div", {
-          class: "h-42 p-2 rounded transition ease-in-out hover:bg-sky-100 dark:hover:bg-gray-700 hover:shadow",
-          innerHTML: `${linkify(String(title))}`,
-        }
+            class: "p-2 rounded transition ease-in-out hover:bg-sky-100 dark:hover:bg-gray-700 hover:shadow",
+            innerHTML: `${linkify(String(title))}`,
+          }
         )
       }
     },
@@ -208,11 +208,39 @@ export default defineComponent({
       () => [
         store.state.form,
         store.state.tab,
+      ],
+      async () => {
+        await dataToApiRequest()
+      }
+    )
+
+    watch(
+      () => [
         store.state.page,
         store.state.pageSize
       ],
-      async () => { await dataToApiRequest() }
+      async () => {
+        await dataToApiRequest()
+        if (
+          lastMutation.value?.type.startsWith("UPDATE_PAGE")
+        ){
+          document.querySelector(".n-data-table__pagination")?.scrollIntoView()
+        }
+      }
     )
+
+    const lastMutation: any = ref(null)
+    const subscribe = ref(() => {})
+
+    onMounted(()=>{
+      subscribe.value = store.subscribe((mutation) => {
+        lastMutation.value = mutation
+      })
+    })
+
+    onBeforeUnmount(()=>{
+      subscribe.value()
+    })
 
     const dataToApiRequest = async (
     ) => {
@@ -222,7 +250,6 @@ export default defineComponent({
       const pageSize = store.state.pageSize
 
       const routerResult = formatToApi(form, page, pageSize)
-
       loading.value = true;
       const result: {
         items: [
@@ -250,12 +277,12 @@ export default defineComponent({
       paginationReactive.pageSize = Number(result.page_size)
     }
 
-    const handlePageChange = async (currentPage: number) => {
-      store.commit('UPDATE_PAGE', currentPage) 
+    const handlePageChange = (currentPage: number) => {
+      store.commit('UPDATE_PAGE', currentPage)
     }
 
-    const handlePageSizeChange = async (pageSize: number) => {
-      store.commit('UPDATE_PAGE_SIZE', pageSize) 
+    const handlePageSizeChange = (pageSize: number) => {
+      store.commit('UPDATE_PAGE_SIZE', pageSize)
     }
 
     const handleSorterChange = (sorter: { [key: string]: any }) => {
@@ -284,9 +311,5 @@ export default defineComponent({
 <style>
 .n-date-panel {
   @apply flex flex-col sm:grid !important;
-}
-
-tbody .n-data-table-tr {
-  @apply h-52;
 }
 </style>
