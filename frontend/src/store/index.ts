@@ -11,7 +11,8 @@ const getDefaultState = () => {
     tab: "lista",
     pageSize: 10,
     page: 1,
-    pageSizes: [10, 20, 30, 50, 100]
+    pageSizes: [10, 20, 30, 50, 100],
+    sorter: null
   }
 }
 
@@ -32,6 +33,9 @@ export default createStore({
     UPDATE_PAGE_SIZE(state, payload) {
       state.page = 1;
       state.pageSize = payload;
+    },
+    UPDATE_SORTER(state, payload) {
+      state.sorter = payload;
     },
     UPDATE_FROM_URL(state, payload) {
       Object.assign(state, payload)

@@ -37,13 +37,18 @@ export default {
                         routeArgs.author ? [routeArgs.author] : [],
             }
 
+            console.log("start_date", routeArgs.start_date)
+            console.log("end_date", routeArgs.end_date)
+            console.log(routerResult.dateRange)
             store.commit(
                 'UPDATE_FROM_URL',
                 {
                     form: { ...routerResult },
                     tab: getTabFromUrl(),
                     pageSize: Number(routeArgs?.page_size),
-                    page: Number(routeArgs?.page)
+                    page: Number(routeArgs?.page),
+                    sorter: routeArgs.sort_by && routeArgs.sort_by ?
+                      { columnKey: routeArgs.sort_by, order: routeArgs.sort_order } : null
                 }
             )
 
@@ -58,7 +63,8 @@ export default {
                 store.state.form,
                 store.state.tab,
                 store.state.page,
-                store.state.pageSize
+                store.state.pageSize,
+                store.state.sorter
             ],
             async () => {
                 urlUpdateWithState()
@@ -70,11 +76,13 @@ export default {
             const form = store.state.form;
             const page = store.state.page
             const pageSize = store.state.pageSize
-            const routerResult = formatToApi(form, page, pageSize)
+            const sorter = store.state.sorter
+            const routerResult = formatToApi(form, page, pageSize, sorter)
             const tab = store.state.tab;
 
             router.push({ path: `/consulta/${tab}/`, query: routerResult })
         }
+
         // Clean state before unmount
         onBeforeUnmount(() => {
             store.commit('CLEAN_STATE')

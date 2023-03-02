@@ -10,7 +10,7 @@ export const formatDate = (timestamp: number): string => {
 
 export const convertDateToUtc = (dateString: string): number => {
   const [year, month, day] = dateString.split('-').map(Number)
-  const utcDate = Date.UTC(year, month - 1, day)
+  const utcDate = Date.UTC(year, month - 1, day + 1)
   return utcDate
 }
 
@@ -41,12 +41,15 @@ export const formatToApi = (
     dateRange: number[]
   },
   page: number,
-  pageSize: number 
+  pageSize: number,
+  sorter: { order: string, columnKey: string }
   ) => {
 
   const routerResult: {
-    page_size?: number;
-    page?: number;
+    page_size?: number,
+    page?: number,
+    sorter_by?: string,
+    sorter_order?: string,
     author?: any[],
     source?: any[],
     content?: string,
@@ -85,6 +88,10 @@ export const formatToApi = (
   }
   if (page > 1) {
     routerResult.page = page
+  }
+  if (sorter?.order) {
+    routerResult.sort_by = sorter.columnKey
+    routerResult.sort_order = sorter.order
   }
 
   return routerResult

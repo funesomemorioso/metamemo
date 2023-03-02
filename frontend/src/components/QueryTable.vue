@@ -21,6 +21,7 @@ import type { Url } from 'url';
 import { useStore } from 'vuex';
 
 import { formatDateHour, formatToApi } from "../utils"
+import type {SortOrder} from 'naive-ui/es/data-table/src/interface';
 
 const emptyResult = h(NText, { depth: 3, italic: true }, { default: () => '(vazio)' });
 
@@ -50,7 +51,7 @@ function populateTable(
       {
         title: row.title,
         source: row.source,
-        "date": formatDateHour(row.content_date),
+        content_date: formatDateHour(row.content_date),
         author: row.author,
         url: row.url,
         midia: row.image_url
@@ -59,13 +60,14 @@ function populateTable(
   rows.value = result;
 }
 
-const createColumns = (): DataTableColumns => {
+const createColumns = (sorter: { columnKey: string, order: SortOrder }): DataTableColumns => {
   return [
     {
       title: 'Conteúdo',
       key: 'title',
       width: 400,
       sorter: true,
+      sortOrder: sorter?.columnKey === "title" ? sorter.order : undefined,
       render(row) {
         const title = row.title;
         if (!title) {
@@ -131,15 +133,17 @@ const createColumns = (): DataTableColumns => {
     },
     {
       title: 'Data e Hora',
-      key: 'date',
+      key: 'content_date',
       width: 220,
       sorter: true,
+      sortOrder: sorter?.columnKey === "content_date" ? sorter.order : undefined,
     },
     {
       title: 'Autor',
       key: 'author',
       width: 220,
-      sorter: true
+      sorter: true,
+      sortOrder: sorter?.columnKey === "author" ? sorter.order : undefined,
     },
     {
       title: 'Midia',
@@ -198,6 +202,9 @@ export default defineComponent({
       pageSizes: store.state.pageSizes,
       showSizePicker: true
     })
+    const lastMutation: Ref = ref({})
+    const columns: Ref = ref(createColumns(store.state.sorter))
+    const subscribe = ref(() => {})
 
 
     onMounted(async () => {
@@ -208,6 +215,7 @@ export default defineComponent({
       () => [
         store.state.form,
         store.state.tab,
+        store.state.sorter,
       ],
       async () => {
         await dataToApiRequest()
@@ -222,15 +230,12 @@ export default defineComponent({
       async () => {
         await dataToApiRequest()
         if (
-          lastMutation.value?.type.startsWith("UPDATE_PAGE")
+          lastMutation?.value?.type.startsWith("UPDATE_PAGE")
         ){
           document.querySelector(".n-data-table__pagination")?.scrollIntoView()
         }
       }
     )
-
-    const lastMutation: any = ref(null)
-    const subscribe = ref(() => {})
 
     onMounted(()=>{
       subscribe.value = store.subscribe((mutation) => {
@@ -248,8 +253,9 @@ export default defineComponent({
       const tab = store.state.tab
       const page = store.state.page
       const pageSize = store.state.pageSize
+      const sorter = store.state.sorter
 
-      const routerResult = formatToApi(form, page, pageSize)
+      const routerResult = formatToApi(form, page, pageSize, sorter)
       loading.value = true;
       const result: {
         items: [
@@ -270,6 +276,7 @@ export default defineComponent({
       loading.value = false;
 
       populateTable(result, rows)
+      columns.value = createColumns(store.state.sorter)
 
       // Update table pagination controls
       paginationReactive.page = Number(result.page)
@@ -285,13 +292,13 @@ export default defineComponent({
       store.commit('UPDATE_PAGE_SIZE', pageSize)
     }
 
-    const handleSorterChange = (sorter: { [key: string]: any }) => {
-      console.log(sorter)
+    const handleSorterChange = (sorter: { columnKey: string, order: string }) => {
+      store.commit('UPDATE_SORTER', sorter)
     }
 
     return {
       data: rows,
-      columns: createColumns(),
+      columns: columns,
       loading,
       pagination: paginationReactive,
       handlePageChange,
