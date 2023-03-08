@@ -205,6 +205,7 @@ export default defineComponent({
     const lastMutation: Ref = ref({})
     const columns: Ref = ref(createColumns(store.state.sorter))
     const subscribe = ref(() => {})
+    const tableRef: Ref = ref(null)
 
 
     onMounted(async () => {
@@ -219,6 +220,12 @@ export default defineComponent({
       ],
       async () => {
         await dataToApiRequest()
+
+        if (
+          lastMutation?.value?.type == "UPDATE_TAB"
+        ){
+          tableRef?.value?.sort(null)
+        }
       }
     )
 
@@ -254,6 +261,7 @@ export default defineComponent({
       const page = store.state.page
       const pageSize = store.state.pageSize
       const sorter = store.state.sorter
+
 
       const routerResult = formatToApi(form, page, pageSize, sorter)
       loading.value = true;
@@ -297,8 +305,9 @@ export default defineComponent({
     }
 
     return {
+      table: tableRef,
       data: rows,
-      columns: columns,
+      columns,
       loading,
       pagination: paginationReactive,
       handlePageChange,
@@ -310,7 +319,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <n-data-table :pagination="pagination" :loading="loading" :columns="columns" :data="data"
+  <n-data-table ref="table" :pagination="pagination" :loading="loading" :columns="columns" :data="data"
     :scrollbar-props="{ trigger: 'none', 'xScrollable': true }" :remote="true" @update:page="handlePageChange"
     @update:pageSize="handlePageSizeChange" @update:sorter="handleSorterChange" />
 </template>

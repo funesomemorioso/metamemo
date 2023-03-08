@@ -37,9 +37,6 @@ export default {
                         routeArgs.author ? [routeArgs.author] : [],
             }
 
-            console.log("start_date", routeArgs.start_date)
-            console.log("end_date", routeArgs.end_date)
-            console.log(routerResult.dateRange)
             store.commit(
                 'UPDATE_FROM_URL',
                 {
@@ -98,6 +95,8 @@ export default {
 </script>
 
 <template>
+  <section class="padding-y-default col-span-12">
     <FormSearch />
     <QueryTable />
+  </section>
 </template>

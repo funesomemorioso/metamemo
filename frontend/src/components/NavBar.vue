@@ -23,12 +23,15 @@ export default {
 }
 </script>
 <template>
-  <nav class="flex items-center justify-between px-6 py-4 lg:px-8 bg-white dark:bg-black" aria-label="Global">
+  <nav class="flex items-center justify-between py-4 bg-white dark:bg-black container-default" aria-label="Global">
     <div class="flex lg:flex-1">
-      <a href="#" class="-m-1.5 p-1.5">
-        <span class="sr-only">Your Company</span>
-        <img  class="h-9" src="../assets/mm.svg">
-      </a>
+
+      <router-link
+        :to="'/'"
+        class="font-bold text-xs bg-primary hover:bg-primary-dark dark:bg-primary-dark dark:text-black text-white p-2 rounded-3xl uppercase italic tracking-wide"
+      >
+        Metamemo
+      </router-link>
     </div>
     <div class="flex lg:hidden">
       <button

@@ -25,6 +25,7 @@ export default createStore({
     },
     UPDATE_TAB(state, payload) {
       state.page = 1;
+      state.sorter = null;
       state.tab = payload;
     },
     UPDATE_PAGE(state, payload) {
@@ -35,6 +36,7 @@ export default createStore({
       state.pageSize = payload;
     },
     UPDATE_SORTER(state, payload) {
+      state.page = 1;
       state.sorter = payload;
     },
     UPDATE_FROM_URL(state, payload) {

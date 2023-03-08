@@ -20,9 +20,11 @@ export default {
     watch(
       () => route.meta,
       async (meta) => {
+
         try {
           const component = await import(`../layouts/${meta.layout}.vue`);
           layout.value = component?.default || AppLayoutDefault;
+
         } catch (e) {
           layout.value = AppLayoutDefault;
         }

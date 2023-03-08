@@ -88,6 +88,7 @@ export default {
 </script>
 
 <template>
+  <section>
     <n-form ref="form" :model="model" class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12 lg:col-span-6 xl:col-span-3">
             <n-form-item label="Datas">
@@ -126,6 +127,7 @@ export default {
         <n-tab-pane name="contexts" tab="Contexto histórico"></n-tab-pane>
         <n-tab-pane name="newscovers" tab="Capas de jornais"></n-tab-pane>
     </n-tabs>
+  </section>
 </template>
 
 <style></style>

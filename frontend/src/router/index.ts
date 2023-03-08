@@ -13,6 +13,8 @@ const router = createRouter({
       path: "",
       name: "home",
       component: HomeView,
+      // TODO: new layout?
+      meta: { classes: "grid" },
     },
     {
       path: "/methodology",

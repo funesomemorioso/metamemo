@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.container-default {
+  @apply container mx-auto px-8 2xl:px-32;
+}
+
+.padding-y-default {
+  @apply py-12;
+}
+
+.body-font {
+  @apply text-gray-600 dark:text-gray-100;
+}
+

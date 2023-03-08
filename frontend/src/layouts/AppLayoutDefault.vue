@@ -87,7 +87,7 @@ export default {
     NavBar
   },
   setup() {
-    const route: RouteLocationNormalizedLoaded = useRoute();
+    const route = useRoute();
 
     const activeMenu = () => {
       if ((route.path.split("/").length - 1) == 1) {
@@ -115,13 +115,13 @@ export default {
         <n-icon :component="Contrast" />
       </template>
     </n-button>
-    </NavBar>
-    <main class="grow container xl:max-w-7xl px-4 py-6 lg:py-16 mx-auto">
+    </NavBar> 
+    <main class="grow container-default" :class="route.meta.classes">
       <slot />
     </main>
-    <footer class="flex justify-between items-center p-6">
+    <footer class="flex justify-between items-center container-default py-6 h-full">
       <div>
-        <h2>Footer</h2>
+        <h2 class="font-bold text-sm text-gray-600">Metamemo</h2>
       </div>
     </footer>
   </div>
