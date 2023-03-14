@@ -15,8 +15,8 @@ module.exports = {
   theme: {
     colors: {
       ...colors,
-      primary: colors.blue[500],
-      "primary-dark": colors.blue[400],
+      primary:  '#ef5da8',
+      "primary-dark": '#bd4a85',
     }
   },
   plugins: [],

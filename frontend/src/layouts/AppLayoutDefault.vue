@@ -1,7 +1,7 @@
 <script lang="ts">
 import NavBar from "../components/NavBar.vue"
+import Footer from "../components/Footer.vue"
 import { useRoute } from "vue-router";
-import type { RouteLocationNormalizedLoaded } from "vue-router";
 import {
   NLayout,
   NLayoutHeader,
@@ -18,7 +18,7 @@ import Contrast from "@vicons/carbon/Contrast"
 const menuOptions = [
   {
     to: {
-      name: "home",
+      name: "",
       path: "/",
     },
     label: "Home",
@@ -43,7 +43,7 @@ const menuOptions = [
   {
     to: {
       name: "timeline",
-      path: "/time-line",
+      path: "/timeline",
     },
     label: "Linha do tempo",
     key: "timeline",
@@ -84,24 +84,16 @@ export default {
     NAnchorLink,
     NIcon,
     Contrast,
-    NavBar
+    NavBar,
+    Footer
   },
   setup() {
     const route = useRoute();
 
-    const activeMenu = () => {
-      if ((route.path.split("/").length - 1) == 1) {
-        route.path.substring(1)
-      }
-      const regex = /\//g
-      return route.path.replace(regex, ' ').trim().split(' ')[0]
-    }
-
     return {
       menuOptions,
       Contrast,
-      route,
-      activeMenu
+      route
     };
   },
 };
@@ -110,7 +102,7 @@ export default {
 <template>
   <div class="min-h-screen flex flex-col bg-white dark:bg-black dark:text-gray-200">
     <NavBar :menu-options="menuOptions">
-    <n-button quaternary circle :focusable="false" @click="changeTheme()">
+    <n-button quaternary circle :focusable="false" @click="changeTheme()" tabindex="0">
       <template #icon>
         <n-icon :component="Contrast" />
       </template>
@@ -119,11 +111,7 @@ export default {
     <main class="grow container-default" :class="route.meta.classes">
       <slot />
     </main>
-    <footer class="flex justify-between items-center container-default py-6 h-full">
-      <div>
-        <h2 class="font-bold text-sm text-gray-600">Metamemo</h2>
-      </div>
-    </footer>
+    <Footer />
   </div>
 </template>
 

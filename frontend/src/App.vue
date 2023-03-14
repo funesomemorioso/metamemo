@@ -15,15 +15,15 @@ export default defineComponent({
 
     const lightThemeOverrides:GlobalThemeOverrides = {
       common: {
-        primaryColor: '#2563eb',
-        primaryColorHover: '#3b82f6'
+        primaryColor: '#ef5da8',
+        primaryColorHover: '#bd4a85'
       }
     }
 
     const darkThemeOverrides:GlobalThemeOverrides = {
       common: {
-        primaryColor: '#60A5FA',
-        primaryColorHover: '#93C5FD'
+        primaryColor: '#ef5da8',
+        primaryColorHover: '#bd4a85'
       }
     }
 
@@ -71,8 +71,3 @@ export default defineComponent({
   </div>
 </template>
 
-<style>
-body {
-  @apply bg-white dark:bg-black;
-}
-</style>

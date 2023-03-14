@@ -103,7 +103,7 @@ export default {
             </n-form-item>
         </div>
         <div class="col-span-12 xl:col-span-6">
-            <n-form-item label="Redes sociais">
+            <n-form-item label="Redes">
                 <n-checkbox-group v-model:value="model.socialMedia" class="flex flex-wrap gap-y-2">
                     <n-checkbox v-for="(option) in socialOptions" :label="option.label" :value="option.value" />
                 </n-checkbox-group>

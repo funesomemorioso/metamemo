@@ -5,10 +5,17 @@ import { onBeforeUnmount, watch, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { formatToApi, convertDateToUtc } from "../utils"
+import { useMeta } from "vue-meta"
 
 export default {
     components: { FormSearch, QueryTable },
     setup() {
+        useMeta({
+          title: 'Consulta',
+          description: 'Página de consulta de dados metamemo com formulários para filtragem de conteúdo extraído',
+          htmlAttrs: { lang: 'pt-br', amp: true }
+        })
+
         const store = useStore()
         const router = useRouter()
         const route = useRoute()

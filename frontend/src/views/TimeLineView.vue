@@ -1,7 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useMeta } from "vue-meta"
+useMeta({
+  title: 'Linha do tempo',
+  description: 'Linha do tempo dos dados catalogados',
+  htmlAttrs: { lang: 'pt-br', amp: true }
+})
+</script>
 
 <template>
-  <section class="dark:text-gray-200">
+  <section class="dark:text-gray-200 pt-12 pb-32">
     <div class="container max-w-5xl px-4 py-12 mx-auto">
       <div class="grid gap-4 mx-4 sm:grid-cols-12">
         <div class="col-span-12 sm:col-span-3">

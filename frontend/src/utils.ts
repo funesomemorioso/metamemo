@@ -48,8 +48,8 @@ export const formatToApi = (
   const routerResult: {
     page_size?: number,
     page?: number,
-    sorter_by?: string,
-    sorter_order?: string,
+    sort_by?: string,
+    sort_order?: string,
     author?: any[],
     source?: any[],
     content?: string,

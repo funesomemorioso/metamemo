@@ -2,7 +2,6 @@
 import ApiService from '@/api/apiService'
 import { NDataTable, NButton, NIcon, NText, NModal, NImage } from 'naive-ui';
 import { defineComponent, ref, reactive, watch, h, onMounted, onBeforeUnmount } from 'vue';
-import { useMeta } from "vue-meta"
 
 // Icons
 import Blogger from '@vicons/fa/Blogger';
@@ -27,7 +26,7 @@ const emptyResult = h(NText, { depth: 3, italic: true }, { default: () => '(vazi
 
 function linkify(text: string): string {
   const urlRegex = /((?:https?:\/\/)[^\s]+)/g;
-  return text.replace(urlRegex, '<a class="font-semibold hover:underline underline-offset-4" href="$1">$1</a>');
+  return text.replace(urlRegex, '<a class="font-semibold hover:underline underline-offset-4" href="$1" target="_blank">$1</a>');
 }
 
 function populateTable(
@@ -94,21 +93,16 @@ const createColumns = (sorter: { columnKey: string, order: SortOrder }): DataTab
 
         if (source == 'Twitter') {
           sourceIcon = { icon: LogoTwitter, color: 'text-sky-600 dark:text-sky-500' }
-        }
-        else if (source == 'Telegram') {
+        } else if (source == 'Telegram') {
           url = row.midia
           sourceIcon = { icon: TelegramTwotone, color: 'text-gray-500 dark:text-gray-400' }
-        }
-        else if (source == 'Youtube') {
+        } else if (source == 'Youtube') {
           sourceIcon = { icon: LogoYoutube, color: 'text-rose-600 dark:text-rose-500' }
-        }
-        else if (source == 'Facebook') {
+        }  else if (source == 'Facebook') {
           sourceIcon = { icon: LogoFacebook, color: 'text-blue-600 dark:text-blue-500' }
-        }
-        else if (source == 'Instagram') {
+        } else if (source == 'Instagram') {
           sourceIcon = { icon: LogoInstagram, color: 'text-pink-600 dark:text-pink-500' }
-        }
-        else if (source == 'Blog') {
+        } else if (source == 'Blog') {
           sourceIcon = { icon: Blogger, color: 'text-orange-600 dark:text-orange-500' }
         }
 
@@ -186,12 +180,6 @@ export default defineComponent({
   components: { NDataTable, NButton, NModal, NImage },
   setup() {
 
-    useMeta({
-      title: 'Consulta',
-      description: 'Página de consulta de dados metamemo com formulários para filtragem de conteúdo extraído',
-      htmlAttrs: { lang: 'pt-br', amp: true }
-    })
-
     const store = useStore();
     const loading = ref(true);
     const rows = ref([]);
@@ -239,7 +227,7 @@ export default defineComponent({
         if (
           lastMutation?.value?.type.startsWith("UPDATE_PAGE")
         ){
-          document.querySelector(".n-data-table__pagination")?.scrollIntoView()
+          document.querySelector(".n-data-table__pagination")?.scrollIntoView({ block: "center" })
         }
       }
     )
@@ -254,8 +242,7 @@ export default defineComponent({
       subscribe.value()
     })
 
-    const dataToApiRequest = async (
-    ) => {
+    const dataToApiRequest = async () => {
       const form = store.state.form;
       const tab = store.state.tab
       const page = store.state.page

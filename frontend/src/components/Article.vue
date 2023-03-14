@@ -9,7 +9,7 @@ export default {
 }
 </script>
 <template>
-  <article class="max-w-4xl mx-auto space-y-16 padding-y-default">
+  <article class="max-w-4xl mx-auto space-y-16 pt-24 pb-32">
     <div class="w-full mx-auto space-y-4">
       <h1 class="text-5xl font-bold leading-none">{{ title }} et malesuada fames ac ante ipsum primis in faucibus?</h1>
       <div class="flex flex-wrap space-x-2 text-sm dark:text-gray-300">

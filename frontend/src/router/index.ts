@@ -13,8 +13,6 @@ const router = createRouter({
       path: "",
       name: "home",
       component: HomeView,
-      // TODO: new layout?
-      meta: { classes: "grid" },
     },
     {
       path: "/methodology",
@@ -47,8 +45,8 @@ const router = createRouter({
       component: QueryView,
     },
     {
-      path: "/time-line",
-      name: "time-line",
+      path: "/timeline",
+      name: "timeline",
       component: TimeLineView,
     },
     {
