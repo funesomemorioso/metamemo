@@ -3,39 +3,43 @@ import { RouterView } from "vue-router";
 import { NConfigProvider, darkTheme, ptBR, datePtBR } from "naive-ui";
 import { defineComponent, ref } from "vue";
 
-import type { GlobalThemeOverrides, GlobalTheme  } from "naive-ui";
+import type { GlobalThemeOverrides, GlobalTheme } from "naive-ui";
 import type { Ref } from "vue";
 
 export default defineComponent({
   components: { darkTheme, NConfigProvider, ptBR, datePtBR },
   setup() {
     const SITE_NAME = "Metamemo";
-    let darkThemed: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme: { value: GlobalTheme } | Ref = ref(darkThemed ? darkTheme : null);
+    let darkThemed: boolean = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const theme: { value: GlobalTheme } | Ref = ref(
+      darkThemed ? darkTheme : null
+    );
 
-    const lightThemeOverrides:GlobalThemeOverrides = {
+    const lightThemeOverrides: GlobalThemeOverrides = {
       common: {
-        primaryColor: '#ef5da8',
-        primaryColorHover: '#bd4a85'
-      }
-    }
+        primaryColor: "#ef5da8",
+        primaryColorHover: "#bd4a85",
+      },
+    };
 
-    const darkThemeOverrides:GlobalThemeOverrides = {
+    const darkThemeOverrides: GlobalThemeOverrides = {
       common: {
-        primaryColor: '#ef5da8',
-        primaryColorHover: '#bd4a85'
-      }
-    }
+        primaryColor: "#ef5da8",
+        primaryColorHover: "#bd4a85",
+      },
+    };
 
     const changeTheme: Function = () => {
-      darkThemed = !darkThemed
+      darkThemed = !darkThemed;
 
       if (darkThemed) {
-        theme.value = darkTheme
+        theme.value = darkTheme;
       } else {
-        theme.value = null
+        theme.value = null;
       }
-    }
+    };
 
     return {
       theme,
@@ -44,7 +48,7 @@ export default defineComponent({
       darkThemeOverrides,
       SITE_NAME,
       ptBR,
-      datePtBR
+      datePtBR,
     };
   },
 });
@@ -58,7 +62,9 @@ export default defineComponent({
   </metainfo>
   <div id="app">
     <n-config-provider
-      :theme-overrides="theme === null ? lightThemeOverrides : darkThemeOverrides"
+      :theme-overrides="
+        theme === null ? lightThemeOverrides : darkThemeOverrides
+      "
       :theme="theme"
       :locale="ptBR"
       :date-locale="datePtBR"
@@ -70,4 +76,3 @@ export default defineComponent({
     </n-config-provider>
   </div>
 </template>
-

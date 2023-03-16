@@ -8,28 +8,28 @@ class ApiService {
     if (params) {
       for (const param of Object.entries(params)) {
         if (!Array.isArray(param[1])) {
-          initialParams.push([param[0],param[1]])
-          continue
+          initialParams.push([param[0], param[1]]);
+          continue;
         }
-        for (let i=0; i < param[1].length; i++) {
-            initialParams.push([param[0],param[1][i]])
+        for (let i = 0; i < param[1].length; i++) {
+          initialParams.push([param[0], param[1][i]]);
         }
       }
     }
 
-    let resultParams = ""
+    let resultParams = "";
     if (initialParams.length > 0) {
-      const queryParams = new URLSearchParams(initialParams)
-      resultParams = "?" + queryParams
+      const queryParams = new URLSearchParams(initialParams);
+      resultParams = "?" + queryParams;
     }
 
-    const formatSymbol = (initialParams.length > 0) || path.includes("?") ? "&" : "?"
+    const formatSymbol =
+      initialParams.length > 0 || path.includes("?") ? "&" : "?";
     const url = `${this.baseUrl}${path}${resultParams}${formatSymbol}format=json`;
-    const response = await fetch(url.replace('%2B', '+'));
-    const data = await response.json() as T;
+    const response = await fetch(url.replace("%2B", "+"));
+    const data = (await response.json()) as T;
     return data;
   }
-
 }
 
 export default new ApiService();

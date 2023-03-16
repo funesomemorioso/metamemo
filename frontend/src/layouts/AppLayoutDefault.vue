@@ -1,6 +1,6 @@
 <script lang="ts">
-import NavBar from "../components/NavBar.vue"
-import Footer from "../components/Footer.vue"
+import NavBar from "../components/NavBar.vue";
+import Footer from "../components/Footer.vue";
 import { useRoute } from "vue-router";
 import {
   NLayout,
@@ -13,7 +13,7 @@ import {
   NAnchorLink,
   NIcon,
 } from "naive-ui";
-import Contrast from "@vicons/carbon/Contrast"
+import Contrast from "@vicons/carbon/Contrast";
 
 const menuOptions = [
   {
@@ -63,15 +63,15 @@ const menuOptions = [
     },
     label: "Sobre",
     key: "about",
-  }
+  },
 ];
 
 export default {
   props: {
     changeTheme: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
     NLayout,
@@ -85,7 +85,7 @@ export default {
     NIcon,
     Contrast,
     NavBar,
-    Footer
+    Footer,
   },
   setup() {
     const route = useRoute();
@@ -93,21 +93,29 @@ export default {
     return {
       menuOptions,
       Contrast,
-      route
+      route,
     };
   },
 };
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-white dark:bg-black dark:text-gray-200">
+  <div
+    class="min-h-screen flex flex-col bg-white dark:bg-black dark:text-gray-200"
+  >
     <NavBar :menu-options="menuOptions">
-    <n-button quaternary circle :focusable="false" @click="changeTheme()" tabindex="0">
-      <template #icon>
-        <n-icon :component="Contrast" />
-      </template>
-    </n-button>
-    </NavBar> 
+      <n-button
+        quaternary
+        circle
+        :focusable="false"
+        @click="changeTheme()"
+        tabindex="0"
+      >
+        <template #icon>
+          <n-icon :component="Contrast" />
+        </template>
+      </n-button>
+    </NavBar>
     <main class="grow container-default" :class="route.meta.classes">
       <slot />
     </main>
@@ -122,6 +130,6 @@ export default {
 
 .n-layout-header,
 .n-layout-footer {
-  @apply  h-14 px-4;
+  @apply h-14 px-4;
 }
 </style>

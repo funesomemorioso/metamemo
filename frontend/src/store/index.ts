@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
 
 const getDefaultState = () => {
   return {
@@ -6,19 +6,21 @@ const getDefaultState = () => {
       dateRange: null,
       socialMedia: [],
       selectedPeople: [],
-      searchText: ""
+      searchText: "",
     },
     tab: "lista",
     pageSize: 10,
     page: 1,
     pageSizes: [10, 20, 30, 50, 100],
-    sorter: null
-  }
-}
+    sorter: null,
+  };
+};
 
 // New instance store
 export default createStore({
-  state () { return getDefaultState() },
+  state() {
+    return getDefaultState();
+  },
   mutations: {
     UPDATE_FORM(state, payload) {
       state.form = payload;
@@ -40,10 +42,10 @@ export default createStore({
       state.sorter = payload;
     },
     UPDATE_FROM_URL(state, payload) {
-      Object.assign(state, payload)
+      Object.assign(state, payload);
     },
     CLEAN_STATE(state) {
-      Object.assign(state, getDefaultState())
-    }
+      Object.assign(state, getDefaultState());
+    },
   },
-})
+});
