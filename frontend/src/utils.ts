@@ -97,8 +97,8 @@ export const formatToApi = (
 };
 
 export const urlUpdateWithState = async (
-  store: { 
-    state: { 
+  store: {
+    state: {
       form: {
         selectedPeople: [];
         socialMedia: [];
@@ -106,9 +106,9 @@ export const urlUpdateWithState = async (
         dateRange: number[];
       },
       page: number,
-      pageSize: number, 
-      sorter: { order: string; columnKey: string }, 
-      tab: string 
+      pageSize: number,
+      sorter: { order: string; columnKey: string },
+      tab: string
     }}
 ) => {
   const form = store.state.form;

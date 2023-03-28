@@ -69,6 +69,19 @@ export default {
       setStateFromUrl();
     });
 
+    watch(
+      () => [
+        store.state.form,
+        store.state.tab,
+        store.state.page,
+        store.state.pageSize,
+        store.state.sorter,
+      ],
+      async () => {
+        router.push(await urlUpdateWithState(store));
+      }
+    );
+
     // Clean state before unmount
     onBeforeUnmount(() => {
       store.commit("CLEAN_STATE");

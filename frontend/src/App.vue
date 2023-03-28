@@ -1,13 +1,12 @@
 <script lang="ts">
-import { RouterView } from "vue-router";
-import { NConfigProvider, darkTheme, ptBR, datePtBR } from "naive-ui";
+import { NConfigProvider, NMessageProvider, darkTheme, ptBR, datePtBR } from "naive-ui";
 import { defineComponent, ref } from "vue";
 
 import type { GlobalThemeOverrides, GlobalTheme } from "naive-ui";
 import type { Ref } from "vue";
 
 export default defineComponent({
-  components: { darkTheme, NConfigProvider, ptBR, datePtBR },
+  components: { NConfigProvider, NMessageProvider },
   setup() {
     const SITE_NAME = "Metamemo";
     let darkThemed: boolean = window.matchMedia(
@@ -70,9 +69,11 @@ export default defineComponent({
       :date-locale="datePtBR"
       :class="theme ? 'dark' : ''"
     >
-      <AppLayout :changeTheme="changeTheme">
-        <router-view />
-      </AppLayout>
+      <n-message-provider>
+        <AppLayout :changeTheme="changeTheme">
+          <router-view />
+        </AppLayout>
+      </n-message-provider>
     </n-config-provider>
   </div>
 </template>

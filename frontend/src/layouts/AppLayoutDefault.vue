@@ -2,17 +2,7 @@
 import NavBar from "../components/NavBar.vue";
 import Footer from "../components/Footer.vue";
 import { useRoute } from "vue-router";
-import {
-  NLayout,
-  NLayoutHeader,
-  NLayoutContent,
-  NLayoutFooter,
-  NMenu,
-  NButton,
-  NSpace,
-  NAnchorLink,
-  NIcon,
-} from "naive-ui";
+import { NButton, NIcon } from "naive-ui";
 import Contrast from "@vicons/carbon/Contrast";
 
 const menuOptions = [
@@ -67,25 +57,17 @@ const menuOptions = [
 ];
 
 export default {
+  components: {
+    NButton,
+    NIcon,
+    NavBar,
+    Footer
+  },
   props: {
     changeTheme: {
       type: Function,
       required: true,
     },
-  },
-  components: {
-    NLayout,
-    NLayoutHeader,
-    NLayoutContent,
-    NLayoutFooter,
-    NMenu,
-    NButton,
-    NSpace,
-    NAnchorLink,
-    NIcon,
-    Contrast,
-    NavBar,
-    Footer,
   },
   setup() {
     const route = useRoute();
@@ -108,8 +90,8 @@ export default {
         quaternary
         circle
         :focusable="false"
-        @click="changeTheme()"
         tabindex="0"
+        @click="changeTheme()"
       >
         <template #icon>
           <n-icon :component="Contrast" />

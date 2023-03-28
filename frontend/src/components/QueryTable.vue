@@ -1,6 +1,6 @@
 <script lang="ts">
 import ApiService from "@/api/apiService";
-import { NDataTable, NButton, NIcon, NText, NModal, NImage } from "naive-ui";
+import { NDataTable, NButton, NIcon, NText, NModal, NImage, NCarousel, NBadge } from "naive-ui";
 import {
   defineComponent,
   ref,
@@ -20,6 +20,9 @@ import LogoInstagram from "@vicons/carbon/LogoInstagram";
 import LogoTwitter from "@vicons/carbon/LogoTwitter";
 import LogoYoutube from "@vicons/carbon/LogoYoutube";
 import TelegramTwotone from "@vicons/material/TelegramTwotone";
+import Download from "@vicons/carbon/Download";
+import ArrowRight from "@vicons/carbon/ArrowRight";
+import ArrowLeft from "@vicons/carbon/ArrowLeft";
 
 // Types
 import type { DataTableColumns } from "naive-ui";
@@ -54,6 +57,7 @@ function populateTable(
         author: string;
         url: Url;
         image_url: Url;
+        media_urls: Array<string>;
       }
     ];
   },
@@ -68,15 +72,28 @@ function populateTable(
       author: row.author,
       url: row.url,
       midia: row.image_url,
+      media_urls: row.media_urls,
     });
   }
   rows.value = result;
 }
 
-const createColumns = (sorter: {
-  columnKey: string;
-  order: SortOrder;
-}): DataTableColumns => {
+type RowData = {
+  title: string;
+  url: string;
+  source: string;
+  midia: string;
+  media_urls: string[];
+};
+
+const createColumns = (
+  sorter: {
+    columnKey: string;
+    order: SortOrder;
+  },
+  showModalRef: Ref,
+  modalContent: Ref
+): DataTableColumns<RowData> => {
   return [
     {
       title: "Conteúdo",
@@ -105,7 +122,7 @@ const createColumns = (sorter: {
         const source = row.source;
 
         // Define icon and icon color
-        let sourceIcon = { icon: Link, color: "text-gray-600" };
+        let sourceIcon = { icon: Link, color: "text-gray-600 dark:text-gray-200" };
 
         if (source == "Twitter") {
           sourceIcon = {
@@ -180,40 +197,41 @@ const createColumns = (sorter: {
       key: "midia",
       width: 220,
       render(row) {
-        const midia = row.midia;
-        if (!midia) {
+        const mediaUrls = row.media_urls;
+        if (!mediaUrls || !mediaUrls.length) {
           return emptyResult;
         }
-        return [
+        return h(
+          NBadge,
+          {
+            value: mediaUrls.length,
+            show: mediaUrls.length > 1,
+          },
           h(
             NButton,
             {
               strong: true,
               secondary: true,
-              style: "padding: 8px",
-              title: midia,
+              style: "padding: 8px; margin-right: 8px",
+              title: mediaUrls[0],
               onClick: () => {
-                window.open(
-                  String(midia),
-                  "_blank",
-                  "location=yes,width=1024,scrollbars=yes,status=yes"
-                );
+                showModalRef.value = true;
+                modalContent.value = row;
               },
             },
-            () =>
-              h(NIcon, {
-                size: "1.12rem",
-                component: h(Image),
-              })
-          ),
-        ];
+            h(NIcon, {
+              size: "1.12rem",
+              component: h(Link),
+            })
+          )
+        );
       },
     },
   ];
 };
 
 export default defineComponent({
-  components: { NDataTable, NButton, NModal, NImage },
+  components: { NDataTable, NButton, NModal, NImage, NIcon, NCarousel },
   setup() {
     const store = useStore();
     const loading = ref(true);
@@ -226,7 +244,9 @@ export default defineComponent({
       showSizePicker: true,
     });
     const lastMutation: Ref = ref({});
-    const columns: Ref = ref(createColumns(store.state.sorter));
+    const showModalRef = ref(false);
+    const modalContent = ref("");
+    const columns: Ref = ref(createColumns(store.state.sorter, showModalRef, modalContent));
     const subscribe = ref(() => {});
     const tableRef: Ref = ref(null);
 
@@ -295,7 +315,11 @@ export default defineComponent({
       loading.value = false;
 
       populateTable(result, rows);
-      columns.value = createColumns(store.state.sorter);
+      columns.value = createColumns(
+        store.state.sorter,
+        showModalRef,
+        modalContent
+      );
 
       // Update table pagination controls
       paginationReactive.page = Number(result.page);
@@ -318,6 +342,10 @@ export default defineComponent({
       store.commit("UPDATE_SORTER", sorter);
     };
 
+    const endsWithAny = (str: string, suffixes: Array<string>) => {
+      return suffixes.some((suffix) => str.endsWith(suffix));
+    };
+
     return {
       table: tableRef,
       data: rows,
@@ -327,6 +355,18 @@ export default defineComponent({
       handlePageChange,
       handlePageSizeChange,
       handleSorterChange,
+      showModal: showModalRef,
+      bodyStyle: {
+        width: "600px",
+      },
+      segmented: {
+        content: "soft",
+      } as const,
+      Download,
+      ArrowLeft,
+      ArrowRight,
+      modalContent,
+      endsWithAny,
     };
   },
 });
@@ -345,10 +385,54 @@ export default defineComponent({
     @update:pageSize="handlePageSizeChange"
     @update:sorter="handleSorterChange"
   />
+  <n-modal
+    v-model:show="showModal"
+    class="custom-card"
+    preset="card"
+    :style="bodyStyle"
+    title="Conteúdo"
+    :bordered="false"
+    size="huge"
+    :segmented="segmented"
+  >
+    <template #header-extra>
+      <n-button quaternary circle :focusable="false" tabindex="0">
+        <template #icon><n-icon :component="Download" /></template>
+      </n-button>
+    </template>
+    <n-carousel
+      :dot-placement="'top'"
+      :loop="false"
+      :show-arrow="modalContent.media_urls.length > 1 ? true : false"
+      class="carousel-img"
+      draggable
+    >
+      <div v-for="(content, index) in modalContent.media_urls" :key="index" >
+        <video v-if="endsWithAny(content, ['mp4', 'mpeg', 'mkv'])" controls>
+          <source :src="content">
+        </video>
+        <img v-else :src="content" />
+      </div>
+    </n-carousel>
+  </n-modal>
 </template>
 
 <style>
 .n-date-panel {
   @apply flex flex-col sm:grid !important;
+}
+</style>
+
+
+<style scoped>
+.carousel-img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: cover;
+}
+
+video {
+  max-height: 80vh;
+  margin: auto;
 }
 </style>

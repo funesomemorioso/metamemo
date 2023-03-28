@@ -43,7 +43,7 @@ export default {
       type: Boolean,
     },
   },
-  setup() {
+  setup(props) {
     const store = useStore();
     const data = ref(null);
     const router = useRouter();
@@ -71,24 +71,32 @@ export default {
       { label: "Blog", value: "Blog" },
     ];
 
-    const handleUpdateValue = async (name: string) => {
+    const handleUpdateTab = async (name: string) => {
       store.commit("UPDATE_TAB", name);
     };
 
     const submitForm = async () => {
       const form = model.value;
       store.commit("UPDATE_FORM", { ...form });
-      router.push(await urlUpdateWithState(store));
+      // Front page will push to route
+      if (!props.displayTabs) {
+        router.push(await urlUpdateWithState(store));
+      }
+    };
+
+    const disablePreviousDate = (ts: number) => {
+      return ts > Date.now();
     };
 
     return {
       category: computed(() => store.state.tab),
       data,
-      handleUpdateValue,
+      handleUpdateTab,
       model,
       peopleOptions,
       socialOptions,
       submitForm,
+      disablePreviousDate,
     };
   },
 };
@@ -102,9 +110,11 @@ export default {
           <n-date-picker
             v-model:value="model.dateRange"
             type="daterange"
+            clearable
             start-placeholder="Data incial"
             end-placeholder="Data final"
             :update-value-on-close="true"
+            :is-date-disabled="disablePreviousDate"
           />
         </n-form-item>
       </div>
@@ -139,6 +149,7 @@ export default {
           <n-input
             v-model:value="model.searchText"
             size="large"
+            clearable
             placeholder="Pesquise termos específicos, ex: Amazônia"
           />
         </n-form-item>
@@ -158,7 +169,7 @@ export default {
       size="large"
       justify-content="center"
       class="mb-3"
-      @update:value="handleUpdateValue"
+      @update:value="handleUpdateTab"
     >
       <n-tab-pane name="lista" tab="Lista"></n-tab-pane>
       <n-tab-pane name="transcricao" tab="Transcrição"></n-tab-pane>

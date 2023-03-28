@@ -54,7 +54,7 @@ export default {
       class="flex items-center justify-between py-4 container-default"
       aria-label="Global"
     >
-      <div class="flex lg:flex-1">
+      <div class="flex">
         <div class="-m-1.5 p-1.5">
           <router-link
             :to="'/'"
@@ -100,7 +100,7 @@ export default {
           {{ menu.label }}
         </router-link>
       </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+      <div class="hidden lg:flex">
         <slot />
       </div>
     </nav>
