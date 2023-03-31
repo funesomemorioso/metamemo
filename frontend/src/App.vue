@@ -1,5 +1,11 @@
 <script lang="ts">
-import { NConfigProvider, NMessageProvider, darkTheme, ptBR, datePtBR } from "naive-ui";
+import {
+  NConfigProvider,
+  NMessageProvider,
+  darkTheme,
+  ptBR,
+  datePtBR,
+} from "naive-ui";
 import { defineComponent, ref } from "vue";
 
 import type { GlobalThemeOverrides, GlobalTheme } from "naive-ui";

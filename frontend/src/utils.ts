@@ -22,15 +22,30 @@ export const parseDateString = (dateString: string): Date => {
   return date;
 };
 
+export const capitalizeFirstLetter = (string:string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const formatDateHour = (
   dateHourUTC: string,
+  onlyDate = false,
   locale: string = "pt-BR",
   separatorString: string = "às"
 ) => {
   const dateHour = new Date(dateHourUTC);
   const dateFormated = dateHour.toLocaleDateString(locale);
   const hourFormated = dateHour.toLocaleTimeString(locale);
-  return `${dateFormated} ${separatorString} ${hourFormated}`;
+  return onlyDate
+    ? dateFormated
+    : `${dateFormated} ${separatorString} ${hourFormated}`;
+};
+
+export const linkify = (text: string): string => {
+  const urlRegex = /((?:https?:\/\/)[^\s]+)/g;
+  return text.replace(
+    urlRegex,
+    '<a class="font-semibold hover:underline underline-offset-4" href="$1" target="_blank">$1</a>'
+  );
 };
 
 export const formatToApi = (
@@ -96,21 +111,20 @@ export const formatToApi = (
   return routerResult;
 };
 
-export const urlUpdateWithState = async (
-  store: {
-    state: {
-      form: {
-        selectedPeople: [];
-        socialMedia: [];
-        searchText: string;
-        dateRange: number[];
-      },
-      page: number,
-      pageSize: number,
-      sorter: { order: string; columnKey: string },
-      tab: string
-    }}
-) => {
+export const urlUpdateWithState = async (store: {
+  state: {
+    form: {
+      selectedPeople: [];
+      socialMedia: [];
+      searchText: string;
+      dateRange: number[];
+    };
+    page: number;
+    pageSize: number;
+    sorter: { order: string; columnKey: string };
+    tab: string;
+  };
+}) => {
   const form = store.state.form;
   const page = store.state.page;
   const pageSize = store.state.pageSize;

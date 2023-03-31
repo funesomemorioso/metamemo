@@ -104,7 +104,11 @@ export default {
 
 <template>
   <section>
-    <n-form ref="form" :model="model" :class="!displayTabs ? '' : 'grid grid-cols-12 gap-x-4'">
+    <n-form
+      ref="form"
+      :model="model"
+      :class="!displayTabs ? '' : 'grid grid-cols-12 gap-x-4'"
+    >
       <div class="col-span-12 lg:col-span-6 xl:col-span-3">
         <n-form-item label="Datas">
           <n-date-picker

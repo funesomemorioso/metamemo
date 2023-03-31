@@ -61,7 +61,7 @@ export default {
     NButton,
     NIcon,
     NavBar,
-    Footer
+    Footer,
   },
   props: {
     changeTheme: {

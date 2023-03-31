@@ -4,7 +4,8 @@
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "src/columnsTables.*"
   ],
   "compilerOptions": {
     "composite": true,
