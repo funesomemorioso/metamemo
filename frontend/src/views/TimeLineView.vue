@@ -118,7 +118,6 @@ export default {
         timeline,
       };
       loading.value = false;
-      document.querySelector("#top")?.scrollIntoView({ block: "start" });
     };
 
     return {
@@ -177,15 +176,18 @@ export default {
             />
             <div class="text-center sm:text-left mb-14">
               <h3 class="text-3xl font-semibold">{{ person.name }}</h3>
-              <span
-                class="text-sm font-bold tracking-wider uppercase dark:text-gray-500"
-              >
-                {{ person.start }} - {{ person.end }}
-              </span>
               <p class="pt-4">{{ person.description.text }}</p>
             </div>
           </div>
           <div class="relative col-span-12 px-4 space-y-6 sm:col-span-9">
+            <div class="flex justify-center">
+              <div class="flex flex-col justify-center text-center text-white bg-primary dark:bg-primary-dark py-2 px-4 rounded">
+                <span class="text-xs">Linha do tempo</span>
+                <span class="font-bold tracking-wider text-lg">
+                    {{ person.start }} - {{ person.end }}
+                </span>
+              </div>
+            </div>
             <div
               class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 sm:col-span-8 sm:space-y-8 sm:before:absolute sm:before:top-2 sm:before:bottom-0 sm:before:w-0.5 sm:before:-left-3 before:bg-gradient-to-b before:from-gray-400"
             >

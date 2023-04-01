@@ -9,7 +9,7 @@ const getDefaultState = () => {
       searchText: "",
     },
     tab: "lista",
-    pageSize: 10,
+    pageSize: 20,
     page: 1,
     pageSizes: [10, 20, 30, 50, 100],
     sorter: null,

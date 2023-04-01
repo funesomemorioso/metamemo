@@ -30,9 +30,11 @@ export default {
 
     const setStateFromUrl = () => {
       const routeArgs = route.query;
-      if (Object.keys(routeArgs).length === 0) {
+
+      if (Object.keys(routeArgs).length === 0 && getTabFromUrl() === "lista") {
         return;
       }
+
       const routerResult = {
         dateRange: routeArgs.start_date
           ? [

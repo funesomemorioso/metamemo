@@ -97,7 +97,7 @@ export const formatToApi = (
     routerResult.end_date = endDate;
   }
 
-  if (pageSize > 10) {
+  if (pageSize && pageSize != 20) {
     routerResult.page_size = pageSize;
   }
   if (page > 1) {

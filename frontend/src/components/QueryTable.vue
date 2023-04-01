@@ -28,12 +28,16 @@ function populateTable(
     items: [
       {
         title: string;
-        source: string;
-        content_date: string;
-        author: string;
-        url: Url;
-        image_url: Url;
-        media_urls: Array<string>;
+        source?: string;
+        content_date?: string;
+        author?: string;
+        url?: Url;
+        image_url?: Url;
+        media_urls?: Array<string>;
+        context?: string;
+        start_date?: string;
+        end_date?: string;
+        media?: string;
       }
     ];
   },
@@ -44,11 +48,15 @@ function populateTable(
     result.push({
       title: row.title,
       source: row.source,
-      content_date: formatDateHour(row.content_date),
+      content_date: row.content_date ? formatDateHour(row.content_date) : "",
       author: row.author,
       url: row.url,
       midia: row.image_url,
       media_urls: row.media_urls,
+      context: row.context,
+      start_date: row.start_date,
+      end_date: row.end_date,
+      media: row.media,
     });
   }
   rows.value = result;
@@ -71,7 +79,7 @@ export default defineComponent({
     const showModalRef = ref(false);
     const modalContent = ref({ media_urls: [] });
     const columns: Ref = ref(
-      createColumns(store.state.sorter, showModalRef, modalContent)
+      createColumns(store.state.tab, store.state.sorter, showModalRef, modalContent)
     );
     const subscribe = ref(() => {});
     const tableRef: Ref = ref(null);
@@ -126,12 +134,16 @@ export default defineComponent({
         items: [
           {
             title: string;
-            source: string;
-            content_date: string;
-            author: string;
-            url: Url;
-            image_url: Url;
-            media_urls: Array<string>;
+            source?: string;
+            content_date?: string;
+            author?: string;
+            url?: Url;
+            image_url?: Url;
+            media_urls?: Array<string>;
+            start_date?: string;
+            end_date?: string;
+            context?: string;
+            media?: string;
           }
         ];
         total_pages: number;
@@ -143,6 +155,7 @@ export default defineComponent({
 
       populateTable(result, rows);
       columns.value = createColumns(
+        store.state.tab,
         store.state.sorter,
         showModalRef,
         modalContent
