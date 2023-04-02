@@ -79,32 +79,49 @@ export default {
       });
 
       router.replace({ path: route.path });
-      const sortedTimelineData = timelineData.value.objects.sort((a:{date: string}, b:{date: string}) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+      const sortedTimelineData = timelineData.value.objects.sort(
+        (a: { date: string }, b: { date: string }) =>
+          new Date(b.date).valueOf() - new Date(a.date).valueOf()
+      );
 
-      const timeline: any = {};
+      const timeline: any | null = {};
 
-      const weekDays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+      const weekDays = [
+        "Domingo",
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado",
+      ];
 
-      for (const tDate of sortedTimelineData) {
-        const date = new Date(tDate.date);
+      for (const tData of sortedTimelineData) {
+        const date = new Date(tData.date);
         const year = date.getFullYear();
-        const month = capitalizeFirstLetter(date.toLocaleString('pt-BR', { month: 'long' }));
-
+        const month = capitalizeFirstLetter(
+          date.toLocaleString("pt-BR", { month: "long" })
+        );
         const dayOfWeek = weekDays[date.getDay()];
         const day = date.getDate();
 
-        const dayFull = `${dayOfWeek}, ${day}`;
-        tDate.dayFull = dayFull;
+        tData.dayFull = `${dayOfWeek}, ${day}`;
 
         if (timeline[year]) {
           if (timeline[year][month]) {
-            timeline[year][month].push(tDate);
+            if (timeline[year][month][tData.dayFull]) {
+              timeline[year][month][tData.dayFull].push(tData);
+            } else {
+              timeline[year][month][tData.dayFull] = [tData];
+            }
           } else {
-            timeline[year][month] = [tDate];
+            timeline[year][month] = {};
+            timeline[year][month][tData.dayFull] = [tData];
           }
         } else {
           timeline[year] = {};
-          timeline[year][month] = [tDate];
+          timeline[year][month] = {};
+          timeline[year][month][tData.dayFull] = [tData];
         }
       }
 
@@ -181,10 +198,12 @@ export default {
           </div>
           <div class="relative col-span-12 px-4 space-y-6 sm:col-span-9">
             <div class="flex justify-center">
-              <div class="flex flex-col justify-center text-center text-white bg-primary dark:bg-primary-dark py-2 px-4 rounded">
+              <div
+                class="flex flex-col justify-center text-center text-white bg-primary dark:bg-primary-dark py-2 px-4 rounded"
+              >
                 <span class="text-xs">Linha do tempo</span>
                 <span class="font-bold tracking-wider text-lg">
-                    {{ person.start }} - {{ person.end }}
+                  {{ person.start }} - {{ person.end }}
                 </span>
               </div>
             </div>
@@ -192,28 +211,40 @@ export default {
               class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 sm:col-span-8 sm:space-y-8 sm:before:absolute sm:before:top-2 sm:before:bottom-0 sm:before:w-0.5 sm:before:-left-3 before:bg-gradient-to-b before:from-gray-400"
             >
               <div
-                v-for="[year, months] of Object.entries(person.timeline)"
-                :id="year"
+                v-for="(months, year) in person.timeline"
+                :id="String(year)"
                 :key="year"
                 class="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
               >
-              <h3 class="text-xl font-semibold tracking-wide">{{ year }}</h3>
+                <h3 class="text-xl font-semibold tracking-wide">{{ year }}</h3>
                 <div>
                   <n-collapse class="pt-8">
                     <n-collapse-item
-                      v-for="[month, days] of Object.entries(months)"
+                      v-for="(days, month) in months"
                       :id="month"
                       :key="month"
-                      :title="month" :name="month"
+                      :title="String(month)"
+                      :name="month"
                     >
-                      <n-collapse :default-expanded-names="days.map(el => el.date)">
+                      <n-collapse
+                        :default-expanded-names="
+                          Object.values(days).map((el:any) => el[0].date)
+                        "
+                      >
                         <n-collapse-item
-                          v-for="content in days"
-                          :id="content.id"
-                          :key="content.id"
-                          :title="content.dayFull" :name="content.date"
+                          v-for="(contents, day) in days"
+                          :id="contents[0].id"
+                          :key="contents[0].id"
+                          :title="String(day)"
+                          :name="contents[0].date"
                         >
-                        <div>{{ content.text }}</div>
+                          <div
+                            v-for="content in contents"
+                            :key="content.date"
+                            class="pb-4"
+                          >
+                            {{ content.text }}
+                          </div>
                         </n-collapse-item>
                       </n-collapse>
                     </n-collapse-item>
@@ -259,5 +290,11 @@ export default {
 
 .n-spin-container .n-spin-body {
   @apply top-0 !important;
+}
+</style>
+
+<style>
+.n-image-preview-toolbar {
+  gap: 16px;
 }
 </style>

@@ -38,6 +38,9 @@ function populateTable(
         start_date?: string;
         end_date?: string;
         media?: string;
+        transcription?: string;
+        original_url?: string;
+        media_url?: string;
       }
     ];
   },
@@ -57,6 +60,9 @@ function populateTable(
       start_date: row.start_date,
       end_date: row.end_date,
       media: row.media,
+      transcription: row.transcription,
+      original_url: row.original_url,
+      media_url: row.media_url,
     });
   }
   rows.value = result;
@@ -77,9 +83,14 @@ export default defineComponent({
     });
     const lastMutation: Ref = ref({});
     const showModalRef = ref(false);
-    const modalContent = ref({ media_urls: [] });
+    const modalContent = ref({ media_urls: [], media_url: [] });
     const columns: Ref = ref(
-      createColumns(store.state.tab, store.state.sorter, showModalRef, modalContent)
+      createColumns(
+        store.state.tab,
+        store.state.sorter,
+        showModalRef,
+        modalContent
+      )
     );
     const subscribe = ref(() => {});
     const tableRef: Ref = ref(null);
@@ -144,6 +155,7 @@ export default defineComponent({
             end_date?: string;
             context?: string;
             media?: string;
+            transcription?: string;
           }
         ];
         total_pages: number;
@@ -234,11 +246,6 @@ export default defineComponent({
     size="huge"
     :segmented="segmented"
   >
-    <template #header-extra>
-      <n-button quaternary circle :focusable="false" tabindex="0">
-        <template #icon><n-icon :component="Download" /></template>
-      </n-button>
-    </template>
     <n-carousel
       :dot-placement="'top'"
       :loop="false"
@@ -246,7 +253,7 @@ export default defineComponent({
       class="carousel-img"
       draggable
     >
-      <div v-for="(content, index) in modalContent.media_urls" :key="index">
+      <div v-for="(content, index) in [...modalContent.media_urls, ...modalContent.media_url]" :key="index">
         <video v-if="endsWithAny(content, ['mp4', 'mpeg', 'mkv'])" controls>
           <source :src="content" />
         </video>

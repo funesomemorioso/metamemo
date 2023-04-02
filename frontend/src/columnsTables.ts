@@ -6,7 +6,7 @@ import LogoTwitter from "@vicons/carbon/LogoTwitter";
 import LogoYoutube from "@vicons/carbon/LogoYoutube";
 import TelegramTwotone from "@vicons/material/TelegramTwotone";
 
-import { NBadge, NText, NButton, NIcon } from "naive-ui";
+import { NBadge, NText, NButton, NIcon, NImage, NEllipsis } from "naive-ui";
 import { linkify, formatDateHour } from "./utils";
 import type { SortOrder } from "naive-ui/es/data-table/src/interface";
 import { h } from "vue";
@@ -20,14 +20,16 @@ type RowData = {
   source: string;
   midia: string;
   media_urls: [];
+  media_url: [];
   start_date?: string;
   end_date?: string;
   context?: string;
   media?: string;
+  transcription?: string;
+  original_url?: string;
 };
 
 const setIcon = (source: string) => {
-
   // Define icon and icon color
   let sourceIcon = {
     icon: Link,
@@ -67,7 +69,7 @@ const setIcon = (source: string) => {
   }
 
   return sourceIcon;
-}
+};
 
 const emptyResult = h(
   NText,
@@ -84,9 +86,9 @@ export const createColumns = (
   showModalRef: Ref,
   modalContent: Ref
 ): DataTableColumns<RowData> => {
-  let result:  DataTableColumns<RowData>  = [];
+  let result: DataTableColumns<RowData> = [];
 
-  if(tab === "lista") {
+  if (tab === "lista") {
     result = [
       {
         title: "Conteúdo",
@@ -135,11 +137,11 @@ export const createColumns = (
               },
             },
             () =>
-            h(NIcon, {
-              size: "1.12rem",
-              class: sourceIcon.color,
-              component: h(sourceIcon.icon),
-            })
+              h(NIcon, {
+                size: "1.12rem",
+                class: sourceIcon.color,
+                component: h(sourceIcon.icon),
+              })
           );
         },
       },
@@ -174,24 +176,24 @@ export const createColumns = (
               show: mediaUrls.length > 1,
             },
             () =>
-            h(
-              NButton,
-              {
-                strong: true,
-                secondary: true,
-                style: "padding: 8px; margin-right: 8px",
-                title: "Clique para visualizar conteúdos",
-                onClick: () => {
-                  showModalRef.value = true;
-                  modalContent.value = row;
+              h(
+                NButton,
+                {
+                  strong: true,
+                  secondary: true,
+                  style: "padding: 8px; margin-right: 8px",
+                  title: "Clique para visualizar conteúdos",
+                  onClick: () => {
+                    showModalRef.value = true;
+                    modalContent.value = row;
+                  },
                 },
-              },
-              () =>
-              h(NIcon, {
-                size: "1.12rem",
-                component: h(Link),
-              })
-            )
+                () =>
+                  h(NIcon, {
+                    size: "1.12rem",
+                    component: h(Link),
+                  })
+              )
           );
         },
       },
@@ -228,9 +230,8 @@ export const createColumns = (
             return emptyResult;
           }
           return h("div", {
-            class:
-              "italic",
-              innerHTML: String(text),
+            class: "italic",
+            innerHTML: String(text),
           });
         },
       },
@@ -267,11 +268,11 @@ export const createColumns = (
               },
             },
             () =>
-            h(NIcon, {
-              size: "1.12rem",
-              class: sourceIcon.color,
-              component: h(sourceIcon.icon),
-            })
+              h(NIcon, {
+                size: "1.12rem",
+                class: sourceIcon.color,
+                component: h(sourceIcon.icon),
+              })
           );
         },
       },
@@ -307,9 +308,9 @@ export const createColumns = (
           const startDate = formatDateHour(String(row.start_date), true);
           const endDate = formatDateHour(String(row.end_date), true);
           return h("div", {
-            innerHTML: startDate !== endDate ? `${startDate} - ${endDate}` : startDate,
+            innerHTML:
+              startDate !== endDate ? `${startDate} - ${endDate}` : startDate,
           });
-
         },
       },
       {
@@ -337,11 +338,11 @@ export const createColumns = (
               },
             },
             () =>
-            h(NIcon, {
-              size: "1.12rem",
-              class: sourceIcon.color,
-              component: h(sourceIcon.icon),
-            })
+              h(NIcon, {
+                size: "1.12rem",
+                class: sourceIcon.color,
+                component: h(sourceIcon.icon),
+              })
           );
         },
       },
@@ -351,16 +352,16 @@ export const createColumns = (
       {
         title: "Capa",
         key: "context",
-        width: 200,
+        width: 150,
         render(row) {
           const cover = row.media;
           if (!cover) {
             return emptyResult;
           }
-          return h("div", {
-            class:
-              "p-2 rounded transition ease-in-out hover:bg-sky-100 dark:hover:bg-gray-700 hover:shadow",
-            innerHTML: `${cover}`,
+          return h(NImage, {
+            src: cover,
+            width: "170",
+            fallbackSrc: "https://placehold.co/600x400"
           });
         },
       },
@@ -376,9 +377,8 @@ export const createColumns = (
             return emptyResult;
           }
           return h("div", {
-            class:
-              "italic",
-              innerHTML: String(text),
+            class: "italic",
+            innerHTML: String(text),
           });
         },
       },
@@ -389,6 +389,93 @@ export const createColumns = (
         sorter: true,
         sortOrder:
           sorter?.columnKey === "content_date" ? sorter.order : undefined,
+      },
+    ];
+  } else if (tab === "transcricao") {
+    result = [
+      {
+        title: "Transcrição",
+        key: "transcription",
+        width: 320,
+        sorter: true,
+        sortOrder:
+          sorter?.columnKey === "transcription" ? sorter.order : undefined,
+        render(row) {
+          const text = row.transcription;
+          if (!text) {
+            return emptyResult;
+          }
+          return  h(NEllipsis, {
+            expandTrigger:"click",
+            lineClamp:"6",
+            tooltip: false,
+            class:
+              "px-2 py-1 rounded transition ease-in-out hover:bg-sky-100 dark:hover:bg-gray-700 hover:shadow",
+          },
+          () => String(text)
+          )}
+      },
+      {
+        title: "Rede",
+        key: "source",
+        width: 100,
+        render(row) {
+          let url = row.original_url;
+          const source = row.source;
+          const sourceIcon = setIcon(source);
+
+          if (!url) {
+            return emptyResult;
+          }
+
+          return h(
+            NButton,
+            {
+              strong: true,
+              secondary: true,
+              style: "padding: 8px",
+              title: url,
+              onClick: () => {
+                window.open(String(url), "_blank");
+              },
+            },
+            () =>
+              h(NIcon, {
+                size: "1.12rem",
+                class: sourceIcon.color,
+                component: h(sourceIcon.icon),
+              })
+          );
+        },
+      },
+      {
+        title: "Midia",
+        key: "midia",
+        width: 220,
+        render(row) {
+          const mediaUrl = row.media_url;
+          if (!mediaUrl) {
+            return emptyResult;
+          }
+          return h(
+            NButton,
+            {
+              strong: true,
+              secondary: true,
+              style: "padding: 8px; margin-right: 8px",
+              title: "Clique para visualizar conteúdos",
+              onClick: () => {
+                showModalRef.value = true;
+                modalContent.value = row;
+              },
+            },
+            () =>
+            h(NIcon, {
+              size: "1.12rem",
+              component: h(Link),
+            })
+          )
+        },
       },
     ];
   }
