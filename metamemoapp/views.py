@@ -62,7 +62,7 @@ def csv_streaming_response(lines, filename):
     )
 
 
-def json_response(queryset, page=1, page_size=10, full=False, sort_by=None, sort_order="ascend"):
+def json_response(queryset, page=1, page_size=20, full=False, sort_by=None, sort_order="ascend"):
     if sort_by is None:
         sort_by = "id"
 
@@ -102,7 +102,7 @@ def parse_date(value):
 def serialize_queryset(request, output_format, queryset, filename):
     output_format = str(output_format or "").lower().strip()
     page = request.GET.get('page', 1)
-    page_size = request.GET.get('page_size', 10)
+    page_size = request.GET.get('page_size', 20)
 
     sort_by = request.GET.get("sort_by", None)
     sort_order = request.GET.get("sort_order", "ascend")
