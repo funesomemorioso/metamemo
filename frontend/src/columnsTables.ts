@@ -466,7 +466,7 @@ export const createColumns = (
               title: "Clique para visualizar conteúdos",
               onClick: () => {
                 showModalRef.value = true;
-                modalContent.value = row;
+                modalContent.value.media_urls = [row];
               },
             },
             () =>

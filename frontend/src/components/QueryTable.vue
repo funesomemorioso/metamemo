@@ -83,7 +83,7 @@ export default defineComponent({
     });
     const lastMutation: Ref = ref({});
     const showModalRef = ref(false);
-    const modalContent = ref({ media_urls: [], media_url: [] });
+    const modalContent = ref({ media_urls: [] });
     const columns: Ref = ref(
       createColumns(
         store.state.tab,
@@ -253,7 +253,7 @@ export default defineComponent({
       class="carousel-img"
       draggable
     >
-      <div v-for="(content, index) in [...modalContent.media_urls, ...modalContent.media_url]" :key="index">
+      <div v-for="(content, index) in [...modalContent.media_urls]" :key="index">
         <video v-if="endsWithAny(content, ['mp4', 'mpeg', 'mkv'])" controls>
           <source :src="content" />
         </video>

@@ -87,6 +87,10 @@ export default {
     // Clean state before unmount
     onBeforeUnmount(() => {
       store.commit("CLEAN_STATE");
+
+      // Reset popstate and history
+      window.onpopstate = null;
+      window.history.forward = () => null;
     });
 
     // Back button refresh table content

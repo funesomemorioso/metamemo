@@ -40,7 +40,8 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const timelineData: Ref = ref({});
-    const loading: Ref = ref(false);
+    const loadingPerson: Ref = ref(false);
+    const loadingCards: Ref = ref(false);
     const data:
       | Ref<[{ timeline: { image: String; name: String; title: String } }]>
       | Ref = ref([]);
@@ -50,6 +51,7 @@ export default {
     onMounted(async () => {
       document.querySelector("html")?.classList.add("scroll-smooth");
 
+      loadingCards.value = true;
       const session: {
         meta: [];
         objects: [{ timeline: { image: String; name: String; title: String } }];
@@ -57,9 +59,11 @@ export default {
 
       sessionData.value = session.meta;
       data.value = session.objects;
+      loadingCards.value = false;
     });
 
     onBeforeUnmount(() => {
+      router.replace({ path: route.path });
       document.querySelector("html")?.classList.remove("scroll-smooth");
     });
 
@@ -72,7 +76,7 @@ export default {
         end: string;
       };
     }) => {
-      loading.value = true;
+      loadingPerson.value = true;
       timelineData.value = await ApiService.get(`/timeline/api/v1/fact/`, {
         limit: 100000,
         timeline__name: item.timeline.name,
@@ -134,7 +138,7 @@ export default {
         ),
         timeline,
       };
-      loading.value = false;
+      loadingPerson.value = false;
     };
 
     return {
@@ -143,44 +147,47 @@ export default {
       data,
       selectPerson,
       person,
-      loading,
+      loadingPerson,
+      loadingCards,
     };
   },
 };
 </script>
 
 <template>
-  <div class="p-12" style="min-height: 450px">
-    <n-h1 class="pb-6">Selecione um personagem para ver a linha do tempo</n-h1>
-    <div class="grid grid-cols-12 gap-4">
-      <n-card
-        v-for="(item, index) in data"
-        :key="index"
-        class="col col-span-12 lg:col-span-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
-        :class="{ 'bg-card': person && person.name == item.timeline.name }"
-        @click="selectPerson(item)"
-      >
-        <n-thing>
-          <template v-if="item.timeline.image" #avatar>
-            <n-avatar
-              :src="item.timeline.image"
-              :size="50"
-              round
-              object-fit="cover"
-            />
-          </template>
-          <template v-if="item.timeline.name" #header>
-            {{ item.timeline.name }}
-          </template>
-          <template v-if="item.text">
-            {{ item.text }}
-          </template>
-        </n-thing>
-      </n-card>
+  <n-spin :show="loadingCards">
+    <div class="p-12" style="min-height: 450px">
+      <n-h1 class="pb-6">Selecione um personagem para ver a linha do tempo</n-h1>
+      <div class="grid grid-cols-12 gap-4">
+        <n-card
+          v-for="(item, index) in data"
+          :key="index"
+          class="col col-span-12 lg:col-span-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+          :class="{ 'bg-card': person && person.name == item.timeline.name }"
+          @click="selectPerson(item)"
+        >
+          <n-thing>
+            <template v-if="item.timeline.image" #avatar>
+              <n-avatar
+                :src="item.timeline.image"
+                :size="50"
+                round
+                object-fit="cover"
+              />
+            </template>
+            <template v-if="item.timeline.name" #header>
+              {{ item.timeline.name }}
+            </template>
+            <template v-if="item.text">
+              {{ item.text }}
+            </template>
+          </n-thing>
+        </n-card>
+      </div>
     </div>
-  </div>
-  <n-spin v-if="loading || person" :show="loading">
-    <section v-if="person" class="dark:text-gray-200 pt-12 pb-32">
+  </n-spin>
+  <n-spin class="top-spin" v-if="loadingPerson || person" :show="loadingPerson">
+    <section v-if="person" class="dark:text-gray-200 pt-12 lg:pb-32">
       <div class="container px-4 py-12 grid grid-cols-12">
         <div class="grid gap-4 col-span-12 lg:grid-cols-6 lg:col-span-9">
           <div id="top" class="flex flex-col col-span-12 lg:col-span-4">
@@ -208,13 +215,13 @@ export default {
               </div>
             </div>
             <div
-              class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 sm:col-span-8 sm:space-y-8 sm:before:absolute sm:before:top-2 sm:before:bottom-0 sm:before:w-0.5 sm:before:-left-3 before:bg-gradient-to-b before:from-gray-400"
+              class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 col-span-8 space-y-8 before:absolute before:top-2 before:bottom-0 before:w-0.5 before:-left-3 before:bg-gradient-to-b before:from-gray-400"
             >
               <div
                 v-for="(months, year) in person.timeline"
                 :id="String(year)"
                 :key="year"
-                class="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
+                class="flex flex-col relative before:absolute before:top-2 before:w-4 before:h-4 before:rounded-full before:left-[-35px] before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
               >
                 <h3 class="text-xl font-semibold tracking-wide">{{ year }}</h3>
                 <div>
@@ -272,7 +279,7 @@ export default {
 
 <style scoped>
 .n-anchor {
-  @apply sticky top-16 z-20 overflow-y-auto scrollbar invisible lg:visible;
+  @apply sticky top-16 z-20 overflow-y-auto scrollbar hidden lg:block;
   max-height: calc(100vh - 100px);
 }
 
@@ -288,7 +295,7 @@ export default {
   @apply flex;
 }
 
-.n-spin-container .n-spin-body {
+.n-spin-container.top-spin .n-spin-body {
   @apply top-0 !important;
 }
 </style>
