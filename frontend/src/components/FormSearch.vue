@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { urlUpdateWithState } from "../utils";
@@ -47,6 +47,8 @@ export default {
     const store = useStore();
     const data = ref(null);
     const router = useRouter();
+    const showNetworksField = ref(true);
+    const showPersonsField = ref(true);
 
     const model = ref<Model>({
       dateRange: store.state.form.dateRange,
@@ -73,6 +75,12 @@ export default {
 
     const handleUpdateTab = async (name: string) => {
       store.commit("UPDATE_TAB", name);
+      // Reset form fileds with new values
+      model.value = {
+        ...model.value,
+        socialMedia: store.state.form.socialMedia,
+        selectedPeople: store.state.form.selectedPeople,
+      };
     };
 
     const submitForm = async () => {
@@ -88,6 +96,20 @@ export default {
       return ts > Date.now();
     };
 
+    watch(
+      () => store.state.tab,
+      (tab) => {
+        if (tab === "lista") {
+          showNetworksField.value = true;
+          showPersonsField.value = true;
+          return;
+        }
+
+        showNetworksField.value = false;
+        showPersonsField.value = false;
+      }
+    );
+
     return {
       category: computed(() => store.state.tab),
       data,
@@ -97,6 +119,8 @@ export default {
       socialOptions,
       submitForm,
       disablePreviousDate,
+      showNetworksField,
+      showPersonsField,
     };
   },
 };
@@ -119,10 +143,11 @@ export default {
             end-placeholder="Data final"
             :update-value-on-close="true"
             :is-date-disabled="disablePreviousDate"
+            size="large"
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+      <div v-if="showPersonsField" class="col-span-12 lg:col-span-6 xl:col-span-3">
         <n-form-item label="Pessoas">
           <n-select
             v-model:value="model.selectedPeople"
@@ -131,24 +156,27 @@ export default {
             clearable
             placeholder="Selecione pessoas"
             :options="peopleOptions"
+            size="large"
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 xl:col-span-6">
+      <div v-if="showNetworksField" class="col-span-12 xl:col-span-6">
         <n-form-item label="Redes">
           <n-checkbox-group
             v-model:value="model.socialMedia"
+            size="large"
             class="flex flex-wrap gap-y-2"
           >
             <n-checkbox
-              v-for="option in socialOptions"
+              v-for="(option, index) in socialOptions"
+              :key="index"
               :label="option.label"
               :value="option.value"
             />
           </n-checkbox-group>
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-10">
+      <div class="col-span-12" :class="showPersonsField && showNetworksField ? 'md:col-span-10' : 'md:col-span-7'">
         <n-form-item label="Pesquisa">
           <n-input
             v-model:value="model.searchText"
@@ -172,7 +200,7 @@ export default {
       :value="category"
       size="large"
       justify-content="center"
-      class="mb-3"
+      class="mt-2"
       @update:value="handleUpdateTab"
     >
       <n-tab-pane name="lista" tab="Lista"></n-tab-pane>
@@ -184,4 +212,11 @@ export default {
   </section>
 </template>
 
-<style></style>
+<style>
+.n-date-panel {
+  @apply flex flex-col sm:grid !important;
+}
+.v-binder-follower-content {
+  @apply z-40;
+}
+</style>

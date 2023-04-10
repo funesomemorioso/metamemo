@@ -45,6 +45,13 @@ const router = createRouter({
       component: QueryView,
     },
     {
+      path: "/metamix",
+      redirect: () => {
+        window.location.href = import.meta.env.VITE_BLOG_LINK
+        return '/metamix';
+      }
+    },
+    {
       path: "/timeline",
       name: "timeline",
       component: TimeLineView,

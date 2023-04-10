@@ -26,8 +26,11 @@ export default createStore({
       state.form = payload;
     },
     UPDATE_TAB(state, payload) {
+      // Update tab will reset some state fields
       state.page = 1;
       state.sorter = null;
+      state.form.socialMedia = [];
+      state.form.selectedPeople = [];
       state.tab = payload;
     },
     UPDATE_PAGE(state, payload) {

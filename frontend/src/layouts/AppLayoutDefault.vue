@@ -54,6 +54,14 @@ const menuOptions = [
     label: "Sobre",
     key: "about",
   },
+  {
+    to: {
+      name: "metamix",
+      path: "/metamix",
+    },
+    label: "Metamix",
+    key: "metamix",
+  },
 ];
 
 export default {
@@ -106,6 +114,7 @@ export default {
 </template>
 
 <style>
+/* Resize table rows will break page height fix */
 .v-binder-follower-container {
   position: initial;
 }

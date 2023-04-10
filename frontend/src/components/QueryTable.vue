@@ -1,6 +1,6 @@
 <script lang="ts">
 import ApiService from "@/api/apiService";
-import { NDataTable, NButton, NIcon, NModal, NCarousel } from "naive-ui";
+import { NDataTable, NModal, NCarousel } from "naive-ui";
 import {
   defineComponent,
   ref,
@@ -69,7 +69,7 @@ function populateTable(
 }
 
 export default defineComponent({
-  components: { NDataTable, NButton, NModal, NIcon, NCarousel },
+  components: { NDataTable, NModal, NCarousel },
   setup() {
     const store = useStore();
     const loading = ref(true);
@@ -80,6 +80,7 @@ export default defineComponent({
       pageSize: store.state.pageSize,
       pageSizes: store.state.pageSizes,
       showSizePicker: true,
+      pageSlot: 7,
     });
     const lastMutation: Ref = ref({});
     const showModalRef = ref(false);
@@ -94,6 +95,7 @@ export default defineComponent({
     );
     const subscribe = ref(() => {});
     const tableRef: Ref = ref(null);
+    const itemCount = ref(0);
 
     onMounted(async () => {
       await dataToApiRequest();
@@ -122,14 +124,27 @@ export default defineComponent({
       }
     );
 
+    const pageSlotSetSize = () => {
+      if (window.innerWidth < 800) {
+        paginationReactive.pageSlot = 5;
+        return;
+      }
+      paginationReactive.pageSlot = 7;
+    };
+
     onMounted(() => {
+      // Subscribe to check last mutations
       subscribe.value = store.subscribe((mutation) => {
         lastMutation.value = mutation;
       });
+      pageSlotSetSize();
+      window.addEventListener("resize", pageSlotSetSize);
     });
 
     onBeforeUnmount(() => {
+      // Removing subscribe
       subscribe.value();
+      window.removeEventListener("resize", pageSlotSetSize);
     });
 
     const dataToApiRequest = async () => {
@@ -162,6 +177,7 @@ export default defineComponent({
         page_size: number;
         page_page: number;
         page: number;
+        total_items: number;
       } = await ApiService.get(`/${tab}/`, { ...routerResult });
       loading.value = false;
 
@@ -177,6 +193,7 @@ export default defineComponent({
       paginationReactive.page = Number(result.page);
       paginationReactive.pageCount = Number(result.total_pages);
       paginationReactive.pageSize = Number(result.page_size);
+      itemCount.value = Number(result.total_items);
     };
 
     const handlePageChange = (currentPage: number) => {
@@ -219,12 +236,20 @@ export default defineComponent({
       ArrowRight,
       modalContent,
       endsWithAny,
+      itemCount,
     };
   },
 });
 </script>
 
 <template>
+  <p
+    v-if="itemCount > 0"
+    class="mb-2 my-0 text-gray-600 dark:text-gray-400 text-end"
+  >
+    Total de itens listados:
+    <span class="text-gray-700 dark:text-gray-300 font-mono">{{ itemCount }}</span>
+  </p>
   <n-data-table
     ref="table"
     :pagination="pagination"
@@ -253,7 +278,7 @@ export default defineComponent({
       class="carousel-img"
       draggable
     >
-      <div v-for="(content, index) in [...modalContent.media_urls]" :key="index">
+      <div v-for="(content, index) in modalContent.media_urls" :key="index">
         <video v-if="endsWithAny(content, ['mp4', 'mpeg', 'mkv'])" controls>
           <source :src="content" />
         </video>
@@ -264,10 +289,6 @@ export default defineComponent({
 </template>
 
 <style>
-.n-date-panel {
-  @apply flex flex-col sm:grid !important;
-}
-
 .n-modal.custom-card {
   width: 70vh;
 }

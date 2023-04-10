@@ -6,9 +6,9 @@ import {
   ptBR,
   datePtBR,
 } from "naive-ui";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onBeforeMount} from "vue";
 
-import type { GlobalThemeOverrides, GlobalTheme } from "naive-ui";
+import type { GlobalThemeOverrides } from "naive-ui";
 import type { Ref } from "vue";
 
 export default defineComponent({
@@ -18,9 +18,7 @@ export default defineComponent({
     let darkThemed: boolean = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    const theme: { value: GlobalTheme } | Ref = ref(
-      darkThemed ? darkTheme : null
-    );
+    const theme: Ref = ref(null);
 
     const lightThemeOverrides: GlobalThemeOverrides = {
       common: {
@@ -36,14 +34,23 @@ export default defineComponent({
       },
     };
 
-    const changeTheme: Function = () => {
-      darkThemed = !darkThemed;
-
+    const setTheme = () => {
       if (darkThemed) {
         theme.value = darkTheme;
+        document.documentElement.classList.add("dark");
       } else {
         theme.value = null;
+        document.documentElement.classList.remove("dark");
       }
+    };
+
+    onBeforeMount(() => {
+      setTheme();
+    });
+
+    const changeTheme = () => {
+      darkThemed = !darkThemed;
+      setTheme();
     };
 
     return {
@@ -73,7 +80,6 @@ export default defineComponent({
       :theme="theme"
       :locale="ptBR"
       :date-locale="datePtBR"
-      :class="theme ? 'dark' : ''"
     >
       <n-message-provider>
         <AppLayout :changeTheme="changeTheme">
