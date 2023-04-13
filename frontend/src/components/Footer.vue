@@ -13,7 +13,7 @@ const baseUrl = import.meta.env.VITE_API_URL;
           <div class="text-gray-800 dark:text-gray-100 text-2xl">
             META<span class="font-bold">memo</span>
           </div>
-          <a href="mailto:metamemo@metamemo.info" class="text-xs text-blue-600">metamemo@metamemo.info</a>
+          <a href="mailto:metamemo@metamemo.info" class="text-xs text-blue-600 dark:text-blue-500">metamemo@metamemo.info</a>
 
           <p class="max-w-xs mt-4 text-gray-500 dark:text-gray-400">
             Conteúdo original do site licenciado sob <br>

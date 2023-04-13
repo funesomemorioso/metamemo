@@ -18,6 +18,14 @@ body {
   @apply bg-white dark:bg-black;
 }
 
+.btn {
+  @apply text-white text-2xl font-bold bg-primary hover:bg-pink-500 focus:ring-2 focus:ring-pink-300 rounded-lg px-12 py-4 dark:bg-primary-dark dark:hover:bg-pink-500 focus:outline-none;
+}
+
+.btn-icon {
+  @apply px-4 py-3 leading-none;
+}
+
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 8px;

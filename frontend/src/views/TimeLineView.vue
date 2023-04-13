@@ -188,9 +188,9 @@ export default {
   </n-spin>
   <n-spin class="top-spin" v-if="loadingPerson || person" :show="loadingPerson">
     <section v-if="person" class="dark:text-gray-200 pt-12 lg:pb-32">
-      <div class="container px-4 py-12 grid grid-cols-12">
+      <div id="top" class="container px-4 py-12 grid grid-cols-12">
         <div class="grid gap-4 col-span-12 lg:grid-cols-6 lg:col-span-9">
-          <div id="top" class="flex flex-col col-span-12 lg:col-span-4">
+          <div class="flex flex-col col-span-12 lg:col-span-4">
             <n-avatar
               round
               object-fit="cover"
@@ -215,15 +215,15 @@ export default {
               </div>
             </div>
             <div
-              class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 col-span-8 space-y-8 before:absolute before:top-2 before:bottom-0 before:w-0.5 before:-left-3 before:bg-gradient-to-b before:from-gray-400"
+              class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 col-span-8 space-y-8 before:absolute before:top-10 before:bottom-0 before:w-0.5 before:-left-3 before:bg-gradient-to-b before:from-gray-400"
             >
               <div
                 v-for="(months, year) in person.timeline"
                 :id="String(year)"
                 :key="year"
-                class="flex flex-col relative before:absolute before:top-2 before:w-4 before:h-4 before:rounded-full before:left-[-35px] before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
+                class="flex flex-col relative before:absolute before:top-10 before:w-4 before:h-4 before:rounded-full before:left-[-35px] before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
               >
-                <h3 class="text-xl font-semibold tracking-wide">{{ year }}</h3>
+                <h3 class="text-xl font-semibold tracking-wide py-8">{{ year }}</h3>
                 <div>
                   <n-collapse class="pt-8">
                     <n-collapse-item
@@ -296,7 +296,7 @@ export default {
 }
 
 .n-spin-container.top-spin .n-spin-body {
-  @apply top-0 !important;
+  @apply top-40 !important;
 }
 </style>
 

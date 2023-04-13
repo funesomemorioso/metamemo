@@ -106,7 +106,7 @@ export default {
         </template>
       </n-button>
     </NavBar>
-    <main class="grow container-default" :class="route.meta.classes">
+    <main :class="route.meta.classes ? route.meta.classes : 'grow container-default'">
       <slot />
     </main>
     <Footer />

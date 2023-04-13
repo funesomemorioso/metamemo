@@ -20,7 +20,7 @@ import type { Ref } from "vue";
 import type { Url } from "url";
 import { useStore } from "vuex";
 
-import { formatDateHour, formatToApi } from "../utils";
+import { formatDateHour, formatToApi, pontuateNumber } from "../utils";
 import { createColumns } from "../columnsTables";
 
 function populateTable(
@@ -193,7 +193,7 @@ export default defineComponent({
       paginationReactive.page = Number(result.page);
       paginationReactive.pageCount = Number(result.total_pages);
       paginationReactive.pageSize = Number(result.page_size);
-      itemCount.value = Number(result.total_items);
+      itemCount.value = Number(pontuateNumber(result.total_items));
     };
 
     const handlePageChange = (currentPage: number) => {

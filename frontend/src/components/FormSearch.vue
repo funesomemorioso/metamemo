@@ -2,7 +2,7 @@
 import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { urlUpdateWithState } from "../utils";
+import { urlUpdateWithState, getPreviousMonthTimestamp } from "../utils";
 
 import {
   NForm,
@@ -121,6 +121,7 @@ export default {
       disablePreviousDate,
       showNetworksField,
       showPersonsField,
+      previousMonth: getPreviousMonthTimestamp(),
     };
   },
 };
@@ -139,6 +140,8 @@ export default {
             v-model:value="model.dateRange"
             type="daterange"
             clearable
+            :default-calendar-start-time="previousMonth"
+            :default-calendar-end-time="Date.now()"
             start-placeholder="Data incial"
             end-placeholder="Data final"
             :update-value-on-close="true"
@@ -189,7 +192,7 @@ export default {
       <div
         class="col-span-12 md:col-span-2 flex flex-grow justify-center items-center"
       >
-        <n-button size="large" type="primary" class="grow" @click="submitForm"
+        <n-button size="large" type="primary" class="grow dark:text-white" @click="submitForm"
           >Enviar</n-button
         >
       </div>

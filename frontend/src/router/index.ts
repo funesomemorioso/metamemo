@@ -60,11 +60,13 @@ const router = createRouter({
       path: "/collaborate",
       name: "collaborate",
       component: CollaborateView,
+      meta: { classes: "grow flex flex-col justify-between px-0 2xl:px-0 bg-gradient-to-r from-cyan-600 to-blue-700 dark:from-cyan-700 dark:to-blue-800" },
     },
     {
       path: "/about",
       name: "about",
       component: AboutView,
+      meta: { classes: "grow flex flex-col justify-between px-0 2xl:px-0" },
     },
   ],
 });

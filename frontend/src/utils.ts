@@ -134,3 +134,42 @@ export const urlUpdateWithState = async (store: {
 
   return { path: `/consulta/${tab}/`, query: routerResult };
 };
+
+export const pontuateNumber = (number: number) => {
+    // Converte o número para string
+    let numberString = number.toString();
+    let partInt = "";
+    let partDec = "";
+
+    // Separa a parte inteira da parte decimal, se houver
+    if (numberString.indexOf('.') !== -1) {
+        partInt = numberString.split('.')[0];
+        partDec = '.' + numberString.split('.')[1];
+    } else {
+        partInt = numberString;
+    }
+
+    // Adiciona pontos a cada 3 dígitos da parte inteira, começando da direita para a esquerda
+    partInt = partInt.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return partInt + partDec;
+}
+
+export const getPreviousMonthTimestamp = () => {
+    const currentDate = new Date(); 
+    const currentMonth = currentDate.getMonth();
+
+    let previousMonth = currentMonth - 1;
+
+    // Verifica se o mês atual é janeiro (mês 0) e ajusta o ano se necessário
+    if (previousMonth < 0) {
+        previousMonth = 11;
+    }
+
+    const previousMonthDate = new Date();
+    previousMonthDate.setMonth(previousMonth);
+
+    const previousMonthTimestamp = previousMonthDate.getTime();
+
+    return previousMonthTimestamp;
+}

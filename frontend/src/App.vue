@@ -43,7 +43,6 @@ export default defineComponent({
         document.documentElement.classList.remove("dark");
       }
     };
-
     onBeforeMount(() => {
       setTheme();
     });
