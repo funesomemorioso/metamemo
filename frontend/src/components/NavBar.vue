@@ -49,7 +49,7 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-slate-100 dark:bg-gray-900">
+  <div class="bg-slate-100 dark:bg-slate-900">
     <nav
       class="flex items-center justify-between py-4 container-default"
       aria-label="Global"

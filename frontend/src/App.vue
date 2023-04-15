@@ -24,6 +24,7 @@ export default defineComponent({
       common: {
         primaryColor: "#ef5da8",
         primaryColorHover: "#bd4a85",
+        primaryColorPressed: "#bd4a85",
       },
     };
 
@@ -31,6 +32,7 @@ export default defineComponent({
       common: {
         primaryColor: "#ef5da8",
         primaryColorHover: "#bd4a85",
+        primaryColorPressed: "#bd4a85",
       },
     };
 

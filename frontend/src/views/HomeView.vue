@@ -28,7 +28,7 @@ export default {
         </h1>
       </div>
       <div
-        class="lg:w-2/6 md:w-1/2 bg-gray-100 dark:bg-gray-800 dark:bg-opacity-50 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+        class="lg:w-2/6 md:w-1/2 bg-slate-100 dark:bg-slate-900 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
       >
         <h2 class="dark:text-white text-lg font-medium title-font mb-5">
           Busque um <span class="font-bold">METAMEMO</span>

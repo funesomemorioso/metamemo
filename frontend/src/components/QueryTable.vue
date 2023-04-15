@@ -245,7 +245,7 @@ export default defineComponent({
 <template>
   <p
     v-if="itemCount > 0"
-    class="mb-2 my-0 text-gray-600 dark:text-gray-400 text-end"
+    class="mb-2 my-0 text-gray-600 dark:text-gray-400 flex justify-end gap-2"
   >
     Total de itens listados:
     <span class="text-gray-700 dark:text-gray-300 font-mono">{{ itemCount }}</span>

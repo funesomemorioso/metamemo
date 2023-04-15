@@ -18,6 +18,7 @@ const router = createRouter({
       path: "/methodology",
       name: "methodology",
       component: MethodologyView,
+      meta: { classes: "grow flex flex-col justify-between px-0 2xl:px-0" },
     },
     {
       path: "/consulta/lista/",

@@ -215,48 +215,43 @@ export default {
               </div>
             </div>
             <div
-              class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 col-span-8 space-y-8 before:absolute before:top-10 before:bottom-0 before:w-0.5 before:-left-3 before:bg-gradient-to-b before:from-gray-400"
+              class="col-span-12 space-y-12 relative px-4 flex flex-col gap-20 col-span-8 space-y-2 before:absolute before:top-10 before:bottom-0 before:w-0.5 before:-left-3 before:bg-gradient-to-b before:from-gray-300 before:via-gray-200 dark:before:from-gray-500 dark:before:via-gray-600"
             >
               <div
                 v-for="(months, year) in person.timeline"
                 :id="String(year)"
                 :key="year"
-                class="flex flex-col relative before:absolute before:top-10 before:w-4 before:h-4 before:rounded-full before:left-[-35px] before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
+                class="flex flex-col relative before:absolute before:top-8 before:w-4 before:h-4 before:rounded-full before:left-[-35px] before:z-[1] before:dark:bg-primary-dark before:bg-primary-dark"
               >
-                <h3 class="text-xl font-semibold tracking-wide py-8">{{ year }}</h3>
-                <div>
-                  <n-collapse class="pt-8">
-                    <n-collapse-item
-                      v-for="(days, month) in months"
-                      :id="month"
-                      :key="month"
-                      :title="String(month)"
-                      :name="month"
+                <h3 class="text-xl font-semibold tracking-wide py-6">{{ year }}</h3>
+                <n-collapse class="pt-4">
+                  <n-collapse-item
+                    v-for="(days, month) in months"
+                    :id="month"
+                    :key="month"
+                    :title="String(month)"
+                    :name="month"
+                  >
+                    <n-collapse
+                      :default-expanded-names="
+                        Object.values(days).map((el:any) => el[0].date)
+                      "
+                      class="pt-2"
                     >
-                      <n-collapse
-                        :default-expanded-names="
-                          Object.values(days).map((el:any) => el[0].date)
-                        "
+                      <n-collapse-item
+                        v-for="(contents, day) in days"
+                        :id="contents[0].id"
+                        :key="contents[0].id"
+                        :title="String(day)"
+                        :name="contents[0].date"
                       >
-                        <n-collapse-item
-                          v-for="(contents, day) in days"
-                          :id="contents[0].id"
-                          :key="contents[0].id"
-                          :title="String(day)"
-                          :name="contents[0].date"
-                        >
-                          <div
-                            v-for="content in contents"
-                            :key="content.date"
-                            class="pb-4"
-                          >
-                            {{ content.text }}
-                          </div>
-                        </n-collapse-item>
-                      </n-collapse>
-                    </n-collapse-item>
-                  </n-collapse>
-                </div>
+                        <div v-for="content in contents" :key="content.date">
+                          {{ content.text }}
+                        </div>
+                      </n-collapse-item>
+                    </n-collapse>
+                  </n-collapse-item>
+                </n-collapse>
               </div>
             </div>
           </div>
