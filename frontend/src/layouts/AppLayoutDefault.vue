@@ -24,8 +24,8 @@ const menuOptions = [
   },
   {
     to: {
-      name: "methodology",
-      path: "/methodology",
+      name: "metodologia",
+      path: "/metodologia",
     },
     label: "Metodologia",
     key: "methodology",
@@ -40,16 +40,16 @@ const menuOptions = [
   },
   {
     to: {
-      name: "collaborate",
-      path: "/collaborate",
+      name: "colaborar",
+      path: "/colaborar",
     },
     label: "Colaborar",
     key: "collaborate",
   },
   {
     to: {
-      name: "about",
-      path: "/about",
+      name: "sobre",
+      path: "/sobre",
     },
     label: "Sobre",
     key: "about",

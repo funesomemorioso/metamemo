@@ -12,7 +12,7 @@ useMeta({
 
 <template>
   <article class="pt-24 pb-32 space-y-8 container-text about-page-color">
-    <h1 class="header-1">O que é a METAMEMO</h1>
+    <h1 class="header-1">O que é a METAMEMO?</h1>
     <p class="text-lg">METAMEMO é um sistema criado para coletar, armazenar, processar e visualizar as publicações de qualquer perfil em plataformas de redes sociais da Internet (Facebook, Instagram, Twitter e Youtube).</p>
     <p class="font-bold">O objetivo é preservar a memória e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.</p>
   </article>

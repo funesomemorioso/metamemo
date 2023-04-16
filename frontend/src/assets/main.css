@@ -19,7 +19,11 @@ body {
 }
 
 .btn {
-  @apply text-white text-2xl font-bold bg-primary hover:bg-pink-500 focus:ring-2 focus:ring-pink-300 rounded-lg px-12 py-4 dark:bg-primary-dark dark:hover:bg-pink-500 focus:outline-none;
+  @apply text-white text-lg bg-primary hover:bg-pink-500 rounded px-12 py-4 dark:hover:bg-primary-dark dark:text-black focus:bg-primary-dark;
+}
+
+.btn:focus-visible {
+  outline: 0px;
 }
 
 .btn-icon {
