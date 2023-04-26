@@ -8,6 +8,11 @@ const getDefaultState = () => {
       selectedPeople: [],
       searchText: "",
     },
+    modalPost: {
+      showModal: false,
+      content: [],
+      test: "",
+    },
     tab: "lista",
     pageSize: 20,
     page: 1,
@@ -46,6 +51,12 @@ export default createStore({
     },
     UPDATE_FROM_URL(state, payload) {
       Object.assign(state, payload);
+    },
+    UPDATE_POST_MODAL(state, payload) {
+      state.modalPost = payload;
+    },
+    SHOW_POST_MODAL(state, payload) {
+      state.modalPost.showModal = payload;
     },
     CLEAN_STATE(state) {
       Object.assign(state, getDefaultState());

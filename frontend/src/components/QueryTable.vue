@@ -1,6 +1,6 @@
 <script lang="ts">
 import ApiService from "@/api/apiService";
-import { NDataTable, NModal, NCarousel } from "naive-ui";
+import { NDataTable } from "naive-ui";
 import {
   defineComponent,
   ref,
@@ -9,6 +9,7 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
+import PostModal from "./PostModal.vue";
 
 // Icons
 import Download from "@vicons/carbon/Download";
@@ -69,7 +70,7 @@ function populateTable(
 }
 
 export default defineComponent({
-  components: { NDataTable, NModal, NCarousel },
+  components: { NDataTable, PostModal },
   setup() {
     const store = useStore();
     const loading = ref(true);
@@ -82,16 +83,13 @@ export default defineComponent({
       showSizePicker: true,
       pageSlot: 7,
     });
+    const setPostModal = (payload: object) => {
+      console.log(payload)
+    };
     const lastMutation: Ref = ref({});
-    const showModalRef = ref(false);
     const modalContent = ref({ media_urls: [] });
     const columns: Ref = ref(
-      createColumns(
-        store.state.tab,
-        store.state.sorter,
-        showModalRef,
-        modalContent
-      )
+      createColumns(store.state.tab, store.state.sorter, setPostModal)
     );
     const subscribe = ref(() => {});
     const tableRef: Ref = ref(null);
@@ -155,6 +153,9 @@ export default defineComponent({
       const sorter = store.state.sorter;
 
       const routerResult = formatToApi(form, page, pageSize, sorter);
+      const setPostModal = (payload: object) => {
+        store.commit("UPDATE_POST_MODAL", payload);
+      };
       loading.value = true;
       const result: {
         items: [
@@ -185,8 +186,7 @@ export default defineComponent({
       columns.value = createColumns(
         store.state.tab,
         store.state.sorter,
-        showModalRef,
-        modalContent
+        setPostModal
       );
 
       // Update table pagination controls
@@ -211,10 +211,6 @@ export default defineComponent({
       store.commit("UPDATE_SORTER", sorter);
     };
 
-    const endsWithAny = (str: string, suffixes: Array<string>) => {
-      return suffixes.some((suffix) => str.endsWith(suffix));
-    };
-
     return {
       table: tableRef,
       data: rows,
@@ -224,18 +220,10 @@ export default defineComponent({
       handlePageChange,
       handlePageSizeChange,
       handleSorterChange,
-      showModal: showModalRef,
-      bodyStyle: {
-        width: "600px",
-      },
-      segmented: {
-        content: "soft",
-      } as const,
       Download,
       ArrowLeft,
       ArrowRight,
       modalContent,
-      endsWithAny,
       itemCount,
     };
   },
@@ -248,7 +236,9 @@ export default defineComponent({
     class="mb-2 my-0 text-gray-600 dark:text-gray-400 flex justify-end gap-2"
   >
     Total de itens listados:
-    <span class="text-gray-700 dark:text-gray-300 font-mono">{{ itemCount }}</span>
+    <span class="text-gray-700 dark:text-gray-300 font-mono">
+      {{ itemCount }}
+    </span>
   </p>
   <n-data-table
     ref="table"
@@ -259,37 +249,8 @@ export default defineComponent({
     :scrollbar-props="{ trigger: 'none', xScrollable: true }"
     :remote="true"
     @update:page="handlePageChange"
-    @update:pageSize="handlePageSizeChange"
+    @update:page-size="handlePageSizeChange"
     @update:sorter="handleSorterChange"
   />
-  <n-modal
-    v-model:show="showModal"
-    class="custom-card"
-    preset="card"
-    title="Conteúdo"
-    :bordered="false"
-    size="huge"
-    :segmented="segmented"
-  >
-    <n-carousel
-      :dot-placement="'top'"
-      :loop="false"
-      :show-arrow="modalContent.media_urls.length > 1 ? true : false"
-      class="carousel-img"
-      draggable
-    >
-      <div v-for="(content, index) in modalContent.media_urls" :key="index">
-        <video v-if="endsWithAny(content, ['mp4', 'mpeg', 'mkv'])" controls>
-          <source :src="content" />
-        </video>
-        <img v-else :src="content" />
-      </div>
-    </n-carousel>
-  </n-modal>
+  <PostModal />
 </template>
-
-<style>
-.n-modal.custom-card {
-  width: 70vh;
-}
-</style>

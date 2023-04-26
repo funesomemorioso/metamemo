@@ -1,6 +1,5 @@
 <script lang="ts">
 import { ref, watch, onBeforeMount } from "vue";
-import { RouterLink } from "vue-router";
 import { useRoute } from "vue-router";
 
 export default {
@@ -49,7 +48,7 @@ export default {
 };
 </script>
 <template>
-  <div class="bg-slate-100 dark:bg-slate-900">
+  <div class="bg-slate-100 dark:bg-zinc-900">
     <nav
       class="flex items-center justify-between py-4 container-default"
       aria-label="Global"

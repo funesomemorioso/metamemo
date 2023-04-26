@@ -21,18 +21,18 @@ export default {
 
 <template>
   <section class="dark:text-gray-400 dark:bg-black body-font">
-    <div class="container mx-auto px-8 2xl:px-32 flex flex-col xl:flex-row py-24 gap-20">
+    <div
+      class="container mx-auto px-8 2xl:px-32 flex flex-col xl:flex-row py-24 gap-20"
+    >
       <article class="flex items-center">
-        <h1
-          class="text-2xl text-gray-800 dark:text-white"
-        >
+        <h1 class="text-2xl text-gray-800 dark:text-white">
           <strong>METAMEMO</strong> é um sistema criado para
           coletar, armazenar e visualizar as memórias de qualquer pessoa (ou
           organização, coletivo, empresa, marca).
         </h1>
       </article>
       <div
-        class="bg-slate-100 dark:bg-slate-900 rounded-lg p-8 flex flex-col lg:w-5/6 w-full mx-auto"
+        class="bg-slate-100 dark:bg-zinc-900 rounded-lg p-8 flex flex-col lg:w-5/6 w-full mx-auto"
       >
         <h2 class="dark:text-white text-lg font-medium title-font mb-5">
           Busque um <span class="font-bold">METAMEMO</span>
@@ -46,10 +46,9 @@ export default {
       <h1 class="header-1">O que é o METAMEMO?</h1>
       <p class="text-lg">METAMEMO é um sistema criado para coletar, armazenar e visualizar as memórias de qualquer pessoa nas mais populares plataformas de redes sociais da internet. O objetivo é preservar e facilitar a análise desse conteúdo por parte de ativistas, jornalistas e pesquisadores.</p>
       <p class="text-lg">Um METAMEMO é um arquivo contendo um arquivo das redes sociais e suas respectivas mídias agregadas de uma pessoa/coletivo/empresa/marca.</p>
-      <button
-        class="btn"
-        onclick="window.location = `/metodologia`"
-      >Saiba mais</button>
+      <button class="btn" onclick="window.location = `/metodologia`">
+        Saiba mais
+      </button>
     </article>
   </section>
   <section class="flex flex-col xl:flex-row">

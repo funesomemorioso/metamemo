@@ -9,8 +9,6 @@ import {
   NFormItem,
   NDatePicker,
   NInput,
-  NCheckboxGroup,
-  NCheckbox,
   NSelect,
   NButton,
   NTabs,
@@ -30,8 +28,6 @@ export default {
     NFormItem,
     NDatePicker,
     NInput,
-    NCheckboxGroup,
-    NCheckbox,
     NSelect,
     NButton,
     NTabs,
@@ -134,52 +130,57 @@ export default {
       :model="model"
       :class="!displayTabs ? '' : 'grid grid-cols-12 gap-x-4'"
     >
-      <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-        <n-form-item label="Datas">
-          <n-date-picker
-            v-model:value="model.dateRange"
-            type="daterange"
-            clearable
-            :default-calendar-start-time="previousMonth"
-            :default-calendar-end-time="Date.now()"
-            start-placeholder="Data incial"
-            end-placeholder="Data final"
-            :update-value-on-close="true"
-            :is-date-disabled="disablePreviousDate"
-            size="large"
-          />
-        </n-form-item>
-      </div>
-      <div v-if="showPersonsField" class="col-span-12 lg:col-span-6 xl:col-span-3">
-        <n-form-item label="Pessoas">
-          <n-select
-            v-model:value="model.selectedPeople"
-            multiple
-            filterable
-            clearable
-            placeholder="Selecione pessoas"
-            :options="peopleOptions"
-            size="large"
-          />
-        </n-form-item>
-      </div>
-      <div v-if="showNetworksField" class="col-span-12 xl:col-span-6">
-        <n-form-item label="Redes">
-          <n-checkbox-group
-            v-model:value="model.socialMedia"
-            size="large"
-            class="flex flex-wrap gap-y-2"
-          >
-            <n-checkbox
-              v-for="(option, index) in socialOptions"
-              :key="index"
-              :label="option.label"
-              :value="option.value"
-            />
-          </n-checkbox-group>
-        </n-form-item>
-      </div>
-      <div class="col-span-12" :class="showPersonsField && showNetworksField ? 'md:col-span-10' : 'md:col-span-7'">
+      <n-form-item
+        label="Datas"
+        class="col-span-12 lg:col-span-6 xl:col-span-3"
+      >
+        <n-date-picker
+          v-model:value="model.dateRange"
+          type="daterange"
+          clearable
+          :default-calendar-start-time="previousMonth"
+          :default-calendar-end-time="Date.now()"
+          start-placeholder="Data incial"
+          end-placeholder="Data final"
+          :update-value-on-close="true"
+          :is-date-disabled="disablePreviousDate"
+          size="large"
+        />
+      </n-form-item>
+      <n-form-item
+        v-if="showPersonsField"
+        label="Pessoas"
+        class="col-span-12 lg:col-span-6 xl:col-span-3"
+      >
+        <n-select
+          v-model:value="model.selectedPeople"
+          multiple
+          filterable
+          clearable
+          placeholder="Selecione pessoas"
+          :options="peopleOptions"
+          size="large"
+        />
+      </n-form-item>
+      <n-form-item
+        v-if="showNetworksField"
+        label="Plataformas"
+        class="col-span-12 xl:col-span-6"
+      >
+        <n-select
+          v-model:value="model.socialMedia"
+          multiple
+          filterable
+          clearable
+          placeholder="Selecione plataforma"
+          :options="socialOptions"
+          size="large"
+        />
+      </n-form-item>
+      <div
+        class="col-span-12"
+        :class="showPersonsField && showNetworksField ? 'md:col-span-10' : 'md:col-span-7'"
+      >
         <n-form-item label="Pesquisa">
           <n-input
             v-model:value="model.searchText"
@@ -192,9 +193,9 @@ export default {
       <div
         class="col-span-12 md:col-span-2 flex flex-grow justify-center items-center"
       >
-        <n-button size="large" type="primary" class="grow" @click="submitForm"
-          >Enviar</n-button
-        >
+        <n-button size="large" type="primary" class="grow" @click="submitForm">
+          Enviar
+        </n-button>
       </div>
     </n-form>
     <n-tabs

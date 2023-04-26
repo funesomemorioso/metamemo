@@ -3,7 +3,7 @@ const baseUrl = import.meta.env.VITE_API_URL;
 </script>
 
 <template>
-  <footer aria-label="Site Footer" class="bg-slate-100 dark:bg-gray-900">
+  <footer aria-label="Site Footer" class="bg-slate-100 dark:bg-zinc-900">
     <div
       class="max-w-screen-xl px-4 py-16 mx-auto space-y-8 sm:px-6 lg:space-y-16 lg:px-8"
     >

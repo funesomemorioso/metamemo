@@ -68,6 +68,7 @@ body {
 .container-text {
   @apply container mx-auto px-8 2xl:px-32 lg:max-w-5xl;
 }
+
 .header-1 {
   @apply text-5xl font-bold leading-none dark:text-gray-100;
 }

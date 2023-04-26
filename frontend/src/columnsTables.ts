@@ -12,7 +12,6 @@ import type { SortOrder } from "naive-ui/es/data-table/src/interface";
 import { h } from "vue";
 
 import type { DataTableColumns } from "naive-ui";
-import type { Ref } from "vue";
 
 type RowData = {
   title: string;
@@ -21,6 +20,7 @@ type RowData = {
   midia: string;
   media_urls: [];
   media_url: [];
+  content_date: string;
   start_date?: string;
   end_date?: string;
   context?: string;
@@ -83,8 +83,7 @@ export const createColumns = (
     columnKey: string;
     order: SortOrder;
   },
-  showModalRef: Ref,
-  modalContent: Ref
+  setPostModal: Function,
 ): DataTableColumns<RowData> => {
   let result: DataTableColumns<RowData> = [];
 
@@ -183,9 +182,8 @@ export const createColumns = (
                   secondary: true,
                   style: "padding: 8px; margin-right: 8px",
                   title: "Clique para visualizar conteúdos",
-                  onClick: () => {
-                    showModalRef.value = true;
-                    modalContent.value = row;
+                  onClick: () => { 
+                    setPostModal({ showModal: true, content: row, text: row.title, dateTime: row.content_date});
                   },
                 },
                 () =>
@@ -465,8 +463,7 @@ export const createColumns = (
               style: "padding: 8px; margin-right: 8px",
               title: "Clique para visualizar conteúdos",
               onClick: () => {
-                showModalRef.value = true;
-                modalContent.value.media_urls = [row];
+                setPostModal({ showModal: true, content: [row], text: row.transcription, dateTime: row.content_date });
               },
             },
             () =>
