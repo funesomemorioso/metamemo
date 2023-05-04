@@ -232,9 +232,9 @@ No servidor, crie o app e as configurações iniciais:
 
 ```shell
 export APP_NAME="storage-metamemo"
-export APP_DOMAIN="storage.metamemo.info"
+export APP_DOMAIN="storage.metamemo.org.br"
 export DATA_PATH="/mnt/storage/storage-metamemo"
-export ADMIN_MAIL="metamemo@metamemo.info"
+export ADMIN_MAIL="metamemo@metamemo.org.br"
 
 dokku apps:create $APP_NAME
 dokku config:set --no-restart $APP_NAME MINIO_ROOT_USER=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-32)
@@ -260,7 +260,7 @@ Em sua máquina local, faça o deployment da aplicação:
 git clone https://github.com/turicas/minio-dokku.git
 cd minio-dokku
 git checkout develop
-git remote add dokku dokku@storage.metamemo.info:storage-metamemo
+git remote add dokku dokku@storage.metamemo.org.br:storage-metamemo
 git push dokku main
 ```
 
