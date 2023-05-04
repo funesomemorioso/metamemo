@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent, watch, ref } from "vue";
 import { useStore } from "vuex";
-import { NModal, NCarousel } from "naive-ui";
+import { NModal, NCarousel, NImage } from "naive-ui";
 import type { Ref } from "vue";
 
 export default defineComponent({
-  components: { NModal, NCarousel },
+  components: { NModal, NCarousel, NImage },
   setup() {
     const store = useStore();
     const showModal = ref(false);
@@ -68,42 +68,50 @@ export default defineComponent({
     <div class="mb-6">
       {{ text }}
     </div>
-    <n-carousel
-      :dot-placement="'top'"
-      :loop="false"
-      :show-arrow="content.media_urls.length > 1 ? true : false"
-      class="carousel-img"
-      draggable
+    <div
+      v-if="content.media_urls && content.media_urls.length"
+      class="pt-8 flex gap-2 h-96"
     >
-      <div v-for="(el, index) in content.media_urls" :key="index">
-        <video v-if="endsWithAny(el, ['mp4', 'mpeg', 'mkv'])" controls>
-          <source :src="el" />
-        </video>
-        <img v-else :src="el" />
-      </div>
-    </n-carousel>
+      <n-carousel
+        :dot-placement="'top'"
+        :loop="false"
+        :show-arrow="content.media_urls.length > 1 ? true : false"
+        class="bg-gray-500 dark:bg-zinc-700 rounded"
+        draggable
+      >
+        <template v-for="(el, index) in content.media_urls" :key="index">
+          <video v-if="endsWithAny(el, ['mp4', 'mpeg', 'mkv'])" controls>
+            <source :src="el" />
+          </video>
+          <n-image
+            v-else
+            :src="el"
+            :fallback-src="'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg'"
+          />
+        </template>
+      </n-carousel>
+    </div>
   </n-modal>
 </template>
 <style>
-.n-carousel {
-  max-width: 50vh !important;
-  margin: auto;
-}
 .n-image-preview-toolbar {
-  @apply flex gap-4;
+  @apply flex gap-5;
+}
+
+.n-carousel__slide {
+  @apply flex justify-center;
 }
 
 .n-image img {
- width: 50%;
- object-fit: cover !important;
-}
-
-.carousel-img {
- width: 100%;
- object-fit: cover;
+ object-fit: contain !important;
 }
 </style>
+
 <style scoped>
+.n-image {
+  @apply justify-center;
+}
+
 .header-content {
   @apply flex justify-end gap-2;
 }
