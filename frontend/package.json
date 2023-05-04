@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite && vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "dev": "vite",
     "build": "run-p type-check build-only",
     "watch": "vite build --watch --mode development",
     "preview": "vite preview",
