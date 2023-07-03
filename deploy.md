@@ -155,7 +155,7 @@ dokku storage:mount $APP_NAME "$STORAGE_PATH:$DATA_DIR"
 # Provisionando serviços de banco de dados
 dokku postgres:create $POSTGRES_NAME -i postgres -I 14-bullseye --shm-size 2g
 dokku postgres:stop $POSTGRES_NAME
-cp deploy/postgres.prod.conf /var/lib/dokku/services/postgres/$POSTGRES_NAME/data/postgresql.conf
+cp docker/config/postgres.prod.conf /var/lib/dokku/services/postgres/$POSTGRES_NAME/data/postgresql.conf
 dokku postgres:start $POSTGRES_NAME
 dokku postgres:link $POSTGRES_NAME $APP_NAME
 

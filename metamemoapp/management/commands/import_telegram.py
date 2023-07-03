@@ -1,12 +1,5 @@
-"""
-Cada arquivo dentro de management/commands é um comando que pode ser rodado
-usando `python manage.py nomedocomando`.
-Handle() é a função executada pelo código. A vantagem de fazer assim é que as
-libs e dependencias do Django já estão encapsuladas e você pode chamar essa
-função dentro do resto do código.
-"""
-
 import io
+import time
 from textwrap import shorten
 
 from asgiref.sync import sync_to_async

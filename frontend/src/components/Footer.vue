@@ -50,7 +50,7 @@ const baseUrl = import.meta.env.VITE_API_URL;
               <ul class="space-y-4 text-sm">
                 <li>
                   <a
-                    href="/collaborate"
+                    href="/colaborar"
                     class="text-gray-700 transition hover:opacity-75 dark:text-gray-200"
                   >
                     Colaborar

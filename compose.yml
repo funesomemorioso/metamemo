@@ -7,7 +7,8 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ${PWD}/data/web:/data
+      - ${PWD}/docker/data/web:/data
+      - .:/app
     build:
       context: .
       dockerfile: Dockerfile
@@ -25,8 +26,8 @@ services:
     container_name: metamemo_postgres
     env_file: .env
     volumes:
-      - ${PWD}/deploy/postgresql.dev.conf:/etc/postgresql/postgresql.conf
-      - ${PWD}/data/database:/var/lib/postgresql/data
+      - ${PWD}/docker/config/database/postgresql.dev.conf:/etc/postgresql/postgresql.conf
+      - ${PWD}/docker/data/database:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -46,6 +47,8 @@ services:
     image: minio/minio
     container_name: metamemo_minio
     env_file: .env
+    volumes:
+      - ${PWD}/docker/data/storage:/data
     ports:
       - 9000:9000
       - 9001:9001

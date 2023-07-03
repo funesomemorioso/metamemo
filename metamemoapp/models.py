@@ -496,8 +496,8 @@ class NewsCover(models.Model):
 
     def serialize(self, full=False):
         return {
-                "full": True,
-                "content_date": str(self.content_date),
-                "media": self.media.url,
-                "source": self.source.name,
-                }
+            "full": True,
+            "content_date": str(self.content_date),
+            "media": self.media.url,
+            "source": self.source.name,
+        }

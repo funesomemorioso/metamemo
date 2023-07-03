@@ -396,11 +396,10 @@ def media_list(request):
         .filter(~Q(transcription=""), transcription__isnull=False)
         .from_sources(sources)
         .search(content)
-        .filter(memoitem__author__name__in=authors)
-        .select_related("source")
         .prefetch_related("memoitem_set", "memoitem_set__source", "memoitem_set__author")
     )
-
+    if authors:
+        queryset = queryset.filter(memoitem__author__name__in=authors)
 
     if output_format:
         # TODO: what if `page` is specified?

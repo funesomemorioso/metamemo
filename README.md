@@ -104,4 +104,4 @@ Também é possível especificar apenas arquivos do tipo `.jpg` ou qualquer outr
 
 ## Deployment
 
-Acesse [deploy/README.md](deploy/README.md).
+Acesse [deploy.md](deploy.md).
