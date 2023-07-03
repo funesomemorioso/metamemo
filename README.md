@@ -66,6 +66,41 @@ Para restaurar usando o arquivo `YYYY-MM-DD-metamemo.dump`, execute dentro do co
 # Para executar o bash no container, rode: docker compose exec web bash
 pg_restore -d $DATABASE_URL YYY-MM-DD-metamemo.dump
 ```
+## Populando arquivos de mídia em storage
+
+1. Entre em `http://storage:9001/`
+
+2. Logue como `admin / admin123`
+
+3. Crie um bucket chamado `metamemo`
+
+4. Clique no bucked e mude a privacidade para `public`
+
+5. Acesse o container web com
+
+```bash
+docker compose exec web bash
+```
+
+6. Execute o comando
+
+```bash
+./copy-media.sh 843356903808399_337035443_6190.xxoh00_AfDEN0TNPa5N1nZYOpjUVWCfgssHMWaqKMSxyT3YCXcjZAoe641F459F
+```
+
+Assim conseguimos copiar as mídias que precisarmos em desenvolvimento.
+
+### Listando nome de arquivos de mídia do banco de dados e copiando mídia
+
+Ainda no container web executamos
+
+```bash
+echo "SELECT media FROM metamemoapp_memomedia WHERE media IS NOT NULL AND media <> '' ORDER BY id DESC LIMIT 10" | psql $DATABASE_URL | grep --color=no media/ | while read filename; do filename=$(basename $filename); ./copy-media.sh $filename; done
+```
+
+Aqui limitamos para 10 arquivos para poupar espaço na máquina de desenvolvimento mas isso pode ser alterado de acordo com as necessidades.
+
+Também é possível especificar apenas arquivos do tipo `.jpg` ou qualquer outras extensões necessárias, por exemplo, alterando no WHERE `AND media ILIKE '%.jpg'`. Como segundo argumento é possível enviar o nome da pasta que vai ser gerada e feito o salvamento do arquivo definido, desse modo podemos baixar conteúdo da `timeline` por exemplo.
 
 ## Deployment
 
