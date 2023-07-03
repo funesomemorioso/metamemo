@@ -62,8 +62,19 @@ def csv_streaming_response(lines, filename):
     )
 
 
-def json_response(queryset, full=False):
-    return JsonResponse({"items": [obj.serialize(full=full) for obj in queryset]})
+def json_response(queryset, page=1, page_size=10, full=False):
+    paginator = Paginator(queryset, page_size)
+    page_obj = paginator.get_page(page)
+    items = [obj.serialize(full=full) for obj in page_obj]
+    return JsonResponse({
+        "items": items,
+        "page": page_obj.number,
+        "page_size": page_size,
+        "has_next": page_obj.has_next(),
+        "has_previous": page_obj.has_previous(),
+        "total_pages": paginator.num_pages,
+        "total_items": paginator.count,
+    })
 
 
 def define_pages(page, last_page):
@@ -81,13 +92,15 @@ def parse_date(value):
 
 def serialize_queryset(request, output_format, queryset, filename):
     output_format = str(output_format or "").lower().strip()
+    page = request.GET.get('page', 1)
+    page_size = request.GET.get('page_size', 10)
     if output_format == "csv":
         return csv_streaming_response(
             lines=queryset_to_lines(queryset),
             filename=filename,
         )
     elif output_format == "json":
-        return json_response(queryset, full=True)
+        return json_response(queryset, full=True, page=page, page_size=page_size)
     else:
         return bad_request(request, f"Formato de arquivo inválido: {output_format}")
 
