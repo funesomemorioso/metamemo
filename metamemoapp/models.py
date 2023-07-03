@@ -326,13 +326,17 @@ class MemoItem(models.Model):
 
     def serialize(self, full=False):
         video, image = None, None
+        media_urls = []
         for media in self.medias.all():
+            if media.media:
+                media_urls.append(media.media.url)
             if video is None and media.mediatype == "VIDEO":
                 video = media
             elif image is None and media.mediatype == "IMAGE":
                 image = media
 
         row = {
+            "media_urls": media_urls,
             "id": self.id,
             "content_date": self.content_date,
             "likes": self.likes,
@@ -489,3 +493,11 @@ class NewsCover(models.Model):
             models.Index(fields=["content_date"]),
         ]
         ordering = ["-content_date"]
+
+    def serialize(self, full=False):
+        return {
+                "full": True,
+                "content_date": str(self.content_date),
+                "media": self.media.url,
+                "source": self.source.name,
+                }

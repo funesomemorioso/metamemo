@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container-default {
+  @apply container mx-auto px-8 2xl:px-32;
+}
+
+.padding-y-default {
+  @apply py-12;
+}
+
+.body-font {
+  @apply text-gray-600 dark:text-gray-100;
+}
+
+body {
+  @apply bg-white dark:bg-black;
+}
+
+.btn {
+  @apply text-white text-lg bg-primary hover:bg-pink-500 rounded px-12 py-4 dark:hover:bg-primary-dark dark:text-black focus:bg-primary-dark;
+}
+
+.btn:focus-visible {
+  outline: 0px;
+}
+
+.btn-icon {
+  @apply px-4 py-3 leading-none;
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+  }
+
+  .dark .scrollbar::-webkit-scrollbar-track {
+    background: #333333;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #e0cbcb;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  .dark .scrollbar::-webkit-scrollbar-thumb {
+    background: #595959;
+    border: 3px solid #595959;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c0a0b9;
+  }
+
+  .dark .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #707070;
+  }
+}
+
+.container-text {
+  @apply container mx-auto px-8 2xl:px-32 lg:max-w-5xl;
+}
+
+.header-1 {
+  @apply text-5xl font-bold leading-none dark:text-gray-100;
+}
