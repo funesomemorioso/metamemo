@@ -273,14 +273,10 @@ def contexts(request):
 def news_covers(request):
     qs = QueryStringParser(request.GET)
     try:
-        authors = qs.list("author", type=str)
-        content = qs.str("content")
         end_date = qs.date("end_date")
         output_format = qs.str("format")
         page = qs.int("page", default=1)
-        sources = qs.list("source", type=str)
         start_date = qs.date("start_date")
-        # TODO: pass form data
     except ValueError:
         return bad_request(request, message="Erro de formato nos filtros")
 
