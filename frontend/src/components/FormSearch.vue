@@ -58,7 +58,7 @@ export default {
       { label: "Carlos bolsonaro", value: "Carlos+Bolsonaro" },
       { label: "Eduardo Bolsonaro", value: "Eduardo+Bolsonaro" },
       { label: "Flavio Bolsonaro", value: "Flávio+Bolsonaro" },
-      { label: "Família Bolsonaro", value: "Familia+Bolsonaro" },
+      { label: "Família Bolsonaro", value: "Família+Bolsonaro" },
     ];
     const socialOptions = [
       { label: "Facebook", value: "Facebook" },

@@ -1,11 +1,11 @@
 {
   "cron": [
-    { "schedule":   "0 3,9,15,21 * * *", "command": "./crawl.sh instagram" },
-    { "schedule":  "10 3,9,15,21 * * *", "command": "./crawl.sh facebook" },
-    { "schedule":  "20 3,9,15,21 * * *", "command": "./crawl.sh youtube" },
-    { "schedule":  "30 3,9,15,21 * * *", "command": "./crawl.sh telegram" },
-    { "schedule":  "40 3,9,15,21 * * *", "command": "./crawl.sh twitter" },
-    { "schedule":  "50 3,9,15,21 * * *", "command": "./crawl.sh folha" },
+    { "schedule":   "0 3,9,15,21 * * *", "command": "python manage.py import_crowdtangle --source='Instagram' --image --media --debug" },
+    { "schedule":  "10 3,9,15,21 * * *", "command": "python manage.py import_crowdtangle --source='Facebook' --image --media --debug" },
+    { "schedule":  "10 3,9,15,21 * * *", "command": "python manage.py import_youtube --media --time 30" },
+    { "schedule":  "30 3,9,15,21 * * *", "command": "python manage.py import_telegram --post-limit 300 --wait-time 60" },
+    { "schedule":  "40 3,9,15,21 * * *", "command": "python manage.py import_twitter --media" },
+    { "schedule":  "50 3,9,15,21 * * *", "command": "python manage.py import_folha -k 'Jair Bolsonaro' -a 'Jair Bolsonaro' -f 'Bolsonaro'" },
 
     { "schedule":  "*/10 * * * *", "command": "python manage.py download_a_few -n 10 -t VIDEO" },
     { "schedule":  "*/10 * * * *", "command": "python manage.py download_a_few -n 10 -t IMAGE" }
