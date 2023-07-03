@@ -103,6 +103,7 @@ class MetaMemo(models.Model):
     picture = models.ImageField(upload_to="memo", blank=True, null=True)
     facebook_handle = models.CharField(max_length=200, blank=True)
     instagram_handle = models.CharField(max_length=200, blank=True)
+    telegram_handle = models.CharField(max_length=200, blank=True)
     twitter_handle = models.CharField(max_length=200, blank=True)
     youtube_handle = models.CharField(max_length=200, blank=True)
 
@@ -114,9 +115,6 @@ class MetaMemo(models.Model):
             models.Index(fields=["name"]),
         ]
 
-    def get_facebook(self):
-        if self.facebook_handle:
-            call_command("import_facebook", username=self.facebook_handle, author=self.name)
 
 class MemoMediaQuerySet(SearchQuerySetMixin, models.QuerySet):
     def from_source(self, value):
