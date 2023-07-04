@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import QueryView from "../views/QueryView.vue";
 import MethodologyView from "../views/MethodologyView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
 import TimeLineView from "../views/TimeLineView.vue";
 import CollaborateView from "../views/CollaborateView.vue";
 import AboutView from "../views/AboutView.vue";
@@ -69,6 +70,10 @@ const router = createRouter({
       name: "sobre",
       component: AboutView,
       meta: { classes: "grow flex flex-col justify-between px-0 2xl:px-0" },
+    },
+    {
+      path: "/:catchAll(.*)",
+      component: NotFoundView,
     },
   ],
 });
