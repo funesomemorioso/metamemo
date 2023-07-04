@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { urlUpdateWithState, getPreviousMonthTimestamp } from "../utils";
@@ -43,6 +43,7 @@ export default {
     const store = useStore();
     const data = ref(null);
     const router = useRouter();
+    const showSearchField = ref(true);
     const showNetworksField = ref(true);
     const showPersonsField = ref(true);
 
@@ -92,19 +93,36 @@ export default {
       return ts > Date.now();
     };
 
+    const updateFieldsForm = (tab: string) => {
+      showSearchField.value = true;
+      if (tab === "lista") {
+        showNetworksField.value = true;
+        showPersonsField.value = true;
+        return;
+      }
+      showNetworksField.value = false;
+      showPersonsField.value = false;
+      if (tab === "newscovers") {
+        showSearchField.value = false;
+      }
+    }
+
     watch(
       () => store.state.tab,
       (tab) => {
-        if (tab === "lista") {
-          showNetworksField.value = true;
-          showPersonsField.value = true;
-          return;
-        }
-
-        showNetworksField.value = false;
-        showPersonsField.value = false;
+        updateFieldsForm(tab);
       }
     );
+
+    onBeforeMount(() => {
+      updateFieldsForm(store.state.tab);
+    });
+
+    const handleKeyUp = async (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        await submitForm();
+      }
+    };
 
     return {
       category: computed(() => store.state.tab),
@@ -117,7 +135,9 @@ export default {
       disablePreviousDate,
       showNetworksField,
       showPersonsField,
+      showSearchField,
       previousMonth: getPreviousMonthTimestamp(),
+      handleKeyUp,
     };
   },
 };
@@ -181,12 +201,13 @@ export default {
         class="col-span-12"
         :class="showPersonsField && showNetworksField ? 'md:col-span-10' : 'md:col-span-7'"
       >
-        <n-form-item label="Pesquisa">
+        <n-form-item v-if="showSearchField" label="Pesquisa">
           <n-input
             v-model:value="model.searchText"
             size="large"
             clearable
             placeholder="Pesquise termos específicos, ex: Amazônia"
+            @keyup="handleKeyUp"
           />
         </n-form-item>
       </div>
