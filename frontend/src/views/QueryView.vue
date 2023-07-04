@@ -36,12 +36,10 @@ export default {
       }
 
       const routerResult = {
-        dateRange: routeArgs.start_date
-          ? [
-              convertDateToUtc(String(routeArgs.start_date)),
-              convertDateToUtc(String(routeArgs.end_date)),
-            ]
-          : null,
+        startDate: routeArgs.start_date
+          ? convertDateToUtc(String(routeArgs.start_date)) : null,
+        endDate: routeArgs.end_date
+          ? convertDateToUtc(String(routeArgs.end_date)) : null,
         searchText: routeArgs.content ? routeArgs.content : "",
         socialMedia: Array.isArray(routeArgs.source)
           ? routeArgs.source

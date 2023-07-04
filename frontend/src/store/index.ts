@@ -3,7 +3,8 @@ import { createStore } from "vuex";
 const getDefaultState = () => {
   return {
     form: {
-      dateRange: null,
+      startDate: null,
+      dateDate: null,
       socialMedia: [],
       selectedPeople: [],
       searchText: "",

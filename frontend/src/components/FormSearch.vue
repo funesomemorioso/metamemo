@@ -16,7 +16,8 @@ import {
 } from "naive-ui";
 
 interface Model {
-  dateRange: any;
+  startDate: any;
+  endDate: any;
   searchText: any;
   socialMedia: any;
   selectedPeople: any;
@@ -48,7 +49,8 @@ export default {
     const showPersonsField = ref(true);
 
     const model = ref<Model>({
-      dateRange: store.state.form.dateRange,
+      startDate: store.state.form.startDate,
+      endDate: store.state.form.endDate,
       searchText: store.state.form.searchText,
       socialMedia: store.state.form.socialMedia,
       selectedPeople: store.state.form.selectedPeople,
@@ -89,8 +91,18 @@ export default {
       }
     };
 
-    const disablePreviousDate = (ts: number) => {
-      return ts > Date.now();
+    const disableEndDatePicker = () => {
+      const endDate = model.value.endDate;
+      const startDate = model.value.startDate;
+      const tsEndDate = endDate ? new Date(endDate) : null;
+      const tsStartDate = startDate ? new Date(startDate) : null;
+      if (!tsStartDate || !tsEndDate) {
+        return;
+      }
+      if (tsStartDate > tsEndDate) {
+        model.value.endDate = startDate;
+        model.value.startDate = endDate;
+      }
     };
 
     const updateFieldsForm = (tab: string) => {
@@ -105,7 +117,7 @@ export default {
       if (tab === "newscovers") {
         showSearchField.value = false;
       }
-    }
+    };
 
     watch(
       () => store.state.tab,
@@ -117,6 +129,16 @@ export default {
     onBeforeMount(() => {
       updateFieldsForm(store.state.tab);
     });
+
+    const disablePreviousDate = (ts: number) => {
+      const timestamp = Date.now();
+      const dateNow = new Date(timestamp);
+      const tsDate = new Date(ts);
+      dateNow.setHours(23);
+      dateNow.setMinutes(59);
+      dateNow.setSeconds(59);
+      return tsDate >= dateNow;
+    };
 
     const handleKeyUp = async (e: KeyboardEvent) => {
       if (e.key === "Enter") {
@@ -132,12 +154,13 @@ export default {
       peopleOptions,
       socialOptions,
       submitForm,
-      disablePreviousDate,
+      disableEndDatePicker,
       showNetworksField,
       showPersonsField,
       showSearchField,
       previousMonth: getPreviousMonthTimestamp(),
       handleKeyUp,
+      disablePreviousDate,
     };
   },
 };
@@ -152,19 +175,29 @@ export default {
     >
       <n-form-item
         label="Datas"
-        class="col-span-12 lg:col-span-6 xl:col-span-3"
+        class="col-span-12 lg:col-span-6 xl:col-span-3 flex"
       >
         <n-date-picker
-          v-model:value="model.dateRange"
-          type="daterange"
+          v-model:value="model.startDate"
+          placeholder="Data Inicial"
           clearable
           :default-calendar-start-time="previousMonth"
-          :default-calendar-end-time="Date.now()"
-          start-placeholder="Data incial"
-          end-placeholder="Data final"
           :update-value-on-close="true"
           :is-date-disabled="disablePreviousDate"
+          class="start-datepicker"
           size="large"
+          @update:value="disableEndDatePicker"
+        />
+        <n-date-picker
+          v-model:value="model.endDate"
+          placeholder="Data Final"
+          clearable
+          :default-calendar-start-time="previousMonth"
+          :update-value-on-close="true"
+          :is-date-disabled="disablePreviousDate"
+          class="end-datepicker"
+          size="large"
+          @update:value="disableEndDatePicker"
         />
       </n-form-item>
       <n-form-item
@@ -243,5 +276,17 @@ export default {
 }
 .v-binder-follower-content {
   @apply z-40;
+}
+.start-datepicker .n-input .n-input__border {
+  @apply border-r-transparent;
+}
+.end-datepicker .n-input .n-input__border {
+  @apply border-l-transparent;
+}
+.start-datepicker .n-input.n-input--resizable.n-input--stateful {
+  @apply rounded-tr-none rounded-br-none;
+}
+.end-datepicker .n-input.n-input--resizable.n-input--stateful {
+  @apply rounded-tl-none rounded-bl-none;
 }
 </style>
