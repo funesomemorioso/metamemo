@@ -102,6 +102,8 @@ export default defineComponent({
     watch(
       () => [store.state.form, store.state.tab, store.state.sorter],
       async () => {
+        // TODO: Save table data in store.state to avoid cache erros like need to clear colums.value
+        columns.value = [];
         await dataToApiRequest();
 
         if (lastMutation?.value?.type == "UPDATE_TAB") {

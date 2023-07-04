@@ -182,7 +182,7 @@ export const createColumns = (
                   secondary: true,
                   style: "padding: 8px; margin-right: 8px",
                   title: "Clique para visualizar conteúdos",
-                  onClick: () => { 
+                  onClick: () => {
                     setPostModal({ showModal: true, content: row, text: row.title, dateTime: row.content_date});
                   },
                 },
