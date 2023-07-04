@@ -1,6 +1,6 @@
 <script lang="ts">
 import ApiService from "@/api/apiService";
-import { NDataTable } from "naive-ui";
+import { NDataTable, NButton } from "naive-ui";
 import {
   defineComponent,
   ref,
@@ -8,6 +8,7 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
+  computed,
 } from "vue";
 import PostModal from "./PostModal.vue";
 
@@ -70,11 +71,12 @@ function populateTable(
 }
 
 export default defineComponent({
-  components: { NDataTable, PostModal },
+  components: { NDataTable, PostModal, NButton },
   setup() {
     const store = useStore();
     const loading = ref(true);
     const rows = ref([]);
+    const tab = computed(() => store.state.tab);
     const paginationReactive = reactive({
       page: store.state.page,
       pageCount: 0,
@@ -198,6 +200,18 @@ export default defineComponent({
       itemCount.value = Number(pontuateNumber(result.total_items));
     };
 
+    const downloadDataAsCsv = async () => {
+      const form = store.state.form;
+      const page = store.state.page;
+      const pageSize = store.state.pageSize;
+      const sorter = store.state.sorter;
+      const params = formatToApi(form, page, pageSize, sorter);
+      const queryFilters = ApiService.formatQuery({ params, format: "csv" })
+      const url = `${import.meta.env.VITE_API_URL}/lista/${queryFilters}`;
+
+      window.open(url, '_blank');
+    };
+
     const handlePageChange = (currentPage: number) => {
       store.commit("UPDATE_PAGE", currentPage);
     };
@@ -227,21 +241,29 @@ export default defineComponent({
       ArrowRight,
       modalContent,
       itemCount,
+      downloadDataAsCsv,
+      tab,
     };
   },
 });
 </script>
 
 <template>
-  <p
-    v-if="itemCount > 0"
-    class="mb-2 my-0 text-gray-600 dark:text-gray-400 flex justify-end gap-2"
-  >
-    Total de itens listados:
-    <span class="text-gray-700 dark:text-gray-300 font-mono">
-      {{ itemCount }}
-    </span>
-  </p>
+
+  <div class="grid grid-flow-col">
+    <div v-if="itemCount > 0 && tab === 'lista'" class="mb-2">
+      <n-button @click="downloadDataAsCsv()" title ="Baixar como CSV">Baixar resultado</n-button>
+    </div>
+    <p
+      v-if="itemCount > 0"
+      class="mb-2 text-gray-600 dark:text-gray-400 justify-self-end gap-2"
+    >
+      Total de itens listados:
+      <span class="text-gray-700 dark:text-gray-300 font-mono">
+        {{ itemCount }}
+      </span>
+    </p>
+  </div>
   <n-data-table
     ref="table"
     :pagination="pagination"
