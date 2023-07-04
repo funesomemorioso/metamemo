@@ -37,6 +37,9 @@ export default createStore({
       state.form.socialMedia = [];
       state.form.selectedPeople = [];
       state.tab = payload;
+      if (state.tab === "newscovers") {
+        state.form.searchText = "";
+      }
     },
     UPDATE_PAGE(state, payload) {
       state.page = payload;
