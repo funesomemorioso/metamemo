@@ -47,6 +47,7 @@ export default {
     const showSearchField = ref(true);
     const showNetworksField = ref(true);
     const showPersonsField = ref(true);
+    const showDateField = ref(true);
 
     const model = ref<Model>({
       startDate: store.state.form.startDate,
@@ -105,17 +106,26 @@ export default {
       }
     };
 
+    // TODO: enhance code maybe as state vars
     const updateFieldsForm = (tab: string) => {
       showSearchField.value = true;
+      showDateField.value = true;
       if (tab === "lista") {
         showNetworksField.value = true;
         showPersonsField.value = true;
         return;
       }
-      showNetworksField.value = false;
-      showPersonsField.value = false;
       if (tab === "newscovers") {
+        showNetworksField.value = false;
+        showPersonsField.value = false;
         showSearchField.value = false;
+      } else if (tab === "transcricao") {
+        showNetworksField.value = false;
+        showPersonsField.value = false;
+        showDateField.value = false;
+      } else {
+        showNetworksField.value = false;
+        showPersonsField.value = false;
       }
     };
 
@@ -158,6 +168,7 @@ export default {
       showNetworksField,
       showPersonsField,
       showSearchField,
+      showDateField,
       previousMonth: getPreviousMonthTimestamp(),
       handleKeyUp,
       disablePreviousDate,
@@ -174,6 +185,7 @@ export default {
       :class="!displayTabs ? '' : 'grid grid-cols-12 gap-x-4'"
     >
       <n-form-item
+        v-if="showDateField"
         label="Datas"
         class="col-span-12 lg:col-span-6 xl:col-span-3 flex"
       >
@@ -232,7 +244,7 @@ export default {
       </n-form-item>
       <div
         class="col-span-12"
-        :class="showPersonsField && showNetworksField ? 'md:col-span-10' : 'md:col-span-7'"
+        :class="(showPersonsField && showNetworksField) || !showDateField ? 'md:col-span-10' : 'md:col-span-7'"
       >
         <n-form-item v-if="showSearchField" label="Pesquisa">
           <n-input

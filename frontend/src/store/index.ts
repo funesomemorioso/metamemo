@@ -40,6 +40,9 @@ export default createStore({
       state.tab = payload;
       if (state.tab === "newscovers") {
         state.form.searchText = "";
+      } else if (state.tab === "transcricao") {
+        state.form.startDate = null;
+        state.form.dateDate = null;
       }
     },
     UPDATE_PAGE(state, payload) {
