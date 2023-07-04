@@ -16,46 +16,49 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.generic import TemplateView
 
 from blog import views as blogviews
 from metamemoapp import views
 
 urlpatterns = [
     # "Static" pages
-    path("content/<str:page>", views.content, name="content"),
+    # path("content/<str:page>", views.content, name="content"),
 
     # Blog
-    path("blog/", blogviews.blog_redir, name="blog"),
-    path("blog/<str:post>", blogviews.blog_redir, name="blog"),
+    # path("blog/", blogviews.blog_redir, name="blog"),
+    # path("blog/<str:post>", blogviews.blog_redir, name="blog"),
 
     # MemoItem-related
-    path("", views.home, name="home"),
-    path("lista/", views.lista, name="lista"),
-    path("memoitems/download", views.memoitems_download, name="memoitems-download"),
-    path("memoitem/<int:item_id>", views.memoitem, name="memoitem"),
-    path("memoitem/<int:item_id>/get_media", views.get_media, name="get_media"),
+    # path("", views.home, name="home"),
+    path("api/lista/", views.lista, name="lista"),
+    path("api/memoitems/download", views.memoitems_download, name="memoitems-download"),
+    # path("memoitem/<int:item_id>", views.memoitem, name="memoitem"),
+    # path("memoitem/<int:item_id>/get_media", views.get_media, name="get_media"),
 
     # MemoMedia-related
-    path("transcricao/", views.media_list, name="media-list"),
+    path("api/transcricao/", views.media_list, name="media-list"),
 
     # NewsItem-related
-    path("news/", views.news_list, name="news-list"),
-    path("news/<int:item_id>", views.news_detail, name="news-detail"),
+    path("api/news/", views.news_list, name="news-list"),
+    # path("news/<int:item_id>", views.news_detail, name="news-detail"),
 
     # MemoContext-related
-    path("contexts/", views.contexts, name="contexts"),
+    path("api/contexts/", views.contexts, name="contexts"),
 
     # NewsCover-related
-    path("newscovers/", views.news_covers, name="newscovers"),
+    path("api/newscovers/", views.news_covers, name="newscovers"),
 
     # Timeline-related
-    path("timeline/", include("timeline.urls")),
+    path("api/timeline/", include("timeline.urls")),
 
     # Administrative
     path("admin/", admin.site.urls),
     path("celery-progress/", include("celery_progress.urls")),
     path("summernote/", include("django_summernote.urls")),
+
+    re_path(r"^.*$", TemplateView.as_view(template_name="index.html"), name="main"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
