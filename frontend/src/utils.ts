@@ -175,3 +175,19 @@ export const getPreviousMonthTimestamp = () => {
 
     return previousMonthTimestamp;
 }
+
+export const formatNumberSuffix = (value: number): string => {
+  let count = 0;
+  const symbols = ['', 'K', 'M', 'G'];
+  const multiplier = 1000;
+
+  while (value >= multiplier) {
+    value /= multiplier;
+    count++;
+  }
+
+  value = Math.floor(value * 10) / 10;
+
+  return `${String(value).replace(".", ",")}${symbols[count]}`;
+}
+

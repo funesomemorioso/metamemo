@@ -5,6 +5,7 @@ import LogoInstagram from "@vicons/carbon/LogoInstagram";
 import LogoTwitter from "@vicons/carbon/LogoTwitter";
 import LogoYoutube from "@vicons/carbon/LogoYoutube";
 import TelegramTwotone from "@vicons/material/TelegramTwotone";
+import noData from "./assets/no-data.svg"
 
 import { NBadge, NText, NButton, NIcon, NImage, NEllipsis } from "naive-ui";
 import { linkify, formatDateHour } from "./utils";
@@ -25,6 +26,8 @@ type RowData = {
   end_date?: string;
   context?: string;
   media?: string;
+  interactions?: string;
+  likes?: string;
   transcription?: string;
   original_url?: string;
 };
@@ -183,7 +186,14 @@ export const createColumns = (
                   style: "padding: 8px; margin-right: 8px",
                   title: "Clique para visualizar conteúdos",
                   onClick: () => {
-                    setPostModal({ showModal: true, content: row, text: row.title, dateTime: row.content_date});
+                    setPostModal({
+                      showModal: true,
+                      content: row,
+                      text: row.title,
+                      dateTime: row.content_date,
+                      likes: row.likes,
+                      views: row.interactions,
+                    });
                   },
                 },
                 () =>
@@ -359,7 +369,7 @@ export const createColumns = (
           return h(NImage, {
             src: cover,
             width: "170",
-            fallbackSrc: "https://placehold.co/600x400"
+            fallbackSrc: noData
           });
         },
       },
@@ -463,7 +473,12 @@ export const createColumns = (
               style: "padding: 8px; margin-right: 8px",
               title: "Clique para visualizar conteúdos",
               onClick: () => {
-                setPostModal({ showModal: true, content: [row], text: row.transcription, dateTime: row.content_date });
+                setPostModal({
+                  showModal: true,
+                  content: row,
+                  text: row.transcription,
+                  dateTime: row.content_date
+                });
               },
             },
             () =>

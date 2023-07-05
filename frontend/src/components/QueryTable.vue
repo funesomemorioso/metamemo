@@ -43,6 +43,8 @@ function populateTable(
         transcription?: string;
         original_url?: string;
         media_url?: string;
+        likes?: string;
+        interactions?: string;
       }
     ];
   },
@@ -58,6 +60,8 @@ function populateTable(
       url: row.url,
       midia: row.image_url,
       media_urls: row.media_urls,
+      likes: row.likes,
+      views: row.interactions,
       context: row.context,
       start_date: row.start_date,
       end_date: row.end_date,
