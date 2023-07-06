@@ -36,8 +36,8 @@ RUN pip install --no-cache-dir -r /app/requirements.txt \
 
 COPY . /app/
 
-COPY --from=build-assets /app/frontend/build/index.html /app/metamemoapp/templates
-COPY --from=build-assets /app/frontend/build/favicon.svg /app/metamemoapp/templates
-COPY --from=build-assets /app/frontend/build/static/* /app/metamemoapp/static
+COPY --from=build-assets /app/frontend/build/index.html /app/metamemoapp/templates/
+COPY --from=build-assets /app/frontend/build/favicon.svg /app/metamemoapp/templates/
+COPY --from=build-assets /app/frontend/build/static/* /app/metamemoapp/static/
 
 CMD "/app/bin/web.sh"
