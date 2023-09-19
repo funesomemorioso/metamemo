@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { urlUpdateWithState, getPreviousMonthTimestamp } from "../utils";
@@ -16,7 +16,8 @@ import {
 } from "naive-ui";
 
 interface Model {
-  dateRange: any;
+  startDate: any;
+  endDate: any;
   searchText: any;
   socialMedia: any;
   selectedPeople: any;
@@ -43,11 +44,14 @@ export default {
     const store = useStore();
     const data = ref(null);
     const router = useRouter();
+    const showSearchField = ref(true);
     const showNetworksField = ref(true);
     const showPersonsField = ref(true);
+    const showDateField = ref(true);
 
     const model = ref<Model>({
-      dateRange: store.state.form.dateRange,
+      startDate: store.state.form.startDate,
+      endDate: store.state.form.endDate,
       searchText: store.state.form.searchText,
       socialMedia: store.state.form.socialMedia,
       selectedPeople: store.state.form.selectedPeople,
@@ -88,23 +92,69 @@ export default {
       }
     };
 
-    const disablePreviousDate = (ts: number) => {
-      return ts > Date.now();
+    const disableEndDatePicker = () => {
+      const endDate = model.value.endDate;
+      const startDate = model.value.startDate;
+      const tsEndDate = endDate ? new Date(endDate) : null;
+      const tsStartDate = startDate ? new Date(startDate) : null;
+      if (!tsStartDate || !tsEndDate) {
+        return;
+      }
+      if (tsStartDate > tsEndDate) {
+        model.value.endDate = startDate;
+        model.value.startDate = endDate;
+      }
+    };
+
+    // TODO: enhance code maybe as state vars
+    const updateFieldsForm = (tab: string) => {
+      showSearchField.value = true;
+      showDateField.value = true;
+      if (tab === "lista") {
+        showNetworksField.value = true;
+        showPersonsField.value = true;
+        return;
+      }
+      if (tab === "newscovers") {
+        showNetworksField.value = false;
+        showPersonsField.value = false;
+        showSearchField.value = false;
+      } else if (tab === "transcricao") {
+        showNetworksField.value = false;
+        showPersonsField.value = false;
+        showDateField.value = false;
+      } else {
+        showNetworksField.value = false;
+        showPersonsField.value = false;
+      }
     };
 
     watch(
       () => store.state.tab,
       (tab) => {
-        if (tab === "lista") {
-          showNetworksField.value = true;
-          showPersonsField.value = true;
-          return;
-        }
-
-        showNetworksField.value = false;
-        showPersonsField.value = false;
+        updateFieldsForm(tab);
       }
     );
+
+    onBeforeMount(() => {
+      updateFieldsForm(store.state.tab);
+    });
+
+    const disablePreviousDate = (ts: number) => {
+      const timestamp = Date.now();
+      const dateNow = new Date(timestamp);
+      const tsDate = new Date(ts);
+      dateNow.setHours(23);
+      dateNow.setMinutes(59);
+      dateNow.setSeconds(59);
+      return tsDate >= dateNow;
+    };
+
+    const handleKeyUp = async (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        await submitForm();
+      }
+    };
 
     return {
       category: computed(() => store.state.tab),
@@ -114,10 +164,14 @@ export default {
       peopleOptions,
       socialOptions,
       submitForm,
-      disablePreviousDate,
+      disableEndDatePicker,
       showNetworksField,
       showPersonsField,
+      showSearchField,
+      showDateField,
       previousMonth: getPreviousMonthTimestamp(),
+      handleKeyUp,
+      disablePreviousDate,
     };
   },
 };
@@ -131,20 +185,31 @@ export default {
       :class="!displayTabs ? '' : 'grid grid-cols-12 gap-x-4'"
     >
       <n-form-item
+        v-if="showDateField"
         label="Datas"
-        class="col-span-12 lg:col-span-6 xl:col-span-3"
+        class="col-span-12 lg:col-span-6 xl:col-span-3 flex"
       >
         <n-date-picker
-          v-model:value="model.dateRange"
-          type="daterange"
+          v-model:value="model.startDate"
+          placeholder="Data Inicial"
           clearable
           :default-calendar-start-time="previousMonth"
-          :default-calendar-end-time="Date.now()"
-          start-placeholder="Data incial"
-          end-placeholder="Data final"
           :update-value-on-close="true"
           :is-date-disabled="disablePreviousDate"
+          class="start-datepicker"
           size="large"
+          @update:value="disableEndDatePicker"
+        />
+        <n-date-picker
+          v-model:value="model.endDate"
+          placeholder="Data Final"
+          clearable
+          :default-calendar-start-time="previousMonth"
+          :update-value-on-close="true"
+          :is-date-disabled="disablePreviousDate"
+          class="end-datepicker"
+          size="large"
+          @update:value="disableEndDatePicker"
         />
       </n-form-item>
       <n-form-item
@@ -179,14 +244,15 @@ export default {
       </n-form-item>
       <div
         class="col-span-12"
-        :class="showPersonsField && showNetworksField ? 'md:col-span-10' : 'md:col-span-7'"
+        :class="(showPersonsField && showNetworksField) || !showDateField ? 'md:col-span-10' : 'md:col-span-7'"
       >
-        <n-form-item label="Pesquisa">
+        <n-form-item v-if="showSearchField" label="Pesquisa">
           <n-input
             v-model:value="model.searchText"
             size="large"
             clearable
             placeholder="Pesquise termos específicos, ex: Amazônia"
+            @keyup="handleKeyUp"
           />
         </n-form-item>
       </div>
@@ -222,5 +288,17 @@ export default {
 }
 .v-binder-follower-content {
   @apply z-40;
+}
+.start-datepicker .n-input .n-input__border {
+  @apply border-r-transparent;
+}
+.end-datepicker .n-input .n-input__border {
+  @apply border-l-transparent;
+}
+.start-datepicker .n-input.n-input--resizable.n-input--stateful {
+  @apply rounded-tr-none rounded-br-none;
+}
+.end-datepicker .n-input.n-input--resizable.n-input--stateful {
+  @apply rounded-tl-none rounded-bl-none;
 }
 </style>

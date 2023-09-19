@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="256"
+   height="210"
+   viewBox="0 0 256 210"
+   xml:space="preserve"
+   id="svg12"
+   sodipodi:docname="no-data-ff856cc6.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview14"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="1.0509927"
+   inkscape:cx="49.477033"
+   inkscape:cy="104.66295"
+   inkscape:window-width="1920"
+   inkscape:window-height="1043"
+   inkscape:window-x="1920"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg12" />
+
+<defs
+   id="defs2">
+</defs>
+
+<g
+   id="g413"
+   transform="translate(0,-6.5054769)"
+   style="fill:#ffffff"><g
+     style="opacity:1;fill:#ffffff;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none"
+     transform="matrix(1.7451639,0,0,1.7451639,49.467624,13.428532)"
+     id="g10">
+	<path
+   d="M 71.227,75.294 H 18.774 C 8.422,75.294 0,66.872 0,56.521 0,46.349 8.131,38.041 18.235,37.755 20.196,24.553 31.55,14.706 45,14.706 c 13.45,0 24.804,9.847 26.766,23.048 C 81.869,38.04 90,46.349 90,56.521 90,66.872 81.578,75.294 71.227,75.294 Z M 18.774,39.747 C 9.525,39.747 2,47.271 2,56.521 2,65.771 9.525,73.294 18.774,73.294 H 71.227 C 80.476,73.294 88,65.77 88,56.521 88,47.272 80.476,39.747 71.227,39.747 h -0.339 c -0.508,0 -0.935,-0.38 -0.993,-0.885 C 68.433,26.231 57.73,16.706 45,16.706 c -12.73,0 -23.433,9.525 -24.895,22.155 -0.058,0.505 -0.485,0.885 -0.993,0.885 h -0.338 z"
+   style="opacity:1;fill:#ffffff;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none"
+   stroke-linecap="round"
+   id="path4" />
+	<path
+   d="m 55.699,62.994 c -0.256,0 -0.512,-0.098 -0.707,-0.293 L 33.594,41.303 c -0.391,-0.391 -0.391,-1.023 0,-1.414 0.391,-0.391 1.023,-0.391 1.414,0 l 21.398,21.398 c 0.391,0.391 0.391,1.023 0,1.414 -0.195,0.195 -0.451,0.293 -0.707,0.293 z"
+   style="opacity:1;fill:#ffffff;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none"
+   stroke-linecap="round"
+   id="path6" />
+	<path
+   d="m 34.301,62.994 c -0.256,0 -0.512,-0.098 -0.707,-0.293 -0.391,-0.391 -0.391,-1.023 0,-1.414 L 54.992,39.889 c 0.391,-0.391 1.023,-0.391 1.414,0 0.391,0.391 0.391,1.023 0,1.414 L 35.008,62.701 c -0.195,0.195 -0.451,0.293 -0.707,0.293 z"
+   style="opacity:1;fill:#ffffff;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none"
+   stroke-linecap="round"
+   id="path8" />
+</g><text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.746px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#ffffff;stroke-width:46.8738"
+     x="19.308168"
+     y="179.4357"
+     id="text351"><tspan
+       sodipodi:role="line"
+       id="tspan349"
+       x="19.308168"
+       y="179.4357"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell;stroke-width:46.8738;fill:#ffffff">Erro ao carregar imagem</tspan></text></g><text
+   xml:space="preserve"
+   style="font-size:21.3333px;font-family:FontAwesome;-inkscape-font-specification:FontAwesome;fill:#333333;stroke-width:50.6419"
+   x="79.042213"
+   y="46.810528"
+   id="text405"><tspan
+     sodipodi:role="line"
+     id="tspan403"
+     x="79.042213"
+     y="46.810528"></tspan></text></svg>

@@ -7,7 +7,7 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [vue()],
   build: {
-    outDir: "../metamemoapp/templates",
+    outDir: "./build/",
     assetsDir: "static",
     chunkSizeWarningLimit: 1500,
   },
@@ -18,7 +18,6 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         target: "http://localhost:5000",
-        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

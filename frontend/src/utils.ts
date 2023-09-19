@@ -53,7 +53,8 @@ export const formatToApi = (
     selectedPeople: [];
     socialMedia: [];
     searchText: string;
-    dateRange: number[];
+    startDate: number;
+    endDate: number;
   },
   page: number,
   pageSize: number,
@@ -88,12 +89,12 @@ export const formatToApi = (
 
   let startDate = "";
   let endDate = "";
-
-  if (form.dateRange) {
-    startDate = formatDate(form.dateRange[0]);
-    endDate = formatDate(form.dateRange[1]);
-
+  if (form.startDate) {
+    startDate = formatDate(form.startDate);
     routerResult.start_date = startDate;
+  }
+  if (form.endDate) {
+    endDate = formatDate(form.endDate);
     routerResult.end_date = endDate;
   }
 
@@ -117,7 +118,8 @@ export const urlUpdateWithState = async (store: {
       selectedPeople: [];
       socialMedia: [];
       searchText: string;
-      dateRange: number[];
+      startDate: number;
+      endDate: number;
     };
     page: number;
     pageSize: number;
@@ -173,3 +175,19 @@ export const getPreviousMonthTimestamp = () => {
 
     return previousMonthTimestamp;
 }
+
+export const formatNumberSuffix = (value: number): string => {
+  let count = 0;
+  const symbols = ['', 'K', 'M', 'G'];
+  const multiplier = 1000;
+
+  while (value >= multiplier) {
+    value /= multiplier;
+    count++;
+  }
+
+  value = Math.floor(value * 10) / 10;
+
+  return `${String(value).replace(".", ",")}${symbols[count]}`;
+}
+

@@ -5,11 +5,9 @@ WORKDIR /app
 ARG VITE_API_URL=/api
 ARG VITE_BLOG_LINK=https://medium.com/@metamixblog
 COPY ./frontend/package.json ./frontend/package-lock.json /app/frontend/
-RUN cd /app/frontend && npm install
 RUN cd /app/frontend && npm install -g npm@9.5.0 && npm install
 COPY ./frontend /app/frontend
 RUN cd /app/frontend && npm run build
-
 
 # Django build
 FROM python:3.8-bullseye
@@ -38,6 +36,8 @@ RUN pip install --no-cache-dir -r /app/requirements.txt \
 
 COPY . /app/
 
-COPY --from=build-assets /app/metamemoapp/templates /app/metamemoapp/templates
+COPY --from=build-assets /app/frontend/build/index.html /app/metamemoapp/templates/
+COPY --from=build-assets /app/frontend/build/favicon.svg /app/metamemoapp/templates/
+COPY --from=build-assets /app/frontend/build/static/* /app/metamemoapp/static/
 
 CMD "/app/bin/web.sh"

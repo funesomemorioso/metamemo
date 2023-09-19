@@ -3,7 +3,8 @@ import { createStore } from "vuex";
 const getDefaultState = () => {
   return {
     form: {
-      dateRange: null,
+      startDate: null,
+      dateDate: null,
       socialMedia: [],
       selectedPeople: [],
       searchText: "",
@@ -37,6 +38,12 @@ export default createStore({
       state.form.socialMedia = [];
       state.form.selectedPeople = [];
       state.tab = payload;
+      if (state.tab === "newscovers") {
+        state.form.searchText = "";
+      } else if (state.tab === "transcricao") {
+        state.form.startDate = null;
+        state.form.dateDate = null;
+      }
     },
     UPDATE_PAGE(state, payload) {
       state.page = payload;
