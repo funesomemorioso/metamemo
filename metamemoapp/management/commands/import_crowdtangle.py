@@ -47,7 +47,7 @@ class Command(BaseCommand):
             self.username = getattr(metamemo, handle_field, None)
             if not self.username:
                 continue
-            print(f"Collecting {self.source} for {username}")
+            print(f"Collecting {self.source} for {self.username}")
             self.memo_author = metamemo
             if self.clear:
                 # Esvazia lista de ids caso passe a flag --clear
