@@ -12,7 +12,7 @@ django-debug-toolbar==3.2.4
 django-import-export==2.7.1
 django-storages==1.12.3
 django-summernote==0.8.20.0
-django-tastypie==0.14.4
+django-tastypie==0.14.6
 facebook-scraper==0.2.54
 ffmpeg-python==0.2.0
 google-cloud-language==2.3.2
